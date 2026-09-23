@@ -235,4 +235,20 @@ HTML = f"""<!doctype html>
 
 with open(os.path.join(ROOT, 'SCCL_LAMF_LOS_PRD.html'), 'w') as f:
     f.write(HTML)
-print('SCCL_LAMF_LOS_PRD.html written')
+
+# cloud copy: the same PRD body as a hash route inside cloud.html
+import json as _json
+BODY = f"""<header class="prd-head">
+  <img src="assets/img/shriram-logo.png" alt="Shriram Credit">
+  <div><h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
+  <p>Customer Online Journey &nbsp;·&nbsp; Last updated: {UPDATED}</p></div>
+  <a class="prd-link" href="#">All screens →</a>
+</header>
+<main class="prd-body">
+<p class="note">This document is generated from the confirmed discussion log. Sections marked
+<span class="tag wip">Pending Confirmation</span> are not yet confirmed and must not be treated as final requirements.</p>
+{render()}
+</main>"""
+with open(os.path.join(ROOT, 'assets', 'prd-body.js'), 'w') as f:
+    f.write('window.PRD_HTML = ' + _json.dumps(BODY) + ';\n')
+print('SCCL_LAMF_LOS_PRD.html + assets/prd-body.js written')

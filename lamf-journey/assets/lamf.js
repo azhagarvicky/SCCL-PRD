@@ -46,7 +46,10 @@
     '16.5.8) KYC Verification Page Aadhar verification process done in digilocker  redirected to los but status getting updated',
     '16.5.9) KYC Verification Page Aadhar verification completed',
   ];
-  const href = (name) => encodeURIComponent(name + '.html');
+  /* In the local copy each screen is its own .html file. In the cloud copy
+     (single page, see cloud.html) screens are hash routes on one page. */
+  const SPA = () => !!window.LAMF_SPA;
+  const href = (name) => (SPA() ? '#' + encodeURIComponent(name) : encodeURIComponent(name + '.html'));
 
   /* ---------------- Demo customer data ---------------- */
   const CUSTOMER = {
@@ -635,8 +638,13 @@
     },
   };
 
-  const currentScreen = () => decodeURIComponent(location.pathname.split('/').pop()).replace(/\.html$/, '');
-  const go = (screen) => { location.href = href(screen); };
+  const currentScreen = () => (SPA()
+    ? decodeURIComponent(location.hash.replace(/^#/, ''))
+    : decodeURIComponent(location.pathname.split('/').pop()).replace(/\.html$/, ''));
+  const go = (screen) => {
+    if (SPA()) { location.hash = encodeURIComponent(screen); return; }   // router re-renders
+    location.href = href(screen);
+  };
 
   /* ==========================================================
      BEHAVIOUR – per screen field logic and validations.
@@ -782,6 +790,7 @@
       // ---- resend timer / blocked state ----
       let tick = null;
       const stopTick = () => { if (tick) { clearInterval(tick); tick = null; } };
+      const startTick = (fn, ms) => { tick = setInterval(fn, ms); TIMERS.push(tick); };
 
       const setEnabled = (on) => {
         boxes.forEach((b) => { b.disabled = !on; });
@@ -801,7 +810,7 @@
           showErr(st.reason === 'wrong' ? OTP_ERR.wrongBlocked(minsLeft()) : OTP_ERR.resendBlocked(minsLeft()));
         };
         paint();
-        tick = setInterval(paint, 1000);            // remaining minutes stay correct over time
+        startTick(paint, 1000);                     // remaining minutes stay correct over time
         sync();
       };
 
@@ -819,7 +828,7 @@
           }
         };
         paint();
-        tick = setInterval(paint, 1000);
+        startTick(paint, 1000);
       };
 
       const onResend = () => {
@@ -961,7 +970,10 @@
   }
 
   /* ---------------- Render ---------------- */
+  const TIMERS = [];
   function render(html, opts = {}) {
+    TIMERS.splice(0).forEach(clearInterval);       // stop timers from the previous screen
+    document.body.className = '';
     document.body.innerHTML = html;
     if (opts.bodyClass) document.body.classList.add(opts.bodyClass);
     // OTP boxes: auto-advance
@@ -980,5 +992,13 @@
     devnav();
   }
 
-  window.LAMF = { T, render, withModal, loader, SEL_DEFAULT, SCREENS, FLOW, BEHAVIOUR, LEGAL, OTP_RULES, OTP_ERR, MOBILE_ERR, FUNDS, F, PORTFOLIO, CUSTOMER };
+  /* Cloud copy only: show the generated PRD document as a route on the same page */
+  function renderPRD(bodyHtml) {
+    TIMERS.splice(0).forEach(clearInterval);
+    document.body.className = 'prd';
+    document.body.innerHTML = bodyHtml;
+    devnav();
+  }
+
+  window.LAMF = { T, render, renderPRD, withModal, loader, SEL_DEFAULT, SCREENS, FLOW, BEHAVIOUR, LEGAL, OTP_RULES, OTP_ERR, MOBILE_ERR, FUNDS, F, PORTFOLIO, CUSTOMER };
 })();

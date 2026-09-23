@@ -6,11 +6,12 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-09-2026 17:55 IST
+**Last Updated:** 23-09-2026 18:10 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
 **PRD (HTML):** `LOCAL/lamf-journey/SCCL_LAMF_LOS_PRD.html` → `http://localhost:8080/SCCL_LAMF_LOS_PRD.html` (regenerate with `python3 tools/build_prd.py`)
+**Cloud copy (private):** https://claude.ai/artifact/1Jqh9iJ4WDk4SJppaPojYr — single page, hash routed (`cloud.html`)
 **Local URL:** `http://localhost:8080` (`python3 -m http.server 8080 --directory lamf-journey`)
 
 **How to read this document**
@@ -42,6 +43,7 @@
 | DISC-012 | 23-09-2026 | All popup screens | Background scroll | When a popup is open (mobile number, OTP and all other popups), the background page must not scroll — it has to freeze. Only the popup itself should scroll, and only when required, e.g. when the user has zoomed in far enough that the popup does not fit on screen | Page behind a popup is locked; the popup scrolls inside its own overlay when it is taller than the viewport. Applied as a common rule to every popup screen | Implemented |
 | DISC-013 | 23-09-2026 | OTP Verification (mobile) | Full screen behaviour | Close icon → landing page; Edit → previous page with the entered mobile number prefilled; resend timer runs 30 → 01 and then enables Resend OTP; 3 back-to-back resends then blocked for 15 minutes with a dynamic remaining time; OTP box numeric only, max 6, no alphabet/space/special; Submit enabled only when 6 digits entered AND Experian consent ticked; Submit re-checks all conditions; wrong OTP shows validation and 3 wrong attempts block the user for 60 minutes; on success the mobile number is sent to the Experian API for the credit score and the user lands on PAN verification | Implemented as stated. Block state is stored against the mobile number and survives refresh/navigation; remaining minutes are recalculated from the block time, so a user returning after 10 minutes of a 15-minute block sees 5 minutes | Implemented |
 | DISC-014 | 23-09-2026 | Documentation | PRD format | Sample PRD shared: `SCCL_LAMF_LOS_PRD_Module_1 (3).docx` — table format with columns SL.No / Screenshot / Functionality / Description / Data Points Required / Status, field-level specs written as Field Name, Field Type, Minimum & Maximum Character, Value Type, Input Value format, Action, Validation, and element-level screenshot crops per field. PRD to be built in parallel as HTML, updated after each discussion, and hosted locally | PRD created at `SCCL_LAMF_LOS_PRD.html` in the same format, covering Module 1 (Mobile Number Verification) and Module 2 (OTP Verification), plus integration and pending-clarification tables. It is regenerated from `tools/build_prd.py` after every confirmed update | Implemented |
+| DISC-015 | 23-09-2026 | Hosting | Cloud hosting | Prototype to be hosted in the cloud in addition to the local server; git CLI to be set up | Git already available (2.50.1); local repository created with the first commit. Prototype published as a private cloud page. Because the cloud viewer cannot navigate between separate HTML files, a single-page copy (`cloud.html`) was generated from the same screen templates — the local multi-file copy is unchanged | Implemented |
 
 ---
 
@@ -481,6 +483,9 @@
 | IMP-010 | Screen 02 validations implemented and verified in the browser (numeric-only, 10 digits, first digit 6–9, consent gating, T&C/Privacy popups, close → landing, Continue → screen 03) | 22-09-2026 |
 | IMP-011 | Mock data across screens is taken from the screenshots (13 funds, credit limit ₹ 6,19,13,200, portfolio ₹ 12,04,62,749.99, mobile 9597001623, PAN CBOPA 8195 B, email azhagarsamy.s@shriramcredit.in) | 22-09-2026 |
 | IMP-014 | Screen 03 implemented end to end and verified in the browser: masked number from the entered mobile (`+9194XXXX8374`), numeric-only 6 boxes with paste support, consent + 6 digits gating Submit, wrong-OTP messages with remaining attempts, 3 wrong → 60-min block, 3 resends → 15-min block, block persisting across refresh with dynamic remaining minutes, auto-unlock and counter reset when the block expires, Edit returning to screen 02 prefilled, correct OTP landing on screen 04 | 23-09-2026 |
+| IMP-018 | Local git repository initialised in `LOCAL/` (branch `main`, 93 files, first commit). GitHub CLI (`gh`) is not installed and needs Homebrew + the user's password, so GitHub/Pages hosting is pending the user | 23-09-2026 |
+| IMP-019 | Cloud copy published as a private page: `cloud.html` renders any screen as a hash route using the same templates, with CSS/JS inlined (the artifact viewer's content security policy blocks external stylesheets, and its wrapper nests the document so inline styles must be moved into `<head>` at boot). Fontshare/Satoshi is blocked there, so the cloud copy loads Plus Jakarta Sans from Google Fonts — the local copy still uses Satoshi | 23-09-2026 |
+| IMP-020 | Screens 16.5.1–16.5.6 (DigiLocker / Digio look-alikes) show a red "SIMULATED SCREEN" strip when served from anywhere other than localhost, so the hosted copy cannot be mistaken for the real service. Local screenshots for the PRD are unaffected | 23-09-2026 |
 | IMP-016 | PRD generated as HTML at `SCCL_LAMF_LOS_PRD.html` in the shared sample's format, with full-screen and element-level screenshots captured from the prototype into `prd-assets/`; linked from the screens index and hosted at `http://localhost:8080/SCCL_LAMF_LOS_PRD.html`. Print styling included so it can be printed/saved as PDF | 23-09-2026 |
 | IMP-017 | PRD content lives in `tools/build_prd.py` (MODULES / INTEGRATIONS / PENDING) and is regenerated after each confirmed discussion, alongside this log | 23-09-2026 |
 | IMP-015 | OTP rule values are grouped in `OTP_RULES` in `assets/lamf.js` (length 6, timer 30s, 3 resends/15 min, 3 wrong/60 min, demo OTP) so thresholds can be changed in one place | 23-09-2026 |
