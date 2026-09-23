@@ -1,0 +1,43 @@
+/* Styles for the generated PRD document (SCCL_LAMF_LOS_PRD.html) */
+body.prd { background: #F4F5F6; color: #111; }
+
+.prd-head { display: flex; align-items: center; gap: 22px; background: #fff; padding: 18px 40px; border-bottom: 3px solid var(--yellow); position: sticky; top: 0; z-index: 10; }
+.prd-head img { height: 38px; }
+.prd-head h1 { font-size: 20px; font-weight: 700; }
+.prd-head p { font-size: 13px; color: #555; margin-top: 3px; }
+.prd-link { margin-left: auto; font-size: 13px; font-weight: 700; color: #111; background: var(--yellow); padding: 8px 14px; border-radius: 6px; }
+
+.prd-body { max-width: 1500px; margin: 0 auto; padding: 26px 40px 60px; }
+.prd-body .note { background: #fff; border-left: 4px solid var(--yellow); padding: 12px 16px; font-size: 13.5px; margin-bottom: 26px; }
+.prd-body h2 { font-size: 17px; font-weight: 700; margin: 30px 0 4px; }
+.prd-body .screens { font-size: 12.5px; color: #666; margin-bottom: 12px; }
+
+.prd-body table { width: 100%; border-collapse: collapse; background: #fff; table-layout: fixed; }
+.prd-body th, .prd-body td { border: 1px solid #C9CDD2; padding: 10px 12px; vertical-align: top; font-size: 13px; line-height: 1.5; }
+.prd-body th { background: #FFF4CC; font-weight: 700; text-align: left; font-size: 12.5px; }
+.prd-body td.sl { text-align: center; font-weight: 700; }
+.prd-body td.shot { text-align: center; background: #FAFAFA; vertical-align: middle; padding: 12px 10px; }
+.prd-body td.shot img { display: block; width: 100%; max-width: 300px; height: auto; border: 1px solid #E2E4E7; border-radius: 4px; margin: 0 auto; }
+.prd-body td.dp { font-size: 12.5px; }
+.prd-body td p { margin-bottom: 7px; }
+.prd-body td p:last-child { margin-bottom: 0; }
+.prd-body td b { font-weight: 700; }
+.prd-body td ul { margin: 4px 0 0 18px; }
+.prd-body td li { margin-bottom: 4px; }
+
+.tag { display: inline-block; padding: 3px 9px; border-radius: 4px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.tag.ok { background: var(--green-bg); }
+.tag.wip { background: var(--amber-bg); }
+
+.prd-body table.int { table-layout: auto; }
+.prd-body table.int td, .prd-body table.int th { font-size: 12.5px; }
+.prd-body .foot { font-size: 12px; color: #666; margin-top: 22px; }
+
+@media print {
+  .prd-head { position: static; }
+  .prd-link { display: none; }
+  body.prd { background: #fff; }
+  .prd-body { padding: 0; max-width: none; }
+  .prd-body table { page-break-inside: auto; }
+  .prd-body tr { page-break-inside: avoid; }
+}
