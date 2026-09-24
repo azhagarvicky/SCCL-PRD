@@ -13,6 +13,9 @@
 **PRD (HTML):** `LOCAL/lamf-journey/SCCL_LAMF_LOS_PRD.html` → `http://localhost:8080/SCCL_LAMF_LOS_PRD.html` (regenerate with `python3 tools/build_prd.py`)
 **Cloud copy (private):** https://claude.ai/artifact/1Jqh9iJ4WDk4SJppaPojYr — single page, hash routed (`cloud.html`)
 **Local URL:** `http://localhost:8080` (`python3 -m http.server 8080 --directory lamf-journey`)
+**Repository (public):** https://github.com/azhagarvicky/SCCL-PRD — `dev` = development, `main` = production
+**Hosted – Production (`main`):** https://azhagarvicky.github.io/SCCL-PRD/
+**Hosted – Development (`dev`):** https://azhagarvicky.github.io/SCCL-PRD/dev/
 
 **How to read this document**
 
@@ -492,6 +495,8 @@
 | IMP-015 | OTP rule values are grouped in `OTP_RULES` in `assets/lamf.js` (length 6, timer 30s, 3 resends/15 min, 3 wrong/60 min, demo OTP) so thresholds can be changed in one place | 23-09-2026 |
 | IMP-013 | Popup scroll lock implemented in the shared files: `html`/`body` get a `modal-open` class whenever an `.overlay` is present, and `.overlay` scrolls its own content. Verified on 02, 03 and 16.2 (background frozen, popup scrolls when the viewport is short) and on 12 (no popup — page scrolls normally) | 23-09-2026 |
 | IMP-012 | This discussion log created and added to the workflow: it is updated before continuing development whenever a requirement, clarification or correction is given | 22-09-2026 |
+| IMP-022 | Project pushed to GitHub (`azhagarvicky/SCCL-PRD`, public) and hosted on GitHub Pages. Root `index.html` forwards to `lamf-journey/`; `.nojekyll` makes Pages serve the files as-is. Supersedes the "hosting pending" note in IMP-018 | 24-09-2026 |
+| IMP-023 | Dev → Main release process: all changes are committed to `dev`, and every push to `dev` auto-deploys to the development URL (`/dev/`) via GitHub Actions. `dev` is promoted to `main` only on the user's explicit instruction, which triggers the production deployment to the site root. Both workflows publish into the `gh-pages` branch, each replacing only its own part, and confirm the new commit is live before reporting success (`.github/workflows/`) | 24-09-2026 |
 
 ---
 
