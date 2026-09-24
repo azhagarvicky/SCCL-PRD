@@ -170,11 +170,19 @@ def info(title, rows):
 INTEGRATIONS = [
  ('INT-001', 'Experian', 'Retrieve credit information / credit score for evaluating loan offers',
   'On successful OTP verification (Module 2), after the customer gives the Experian consent',
-  'Customer mobile number', 'Credit score / credit information – TBD',
-  'Customer proceeds to PAN Verification without waiting for the response', 'TBD – Confirmation Required'),
- ('INT-002', 'OTP Service Provider – TBD', 'Send and verify the 6 digit OTP for the MF linked mobile number',
+  'Customer mobile number', 'Credit score / credit information – TBD, see P-09',
+  'Customer proceeds to PAN Verification without waiting for the response', 'TBD – Confirmation Required, see P-07'),
+ ('INT-002', 'OTP Service Provider – TBD, see P-10', 'Send and verify the 6 digit OTP for the MF linked mobile number',
   'Continue CTA on Module 1; Resend OTP CTA on Module 2', 'Mobile number', 'OTP sent / verification result',
-  'Customer proceeds to PAN Verification', 'TBD – Confirmation Required'),
+  'Customer proceeds to PAN Verification', 'TBD – Confirmation Required, see P-02 and P-10'),
+]
+
+# Column guide shown by the (i) next to the Pending Clarifications heading
+PENDING_COLUMNS = [
+ ('ID', 'Reference number. Other tables point here when something is not yet decided, e.g. “TBD, see P-09” in Integration Requirements'),
+ ('Module', 'Which part of the journey the question is about (“All” means the whole journey)'),
+ ('Clarification Required', 'The question that must be answered before that requirement is final. Until then the related item stays TBD and must not be built on assumptions'),
+ ('When answered', 'The answer is written into the PRD and the question is removed from this list'),
 ]
 
 PENDING = [
@@ -186,6 +194,8 @@ PENDING = [
  ('P-06', 'Module 3', 'PAN Verification screen: field level rules, PAN format validation, name as per PAN matching logic and DOB / age rule.'),
  ('P-07', 'Module 2', 'Experian failure / timeout behaviour and the effect of the score on eligibility and offers.'),
  ('P-08', 'All', 'Where should the header Shriram Credit logo navigate in the live journey (shriramcredit.in, the LAMF landing page, or nowhere)? The prototype sends it to its own review home page.'),
+ ('P-09', 'Module 2', 'Experian response (INT-001 Expected Output): what exactly comes back from Experian – only the credit score (e.g. 750), or the score plus the full credit report (existing loans, EMIs, missed payments, recent loan enquiries)? How should a “No record found” response be handled for a customer with no credit history? Depends on the Experian service Shriram Credit has signed up for.'),
+ ('P-10', 'Module 1 & 2', 'OTP service provider (INT-002): which vendor sends and verifies the OTP, and what the customer sees if OTP verification fails or times out (a failure to send is covered in P-02).'),
 ]
 
 # ---- render ---------------------------------------------------------------
@@ -216,7 +226,7 @@ def render():
         out.append('<tr>' + ''.join(f'<td>{c}</td>' for c in row) + '</tr>')
     out.append('</tbody></table>')
 
-    out.append('<h2>Pending Clarifications</h2><table class="int"><thead><tr>'
+    out.append(f'<h2>Pending Clarifications{info("How to read this list", PENDING_COLUMNS)}</h2><table class="int"><thead><tr>'
                '<th style="width:70px">ID</th><th style="width:110px">Module</th><th>Clarification Required</th>'
                '</tr></thead><tbody>')
     for pid, mod, q in PENDING:
