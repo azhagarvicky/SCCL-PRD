@@ -22,6 +22,15 @@ def spec(**kw):
             rows.append(f'<p><b>{label}:</b> {v}</p>')
     return ''.join(rows)
 
+def pend(*ids):
+    """Amber badge that marks something as not yet decided and jumps to its
+    Pending Clarifications row. Scrolls with JS (no hash change) because the
+    cloud copy uses the URL hash for routing."""
+    js = ("var t=document.getElementById('{p}');if(t){{t.scrollIntoView({{behavior:'smooth',block:'center'}});"
+          "t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}}return false")
+    return ' '.join(f'<a class="pend-ref" href="#{p}" onclick="{js.format(p=p)}" title="Open pending clarification {p}">'
+                    f'Pending · {p}</a>' for p in ids)
+
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
 
@@ -70,7 +79,7 @@ MODULES = [
               '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5',
               '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character',
             ],
-            Note='Wording to be aligned with the approved copy (refer Pending Clarification P-01).'), OK),
+            Note='Wording to be aligned with the approved copy ' + pend('P-01')), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled',
             Validation='“Please accept the T&amp;C and Privacy Policy to continue.” – displayed when the customer clicks Continue CTA without ticking the checkbox'), OK),
@@ -141,8 +150,8 @@ MODULES = [
                'The mobile number entered by the customer shall be carried forward and displayed as a non editable field. '
                'The Experian credit information call shall be triggered in the background; the customer shall not be made to '
                'wait for the response.</p>'
-               '<p><b>Field level requirements for this screen are yet to be confirmed (refer Pending Clarification P-06).</b></p>'),
-      'data': 'Mobile Number: carried from Module 1<br>Experian API Triggered: Yes/No<br>Experian Response: TBD',
+               '<p><b>Field level requirements for this screen are yet to be confirmed</b> ' + pend('P-06') + '</p>'),
+      'data': 'Mobile Number: carried from Module 1<br>Experian API Triggered: Yes/No<br>Experian Response: ' + pend('P-09'),
       'status': WIP,
     },
   ],
@@ -164,25 +173,33 @@ INT_COLUMNS = [
 def info(title, rows):
     """(i) icon that shows a small guide table on hover, keyboard focus or tap."""
     body = ''.join(f'<tr><th>{c}</th><td>{m}</td></tr>' for c, m in rows)
-    return (f'<span class="info" tabindex="0" aria-label="{title}">i'
+    return (f'<span class="info" tabindex="0" aria-label="{title}" onclick="event.preventDefault()">i'
             f'<span class="info-pop" role="tooltip"><b>{title}</b><table>{body}</table></span></span>')
 
 INTEGRATIONS = [
  ('INT-001', 'Experian', 'Retrieve credit information / credit score for evaluating loan offers',
   'On successful OTP verification (Module 2), after the customer gives the Experian consent',
-  'Customer mobile number', 'Credit score / credit information – TBD, see P-09',
-  'Customer proceeds to PAN Verification without waiting for the response', 'TBD – Confirmation Required, see P-07'),
- ('INT-002', 'OTP Service Provider – TBD, see P-10', 'Send and verify the 6 digit OTP for the MF linked mobile number',
+  'Customer mobile number', 'Credit score / credit information ' + pend('P-09'),
+  'Customer proceeds to PAN Verification without waiting for the response', pend('P-07')),
+ ('INT-002', 'OTP Service Provider ' + pend('P-10'), 'Send and verify the 6 digit OTP for the MF linked mobile number',
   'Continue CTA on Module 1; Resend OTP CTA on Module 2', 'Mobile number', 'OTP sent / verification result',
-  'Customer proceeds to PAN Verification', 'TBD – Confirmation Required, see P-02 and P-10'),
+  'Customer proceeds to PAN Verification', pend('P-02', 'P-10')),
 ]
 
 # Column guide shown by the (i) next to the Pending Clarifications heading
 PENDING_COLUMNS = [
- ('ID', 'Reference number. Other tables point here when something is not yet decided, e.g. “TBD, see P-09” in Integration Requirements'),
+ ('ID', 'Reference number. Anything not yet decided elsewhere in the PRD carries an amber “Pending · P-09” badge that jumps to its row here'),
  ('Module', 'Which part of the journey the question is about (“All” means the whole journey)'),
  ('Clarification Required', 'The question that must be answered before that requirement is final. Until then the related item stays TBD and must not be built on assumptions'),
- ('When answered', 'The answer is written into the PRD and the question is removed from this list'),
+ ('When answered', 'The answer is written into the PRD and the question moves to Completed Clarifications below'),
+]
+
+# Column guide shown by the (i) next to the Completed Clarifications heading
+COMPLETED_COLUMNS = [
+ ('ID', 'Reference number of the question (kept when a pending item is answered)'),
+ ('Module', 'Which part of the journey the question was about'),
+ ('Clarification Required', 'The question that was asked'),
+ ('Clarification Provided', 'The confirmed answer and the date it was given. The modules above already follow it'),
 ]
 
 PENDING = [
@@ -196,6 +213,21 @@ PENDING = [
  ('P-08', 'All', 'Where should the header Shriram Credit logo navigate in the live journey (shriramcredit.in, the LAMF landing page, or nowhere)? The prototype sends it to its own review home page.'),
  ('P-09', 'Module 2', 'Experian response (INT-001 Expected Output): what exactly comes back from Experian – only the credit score (e.g. 750), or the score plus the full credit report (existing loans, EMIs, missed payments, recent loan enquiries)? How should a “No record found” response be handled for a customer with no credit history? Depends on the Experian service Shriram Credit has signed up for.'),
  ('P-10', 'Module 1 & 2', 'OTP service provider (INT-002): which vendor sends and verifies the OTP, and what the customer sees if OTP verification fails or times out (a failure to send is covered in P-02).'),
+]
+
+# Answered clarifications: (ID, Module, Question, Answer, Answered on).
+# P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
+COMPLETED = [
+ ('P-11', 'Module 2', 'OTP length, resend timer duration and number of resends allowed.',
+  '6 digit OTP; 30 second resend timer; 3 resends allowed, after which the number is blocked for 15 minutes. OTP validity is still open ' + pend('P-04'), '23-09-2026'),
+ ('P-12', 'Module 2', 'Wrong OTP handling – message, maximum attempts and lockout.',
+  'A validation message is shown for a wrong OTP; after 3 wrong attempts the number is blocked for 60 minutes.', '23-09-2026'),
+ ('P-13', 'Module 2', 'Is the Experian consent checkbox mandatory to submit the OTP?',
+  'Yes. Submit OTP is enabled only when the consent is ticked and all 6 digits are entered.', '23-09-2026'),
+ ('P-14', 'Module 2', 'What does the “Edit” link on the OTP screen do?',
+  'Returns to the mobile number screen (02) with the entered number prefilled.', '23-09-2026'),
+ ('P-15', 'Module 2', 'Which screen opens after a successful OTP submission?',
+  'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
@@ -230,8 +262,20 @@ def render():
                '<th style="width:70px">ID</th><th style="width:110px">Module</th><th>Clarification Required</th>'
                '</tr></thead><tbody>')
     for pid, mod, q in PENDING:
-        out.append(f'<tr><td>{pid}</td><td>{mod}</td><td>{q}</td></tr>')
+        out.append(f'<tr id="{pid}"><td>{pid}</td><td>{mod}</td><td>{q}</td></tr>')
     out.append('</tbody></table>')
+
+    # Collapsed by default so the PRD stays short; the chevron opens it
+    out.append('<details class="done"><summary>'
+               f'<span class="done-title">Completed Clarifications<span class="count">{len(COMPLETED)}</span></span>'
+               f'{info("How to read this list", COMPLETED_COLUMNS)}'
+               '<span class="chev" aria-hidden="true"></span></summary>'
+               '<table class="int"><thead><tr>'
+               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th>Clarification Required</th><th>Clarification Provided</th>'
+               '</tr></thead><tbody>')
+    for cid, mod, q, a, on in COMPLETED:
+        out.append(f'<tr id="{cid}"><td>{cid}</td><td>{mod}</td><td>{q}</td><td>{a}<span class="answered">Answered {on}</span></td></tr>')
+    out.append('</tbody></table></details>')
     return '\n'.join(out)
 
 HTML = f"""<!doctype html>
