@@ -167,6 +167,7 @@ PENDING = [
  ('P-05', 'Module 2', 'Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.'),
  ('P-06', 'Module 3', 'PAN Verification screen: field level rules, PAN format validation, name as per PAN matching logic and DOB / age rule.'),
  ('P-07', 'Module 2', 'Experian failure / timeout behaviour and the effect of the score on eligibility and offers.'),
+ ('P-08', 'All', 'Where should the header Shriram Credit logo navigate in the live journey (shriramcredit.in, the LAMF landing page, or nowhere)? The prototype sends it to its own review home page.'),
 ]
 
 # ---- render ---------------------------------------------------------------
@@ -216,12 +217,12 @@ HTML = f"""<!doctype html>
 </head>
 <body class="prd">
 <header class="prd-head">
-  <img src="assets/img/shriram-logo.png" alt="Shriram Credit">
+  <a href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>
   <div>
     <h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
     <p>Customer Online Journey &nbsp;·&nbsp; Last updated: {UPDATED}</p>
   </div>
-  <a class="prd-link" href="index.html">All screens →</a>
+  <a class="prd-link" href="screens.html">All screens →</a>
 </header>
 <main class="prd-body">
 <p class="note">This document is generated from the confirmed discussion log. Sections marked
@@ -239,10 +240,10 @@ with open(os.path.join(ROOT, 'SCCL_LAMF_LOS_PRD.html'), 'w') as f:
 # cloud copy: the same PRD body as a hash route inside cloud.html
 import json as _json
 BODY = f"""<header class="prd-head">
-  <img src="assets/img/shriram-logo.png" alt="Shriram Credit">
+  <a href="#" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>
   <div><h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
   <p>Customer Online Journey &nbsp;·&nbsp; Last updated: {UPDATED}</p></div>
-  <a class="prd-link" href="#">All screens →</a>
+  <a class="prd-link" href="#SCREENS">All screens →</a>
 </header>
 <main class="prd-body">
 <p class="note">This document is generated from the confirmed discussion log. Sections marked

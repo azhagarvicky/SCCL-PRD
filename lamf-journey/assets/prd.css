@@ -2,7 +2,7 @@
 body.prd { background: #F4F5F6; color: #111; }
 
 .prd-head { display: flex; align-items: center; gap: 22px; background: #fff; padding: 18px 40px; border-bottom: 3px solid var(--yellow); position: sticky; top: 0; z-index: 10; }
-.prd-head img { height: 38px; }
+.prd-head img { height: 38px; display: block; }
 .prd-head h1 { font-size: 20px; font-weight: 700; }
 .prd-head p { font-size: 13px; color: #555; margin-top: 3px; }
 .prd-link { margin-left: auto; font-size: 13px; font-weight: 700; color: #111; background: var(--yellow); padding: 8px 14px; border-radius: 6px; }
