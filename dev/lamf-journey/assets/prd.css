@@ -45,9 +45,30 @@ body.prd { background: #F4F5F6; color: #111; }
 .prd-body .info-pop th { width: 140px; }
 .prd-body .info-pop th, .prd-body .info-pop td { font-size: 13px; padding: 8px 10px; }
 
+/* Amber "Pending · P-xx" badge: not yet decided, jumps to its Pending Clarifications row */
+.pend-ref { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 9px; border-radius: 999px; background: var(--amber-bg); border: 1px solid #F0B429; color: #7A4B00; font-size: 11.5px; font-weight: 700; line-height: 1.5; white-space: nowrap; cursor: pointer; }
+.pend-ref::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); margin-right: 6px; vertical-align: 1px; }
+.pend-ref:hover { background: #FBD58A; }
+.pend-ref:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.prd-body tr:target td, .prd-body tr.flash td { animation: row-flash 2.2s ease-out; }
+@keyframes row-flash { 0%, 40% { background: #FFE58F; } 100% { background: #fff; } }
+
+/* Completed Clarifications: collapsed dropdown */
+.prd-body details.done { margin-top: 30px; }
+.prd-body details.done > summary { display: flex; align-items: center; list-style: none; cursor: pointer; font-size: 17px; font-weight: 700; margin-bottom: 4px; padding: 4px 0; user-select: none; width: max-content; outline: none; }
+.prd-body details.done > summary::-webkit-details-marker { display: none; }
+.prd-body details.done > summary:focus-visible { box-shadow: 0 0 0 2px var(--yellow); border-radius: 4px; }
+.done-title .count { display: inline-grid; place-items: center; min-width: 22px; height: 20px; padding: 0 6px; margin-left: 8px; border-radius: 10px; background: var(--green-bg); font-size: 12px; vertical-align: 2px; }
+.chev { display: inline-grid; place-items: center; width: 26px; height: 26px; margin-left: 10px; border-radius: 50%; border: 1px solid #C9CDD2; background: #fff; transition: transform .2s, background .15s; }
+.chev::before { content: ''; width: 7px; height: 7px; border-right: 2px solid #111; border-bottom: 2px solid #111; transform: translateY(-2px) rotate(45deg); }
+.prd-body details.done[open] .chev { transform: rotate(180deg); }
+.prd-body details.done > summary:hover .chev { background: var(--yellow); border-color: var(--yellow); }
+.prd-body td .answered { display: block; margin-top: 6px; font-size: 11.5px; color: #1B7A43; font-weight: 700; }
+
 @media print {
   .prd-head { position: static; }
-  .prd-link, .info { display: none; }
+  .prd-link, .info, .chev { display: none; }
+  .prd-body details.done::details-content { content-visibility: visible; }
   body.prd { background: #fff; }
   .prd-body { padding: 0; max-width: none; }
   .prd-body table { page-break-inside: auto; }
