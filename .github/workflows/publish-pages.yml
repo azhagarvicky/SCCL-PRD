@@ -73,6 +73,15 @@ jobs:
             fi
             touch "$site/.nojekyll"
 
+            # Cache-busting: browsers keep Pages files for up to 10 minutes, so a new page
+            # could load an old stylesheet. Tag every local CSS/JS link with this commit
+            # (published copy only; production leaves the dev/ folder alone).
+            if [ -z "$TARGET" ]; then
+              find "$dest" -path "$site/dev" -prune -o -name '*.html' -print0
+            else
+              find "$dest" -name '*.html' -print0
+            fi | xargs -0 -r sed -i -E "s#((href|src)=\"assets/[^\"?]+\.(css|js))\"#\1?v=${GITHUB_SHA::7}\"#g"
+
             # Marker file used by the verify step to confirm the new version is live
             jq -n --arg env "$ENV_NAME" --arg branch "$GITHUB_REF_NAME" --arg commit "$GITHUB_SHA" \
               --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
