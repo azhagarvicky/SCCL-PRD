@@ -239,7 +239,7 @@ def render():
         out.append('<table><thead><tr>'
                    '<th style="width:52px">SL.No</th><th style="width:330px">Screenshot</th>'
                    '<th style="width:190px">Functionality</th><th>Description</th>'
-                   '<th style="width:190px">Data Points Required</th><th style="width:110px">Status</th>'
+                   '<th style="width:190px">Data Points Required</th><th style="width:165px">Status</th>'
                    '</tr></thead><tbody>')
         for r in m['rows']:
             fields = r.get('fields', [])
