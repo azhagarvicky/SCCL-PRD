@@ -1,0 +1,24 @@
+# Development: Changes → dev branch → GitHub Actions → Dev environment
+# Every push to dev is published to https://azhagarvicky.github.io/SCCL-PRD/dev/
+name: Deploy – Development
+
+on:
+  push:
+    branches: [dev]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: read
+
+concurrency:
+  group: pages-development
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/dev'
+    uses: ./.github/workflows/publish-pages.yml
+    with:
+      environment: development
+      target: dev

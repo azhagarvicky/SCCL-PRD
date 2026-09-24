@@ -1,0 +1,25 @@
+# Production: Approved dev → main branch → GitHub Actions → Production environment
+# Runs only when main changes (after an approved dev → main promotion).
+# Published to https://azhagarvicky.github.io/SCCL-PRD/
+name: Deploy – Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: read
+
+concurrency:
+  group: pages-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/publish-pages.yml
+    with:
+      environment: production
+      target: ""

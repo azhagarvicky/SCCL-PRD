@@ -1,0 +1,119 @@
+# Shared publish job, called by deploy-development.yml and deploy-production.yml.
+#
+# GitHub Pages serves the gh-pages branch. Production (main) owns the site root and
+# development (dev) owns the dev/ folder. Each deployment replaces only its own part,
+# so a dev deployment can never change what production serves.
+name: Publish to GitHub Pages
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: Environment name shown under the repository's Deployments
+        required: true
+        type: string
+      target:
+        description: Folder inside gh-pages to publish into ("" = site root)
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: read
+    environment:
+      name: ${{ inputs.environment }}
+      url: ${{ steps.meta.outputs.url }}
+    env:
+      ENV_NAME: ${{ inputs.environment }}
+      TARGET: ${{ inputs.target }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Work out the site URL
+        id: meta
+        run: |
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          repo="${GITHUB_REPOSITORY#*/}"
+          echo "url=https://${owner}.github.io/${repo}/${TARGET:+$TARGET/}" >> "$GITHUB_OUTPUT"
+
+      - name: Check out ${{ github.ref_name }}
+        uses: actions/checkout@v7
+        with:
+          path: src
+          persist-credentials: false
+
+      - name: Publish ${{ github.ref_name }} into gh-pages
+        run: |
+          set -euo pipefail
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          src="$GITHUB_WORKSPACE/src"
+          site="$RUNNER_TEMP/site"
+
+          prepare() {
+            rm -rf "$site"
+            if git ls-remote --exit-code --heads "$remote" gh-pages >/dev/null; then
+              git clone --quiet --depth 1 --branch gh-pages "$remote" "$site"
+            else
+              git init --quiet -b gh-pages "$site"
+              git -C "$site" remote add origin "$remote"
+            fi
+
+            if [ -z "$TARGET" ]; then
+              # Production: replace the root, but keep dev/ and any custom-domain CNAME
+              dest="$site"
+              rsync -a --checksum --delete --exclude=/.git/ --exclude=/.github/ \
+                --exclude=/dev/ --exclude=/CNAME "$src/" "$dest/"
+            else
+              dest="$site/$TARGET"
+              mkdir -p "$dest"
+              rsync -a --checksum --delete --exclude=/.git/ --exclude=/.github/ "$src/" "$dest/"
+            fi
+            touch "$site/.nojekyll"
+
+            # Marker file used by the verify step to confirm the new version is live
+            jq -n --arg env "$ENV_NAME" --arg branch "$GITHUB_REF_NAME" --arg commit "$GITHUB_SHA" \
+              --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              '{environment:$env, branch:$branch, commit:$commit, deployed_at:$at}' > "$dest/deploy-info.json"
+
+            git -C "$site" add -A
+            git -C "$site" -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit --quiet -m "Deploy ${ENV_NAME} from ${GITHUB_REF_NAME}@${GITHUB_SHA::7}"
+          }
+
+          # Retry from a fresh clone if the other environment pushed to gh-pages at the same time
+          for attempt in 1 2 3 4 5; do
+            prepare
+            if git -C "$site" push --quiet origin HEAD:gh-pages; then
+              echo "Published ${GITHUB_REF_NAME}@${GITHUB_SHA::7} to gh-pages/${TARGET}"
+              exit 0
+            fi
+            echo "Push rejected (attempt $attempt), retrying"
+            sleep $((attempt * 5))
+          done
+          echo "::error::Could not push to gh-pages after 5 attempts"
+          exit 1
+
+      - name: Verify the new version is live
+        env:
+          URL: ${{ steps.meta.outputs.url }}
+        run: |
+          set -euo pipefail
+          source=$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.source.branch' 2>/dev/null || echo "unknown")
+          if [ "$source" != "gh-pages" ]; then
+            echo "::warning::GitHub Pages is serving '$source', not gh-pages, so the live check was skipped"
+            exit 0
+          fi
+          for i in $(seq 1 60); do
+            live=$(curl -fsS "${URL}deploy-info.json?nocache=$(date +%s%N)" 2>/dev/null | jq -r '.commit' 2>/dev/null || true)
+            if [ "$live" = "$GITHUB_SHA" ]; then
+              echo "✅ ${ENV_NAME} is live at ${URL} (commit ${GITHUB_SHA::7})"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::${URL} is still not serving commit ${GITHUB_SHA::7} after 10 minutes"
+          exit 1
