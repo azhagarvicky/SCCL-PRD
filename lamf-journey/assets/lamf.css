@@ -601,3 +601,31 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
 .sim-notice { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: #B42318; color: #fff; font: 600 12.5px/1.45 system-ui, sans-serif; padding: 9px 18px; text-align: center; letter-spacing: .2px; }
 body.has-sim-notice { padding-top: 36px; }
 body.has-sim-notice .dl-bg, body.has-sim-notice .digio-bg, body.has-sim-notice .exit-bg { min-height: calc(100vh - 36px); }
+
+/* Prototype home page (index.html) and screen list (screens.html) – review pages, not journey screens */
+body.page-home { min-height: 100vh; }
+.page-home .home-top { position: absolute; top: 40px; left: 76px; }
+.page-home .home-top img, .page-screens .logo img { height: 40px; display: block; }
+.page-home .home { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 24px; }
+.page-home .home-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.page-home h1 { font-size: 36px; font-weight: 700; margin: 12px 0 10px; }
+.page-home .home-sub { font-size: 17px; color: var(--ink-2); }
+.page-home .home-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-top: 40px; }
+.page-home .home-cta { min-width: 300px; background: var(--yellow); color: var(--ink); font-size: 17px; font-weight: 700; padding: 18px 32px; border-radius: 8px; transition: box-shadow .15s, transform .15s; }
+.page-home .home-cta:hover { box-shadow: 0 6px 18px rgba(255, 203, 8, .45); transform: translateY(-1px); }
+.page-home .home-cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+body.page-screens { padding: 40px 76px; }
+.page-screens h1 { font-size: 28px; margin: 24px 0 6px; }
+.page-screens p { color: #555; margin-bottom: 20px; }
+.page-screens ol { list-style: none; columns: 2; column-gap: 40px; }
+.page-screens li { break-inside: avoid; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 10px; }
+.page-screens li a { display: block; padding: 12px 16px; font-weight: 500; }
+.page-screens li a:hover { background: var(--yellow-soft); }
+@media (max-width: 720px) {
+  .page-home .home-top { left: 16px; top: 24px; }
+  .page-home h1 { font-size: 28px; }
+  .page-home .home-ctas { width: 100%; flex-direction: column; gap: 14px; }
+  .page-home .home-cta { min-width: 0; }
+  body.page-screens { padding: 24px 16px; }
+  .page-screens ol { columns: 1; }
+}

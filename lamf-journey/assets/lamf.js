@@ -50,6 +50,9 @@
      (single page, see cloud.html) screens are hash routes on one page. */
   const SPA = () => !!window.LAMF_SPA;
   const href = (name) => (SPA() ? '#' + encodeURIComponent(name) : encodeURIComponent(name + '.html'));
+  /* The Shriram Credit logo on every screen goes back to the prototype home page */
+  const home = () => (SPA() ? '#' : 'index.html');
+  const logoLink = (inner) => `<a class="logo" href="${home()}" title="Home">${inner}</a>`;
 
   /* ---------------- Demo customer data ---------------- */
   const CUSTOMER = {
@@ -120,13 +123,13 @@
   const header = (type = 'app') => {
     if (type === 'site') return `
       <header class="hdr site">
-        <a class="logo" href="#">${img('shriram-logo.png')}</a>
+        ${logoLink(img('shriram-logo.png'))}
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
         <div class="site-right"><span class="phone"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>033-23349779</span><a class="contact">Contact Us</a></div>
       </header>`;
     const right = type === 'logout' ? `<span style="width:22px;height:22px;display:block">${ICON.logout}</span>`
       : `<span>${ICON.gauge}</span><span>${ICON.user}</span>`;
-    return `<header class="hdr"><a class="logo" href="#">${img('shriram-logo.png')}</a><div class="hdr-icons">${right}</div></header>`;
+    return `<header class="hdr">${logoLink(img('shriram-logo.png'))}<div class="hdr-icons">${right}</div></header>`;
   };
 
   /* ---------------- Stepper ---------------- */
@@ -225,7 +228,7 @@
       <div style="text-align:center"><a class="btn btn-primary start-app" data-cta="start-application">Start Your Application</a></div>
     </section>
     <footer class="site-foot"><div class="foot-in">
-      <div>${img('shriram-logo.png', '', 'height:50px;mix-blend-mode:multiply')}</div>
+      <div>${logoLink(img('shriram-logo.png', '', 'height:50px;mix-blend-mode:multiply'))}</div>
       <div><h4>Subsidiaries</h4><a>Shriram Asset Management Co. Ltd.</a><a>Shriram Fortune Solutions Ltd.</a><a>Shriram Insight Share Brokers Ltd.</a><a>Shriram Wealth Ltd.</a><a>Way2Wealth Brokers Pvt. Ltd.</a></div>
       <div><h4>Others</h4><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a><a>Our Partners</a><a>RBI Sachet</a><a>Terms And Conditions</a><a>Privacy Policy</a></div>
       <div><h4>Contact Us</h4><p>Shriram House, No.4, Burkit Road, T.Nagar,<br>Chennai-600017.<br>Email ID: Info@Shriramcredit.In</p></div>
