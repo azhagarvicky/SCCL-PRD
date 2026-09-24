@@ -258,7 +258,7 @@ def render():
         out.append('<tr>' + ''.join(f'<td>{c}</td>' for c in row) + '</tr>')
     out.append('</tbody></table>')
 
-    out.append(f'<h2>Pending Clarifications{info("How to read this list", PENDING_COLUMNS)}</h2><table class="int"><thead><tr>'
+    out.append(f'<h2>Pending Clarifications<span class="count wip">{len(PENDING)}</span>{info("How to read this list", PENDING_COLUMNS)}</h2><table class="int"><thead><tr>'
                '<th style="width:70px">ID</th><th style="width:110px">Module</th><th>Clarification Required</th>'
                '</tr></thead><tbody>')
     for pid, mod, q in PENDING:
@@ -267,7 +267,7 @@ def render():
 
     # Collapsed by default so the PRD stays short; the chevron opens it
     out.append('<details class="done"><summary>'
-               f'<span class="done-title">Completed Clarifications<span class="count">{len(COMPLETED)}</span></span>'
+               f'<span class="done-title">Completed Clarifications<span class="count ok">{len(COMPLETED)}</span></span>'
                f'{info("How to read this list", COMPLETED_COLUMNS)}'
                '<span class="chev" aria-hidden="true"></span></summary>'
                '<table class="int"><thead><tr>'
