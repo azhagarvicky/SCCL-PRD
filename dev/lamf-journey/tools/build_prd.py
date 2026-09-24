@@ -149,6 +149,24 @@ MODULES = [
  },
 ]
 
+# Column guide shown by the (i) next to the Integration Requirements heading
+INT_COLUMNS = [
+ ('ID', 'Reference number, so other parts of the PRD can point to it (e.g. “Submit OTP triggers INT-001”)'),
+ ('Integration', 'Which external system is called'),
+ ('Purpose', 'Why the journey needs it'),
+ ('Trigger', 'The exact moment or button that makes the call happen'),
+ ('Input', 'Data the LOS sends to that system'),
+ ('Expected Output', 'Data the LOS gets back'),
+ ('Success Behaviour', 'What the customer experiences when the call works'),
+ ('Failure Behaviour', 'What happens if the call fails, times out or returns an error'),
+]
+
+def info(title, rows):
+    """(i) icon that shows a small guide table on hover, keyboard focus or tap."""
+    body = ''.join(f'<tr><th>{c}</th><td>{m}</td></tr>' for c, m in rows)
+    return (f'<span class="info" tabindex="0" aria-label="{title}">i'
+            f'<span class="info-pop" role="tooltip"><b>{title}</b><table>{body}</table></span></span>')
+
 INTEGRATIONS = [
  ('INT-001', 'Experian', 'Retrieve credit information / credit score for evaluating loan offers',
   'On successful OTP verification (Module 2), after the customer gives the Experian consent',
@@ -191,7 +209,7 @@ def render():
                 out.append(f'<tr><td class="shot">{shot}</td><td>{desc}</td></tr>')
         out.append('</tbody></table>')
 
-    out.append('<h2>Integration Requirements</h2><table class="int"><thead><tr>'
+    out.append(f'<h2>Integration Requirements{info("How to read the columns", INT_COLUMNS)}</h2><table class="int"><thead><tr>'
                '<th>ID</th><th>Integration</th><th>Purpose</th><th>Trigger</th><th>Input</th>'
                '<th>Expected Output</th><th>Success Behaviour</th><th>Failure Behaviour</th></tr></thead><tbody>')
     for row in INTEGRATIONS:
