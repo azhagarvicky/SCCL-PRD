@@ -5,7 +5,7 @@
    through a Google Apps Script web app (tools/comments-apps-script.gs); no sign-in is needed.
    Open / Closed status comes from comment-status.json, maintained by Claude. */
 (function () {
-  const ENDPOINT = '';   // Google Apps Script web app URL (…/exec). Empty = not connected yet.
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbyFISY4pW-qc3pRvRjq8pHpDLH25lcVsGQ8RV1n-6IyXxwRq3ZuP-t4J_oXfB4lxAC6tw/exec';   // Google Apps Script web app URL (…/exec). Empty = not connected yet.
   if (window.LAMF_SPA) return;   // not in the single-page cloud copy
 
   /* ---------- helpers ---------- */
