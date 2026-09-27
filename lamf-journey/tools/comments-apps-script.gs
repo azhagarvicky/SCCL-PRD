@@ -18,9 +18,9 @@ const LIMIT = { page: 200, quote: 1000, comment: 3000, name: 80, site: 20, link:
 function sheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(SHEET);
-  if (!sh) sh = ss.insertSheet(SHEET);
-  if (sh.getLastRow() === 0) {
-    sh.appendRow(HEAD);
+  if (!sh) { sh = ss.getSheets()[0]; sh.setName(SHEET); }   // first tab becomes "Comments"
+  if (sh.getLastRow() === 0) sh.appendRow(HEAD);
+  if (sh.getFrozenRows() !== 1) {
     sh.setFrozenRows(1);
     sh.getRange(1, 1, 1, HEAD.length).setFontWeight('bold').setBackground('#FFCB08');
   }
