@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-09-2026
+**Last Updated:** 27-09-2026 11:52 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -53,6 +53,9 @@
 | DISC-019 | 24-09-2026 | PRD | Pending badges & Completed Clarifications | Make "TBD, see P-xx" references clearly visible as pending. Add a Completed Clarifications section with the same columns as Pending plus a column for the answer, with an (i) guide, collapsed behind a dropdown so the PRD does not get too long | Every undecided item in the PRD (Integration Requirements, Module 1 note, Module 2 PAN note and Experian data point) now shows an amber "Pending · P-xx" badge; clicking it scrolls to that pending row and briefly highlights it. New collapsed "Completed Clarifications" section (count badge, (i) guide, chevron to open/close) with columns ID, Module, Clarification Required, Clarification Provided (+ answered date). It starts with P-11 – P-15 = PEND-006 – PEND-010, answered 23-09-2026. From now on an answered P-xx keeps its ID and moves from Pending to Completed. The printed/PDF copy shows the section expanded | Implemented |
 | DISC-020 | 25-09-2026 | PRD | Pending count badge | Show the number of pending clarifications next to the "Pending Clarifications" heading, like the green completed count, in the pending (amber) colour | Amber count added (currently 10); both counts are generated from the lists, so they update automatically as questions move from Pending to Completed | Implemented |
 | DISC-021 | 25-09-2026 | PRD | Status badge alignment | "Pending Confirmation" status badge was spilling outside the Status column | Status column widened from 110px to 165px so the badge fits on one line; a status label that is ever too long now wraps inside its cell instead of overflowing. Checked: no badge overflows at 1440px or 1100px wide | Implemented |
+| DISC-022 | 25-09-2026 | Whole project | Multi-device continuity | The user works from a MacBook, an office laptop and a mobile. Work must continue from wherever it was last left, e.g. an update done on the Mac must be picked up when the next prompt is typed on the office laptop | GitHub `dev` is the single shared copy. `CLAUDE.md` added at the repo root: every Claude session (local or cloud, any device) first syncs to the latest `dev`, reads this log and reports the last update, and pushes every confirmed change to `dev` immediately, so nothing stays on one device only | Implemented |
+| DISC-023 | 27-09-2026 | Landing page | Top navigation phone & Contact Us | Change the top-navigation phone number from 033-23349779 to +91 898-100-3538; clicking the number must call it; clicking Contact Us must navigate the user to https://www.shriramcredit.in/contact-us | Phone number replaced and made a call link (`tel:+918981003538`); Contact Us links to the Shriram Credit contact page in the same tab. Other header nav items and footer links stay static (PEND-001) | Implemented |
+| DISC-024 | 27-09-2026 | PRD | Sl. No 1 – Data Points Required | Data Points Required for Sl. No 1 to read: Clicked CTA (Check your eligibility in 2 minutes / Start Your Application) and Clicked Timestamp (DD-MMM-YYYY; HH:MM:SS) | PRD Sl. No 1 Data Points Required replaced with the two confirmed data points; the phone number and Contact Us behaviour (DISC-023) added to the Sl. No 1 description as field specs | Implemented |
 
 ---
 
@@ -73,6 +76,13 @@
 | --- | --- | --- |
 | Check your eligibility in 2 minutes (hero) | Start LAMF journey → mobile number verification | `02) Enter MF linked Mobile Number` |
 | Start Your Application (below the 8 steps) | Same as above | `02) Enter MF linked Mobile Number` |
+| +91 898-100-3538 (top navigation) | Calls the number (`tel:` link) — DISC-023 | Phone dialler |
+| Contact Us (top navigation) | Opens the Shriram Credit contact page — DISC-023 | https://www.shriramcredit.in/contact-us |
+
+**Data Points Captured (PRD Sl. No 1, DISC-024)**
+
+* Clicked CTA: Check your eligibility in 2 minutes / Start Your Application
+* Clicked Timestamp: DD-MMM-YYYY; HH:MM:SS
 
 **Observed (from screenshot, not confirmed as requirement)**
 
@@ -81,7 +91,7 @@
 
 **Pending Clarifications**
 
-* PEND-001 – Behaviour of header/footer navigation links inside the prototype (out of journey scope?).
+* PEND-001 – Behaviour of the remaining header nav items and footer links (phone number and Contact Us answered in DISC-023).
 
 ---
 
@@ -451,7 +461,7 @@
 
 | Pending ID | Module | Question / Clarification Required | Raised On | Status |
 | --- | --- | --- | --- | --- |
-| PEND-001 | Landing page | Should header/footer navigation links do anything in the prototype? | 22-09-2026 | Open |
+| PEND-001 | Landing page | Should header/footer navigation links do anything in the prototype? | 22-09-2026 | **Partly answered 27-09-2026** – phone number and Contact Us defined (DISC-023); About Us, Product & Services, Investors, Learning Lounge, Careers and footer links still open |
 | PEND-002 | Mobile Verification | Any backend check on the mobile number at this step (existing customer, duplicate/ongoing application, blacklist)? | 22-09-2026 | Open |
 | PEND-003 | Mobile Verification | Does Continue call an OTP-send API, and what is the failure behaviour? | 22-09-2026 | Open |
 | PEND-004 | Mobile Verification | Should Accept in the T&C/Privacy popup tick the consent checkbox, or only close the popup? | 22-09-2026 | Open |
@@ -508,6 +518,8 @@
 | IMP-023 | Dev → Main release process: all changes are committed to `dev`, and every push to `dev` auto-deploys to the development URL (`/dev/`) via GitHub Actions. `dev` is promoted to `main` only on the user's explicit instruction, which triggers the production deployment to the site root. Both workflows publish into the `gh-pages` branch, each replacing only its own part, and confirm the new commit is live before reporting success (`.github/workflows/`) | 24-09-2026 |
 | IMP-024 | Home page and screen list are generated by `tools/build_pages.py` from one definition for both the local files (`index.html`, `screens.html`) and the cloud copy (`cloud.html` routes: `#` home, `#SCREENS`, `#PRD`); their styles moved into `assets/lamf.css` (`page-home`, `page-screens`). The logo link is `logoLink()` in `assets/lamf.js`. Checked in the browser: all 30 screens that show the Shriram logo link to `index.html`, the landing-page footer layout is unchanged, and the home page has no sideways scroll at phone width | 24-09-2026 |
 | IMP-025 | After the first production release (25-09-2026) the home page showed unstyled in a browser that had visited earlier: GitHub Pages lets browsers keep files for 10 minutes, so the new page loaded the old cached `lamf.css`. Fix: the publish workflow now tags every local CSS/JS link in the published HTML with the release commit (`assets/lamf.css?v=<commit>`), so each release always loads its own stylesheet and scripts. Source files are unchanged; production and dev are tagged separately | 25-09-2026 |
+| IMP-026 | `CLAUDE.md` (repo root) holds the session start and hand-off rules for all devices. Cause found: a cloud session opened from the office laptop started from an older commit (24-09-2026 15:57) and missed the Mac's work up to 25-09-2026 00:54 that was already on `dev`; the new rules make every session start from the latest `dev` | 25-09-2026 |
+| IMP-027 | Header change is in `header('site')` in `assets/lamf.js`, so it applies to every screen that uses the site header. Checked in the browser: number shows as +91 898-100-3538 with `tel:+918981003538`, and Contact Us navigates to shriramcredit.in/contact-us. **Pending:** PRD screenshot `prd-assets/screen-01.png` still shows the old number — it must be recaptured on the Mac (the cloud session cannot load the Satoshi font, so a capture there would not match the other PRD images) | 27-09-2026 |
 
 ---
 
