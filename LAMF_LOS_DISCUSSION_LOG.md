@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-09-2026 11:52 IST
+**Last Updated:** 27-09-2026 12:14 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -56,6 +56,9 @@
 | DISC-022 | 25-09-2026 | Whole project | Multi-device continuity | The user works from a MacBook, an office laptop and a mobile. Work must continue from wherever it was last left, e.g. an update done on the Mac must be picked up when the next prompt is typed on the office laptop | GitHub `dev` is the single shared copy. `CLAUDE.md` added at the repo root: every Claude session (local or cloud, any device) first syncs to the latest `dev`, reads this log and reports the last update, and pushes every confirmed change to `dev` immediately, so nothing stays on one device only | Implemented |
 | DISC-023 | 27-09-2026 | Landing page | Top navigation phone & Contact Us | Change the top-navigation phone number from 033-23349779 to +91 898-100-3538; clicking the number must call it; clicking Contact Us must navigate the user to https://www.shriramcredit.in/contact-us | Phone number replaced and made a call link (`tel:+918981003538`); Contact Us links to the Shriram Credit contact page in the same tab. Other header nav items and footer links stay static (PEND-001) | Implemented |
 | DISC-024 | 27-09-2026 | PRD | Sl. No 1 – Data Points Required | Data Points Required for Sl. No 1 to read: Clicked CTA (Check your eligibility in 2 minutes / Start Your Application) and Clicked Timestamp (DD-MMM-YYYY; HH:MM:SS) | PRD Sl. No 1 Data Points Required replaced with the two confirmed data points; the phone number and Contact Us behaviour (DISC-023) added to the Sl. No 1 description as field specs | Implemented |
+| DISC-025 | 27-09-2026 | All journey screens | Fixed top navigation | The top navigation (header) must stay fixed at the top; only the page body scrolls. Apply to every page in the journey | Header made sticky in the shared stylesheet, so it applies to all 37 screens (site header on the landing page, app header elsewhere; the stepper keeps sticking below it where present). Popups still open above it | Implemented |
+| DISC-026 | 27-09-2026 | Dev & production | Review comments | On the dev link only: select any text and add a comment on what should change; comments are listed as Open / Closed with dates, like Pending / Completed Clarifications. Claude proceeds with the changes asked in the comments. Production must not allow comments | Built as a review tool: select text → 💬 Comment → the comment is saved as a GitHub issue on the project repository (visible on every device and to Claude). A 💬 Comments panel (bottom-left) lists Open and Closed comments with opened/closed dates, for this page or all pages, and highlights the commented text. Only comments opened by the project owner's GitHub account (`azhagarvicky`) are listed or acted on, because the repository is public and anyone could open an issue; Claude confirms the owner's comments before making the changes and closes each issue with a note of what was done. Asked first for the dev site only; changed the same day to be on production as well (CHG-001) | Implemented |
+| DISC-027 | 27-09-2026 | Release process | Dev first, production on confirmation | Every patch goes to dev only. Production is updated only when the user says "push to production"; then everything on dev, including all features, is pushed to production unchanged so both sites are identical | Changes are pushed to `dev` only; `dev` → `main` only on the user's instruction, as a straight copy of dev (no dev-only differences). An earlier instruction the same day to release every change to production at once was withdrawn by the user (CHG-002) | Confirmed |
 
 ---
 
@@ -420,6 +423,7 @@
 | CV-010 | Location access is mandatory to proceed with the loan application | 13.x (confirmed by screenshot toast); other screens TBD | Observed |
 | CV-011 | Long-running operations show a skeleton loader with a title and "This might take a min, thanks for your patience" | 09, 10, 11 | Implemented |
 | CV-013 | While a popup is open the page behind it is frozen (no background scroll); the popup scrolls within itself only when it does not fit the viewport (e.g. on zoom). Applies to every popup in the journey | 02, 03, 06, 09, 10, 11, 12.2, 13.4, 16.2, 16.3 and any future popup | Confirmed (DISC-012) |
+| CV-014 | The top navigation (header) is fixed at the top of the page; only the body scrolls | All screens with a header | Confirmed (DISC-025) |
 | CV-012 | Session/back behaviour, timeout and refresh handling across the journey | All | **TBD – Confirmation Required** (PEND-013) |
 
 ### 6.2 Page-Wise Validations
@@ -453,7 +457,8 @@
 
 | Change ID | Date | Module | Previous Decision | New Decision | Reason / Discussion | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| – | – | – | – | – | No requirement changes recorded yet | – |
+| CHG-001 | 27-09-2026 | Review comments | Comments tool on the dev site only; production without it (DISC-026) | Comments tool on dev and production alike | User: dev and production should not differ; production is to be an exact copy of dev | Implemented |
+| CHG-002 | 27-09-2026 | Release process | Every change released to dev and production together (DISC-027, first version) | Patches to dev only; production updated only on the user's "push to production", as an exact copy of dev | User corrected the earlier instruction the same day | Confirmed |
 
 ---
 
@@ -520,6 +525,7 @@
 | IMP-025 | After the first production release (25-09-2026) the home page showed unstyled in a browser that had visited earlier: GitHub Pages lets browsers keep files for 10 minutes, so the new page loaded the old cached `lamf.css`. Fix: the publish workflow now tags every local CSS/JS link in the published HTML with the release commit (`assets/lamf.css?v=<commit>`), so each release always loads its own stylesheet and scripts. Source files are unchanged; production and dev are tagged separately | 25-09-2026 |
 | IMP-026 | `CLAUDE.md` (repo root) holds the session start and hand-off rules for all devices. Cause found: a cloud session opened from the office laptop started from an older commit (24-09-2026 15:57) and missed the Mac's work up to 25-09-2026 00:54 that was already on `dev`; the new rules make every session start from the latest `dev` | 25-09-2026 |
 | IMP-027 | Header change is in `header('site')` in `assets/lamf.js`, so it applies to every screen that uses the site header. Checked in the browser: number shows as +91 898-100-3538 with `tel:+918981003538`, and Contact Us navigates to shriramcredit.in/contact-us. **Pending:** PRD screenshot `prd-assets/screen-01.png` still shows the old number — it must be recaptured on the Mac (the cloud session cannot load the Satoshi font, so a capture there would not match the other PRD images) | 27-09-2026 |
+| IMP-028 | Review comments: `lamf-journey/assets/review.js` (loaded by every journey page, the home page, the screen list and the PRD). Comments are GitHub issues titled `[Dev comment] <page> — …`; the page, selected text and comment are in the issue body. The panel reads them from the public GitHub API (cached 1 minute; ↻ reloads). Posting opens GitHub's new-issue page pre-filled, where the user presses Create (no password or token is stored on the site). It runs on dev, production and localhost (not in the single-page cloud copy); each comment records which site it came from. Checked in the browser: select → Comment → pre-filled GitHub link; Open/Closed lists with dates; "What was done" shows Claude's closing note; highlight on the commented text | 27-09-2026 |
 
 ---
 

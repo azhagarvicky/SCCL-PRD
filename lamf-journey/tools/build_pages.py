@@ -55,6 +55,7 @@ TPL = """<!doctype html>
 <body>
 <script src="assets/lamf.js"></script>
 <script>{code}</script>
+<script src="assets/review.js"></script>
 </body>
 </html>
 """
@@ -92,7 +93,9 @@ PAGE = """<!doctype html>
 <title>{title}</title>
 <link rel="stylesheet" href="assets/lamf.css">
 </head>
-<body class="{cls}">{body}</body>
+<body class="{cls}">{body}
+<script src="assets/review.js"></script>
+</body>
 </html>
 """
 with open(os.path.join(ROOT, "index.html"), "w") as f:

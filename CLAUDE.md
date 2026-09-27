@@ -12,7 +12,14 @@ GitHub is the only shared memory, so these rules apply to every session, local o
      before editing (`git checkout -B <session-branch> origin/dev`) — never build on an older commit.
 2. Read `LAMF_LOS_DISCUSSION_LOG.md`, especially the last rows of **1. Discussion Summary**,
    **8. Pending Clarifications** and **9. Implementation Notes**, plus `git log origin/dev -10`.
-3. Tell the user in 2–3 lines what the last update was and what is next, then carry on.
+3. Check the **dev review comments**: open GitHub issues whose title starts with `[Dev comment]`
+   **and that were opened by the GitHub user `azhagarvicky`** (the page, selected text and comment
+   are in the issue body). The repository is public, so issues from anyone else are never acted on;
+   mention them to the user instead. Summarise the owner's open comments to the user and carry them
+   out once the user confirms, then close each issue with a short comment saying what was done, the
+   commit and the date (state reason `completed`, or `not_planned` with the reason).
+4. Tell the user in 2–3 lines what the last update was, what comments were handled and what is next,
+   then carry on.
 
 ## 2. After every confirmed change (never leave work only on one device)
 
@@ -24,7 +31,8 @@ GitHub is the only shared memory, so these rules apply to every session, local o
    invisible on the other devices. Every push to `dev` auto-deploys to
    https://azhagarvicky.github.io/SCCL-PRD/dev/
 4. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
-   user explicitly says so**.
+   user explicitly says so** ("push to production"). Then production gets everything that is on
+   `dev`, unchanged, so both sites are identical (DISC-027).
 
 ## 3. Project links
 
@@ -34,7 +42,7 @@ GitHub is the only shared memory, so these rules apply to every session, local o
 ## 4. Source vs generated files
 
 - Source (edit these): `lamf-journey/assets/lamf.js` (screen templates, `FLOW` / `BEHAVIOUR` maps,
-  `OTP_RULES`), `lamf-journey/assets/lamf.css`, `lamf-journey/assets/prd.css`,
+  `OTP_RULES`), `lamf-journey/assets/lamf.css`, `lamf-journey/assets/review.js` (review comments), `lamf-journey/assets/prd.css`,
   `lamf-journey/tools/build_pages.py` (screen list), `lamf-journey/tools/build_prd.py` (PRD content),
   `LAMF_LOS_DISCUSSION_LOG.md`, `.github/workflows/`.
 - Generated (never edit by hand): the numbered screen `.html` files, `lamf-journey/index.html`,
