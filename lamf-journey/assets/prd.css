@@ -21,6 +21,8 @@ body.prd { background: #F4F5F6; color: #111; }
 .prd-body td.dp { font-size: 12.5px; }
 .prd-body td p { margin-bottom: 7px; }
 .prd-body td p:last-child { margin-bottom: 0; }
+.prd-body td .spec { margin-top: 18px; }            /* one line space between field blocks */
+.prd-body td .spec:first-child { margin-top: 0; }
 .prd-body td b { font-weight: 700; }
 .prd-body td ul { margin: 4px 0 0 18px; }
 .prd-body td li { margin-bottom: 4px; }
