@@ -53,7 +53,7 @@ img { display: block; }
 .link-yellow { color: var(--yellow); font-weight: 700; }
 
 /* ---------- Header ---------- */
-.hdr { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 76px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.04); position: relative; z-index: 5; }
+.hdr { height: 68px; display: flex; align-items: center; justify-content: space-between; padding: 0 76px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.04); position: sticky; top: 0; z-index: 6; } /* top navigation stays fixed; only the body scrolls (DISC-025) */
 .hdr .logo img { height: 34px; }
 .hdr-icons { display: flex; gap: 24px; align-items: center; }
 .hdr-icons svg { width: 24px; height: 24px; }

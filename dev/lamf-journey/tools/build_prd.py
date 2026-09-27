@@ -306,6 +306,7 @@ HTML = f"""<!doctype html>
 {render()}
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
+<script src="assets/review.js"></script>
 </body>
 </html>
 """
