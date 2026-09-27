@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-09-2026 13:10 IST
+**Last Updated:** 27-09-2026 14:40 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -529,6 +529,7 @@
 | IMP-027 | Header change is in `header('site')` in `assets/lamf.js`, so it applies to every screen that uses the site header. Checked in the browser: number shows as +91 898-100-3538 with `tel:+918981003538`, and Contact Us navigates to shriramcredit.in/contact-us. **Pending:** PRD screenshot `prd-assets/screen-01.png` still shows the old number — it must be recaptured on the Mac (the cloud session cannot load the Satoshi font, so a capture there would not match the other PRD images) | 27-09-2026 |
 | IMP-028 | Review comments: `lamf-journey/assets/review.js` (loaded by every journey page, the home page, the screen list and the PRD). Comments are GitHub issues titled `[Dev comment] <page> — …`; the page, selected text and comment are in the issue body. The panel reads them from the public GitHub API (cached 1 minute; ↻ reloads). Posting opens GitHub's new-issue page pre-filled, where the user presses Create (no password or token is stored on the site). It runs on dev, production and localhost (not in the single-page cloud copy); each comment records which site it came from. Checked in the browser: select → Comment → pre-filled GitHub link; Open/Closed lists with dates; "What was done" shows Claude's closing note; highlight on the commented text | 27-09-2026 |
 | IMP-029 | Comments storage: Google Sheet "LAMF Review Comments" (sheet `Comments`: ID, Created on, Site, Page, Selected text, Comment, Name, Status, Closed on, What was done, Page link) with the Apps Script web app in `tools/comments-apps-script.gs` (POST adds a row with the next ID C-0001…, GET returns all rows; text is stored as plain text, long input is cut, a hidden spam-trap field is ignored). Open/Closed status lives in `comment-status.json` (repo root, maintained by Claude) and the script copies it into the sheet at most once a minute. The site's web-app URL is `ENDPOINT` at the top of `assets/review.js`. Checked in the browser against a simulated web app: save, cancel, name remembered, highlight, Open/Closed lists, Excel download. Sheet: "LAMF Review Comments", ID `1_UB4CDDxL25Zmam53AjmVIeZal3xE6A33OjXHlHomu8` (https://docs.google.com/spreadsheets/d/1_UB4CDDxL25Zmam53AjmVIeZal3xE6A33OjXHlHomu8/edit), owned by azhagar154@gmail.com, in the owner's Drive folder `1gS6yHm0kluXTEtcZk8mPsddu0UjiSBWE`. Web-app URL (deployed by the owner 27-09-2026): `https://script.google.com/macros/s/AKfycbyFISY4pW-qc3pRvRjq8pHpDLH25lcVsGQ8RV1n-6IyXxwRq3ZuP-t4J_oXfB4lxAC6tw/exec` | 27-09-2026 |
+| IMP-030 | Production release 27-09-2026 14:40 IST on the user's "push to production": `main` fast-forwarded to `dev`, so production now has the new header phone number and Contact Us link (DISC-023), PRD Sl. No 1 data points (DISC-024), the fixed top navigation (DISC-025) and the review comments tool connected to the Google Sheet (DISC-028). Production and dev are identical | 27-09-2026 |
 
 ---
 
