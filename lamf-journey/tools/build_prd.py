@@ -53,8 +53,12 @@ MODULES = [
                + spec(Field_Name='Check your eligibility in 2 minutes', Field_Type='CTA (Button)',
                       Action='On click, the system shall open the “Enter your MF linked Mobile Number” pop up over the landing page, which is the first step of the LAMF journey.')
                + spec(Field_Name='Start Your Application', Field_Type='CTA (Button)',
-                      Action='Placed below the 8-step “How to Apply” section. On click, the system shall perform the same action as the “Check your eligibility in 2 minutes” CTA and open the mobile number pop up.')),
-      'data': 'Landing Page Accessed: Yes/No<br>Page Access Date &amp; Time: Timestamp<br>CTA Clicked: Check your eligibility / Start Your Application',
+                      Action='Placed below the 8-step “How to Apply” section. On click, the system shall perform the same action as the “Check your eligibility in 2 minutes” CTA and open the mobile number pop up.')
+               + spec(Field_Name='+91 898-100-3538 (top navigation)', Field_Type='Hyperlink (Phone number)',
+                      Action='Customer care number shown in the top navigation bar. On click, the device shall place a call to +91 898-100-3538 (tel: link).')
+               + spec(Field_Name='Contact Us (top navigation)', Field_Type='Hyperlink',
+                      Action='On click, the system shall navigate the user to https://www.shriramcredit.in/contact-us')),
+      'data': '<b>Clicked CTA:</b><br>Check your eligibility in 2 minutes<br>Start Your Application<br><br><b>Clicked Timestamp:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': OK,
     },
     {
@@ -302,6 +306,7 @@ HTML = f"""<!doctype html>
 {render()}
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
+<script src="assets/review.js"></script>
 </body>
 </html>
 """
