@@ -1,0 +1,3 @@
+{
+  "_readme": "Open/Closed status of review comments (DISC-028). Maintained by Claude: \"C-0001\": {\"status\": \"Closed\", \"closed\": \"DD-MM-YYYY HH:MM\", \"note\": \"What was done\"}. The comments Google Sheet copies these into its Status / Closed on / What was done columns."
+}
