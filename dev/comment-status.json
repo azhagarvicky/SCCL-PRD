@@ -1,3 +1,8 @@
 {
-  "_readme": "Open/Closed status of review comments (DISC-028). Maintained by Claude: \"C-0001\": {\"status\": \"Closed\", \"closed\": \"DD-MM-YYYY HH:MM\", \"note\": \"What was done\"}. The comments Google Sheet copies these into its Status / Closed on / What was done columns."
+  "_readme": "Open/Closed status of review comments (DISC-028). Maintained by Claude: \"C-0001\": {\"status\": \"Closed\", \"closed\": \"DD-MM-YYYY HH:MM\", \"note\": \"What was done\"}. The comments Google Sheet copies these into its Status / Closed on / What was done columns.",
+  "C-0001": {
+    "status": "Closed",
+    "closed": "27-09-2026 13:20",
+    "note": "Test comment confirmed: saved from the dev site into the Google Sheet and read back by Claude. Closed to test the Open → Closed flow."
+  }
 }
