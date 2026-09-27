@@ -20,7 +20,7 @@ def spec(**kw):
             if isinstance(v, list):
                 v = '<ul>' + ''.join(f'<li>{x}</li>' for x in v) + '</ul>'
             rows.append(f'<p><b>{label}:</b> {v}</p>')
-    return ''.join(rows)
+    return '<div class="spec">' + ''.join(rows) + '</div>'
 
 def pend(*ids):
     """Amber badge that marks something as not yet decided and jumps to its
@@ -46,19 +46,15 @@ MODULES = [
     {
       'sl': '1',
       'shot': img('screen-01.png'),
-      'func': 'User clicking the “Check your eligibility in 2 minutes” CTA in landing page to start the journey',
+      'func': 'User clicking the “Check your eligibility in 2 minutes” CTA or the “Start Your Application” CTA in landing page to start the journey',
       'desc': ('<p>The customer shall access the SCCL LAMF journey through the LAMF URL '
                '(https://uatlamf.shriramcredit.in/). On successful access, the system shall load and display the '
                'SCCL LAMF Landing Page, which serves as the entry point for initiating the LAMF application journey.</p>'
                + spec(Field_Name='Check your eligibility in 2 minutes', Field_Type='CTA (Button)',
                       Action='On click, the system shall open the “Enter your MF linked Mobile Number” pop up over the landing page, which is the first step of the LAMF journey.')
                + spec(Field_Name='Start Your Application', Field_Type='CTA (Button)',
-                      Action='Placed below the 8-step “How to Apply” section. On click, the system shall perform the same action as the “Check your eligibility in 2 minutes” CTA and open the mobile number pop up.')
-               + spec(Field_Name='+91 898-100-3538 (top navigation)', Field_Type='Hyperlink (Phone number)',
-                      Action='Customer care number shown in the top navigation bar. On click, the device shall place a call to +91 898-100-3538 (tel: link).')
-               + spec(Field_Name='Contact Us (top navigation)', Field_Type='Hyperlink',
-                      Action='On click, the system shall navigate the user to https://www.shriramcredit.in/contact-us')),
-      'data': '<b>Clicked CTA:</b><br>Check your eligibility in 2 minutes<br>Start Your Application<br><br><b>Clicked Timestamp:</b><br>DD-MMM-YYYY; HH:MM:SS',
+                      Action='Placed below the 8-step “How to Apply” section. On click, the system shall perform the same action as the “Check your eligibility in 2 minutes” CTA and open the mobile number pop up.')),
+      'data': '<b>Clicked CTA:</b><ul><li>Check your eligibility in 2 minutes</li><li>Start Your Application</li></ul><br><b>Clicked Timestamp:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': OK,
     },
     {
