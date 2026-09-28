@@ -677,20 +677,43 @@ body.page-screens { padding: 40px 76px; }
   .hdr-icons { gap: 14px; }
 }
 
-.m-pantype { width: 480px; max-width: 100%; padding: 40px 40px 36px; display: flex; flex-direction: column; }
-.m-pantype h3 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
-.m-pantype .sub { font-size: 14px; color: var(--ink-2); margin-bottom: 22px; }
-.pt-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } /* Existing PAN | New PAN side by side (DISC-037) */
-@media (max-width: 360px) { .pt-opts { grid-template-columns: 1fr; } }
-.radio { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font-size: 15px; cursor: pointer; }
-.radio:has(input:checked) { border-color: var(--yellow); background: var(--yellow-soft); }
-.radio input { appearance: none; width: 18px; height: 18px; border: 1.8px solid var(--ink); border-radius: 50%; flex: none; margin: 0; background: #fff; }
-.radio input:checked { border-color: var(--yellow); box-shadow: inset 0 0 0 4px #fff; background: var(--yellow); }
-.m-pantype .field-err { margin: 10px 0 14px; }
-.pt-consent[hidden] { display: none; }
-.pt-pan { margin-top: 14px; }
-.pt-pan[hidden] { display: none; }
-.pt-pan .field-lbl { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; }
-.pt-pan select { appearance: none; cursor: pointer; letter-spacing: .5px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23414651' stroke-width='2'/%3E%3C/svg%3E") right 14px center/16px no-repeat; padding-right: 40px; }
-.pt-pan select.has-err { border-color: var(--red); }
 .pt-consent { margin-bottom: 4px; }
+
+/* ---------- 04.1–04.3 Apply for New Loan page (layout after the Shriram Finance FD existing-customer page) ---------- */
+.an-in { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+.an-strip { background: #F4F4F4; border-bottom: 1px solid var(--line); }
+.an-strip .an-in { padding-top: 16px; padding-bottom: 16px; font-size: 17px; font-weight: 500; }
+.an-bg { background: #EFEFEF; padding: 28px 0 48px; min-height: calc(100vh - 124px); }
+.an-card { background: #fff; border-radius: 10px; padding: 24px 24px 32px; }
+.an-welcome { background: #F2F2F2; border-radius: 6px; padding: 10px 12px; display: flex; justify-content: space-between; }
+.an-welcome small { display: block; font-size: 11px; color: var(--ink-2); }
+.an-welcome b { font-size: 12.5px; font-weight: 700; }
+.an-h { font-size: 15px; font-weight: 700; margin: 22px 0 10px; }
+.an-p { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 20px; }
+.an-sec { border: 1px solid var(--line); border-radius: 10px; padding: 22px 20px 24px; max-width: 560px; }
+.an-sec h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.an-toggle { display: flex; gap: 12px; flex-wrap: wrap; }
+.an-opt { min-width: 150px; height: 38px; padding: 0 18px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font-size: 13.5px; font-weight: 500; }
+.an-opt.on { background: var(--yellow-soft); border-color: var(--yellow); font-weight: 700; }
+.an-sec > .field-err { margin-top: 6px; }
+.an-existing[hidden], .an-new[hidden], .an-details[hidden], .an-consent[hidden], .an-ok[hidden], .an-sec [hidden] { display: none; }
+.an-existing, .an-new { margin-top: 10px; }
+.an-existing .field-lbl { font-size: 13px; color: var(--ink-2); font-weight: 400; }
+.an-select { appearance: none; cursor: pointer; letter-spacing: .5px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23414651' stroke-width='2'/%3E%3C/svg%3E") right 14px center/16px no-repeat; padding-right: 40px; }
+.an-details { margin-top: 16px; background: #FAFAFA; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+.an-details h5, .an-new h5 { font-size: 14.5px; font-weight: 700; margin-bottom: 10px; }
+.an-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px 20px; }
+.an-grid span { display: block; font-size: 11.5px; color: var(--muted); }
+.an-grid b { font-size: 13.5px; font-weight: 700; letter-spacing: .5px; }
+.an-note { font-size: 12px; color: var(--muted); margin-top: 10px; }
+.an-new .sub { font-size: 13.5px; margin: -4px 0 8px; color: var(--ink-2); }
+.an-new .field-lbl { margin-top: 12px; }
+.an-new .field-err { margin-top: 4px; min-height: 0; }
+.an-new .btn { margin-top: 20px; height: 41px; font-size: 15px; }
+.an-ok { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 14px; font-weight: 500; color: #1E7B3A; }
+.an-ok span { color: #fff; width: 20px; height: 20px; border-radius: 50%; background: #1FA049; display: grid; place-items: center; }
+.an-ok span svg { width: 13px; height: 13px; }
+.an-consent { margin-top: 22px; border-top: 1px dashed var(--line); padding-top: 18px; }
+.an-consent .field-err { margin: 0 0 10px; min-height: 0; }
+.an-consent .btn { height: 43px; }
+@media (max-width: 560px) { .an-opt { flex: 1; min-width: 0; } .an-card { padding: 18px 14px 24px; } }
