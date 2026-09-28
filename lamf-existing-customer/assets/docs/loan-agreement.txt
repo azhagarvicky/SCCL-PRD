@@ -1,0 +1,1566 @@
+LOAN CUM PLEDGE AGREEMENT
+This Agreement made on {{DATE_LONG}}, between:
+(1) The Borrower the details where of are given at the end of the Agreement, (here in after called the 
+"Borrower") of the First Part
+AND
+(2) Shriram Credit Company Limited., a Company incorporated under the Companies Act, 1956 
+having CIN No. U65993TN1980PLC008215 and having its registered office situated at Shriram 
+House, No.4, Burkit Road,T.Nagar,Chennai,TamilNadu,600017 having RBI registration number- 
+B-07.00709, (here in after called "SCCL" or the "Lender") of the Third Part.
+(The expression 'Borrower and SCCL/ Lender' shall, unless repugnant to the context or meaning 
+thereof be deemed to include their respective legal heirs, executors and administrators and shall be 
+deemed to include his/her/its/their respective successors and permitted assigns in the case of the 
+Borrower and its assigns in the case of SCCL/ Lender)
+(The expressions Borrower and SCCL shall hereinafter collectively be referred to as the "Parties" and
+individually as the "Party")
+WHEREAS the Borrower being in need of funds has approached SCCL for a loan of Rs. {{AMOUNT}} 
+(Rupees {{AMOUNT_WORDS}}) (hereinafter referred to as the "Loan Facility")
+AND WHEREAS the Borrower has submitted the signed Loan Application Form, Borrower's Details
+and Financial details and has also agreed to pay the charges as per schedule of charges for the said 
+Loan (as more specifically mentioned in Annexure-1 of the Agreement).
+AND WHEREAS SCCL has agreed to grant a loan to the Borrower as per the following terms and 
+conditions
+NOW THEREFORE THIS AGREEMENT WITNESSETH THAT:
+1. DEFINITIONS AND INTERPRETATION
+1.1 Definitions
+“Asset Management Company” means a firm that invests pooled funds from clients into a variety of
+securities and assets to achieve specific investment goals.
+“AMFI” means Association of Mutual Funds in India, which is a self-regulatory body for the Indian 
+mutual fund industry. 
+"Closing Price NAV" - means Mutual Fund schemes it is the Net Asset Value (NAV) declared for 
+that day by the mutual fund scheme.
+"Demat Account" means a depository account opened with a Depository Participant in respect of the
+securities held by the holder in dematerialized form in accordance with the provisions of the 
+Depositories Act, 1996 (22 of 1996).
+"Demat Securities" means the Securities which have been dematerialized in accordance with the 
+provisions of the Depositories Act, 1996 (22 of 1996).
+"Depository Participant" or "DP" means the agents of a depository such as NSDL or CDSL who 
+are given license to operate by a depository, under the provisions of The Depositories Act, 1996.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+"Designated Bank Account" means a bank account of the Borrower.
+"Designated Demat Account" means a Demat Account opened by the Borrower with a DP wherein 
+the Securities are held by Lender as Margin on behalf of the Borrower.
+"Due Date(s)" means any date on which any Loan Amount in relation to the Loan Facility becomes 
+due and payable to the Lender in accordance with the terms of this Agreement.
+"Event of Default" shall mean any of the events of default set out in Clause 21 of this Agreement.
+"SCCL" or "Lender" means Shriram Credit Company Limited, a company incorporated under the
+Companies Act, 2013 and having its registered office at Shriram House, No. 4, Burkit Road, T. 
+Nagar, Chennai – 600017.
+"Loan" means the amount of Loan Facility drawn from time and as reduced by repayment or 
+prepayment and outstanding from time to time.
+"Loan Amount" means debts and liabilities owing or incurred, from time to time, (whether incurred 
+alone or jointly and whether as principal or surety or in any other capacity), by the Borrower under or 
+pursuant to the terms of this Agreement (as renewed or amended), and including without limitation all
+amounts payable with respect to the Loan Facility relating to any payment or repayment of the 
+amount of the Loan, interest, default/ additional interest, charges, all further advances or financial 
+accommodation from time to time made available under any the Loan Facility, indemnity payments 
+and all accrued interest, costs, fees and expenses payable in respect of the Loan Facility.
+"Loan Documents" mean all this Agreement, all documents entered into in relation to the Loan 
+Security including Letter of Authorisation, any request letter or other written request submitted by 
+the Borrower in relation to the Loan Facility and such other document as may be designated as a 
+Loan Document by the Lender.
+"Loan Facility" means a Loan Facility in the amount not exceeding {{AMOUNT}} sanctioned by SCCL 
+to the Borrower.
+"Loan Security" shall have the meaning assigned to it in Clause 2.8.
+"LTV" means loan to value ratio, as of a particular date, in which the numerator is equal to the 
+outstanding principal balance of the Loan and the denominator is equal to the appraised value of the 
+Security as determined by Lender in its reasonable discretion.
+"Margin" means such percentage of the value of Mutual Fund Units held by the Borrower, held in 
+the Mutual Fund Scheme and pledged by the Borrower in favour of SCCL, as is required to be funded
+by the Borrower. Margin is prescribed by SCCL, according to the applicable laws and policies and 
+may be varied from time to time and from one asset class to another and from one Security to another.
+SCCL will have the exclusive right to vary Margin applicable on any Mutual Fund Units at any time 
+and the same will be binding on the Parties.
+"Market Value" has been defined, as Net Asset Value (NAV) determined as listed on the website 
+of AMFI. Such market price or NAV shall be as further reduced by applying such percentage or 
+haircut as may be prescribed by the Lender, time to time, with the resultant value being the market 
+price.
+"Material Adverse Effect" means any circumstance or event that might have a material adverse 
+effect on or change (in the judgment of the Lender) on or in respect of (a) the business, operations, 
+property, prospects or condition (financial or otherwise) of the Borrower; or (b) ability of the 
+Borrower to perform its/their obligations under the Agreement or the Loan Documents; or (c) the 
+validity or enforceability of the Agreement/ Loan Documents or the rights or remedies of the Lender 
+hereunder/ Loan Documents; or (d) the international capital or loan market; or (e) the political, 
+financial or economic conditions; and shall also mean and include any event whether domestic or 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+international, which in the opinion of the Lender could adversely affect the Loan Facility and/or Loan 
+Security.
+"Mutual Fund" means a mutual fund or funds registered with the Securities Exchange Board of 
+India (SEBI).
+"Mutual Fund Unit" means the interest of the unit holders in a Mutual Fund, which consists of each 
+unit representing one undivided share in the assets of a Mutual Fund.
+"NACH" means National Automated Clearing House which facilitates payment in electronic mode 
+by using the services of National Payment Corporation of India (NPCI)
+"Net Asset Value" or "NAV" means the Market Value of the assets of the scheme minus its 
+liabilities. The per unit NAV is the Net Asset Value of the scheme divided by the number of units 
+outstanding on the valuation date.
+"Prescribed LTV" means the maximum Loan-to-Value ratio applicable to the Loan, as specified in 
+the Sanction Letter, which the Borrower is required to maintain throughout the tenure of the Loan and
+until payment in full of all amounts due under the Loan.
+“Registrar and Transfer Agent” means the registrar and transfer agent appointed by the 
+relevant Mutual Fund/Asset Management Company in respect of the Mutual Fund Scheme, as 
+registered with the Securities and Exchange Board of India.
+"Promissory Note" shall mean a promissory note from the Borrower in favour of the Lender 
+for the repayment of the amount of the Loan Amounts along with Interest payable under the 
+Loan Facility.
+"Security Provider" means and includes any party creating Loan Security, including pledge, on the 
+Securities in favour of the Lender as a Security for the repayment of the Loan Amounts in the manner 
+provided in the Agreement and the relevant Loan Documents, if applicable.
+"Securities" means Mutual Fund Units, as approved by SCCL, which are issued by a SEBI approved 
+Mutual Fund in India.
+1.2 Rules And Interpretation
+Unless the context otherwise requires:
+a. The requisite clauses are applicable to the extent only for those asset classes and products on 
+which lien is marked. 
+b. Any reference to the singular shall include plural and any reference to the plural includes the 
+singular, and words importing the masculine gender shall include the feminine gender and 
+neutral gender and vice versa;
+c. The expressions month and year shall be construed as the calendar month or calendar year;
+d. Any reference to an enactment, regulations, rules or any instrument (including any specific 
+section, clause or article therein) shall be construed to refer to the same as amended or 
+replaced, as the case may be;
+e. Reference to days or dates which do not fall on a working day, shall be construed as 
+references to the day or date falling on the-immediately subsequent working day;
+f. Headings in this Agreement shall not be deemed to form part thereof or be taken into 
+consideration in the interpretation or construction thereof. The headings in the Agreement are
+for convenience only and shall not constrain or affect its construction or interpretation in any 
+way whatsoever;
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+g. Any reference to a clause, sub-clause or schedule is reference to the clause, sub- clause or 
+schedule hereto;
+h. Save and except as specifically provided in the Loan Documents any determination with 
+respect to the 'materiality' or 'reasonability' of any matter including of any event, quantity, 
+degree, occurrence, circumstance, change, fact, information, document, authorisation, 
+proceeding, act, omission, claims, breach, default or otherwise shall be made by the Lender 
+in its sole and absolute discretion;
+i. The words "include", "including" and "in particular" shall be construed without limitation 
+and as being by way of illustration only and shall not be construed as limiting the generality 
+of any foregoing words; (j) Time is of the essence in the performance of the Borrower(s) 
+obligations, if any time period specified herein is extended in the sole discretion of the 
+Lender, such extended time shall also be of essence;
+If a clause of the Agreement is void, illegal or unenforceable, it may be severed without 
+affecting the enforceability of any provisions of the Agreement;
+j.
+k. The Agreement containing the terms and conditions in respect of the Loan shall be read 
+along with the concerned Loan Documents executed by the Borrower at the time the 
+Borrower actually avails the Loans;
+l. Words and abbreviations which have, well known technical or trade/ commercial meanings 
+are used in the Agreement in accordance with such meanings.
+2. ADVANCEMENT OF LOAN FACILITY
+2.1. Upon the request of the Borrower, SCCL has agreed to lend and advance the Loan Facility to the 
+Borrower upon the terms and subject to the conditions contained herein to enable the Borrower 
+to use the proceeds towards the purpose mentioned in Annexure-2. Each such amount shall 
+jointly with all other amounts disbursed under this Agreement hereinafter constitute the "Loan". 
+The following facilities shall be available under this Agreement:
+a. Loan against Securities
+2.2. In consideration of the Lender providing and/or agreeing to provide Loan Facility against 
+Securities to the Borrower, the Borrower hereby agrees to abide by the Loan Documents which 
+set out the general terms and conditions applicable to the Loan.
+2.3. Upon the execution of the Agreement and satisfactory compliance of the conditions set out in the
+Loan Documents provided herein, the Borrower shall be eligible to avail the Loan Facility made 
+available by the Lender within such limits as may be prescribed by the Lender, and subject to the
+terms and conditions of the Agreement. If the Loan availed by the Borrower is in tranches, then 
+each withdrawal under the tranche shall for the purposes of this document shall constitute the 
+"Loan".
+2.4. Upon execution of the Sanction Letter, the Loan Facility provided thereunder shall be deemed to 
+have been provided pursuant to the Agreement and the terms and conditions of the Loan 
+Documents shall govern the terms and conditions of such a Loan.
+2.5. The Loan Facility may be granted to the Borrower as a Term Loan as communicated by the 
+Lender.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+2.6. Loan once disbursed can be repaid at any time on or before the Due Date during the tenure of the
+Loan at the sole discretion of the Borrower. Any prepayment of the Loan shall be in accordance 
+with the provisions of this Agreement and other Loan Documents.
+2.7. End use: The Borrower agrees that the Lender has absolute right to prescribe/specify in its sole 
+and absolute discretion the permitted end use of the Loan Facility made available. The end-use 
+shall not be in conflict with this Agreement or any applicable law, as the Lender may allow from 
+time to time. 
+2.8. As security for the Loan Amount, the Borrower shall provide to the Lender:
+a. First ranking exclusive pledge over the Security such that the Margin requirements as 
+mentioned in the Schedule are met at all times for the entire duration of the Loan Facility and
+till the Loan Amount is paid off in full to the Lender along with Interest due;
+b. First ranking exclusive pledge over the bonus issuances made in relation to the Security 
+under Clause 2.8 (a);
+c. Execute all documents and letters including Promissory Note in respect of the Loan;
+eNACH for 2x of the Sanctioned amount or Rs.1,00,00,000/- whichever is lower and
+d.
+e. Such other security as the Lender may reasonably demand as security for the Loan Amount 
+(collectively "Loan Security").
+2.9. The Borrower shall also execute and submit to the Lender in the manner as specified by the 
+Lender, such security along with necessary documents for creation of the Loan Security.
+2.10. Notwithstanding the above, all further or other Securities which shall/may be pledged with 
+the Lender as well as other accretions, entitlements and benefits in respect of the Securities 
+which the Lender is entitled to, including without limitation all bonus  , Securities, dividend, 
+interest, preferential entitlements and so on shall be deemed to be pledged in favour of the 
+Lender pursuant to the Agreement without any further act, instrument or deed and the terms and 
+conditions of the Agreement shall mutatis mutandis apply to such accretions as if they had 
+originally been pledged with the Lender pursuant to the Agreement.
+2.11.
+In order to secure the due payment by the Borrower of the dues to the Lender under the 
+Agreement and the performance by the Borrower of its obligations under the Agreement, the 
+Borrower hereby pledge/lien/assign (whichever applicable) the Securities as mentioned in the 
+Sanction Letter in favour of the Lender;
+2.12.
+In case the Borrower intends to invest in Mutual Fund Units, a letter in prescribed form from 
+such Mutual Fund that it will mark the Lender's lien on the units to be subscribed by the 
+Borrower in the Mutual Fund;
+2.13.
+The Borrower hereby agrees to doing such acts, deeds and executing such documents as may 
+be required under the provisions/ governed by SEBI (Mutual Funds) Regulations, 1996 and as 
+amended from time to time made thereunder and other rules, regulations and by laws of the 
+above referred regulations concerned, for creating a pledge in favour of the Lender in respect of 
+such Mutual Fund Units from time to time.
+2.14.
+The Lender may, in its sole discretion appoint a security pledge trustee in order to undertake 
+any actions on behalf of the Lender in relation to the Security pursuant to the Agreement.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+2.15. Borrower undertakes that in case the Mutual Fund Units forming part of the Loan Security is 
+restricted for redemption, the Borrower shall immediately replace such Securities with Securities 
+that are acceptable to the Lender.
+2.16.
+The Borrower(s) acknowledge/s that the Loan Facility, in case of pledge/lien of Mutual Fund 
+Schemes, will be made available only after the Lender shall have received intimation from the 
+Depository Participant and Registrar and Transfer Agent to the effect that the Registrar and 
+Transfer Agent has made an entry in its records of the creation of the pledge/ marking of lien in 
+favour of the Lender.
+2.17.
+If by error or otherwise any of the Securities or any accretion or entitlements in respect 
+thereof come to the possession of the Borrower without the authority of the Lender, then the 
+Borrower, shall forthwith deliver such Securities to the Lender and until the Borrower so delivers
+such Securities to the Lender, he/she/it/they shall hold such Securities in trust and for the benefit 
+of the Lender.
+2.18.
+In case the Lender invokes the pledge, on the pledged/lien marked Mutual Fund Units, the 
+Borrower unconditionally agrees that the Lender may without prejudice to its other rights in law 
+as pledgee, be entitled to have itself registered as holder of the Securities in the records of the 
+Depository Participant and Registrar and Transfer Agent and/or to sell the Securities to recover 
+its dues without any further notice to the Borrower. The Borrower will do all acts that may be 
+necessary or required in order to enable the Lender to sell the Securities to recover its dues.
+2.19. Borrower will issue open NACH mandate to the Lender for the due repayment of the Loan 
+Amounts and interest thereon. Further the Borrower authorizes the Lender to bank the aforesaid 
+open NACH mandate on the due dates for the installment amounts as communicated by the 
+Lender to the Borrower from time to time. Such NACH mandate shall be deemed to have been 
+given for adequate consideration received by the Borrower and shall not absolve the Borrower 
+from its liability to pay the said sums hereunder until the NACH mandate is duly realised. The 
+Borrower shall maintain adequate balance for realisation of the NACH mandate, on their Due 
+Dates for payment. It is expressly agreed and understood that the Borrower shall at no time close 
+the bank accounts from which the NACH mandate have been issued or issue any communication 
+to the Lender for stopping or postponing the presentment of the NACH mandate and the Lender 
+is not bound to take notice of any such communication which, if issued, will be regarded as a dis-
+honour of the NACH mandate. The Borrower agrees that if any amounts are outstanding for 
+payment by the Borrower (not being the Loan Amounts) including on account of the amounts 
+disbursed under other Loan Amounts or indebtedness of the Borrower, the Lender shall be 
+entitled to encash the NACH mandate for the satisfaction of such outstanding amounts 
+notwithstanding that the NACH mandate have been deposited for repayment of a Loan Amounts 
+and the Borrower shall continue to be indebted to the Lender for the Loan Amounts.
+2.20. Online Loan Disbursement Facility:
+a. The Borrower agrees that an online request for disbursement of the Loan Facility, is subject 
+to applicable law, inherent risks and the policies of the Lender as may be applicable from 
+time to time. It will be the sole responsibility of the Borrower to ensure that all user name 
+and passwords as may be shared by the Lender with the Borrower are kept confidential and 
+not revealed/ disclosed to any third party, including any person claiming to represent the 
+Lender, or its agents and shall take all possible care to prevent discovery of the user name or 
+password by any person. Such transmission methods involve the risk of possible 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+unauthorized alteration of data, unauthorized usage thereof for whatever purposes and/ or 
+virus attacks and are susceptible to a number of frauds, misuse, hacking, malicious, 
+destructive or corrupting code, program or macro which could affect the online facility for 
+disbursement request and the Loan Facility. This could result in delays in the processing of 
+the online disbursement request or failure in the processing of such requests and the Lender 
+shall not be responsible for the same.
+b. The Borrower shall exempt the Lender from any and all responsibility/ liability of such 
+misuse or virus attacks/ transmission to the Borrower's system and shall not hold the Lender 
+responsible / liable therefor. In no event shall the Lender be liable for any Losses due to loss 
+or improper or unauthorized use of the passwords, login information, data, onetime 
+passwords etc. on the website of the Lender or through any electronic mode and the 
+Borrower shall be solely responsible for the same. Further, the Lender shall not be liable for 
+any Losses due to any delay or inability to use the Lender's website or services provided by 
+any electronic mode, the provision of or failure to provide services by the Lender, or for any 
+information, software, products and services obtained through the Lender's websites, or 
+otherwise arising out of the use of the Lender's website, whether based on contract, 
+negligence, strict liability or otherwise.
+c. Further, it is hereby clarified that the Lender is agreeing to undertake such transaction based 
+on instructions given by the Borrower and the Lender is not bound to check the accuracy and
+the authenticity of instructions. It shall be the duty of Borrower to ensure that such 
+instructions are not misused by the Affiliates or staff/members of the Borrower or any third 
+party. The Lender accepts no liability for the consequences arising out of erroneous 
+information supplied by the Borrower. If the Borrower notice an error in the information 
+supplied to the Lender, the Borrower shall immediately advise the Lender and the Lender 
+will endeavor to correct the error wherever possible on a "reasonable efforts" basis.
+d. The Lender reserves the right to discontinue the online disbursement request facility or any 
+part thereof at any point of time, but the Lender shall endeavor to provide a prior notice to 
+the Borrower(s) in this regard save and except in circumstances where Lender has 
+discontinued the online disbursement request facility or any part thereof to comply with any 
+regulatory requirement or as a consequence of the Borrower(s) committing any breach of the 
+terms or conditions contained in the Loan Documents. The Lender shall not be liable for any 
+damages, claims of any nature whatsoever by reason of such termination or discontinuation 
+of the online disbursement request. In the event of a default in payment of outstanding 
+amounts on the relevant Due Dates, the Lender may refuse to disburse any further amounts 
+under the Loan Facility.
+2.21.
+Prepayment of Loan Facility:
+a. The Borrower(s) may prepay the outstanding Loan Amount in part or in full before the Due 
+Date, subject to such terms and conditions as the Lender may deem fit including minimum 
+prepayment amount, prepayment charges and/or any other charges. The foreclosure value 
+will be calculated so as to include the balance principal and all Interest and charges accrued 
+till the end of the month in which such foreclosure is affected along with the prepayment 
+charges on the entire outstanding value of the Loan Facility at the rate as specified in the 
+Loan Documents. The prepayment shall not take effect before the actual payment is 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+received/realized by the Lender and all Interest and other charges would be leviable till the 
+apportionment of the payments received/realized by the Lender.
+b.
+In the event such part-closure is not getting processed due to regulatory or other reasons, any 
+excess payment made by the Borrower over and above the value due at any time during the 
+term of the Facility will be held in suspense under the Borrower's account (as excess) by the 
+Lender. Such excess payment held by the Lender will not accrue any interest. The Lender 
+may apportion the said amount against any future /past outstanding amounts on the said 
+account/any account held by the Borrower that may remain unsettled by the Borrower for 
+any reason.
+c.
+In case of any prepayment made by the Borrower, the Repayment Schedule may be 
+amended/altered by the Lender in its sole and absolute discretion.
+2.22.
+Pre-Conditions for Loan Disbursement:
+The Loan Facility may be disbursed by the Lender to the Borrower, in one or more tranches on 
+fulfilment of the following conditions precedent ("Conditions Precedent"). Failure to fulfil the 
+Conditions Precedent could result in the Lender refusing to disburse the Facility. The Conditions 
+Precedent required to be fulfilled are:
+a. The Borrower(s) shall have provided to the Lender, such details, documentary evidences and 
+information as may be required by the Lender under its know your customer norms;
+b. The Borrower(s) shall have provided to the Lender such payment instructions as may be 
+required by the Lender.
+c. The Borrower(s) shall have obtained and delivered all Authorisations/documents that may be
+required by the Lender and any other document(s) as may be required by the lender in its 
+sole and absolute discretion and the Borrower shall have created the Security in favour of the
+Lender to the satisfaction of the Lender.
+3. MAINTENANCE OF LTV
+3.1. Maintaining Loan to Value (LTV) Ratio:
+a.
+b.
+In the event that the Net Asset Value, in the case of Mutual Fund Units of the Security falls, 
+or under any other circumstances, if the Lender deems fit, the Lender shall serve upon the 
+Borrower a notice by  SMS or  email  demanding additional security by way of cash payment
+and/or delivery of further Securities , being Securities of mutual funds acceptable to it or any 
+other Security as approved by the Lender and the Borrower undertakes that within 1 (one) 
+day from the receipt of the notice from the Lender (“Top-Up Period”), the Borrower shall 
+make up the difference either by payment using Payment Gateway to the Lender or by 
+causing the delivery to the Lender of additional Securities, acceptable to the Lender, of the 
+value necessary to make up the difference.
+If at any time the value of the Securities falls so as to create a deficiency in the Prescribed 
+LTV specified by SCCL from time to time, then the Borrower shall:
+i.
+At all times from the date of disbursement of the Loan until the realization of the Loan 
+Amount, maintain the Prescribed LTV;
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+ii.
+iii.
+If the total security value falls resulting in an increase in the LTV above   the Prescribed 
+LTV on any calculation day, the Borrower shall be required to top-up the Mutual Fund 
+units or make part-payment. Notwithstanding anything contained herein, in the event of 
+any decrease in the security value, SCCL shall have the right, at its sole discretion to 
+invoke the pledge to make good the shortfall. Additional lien marking charges shall be 
+applicable in case of unit top-up, and additional lien removal charges shall apply in case 
+of invocation. The Lender shall be permitted to notify the Borrower by means of email / 
+SMS of the same.
+If the Borrower fails  to perfect the Security over the top-up Mutual Fund Units in 
+accordance with above clause, without prejudice to the right of the Lender to call an 
+Event of Default under this Agreement, additional/ default charge, as communicated by 
+the Lender to the Borrower, shall accrue on the outstanding principal amount of the 
+Loan Facility from the expiry of the top-up Period up to the date on which the Borrower 
+creates pledge over the top-up Mutual Fund Units such that the prescribed LTV is 
+maintained.
+c. Notwithstanding that no Event of Default has occurred, if the value of the Securities falls 
+resulting in an increase in LTV above the Prescribed LTV , the Lender shall, upon giving 
+prior written notice through email or  SMS   to the Borrower, have the right to 
+sell/redeem/transfer any portion of the Securities and apply the amount realised towards 
+liquidation of part of the Loan Amount, so as to maintain the Prescribed LTV. For the 
+avoidance of doubt, the issuance of such prior notice through email / SMS, shall not require 
+the Lender to await the occurrence of an Event of Default before exercising its right under 
+this Clause. In the event that the Lender is unable to dispose of the Securities by sale in the 
+market or by repurchase by the Mutual Funds (as the case may be) for any reason, the Lender
+may dispose of the Mutual Funds by way of an "off-market transaction" (disposal through a 
+private sale) and all the costs incurred by the Lender for an off-market transaction shall be 
+reimbursed by the Borrower. In case of pledged/lien marked Mutual Fund Units, the Lender 
+may place redemption request with the Mutual Fund for the lien marked units.
+4. BORROWER OBLIGATIONS AND UNDERTAKINGS
+4.1. With respect to the pledged Securities which are pledged as Loan Security with the Lender in 
+accordance with this Agreement, the Borrower represent, warrant and confirms that:
+a. Borrower is the sole beneficial owner in case of individual accounts and Borrower is primary
+beneficial owner in case of Either or Survivor accounts and has good and marketable title to 
+the Securities which are free from any encumbrances;
+b. The Securities:
+i.
+ii.
+iii.
+iv.
+Have been duly authorised and validly issued and are freely and fully redeemable and 
+not subject to any encumbrance, lock-in, pre-emptive rights or restrictions on transfer, 
+other than the Loan Security created under this Agreement;
+Are held in dematerialised form;
+Are fully paid and have no moneys or liabilities outstanding or payable in respect of any
+of them; and
+Are not subject to any option to purchase or similar rights;
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+c. The Borrower have provided the Lender with all documents and information necessary for 
+the Lender to complete a valid and fully effective transfer/redemption of each Security; and
+d. The Borrower has full power, authority and legal right to create Loan Security on the 
+Securities.
+e. The Borrower hereby authorises the Lender to sell, assign or transfer the Securities herein 
+pledged under this Agreement to any person(s) of the Lender's choice in whole or in part and 
+in such manner and or such terms as the Lender may decide in case of any breach of terms 
+and conditions by the borrower as enumerated in this agreement. Any such sale, assignment 
+or transfer shall conclusively bind the Borrower.
+4.2. The Borrower further represents and warrants to the Lender and confirms that, as on the date 
+hereof:
+a. The recording of the creation of the Loan Security by the Borrower in accordance with this 
+Agreement creates a valid and perfect exclusive first charge by way of Loan Security in 
+favour of the Lender in the manner specified in this Agreement and other actions necessary to
+perfect or protect such Loan Security have been and/ or shall be duly taken pursuant to this 
+Agreement;
+b. The Borrower does not require any approval or consent from any Governmental or regulatory 
+authority under Section 499 of the Income Tax Act, 2025 ("ITA");
+c. The entry into by the Borrower of this Agreement constitutes, and the exercise by the 
+Borrower of the rights and performance of obligations under this Agreement will constitute, 
+private and commercial acts performed for private and commercial purposes and the 
+Borrower will not be entitled to claim immunity from any suit, execution, attachment or other 
+legal process in any proceedings taken in relation to this Agreement;
+d. No other event or circumstance is outstanding which constitutes a default under this 
+Agreement which might have a Material Adverse Effect;
+e. There are no proceedings relating to taxes pending against the Borrower under the ITA; and
+f. All undisputed claims of Tax under the ITA have been duly discharged; and
+g. There are no tax claims under the ITA. All tax payments (including withholding taxes) under 
+the ITA have been discharged by the Security Provider;
+h. No litigation, arbitration or administrative proceedings of or before any court, arbitral body or
+agency which, if adversely determined, might reasonably be expected to have a Material 
+Adverse Effect, has or have (to the best of its knowledge and belief) been started against the 
+Borrower;
+i. This Agreement has been duly stamped in accordance with, the relevant stamp law, and all 
+duties or other similar taxes in connection therewith have been paid in full;
+j. No steps have been initiated against the Borrower for any debt resolution, which restricts the 
+ability of the Lender to enforce any of the Loan Documents.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+4.3. The Borrower agrees that all accretion to the said Securities by way of dividend for Mutual Fund 
+Units and bonus and other benefits from time to time accruing in respect of the said Securities or 
+any part thereof shall be deemed to be pledged with the Lender and the Borrower(s) agree that 
+there is no need for signing any additional supplementary pledge/ document in this respect.
+4.4. The Borrower agrees and undertakes that at any time during the continuance of the Agreement 
+the Lender may require the Borrower to replace/substitute all or any portion of the Securities 
+with new securities which are approved and acceptable to the Lender. The Borrower undertakes 
+to comply with any/all such request of the Lender at any time during the continuance of the 
+Agreement.
+5. REPAYMENT OF LOAN
+5.1. The Borrower undertakes to repay the entire Loan Amount along with all Interest and all other 
+amounts due and not paid, on the Due Date.
+5.2. At no point of time, the Loan Amount (including accrued interest) shall exceed 50% in respect of
+Equity Mutual Fund Units collateral value and 85% in respect of Debt Mutual Fund Units 
+collateral value and the combination of Debt and Equity will be calculated on pro data basis to 
+cover the shortfall. The Borrower shall maintain the applicable Prescribed LTV throughout the 
+tenure of the Loan and until payment in full of all amounts due under the Loan.
+The Prescribed LTV may be revised from time to time by SCCL, at its sole discretion and in 
+accordance with its applicable policies, and such revision shall be communicated to the Borrower
+through email, SMS or any other mode permitted under this Agreement.
+5.3. Without limitation or prejudice to the rights of SCCL, the Loan shall be repayable in full 
+forthwith by the Borrower in the event of the Borrower's failure to:
+a. Comply with any of the requirements under the Agreement or breach of any provisions 
+hereof;
+b. Pay any Interest when due to the Lender; or
+c. Pay any amount when due to (a) the Lender under any other agreement, or (b) any other 
+person;
+d. Failure to maintain or provide adequate Margin, when called upon by the Lender;
+e. An Event of Default as specified by this Agreement.
+The Lender shall be permitted to exercise all its rights under this Agreement in case of an 
+Event of Default upon sending notice to the Borrower by email or SMS.
+The amounts paid by the Borrower under one or more Sanction Letter and/or the Agreement may,
+at the discretion of the Lender, be appropriated by the Lender towards amounts payable by the 
+Borrower under other Sanction Letter. Further, notwithstanding the payment of the Loan Amounts
+under one or more of the Sanction Letter, the Lender shall always have the power to sell/transfer 
+or otherwise dispose of any and all Loan Security created in favour of the Lender or its agent in 
+respect of that/those Loan Amounts, and appropriate the same towards satisfaction of amounts 
+due to the Lender by the Borrower on account of loan amounts in respect of other loan facility 
+provided by the Lender.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+6. TERM OF THE AGREEMENT
+6.1. Without prejudice to the provisions of Clause 6.2 (Renewed Term), the Loan Facility will be 
+available for a term as mentioned in the Schedule of the Agreement as Tenure ("Term").
+6.2. The Borrower hereby agree and accept that the Securities, this Agreement and other documents 
+and writings executed by the Borrower including the pledge, or other Loan Security interest 
+created by the Borrower shall be valid and shall be a continuing security by way of an exclusive 
+charge to 
+SCCL for the Loan Amount and all other monies which are due from the Borrower. If the Loan 
+is recalled, the Borrower shall on demand be bound to repay the Loan Amount together with 
+accrued interest till the date of actual realization and all other amounts due to SCCL as on that 
+date.
+7.
+INTEREST RATE
+7.1. The Loan shall carry interest at the rate mentioned in the Schedule.
+7.2. Interest shall be calculated from the date of disbursement of Loan Facility to the Designated 
+Bank Account for disbursement of funds to the Borrower. The credit for receipt of funds received
+from the Borrower shall be given on the next Working Day of realisation of the funds in the bank
+account of SCCL. SCCL shall not be responsible for any delay on the part of the Borrower for 
+credit to Borrower's account by the Borrower's bank. The determination by SCCL from time to 
+time, of the interest shall be final and conclusive and binding upon the Borrower.
+7.3. The Lender shall declare and display such revision in its rate of interest and the same shall be 
+declared and announced on the Borrower's dashboard in the website and sent to the Borrower by 
+email and the same shall be deemed to be notice to the Borrower for such revision. The Borrower
+hereby agrees that it shall be the duty of the Borrower to ensure that it keeps itself updated of any
+such changes or variations by logging in Borrower's account in the website and/or checking the 
+email form the Lender. The revised rate of interest shall be applicable prospectively.
+8. CHANGE OF DESIGNATED BANK ACCOUNT
+₹
+The Borrower may request a change of the Designated Bank Account during the tenure of the 
+Loan ("Bank Swap"), subject to the Lender's approval, completion of the process prescribed by 
+the Lender, and submission of such documents, information and verifications as the Lender may 
+require. The Borrower may request a maximum of two (2) Bank Swaps during the tenure of the 
+Loan. A Bank Swap charge of  250 (Rupees Two Hundred and Fifty only), together with 
+applicable Goods and Services Tax (GST), shall be payable by the Borrower for each approved 
+Bank Swap. The Lender shall be entitled to recover such charges by debiting the Borrower's 
+Designated Bank Account or in such other manner as may be permitted under this Agreement. 
+The revised Designated Bank Account shall become effective only upon written confirmation by 
+the Lender. Until such confirmation is received, the Borrower shall ensure that sufficient funds 
+are maintained in the previously registered Designated Bank Account for repayment of all 
+amounts due under the Loan. The Lender may reject any Bank Swap request that does not satisfy 
+its internal policies, regulatory requirements, or verification procedures.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+9. CHANGE IN RESIDENTIAL STATUS
+9.1. The Borrower shall promptly, and in any event within seven (7) days of such change, notify the   
+Lender in writing if there is any change in the Borrower's residential status (including any change
+from Resident Indian to Non-Resident Indian (NRI), Overseas Citizen of India (OCI), Person of 
+Indian Origin (PIO), or any other non-resident status under applicable law) during the tenure of 
+the Loan.
+9.2. Upon such change, the Borrower shall promptly furnish such declarations, documents, KYC 
+records, regulatory approvals, and other information as may be required by the Lender to ensure 
+compliance with applicable laws, including the Foreign Exchange Management Act, 1999 and 
+the regulations made thereunder, and shall comply with such operational requirements as may be 
+prescribed by the Lender, including, where required, updating or changing the Designated Bank 
+Account.
+9.3. The Borrower acknowledges that any failure to intimate such change or to comply with the 
+requirements of this Clause may delay or prevent the release of the pledged Mutual Fund units or
+any other security upon repayment of the Loan and the Lender shall not be liable for any loss, 
+delay, cost or consequence arising therefrom. Any additional costs, charges or expenses incurred 
+by the Lender in connection with processing the release of the pledged Mutual Fund units or 
+otherwise due to the Borrower's failure to promptly intimate such change or comply with the 
+requirements of this Clause shall be borne solely by the Borrower and may be recovered by the 
+Lender from the Borrower.
+9.4. The Lender reserves the right to require such modifications to the repayment mechanism, 
+documentation or security arrangements as may be necessary to comply with applicable law, 
+regulatory requirements or the Lender's internal policies. If the Borrower fails to comply with 
+such requirements within the period specified by the Lender, the Lender may exercise such rights
+and remedies as are available under this Agreement and applicable law.
+9.5. Upon any change in the Borrower's residential status from Resident Indian to Non Resident 
+Indian, the Borrower shall ensure that all outstanding amounts are duly paid and settled through 
+the same bank account, prior to any such change in the Borrower’s residential status.
+10. OBLIGATIONS OF BORROWER:
+a. The Borrower expressly recognizes and accepts that the Lender shall be absolutely entitled 
+and have full power and authority to sell, assign or transfer in any manner, in whole or in part,
+and in such manner and on such terms and conditions as the Lender may decide; including 
+reserving a right to the Lender to retain its power hereunder to proceed against the Borrower 
+on behalf of the purchaser, assignee, or transferee, any or all outstanding and dues of the 
+Borrower to any third party of the Lender's choice without reference to or without written 
+intimation by the Lender to the Borrower.
+Any such action shall bind the Borrower to accept such third party as creditor exclusively or 
+as a joint creditor with the Lender, or as creditor exclusively with the right to the Lender to 
+continue to exercise all powers hereunder on behalf of such third party and to pay over such 
+outstanding and dues to such third party and/or to the Lender as the Lender may direct. Any 
+cost in this behalf, whether on account of such sale, assignment or transfer or enforcement of 
+rights and recovery of outstanding and dues shall be to the account of the Borrower.
+In case of assignment by the Lender to any third party (Assignee) the Borrower 
+acknowledges to repay the amount outstanding in terms of the agreement, to the assignee.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+b. The Borrower hereby accepts and confirms that it has no objection to the Lender 
+administering the Loan through third Parties. The Borrower confirms that the Lender may, 
+either partly or in full, delegate such of those activities to any third party as it may think fit in 
+the circumstances. Such delegation of work, would include the right and authority to collect 
+the outstanding on behalf of the Lender, the dues and unpaid installments and other amount 
+due under the Agreement and to perform and execute all lawful acts, deeds and matters and 
+things connected therewith and incidental thereto including sending notices to the Borrower 
+and/ or the Guarantors), receiving cash against issue of the receipt, cheques and drafts.
+c. For the purpose aforesaid as for any other purpose at the sole discretion of the Lender, the 
+Lender shall be entitled to disclose to the third party the details of the Borrower, the Loan, the
+outstanding amount and other information for effectively discharging the work assigned to the
+third Party and the Borrower and the guarantor(s) hereby consents to such disclosure by the 
+Lender.
+11. LOAN RENEWAL CHARGE
+The Borrower agrees that, where the Borrower requests and the Loan Facility is renewed or 
+continued beyond the initial loan tenure, the Lender shall be entitled to levy an Loan Renewal 
+Charge at the rate or amount specified in the Sanction Letter, Key Fact Statement (KFS), 
+Schedule of Charges, or such other Loan Documents.
+The renewal or continuation of the Loan Facility shall be subject to the applicable terms and 
+conditions governing the Loan Facility and such requirements as may be applicable at the time of
+renewal. Any renewal or continuation of the Loan Facility shall be subject to the execution of a 
+separate loan agreement or such other documentation as may be required by the Lender, which 
+shall govern the terms and conditions applicable to such renewed or continued Loan Facility.
+The charges shall become due and payable upon the renewal or continuation of the Loan Facility 
+beyond the initial loan tenure and shall be applicable in respect of each subsequent renewal or 
+continuation of the Loan Facility, where applicable.
+The Borrower hereby authorizes the Lender to debit the charges, together with applicable taxes, 
+to the Loan Account, Designated Bank Account, or recover the same through any other mode 
+permitted under this Agreement.
+The charges shall be non-refundable once levied, irrespective of whether the renewed or 
+continued Loan Facility is fully or partially utilized or whether the Borrower prepays, forecloses, 
+or otherwise terminates the Loan Facility after the ARC has become due, unless otherwise 
+expressly provided by the Lender or required under applicable law.
+The Lender reserves the right to revise the charges prospectively by providing prior notice to the 
+Borrower by way of email/SMS in accordance with applicable law and the terms of this 
+Agreement.
+12. BOUNCE CHARGE
+If any Electronic Clearing Service (ECS), National Automated Clearing House (NACH) 
+mandate, Auto Debit instruction, cheque, standing instruction, UPI AutoPay mandate, or any 
+other payment instruction issued by the Borrower towards repayment of the Loan or any amount 
+payable under this Agreement is dishonoured, returned unpaid, rejected, or cannot be 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+successfully processed for any reason whatsoever, including but not limited to insufficient funds,
+account closure, stop payment instructions, invalid mandate, technical rejection attributable to 
+the Borrower, or any other reason, the Borrower shall be liable to pay the Lender a Bounce 
+Charge/Dishonour Charge as specified in the Schedule of Charges or the Sanction Letter, as 
+amended from time to time.
+The Bounce Charge shall be payable for each instance of dishonour or unsuccessful presentation,
+irrespective of whether the payment instrument is re-presented subsequently or the overdue 
+amount is recovered through any other mode.
+The levy of Bounce Charges shall be without prejudice to:
+a. The Borrower's obligation to pay the overdue EMI and all other outstanding amounts;
+b. The Lender's right to levy penal charges in accordance with applicable laws and the terms of 
+this Agreement;
+c. The Lender's right to initiate recovery proceedings or exercise any other rights and remedies 
+available under this Agreement or under applicable law.
+The Borrower acknowledges and agrees that Bounce Charges are levied towards administrative 
+and operational costs incurred by the Lender due to the unsuccessful payment transaction and 
+shall be payable immediately upon demand or may be debited to the Borrower's Loan Account.
+13. PENAL CHARGES APPLICABLE FOR DEFAULT OF PAYMENT
+Upon any Event of Default including default in payment of Loan Amount, the Borrower shall be 
+liable to pay 36% p.a. penal charges on the unpaid interest/EMI from the date of the default till 
+the rectification of such default or final repayment of the Loan Amount, as the case may be, 
+without prejudice to SCCL's other rights under this Agreement and in law.
+14. NOTICE
+Any notice or demand required to be given herein, by SCCL to the Borrower shall be addressed 
+at the address given by the Borrower mentioned in Annexure-1 of this Agreement. In the event of
+any change in the address of the Borrower, the Borrower shall forthwith intimate the same to 
+SCCL, failing which service of notice or correspondence to the address given by the Borrower 
+shall be deemed to have been served if it is sent at that address and it would be deemed to have 
+been delivered in the normal course to the Borrower. Notice shall be sent either by email or by 
+SMS. The email will be considered received if it does not bounce back within 24 hours of SCCL 
+sending the email. The Parties agree that any notice sent by SCCL to the Borrower, which is not 
+disputed within 7 (seven) days of the receipt of such notice, will be deemed accepted by the 
+Borrower.
+15. SCCL'S RIGHTS AND OBLIGATIONS
+15.1.
+SCCL shall credit, if received all dividends received in respect of all securities pledged with   
+SCCL into the loan account of the Borrower.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+15.2.
+SCCL shall be entitled to sell, assign or transfer SCCL's rights and obligations under this 
+Agreement to any person(s) of SCCL choice in whole or in part and in such manner and on such 
+terms as SCCL may decide and deem fit. The transfer shall not result in any change on the terms 
+of the Agreement entered into between the Lender and the borrower and shall have the same 
+rights and obligations of a Lender shall continue. Any such sale, assignment or transfer shall 
+conclusively bind the Borrower. The Borrower irrevocably and unconditionally confirm that it 
+shall continue to be binding to the terms of this Agreement and other Loan Documents 
+notwithstanding such transfer or assignability by the Lender. The Borrower shall not be entitled 
+to directly or indirectly assign or transfer the benefit or obligation accruing the Borrower under 
+this Agreement.
+15.3.
+The Lender shall have the right to, at its absolute discretion, upon providing a notice in 
+writing, cancel all undrawn portions of the Loan Facility and demand repayment of all 
+outstanding amounts under/in relation to the Loan Facility. Upon receipt of such notice by the 
+Borrower, all outstanding amounts along with all accrued interest and other charges shall become
+due and payable within 7 working days.
+16. INDEMNIFICATION
+16.1. Without prejudice to the other rights of the Lender under the Loan Documents or under law, 
+the Borrower shall, indemnify and agree to hold harmless, the Lender, and each of its directors, 
+officers, representatives attorneys, agents and advisors (each an "Indemnified Party") against any
+and all actual and direct losses, liabilities, damages, costs and expenses incurred or likely to be 
+incurred by the Indemnified Party arising out of or in connection with:
+a. An Event of Default or any other breach by the Borrower of this Agreement,
+b. Any default by the Borrower in the performance of any of the obligations expressed to be 
+assumed by it in the Agreement,
+c. Preservation or enforcement of any Loan Security or rights by SCCL under or pursuant to 
+this Agreement,
+d. Any non-compliance with provisions of the Loan Documents by the Indemnifying Party
+e. The exercise of any of the rights, powers, discretions, authorities and remedies vested in 
+SCCL by this Agreement or by law,
+f. Any enquiry, show cause notices, investigations, subpoena (or similar order) or litigation 
+with respect to any of the Borrower or with respect to the transactions contemplated or 
+financed under this Agreement
+g. Any of the obligations of the Borrower under or pursuant to the Agreement being or 
+becoming void, voidable, unenforceable or ineffective as against the Borrower(s), for any 
+reason whatsoever, whether or not known to the Obligors or to the Lender or to any person
+h. Any third-party claims in relation to indemnity matters set out in sub-clause (a) to (g) above 
+of this Clause 14.
+16.2.
+The Borrower irrevocably and unconditionally, warrants to the Lender, the due and punctual 
+observance and performance of all the terms, conditions and covenants on the part of the 
+Borrower(s) contained in the Agreement and other Loan Documents and agrees to pay to the 
+Lender, from time to time, on demand any and every sum or sums of money which the 
+Borrower(s) is at any time liable to pay to the Lender under or pursuant to the Agreement, and 
+which has become due and payable but has not been paid on its Due Date or as and when 
+demanded, and without prejudice to the generality hereof warrants, repayment and payment of 
+the Loan Amounts on the Due Date and payment of interest and all other amounts on their 
+respective Due Dates or on demand, whichever is earlier, and on the failure of the Borrower(s) to
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+pay the same forthwith on its Due Date or on demand, whichever is earlier, and without any 
+demur or protest the amount demanded or payable irrespective of the validity legality or 
+enforceability or otherwise of the obligations of the Borrower(s) hereunder.
+16.3.
+This indemnity shall be binding on the Borrower and on the Borrower's legal heirs, successors
+and permitted assigns, for all time hereinafter and shall not be disputed and/or challenged by 
+anyone.
+16.4. All indemnity clauses of the Agreement shall survive and will be effective even after 
+termination/expiry of the Agreement.
+16.5.
+Borrower hereby agrees to indemnify the Lender with respect to any liability incurred by the 
+Lender arising from the misuse, fraud and/or unauthorized usage and activity etc. of the online 
+portal.
+17. END-USAGE OF THE LOAN PROCEEDS
+The Borrower agrees and undertakes that the proceeds of the Loan will be utilized for the 
+purpose set out in the application form and in no event the proceeds be used for creating artificial
+markets or in any other form of market manipulation and shall not in any way conflict with any 
+restrictive provisions contained in any of the Statutory provisions.
+18. COSTS
+All costs (including legal costs), charges, expense, taxes, duties (Including stamp duties) in 
+relation to this Agreement and any document executed pursuant hereto and in relation to the 
+creation, enforcement, realization and attempted realization of any Loan Security shall be borne 
+and paid by the Borrower alone. The Borrower authorizes SCCL to debit the aforesaid sum to the
+Loan account.
+19. AMENDMENT
+The Borrower unconditionally agrees that SCCL shall, have an exclusive right to change any 
+and/or all terms of this Agreement after giving the Borrower notice, inter alia with respect to 
+schedule of charges including rate of interest, pre-payment charges, renewal charges, penalty 
+charges, etc. (as more specifically mentioned in Annexure 2 of this Agreement), Margin 
+requirement, notice period for rectifying margin, repayment of Loan or any other terms which it 
+may deem fit. SCCL undertakes that any change in charges or interest rates will only apply 
+prospectively.
+20. ENTIRE AGREEMENT
+The Borrower agrees that this Agreement along with its Annexures including the Letter of 
+Authorization, Transfer Instruction Slips, Pledge Instructions and other documents and writings 
+executed by the Borrower, shall remain in operation till the claims of SCCL are satisfied and 
+shall not be revoked or be deemed cancelled by the death / dissolution / winding up of the 
+Borrower and SCCL may notwithstanding the death/dissolution/winding up of the Borrower 
+enforce and sell any or all the Securities and/or cause any and all the Securities to be sold or 
+transferred and/or otherwise act pursuant to  any authorisations, or any other deeds documents 
+and writings executed by the Borrower.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+21. EVENTS OF DEFAULT
+Without prejudice to what is stated hereinabove, SCCL shall be entitled to recall the Loan and 
+enforce the Loan Security including the Securities, if any of the following events occur, that is to 
+say, if there is any-
+a. Default by the Borrower in repaying the Loan Amount or in payment of any interest for EMI 
+presentation and the representation in one cycle, costs, charges and other amounts payable to 
+SCCL.
+b. Failure by the Borrower to maintain the Prescribed LTV;
+c. Failure by the Borrower to repay the Interest / Loan as per the due dates as specified by 
+Lender to Borrower;
+d. Failure by the Borrower to top up the Security / provide additional Security as may be 
+required by the Lender;
+e. Any breach of any of the terms and conditions herein contained;
+f. Any representation or warranty made by the Borrower in any Loan Document to which it is 
+party to or in any certificate, financial statement or other document delivered to the Lender 
+by any of the Borrower which has been found to be incorrect, false or misleading in any 
+material respect when made or deemed made and such misrepresentation adversely affects 
+the interest of the Lender in the opinion of the Lender;
+g. Utilization of the Loan for any anti-social business or for purposes other than those specified 
+in the application form;
+h. Default by the Borrower under any other loan/facility provided by SCCL;
+i. Any extraordinary situation or circumstances arise which, in the opinion of SCCL may make 
+it impossible for the Borrower to fulfill its obligations hereunder or under the terms of 
+sanction of the Loan;
+j. Default by the Borrower in payment of tax liability;
+k. Any information furnished by the Borrower in the application form or during the currency of 
+the Loan is found to be misleading or incorrect in any material respect;
+l. Operation of the Designated Demat Account, in case of pledge/lien mark of Securities, by the
+Borrower himself / herself, in any manner whatsoever; and/or
+m. Any of the following corporate action, legal proceedings or other procedure or step is taken 
+in relation to the Borrower:
+i.
+ii.
+iii.
+iv.
+v.
+The suspension of payments, a moratorium of any indebtedness, winding-up, 
+dissolution, administration or reorganization (by way of voluntary arrangement, 
+scheme of arrangement or otherwise);
+A composition, compromise, assignment or arrangement with any creditor;
+The appointment of a liquidator, receiver, administrative receiver, administrator, 
+compulsory      manager or other similar officer;
+Execution, sequestration, attachment, enforcement, distress over any assets or 
+properties of      any of the Borrower or any analogous procedure or step is taken in 
+any jurisdiction; or
+Any other event occurs or proceeding is instituted that under any law would have an 
+effect      analogous to any of the events listed in sub-clauses (i), (ii), (iii) and (iv) 
+above.
+n. Any other event of default as proposed by the Lender in the Sanction Letter. 
+(Items (a) to (n) above are hereinafter referred to as "Events of Default")
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+22. CONSEQUENCES OF EVENTS OF DEFAULT
+22.1. Upon the occurrence of an Event of Default, the Lender shall have the right, in its discretion 
+to exercise all the rights, powers and remedies vested in it (whether vested in it by this 
+Agreement or any Loan Documents or by any Applicable Law) for the protection and 
+enforcement of its rights in respect of the Loan Security, and the Lender shall be entitled, without
+limitation, to exercise any or all of the following rights, as often as it deems fit, in its discretion:
+a. Declare by way of notice that all the Loan Amounts, together with all other amounts accrued 
+or outstanding under the Loan Documents to be immediately due and payable, whereupon 
+they shall become immediately due and payable;
+b. To invoke the pledge on the Securities and/or transfer the Securities and register itself as the 
+beneficial owner of all or any of the Securities;
+c. Enforce the Loan Security in accordance with the terms of the Loan Documents;
+d. To exercise any rights or powers conferred pursuant to any authorisation, deed, document or 
+writing, if any, executed by the Borrower in favour of the Lender in connection with the 
+enforcement or of the Lender’s claims; and/or(e) exercise any other right that the Lender may
+have under the Loan Documents or under applicable law.
+e. Upon default and thereby the Security becoming enforceable, the Lender shall, without 
+prejudice to its other rights and remedies, have absolute power and authority to use its 
+discretion to invoke, sell and dispose of the Loan Security or any part of the same by public 
+auction or by private treaty, without the intervention of the Court, as and when the Lender 
+may, in its absolute discretion, deem fit and to apply the net proceeds of such sale in 
+satisfaction so far as the same will extend towards liquidation of the Loan Balance. The 
+Lender shall have the power to transfer/sell the Security after providing prior written notice 
+to the Borrower through SMS and/or email as set out above in Clause 14. The Borrower 
+hereby agrees and undertakes not to raise any dispute as to the value at which the Security is 
+transferred by the Lender and shall ensure that the Borrower does not raise a dispute and the 
+decision made by the Lender shall be final and binding on the Borrower. The Lender shall 
+not be liable for any loss arising due to the sale or transfer of the Security.
+f. The borrower hereby authorizes the Lender expressly to act in pursuance of and in 
+accordance with the 
+Loan Documents herein. The Borrower also hereby authorises the Lender to sell, assign or 
+transfer the Securities herein pledged under this Agreement to any person(s) of the Lender's 
+choice in whole or in part and in such manner and or such terms as the Lender may decide in 
+case of any breach of terms and conditions by the borrower as enumerated in this agreement. 
+Any such sale, assignment or transfer shall conclusively bind the Borrower
+The Parties hereby agree and confirm that for any matters connected with this Agreement, 
+including but not limited to calling out an Event of Default, the Lender shall be entitled to 
+send notice to the Borrower either by SMS or email and such mode of serving notice shall be
+binding upon the Borrower.
+22.2.
+The proceeds from such sale or disposal of Securities/ enforcement of other Loan Security 
+shall be applied in accordance with Clause 32 (Appropriation of payments).
+22.3. Decision of SCCL on determination of an Event of Default, the number of Securities and the 
+identification of securities which are to be so sold or disposed of, shall be final conclusive and 
+binding on the Borrower.
+22.4.
+SCCL shall not in any way be liable for any loss or depreciation in value of the Securities 
+whilst in its possession or in course of realization or disposal as provided hereunder.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+22.5.
+In case, the proceeds of the sale or disposal of the Securities are not sufficient to pay/repay 
+the dues of SCCL, the Borrower jointly and severally bind themselves and undertake to make 
+good the deficit immediately on request from SCCL. Further, in case of Event of Default, SCCL 
+will have an unqualified right to disclose or publish the name of the Borrower or its partners as 
+defaulters in such manner and through such medium which is in accordance with the guidelines 
+issued by the RBI and other applicable laws.
+23. GRIEVANCE REDRESSAL PROCESS
+Any grievance relating to this Loan may be addressed to :The Grievance Redressal Officer, 
+Shriram Credit Company Limited, 1st Floor, 101-104, A Wing, Dynasty Business Park, Near 
+Chakala-JB Nagar Metro Station, Andheri – Kurla Road, Andheri – East, Mumbai – 400 059.
+Ph: 8981003538, Email ID: grievanceredressal@shriramcredit.in
+24. RIGHT TO AUDIT
+The Borrower agree and undertake to execute further documents as may be required by SCCL. 
+The Borrower agrees that at the sole discretion of SCCL, the Borrower may be required to 
+submit additional documentation, including but not limited to a declaration stating that 
+(a) The Borrower is not a part of the RBIs defaulter/ caution list and is not disqualified under 
+any applicable law from entering into this Agreement
+(b) No legal case has been filed against the Borrower and their affiliates affecting their financial 
+position and in case such a legal case is filed, the Borrower undertake to keep SCCL 
+informed, etc.
+25. REPORTING REQUIREMENTS AND DATA PROTECTION AND DISCLOSURE
+25.1.
+The Borrower agrees and authorizes the Lender to disclose, from time to time, any 
+information and data relating to the Borrower (including personal sensitive data or information 
+and any information that requires a consent under the Information Technology Act, 2000, Digital
+Personal Data Protection Act,2023 and the rules, regulations, notifications and directions issued 
+thereunder, to the extent applicable and in force from time to time and/or any other statute) 
+and/or the Facility and/or other facilities availed by the Borrowers and/or the ‘financial 
+information' as defined in Section 3(13) of IBC, in or outside India without requirement of any 
+notice or intimation:
+a. To any credit bureau, corporate, banks, financial institutions etc. according to statutory 
+guidelines
+b. To any Authority or other person as required by Applicable Law;
+c. To any person pursuant to an order or direction of an Authority;
+d. To any credit information company, other agencies or any information utility or other lenders
+of the Borrower including who may also use, process the said information and data disclosed 
+by the Lender in the manner as deemed fit by them, and who may for consideration or 
+otherwise furnish such processed information and data or products thereof prepared by them, 
+to banks/financial institutions and other credit guarantors or registered users, as may be 
+specified by the RBI; 
+e. To any other person as the Lender may deem fit.
+25.2.
+The Borrower acknowledges that the privacy policy of the Lender, as amended or updated 
+from time to time in accordance with Applicable Laws, shall form part of and be read together 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+with this Agreement and shall govern the collection, processing, use, storage and disclosure of 
+the Borrower’s personal data and information, to the extent applicable. The Borrower confirms 
+that the Borrower has read and understood the privacy policy and consents to the processing of 
+the Borrower’s personal data and information in accordance therewith and as otherwise permitted
+under Applicable Laws.
+25.3.
+The Borrower(s) agree as a pre-condition of the Loan Facility given to the Borrower by the 
+Lender that in case the Borrower commit default in the payment/repayment of the outstanding 
+amounts on the Due Date(s), the Lender and/or RBI will have an un-qualified right to disclose or 
+publish the name/s of the Borrower(s) as defaulter/s in such manner and through such medium as
+the Lender or RBI in their absolute discretion may think fit including the photographs of the 
+Borrower.
+25.4.
+The Borrower(s) hereby authorise the Lender to carry out their electronic KYC authentication
+and to fetch electronic KYC data from Aadhaar data base and/or from any other sources as 
+permitted by Applicable Law.
+25.5.
+The Borrower(s) hereby provide consent to the Lender to carry out the KYC and other 
+requisite checks by such processes as may be permissible under Applicable Law including 
+authentication / verification of documents or details submitted for KYC purpose, accessing and 
+procuring data from databases maintained by statutory or other Authority.
+25.6.
+The Borrower(s) expressly authorise/consent to the Lender, its various service providers or 
+agents, including for marketing, collections and recovery agents to contact the Borrower 
+telephonically, through e-mails, telephones, messages, SMS, or other applications or otherwise 
+even if the names of the Borrower appear in the Do Not Call or Do Not Disturb Register to 
+inform the Borrower about the outstanding amounts under the Loan Documents or any other 
+aspect pertaining to any facilities availed or to be availed by the Borrower(s), as per RBI 
+/Statutory norms.
+26. JURISDICTION AND GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of India.
+a. Upon the occurrence of an Event of Default, the Lender may at its discretion exercise all or 
+any of the rights conferred under the Loan Documents and/or Applicable Laws or other 
+agreements and arrangements before any Court/Tribunal/appropriate Forum Without 
+prejudice to any rights and remedies the Lender may have.
+b. Subject to the arbitration provisions in Clause 24 (Arbitration) below, the courts in Chennai, 
+India shall have exclusive jurisdiction over all matters arising pursuant to this Agreement and
+specifically matters which are not arbitral and hence cannot form subject of arbitration.
+27. ARBITRATION
+27.1.
+Subject to the provisions contained in Clause 26 (Jurisdiction and Governing Law), any 
+claim(s), controversy (ies), difference(s), dispute(s) arising out of or in connection with this 
+Agreement shall be finally settled under the Rules of Arbitration of the Southern India Chamber 
+of Commerce and Industry - Centre for ADR (SCA) by a sole arbitrator to be appointed by the 
+SCA, in accordance with the said Rules. The Parties hereby gives his/her/their consent for such 
+appointment of the Sole Arbitrator by the SCA. The procedures as prescribed under the 
+Arbitration and the Conciliation Act, 1996 as amended up to date shall be adopted by the 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Arbitrator in this regard. The place of arbitration shall be Chennai, India and the language of the 
+arbitration shall be in English. The award passed by the Sole Arbitrator shall be final and binding
+on both the Parties herein.
+27.2. Notwithstanding the provisions of Clause 24 above, nothing precludes either party from 
+seeking interim equitable relief, including an action seeking injunction or specific performance, 
+in any court of competent jurisdiction.
+27.3.
+To the extent that any of the Borrowers may in any jurisdiction claim for itself or its assets, 
+immunity from suit, execution, attachment (whether in aid of execution, before judgment or 
+otherwise) or other legal process and to the extent that in any such jurisdiction there may be 
+attributed to itself or its assets such immunity (whether or not claimed), the Borrower hereby 
+irrevocably agree not to claim and hereby irrevocably waive such immunity.
+28. BINDING
+The Agreement shall become binding on the Borrower from the date first herein below written. It
+shall remain in force and shall not be redeemed till all the monies due and payable under the 
+Agreement are fully paid off to the satisfaction of SCCL.
+29. REPRESENTATIONS, WARRANTIES AND UNDERTAKINGS
+29.1. Borrower hereby represent and warrant that:
+a. The Borrower is legally entitled and possessed of the power and authority to execute, deliver 
+and perform, and have taken all the necessary action to authorize the execution, delivery and 
+performance of the Agreement and the transactions contemplated therein;
+b. Upon execution, the Agreement will constitute their legal, valid, binding and enforceable 
+obligations; and
+The entry, delivery and performance by the Borrower, and the transactions contemplated by 
+the Agreement
+c. Do not and will not conflict with (i) any applicable law, (ii) its constitutional documents, or 
+(iii) any other agreements, instruments or documents binding upon it/him or any of its/ his 
+assets.
+d. There are no proceedings relating to Taxes pending against the Borrower under the Income-
+tax Act, 2025 ('ITA') and (a) all undisputed claims of Tax under the ITA have been duly 
+discharged; and (b) there are no Tax claims under the ITA. All Tax payments (including 
+withholding taxes) under the ITA have been discharged by the Borrower.
+e. The Borrower(s) have not:(a) engaged in corrupt practices, fraudulent practices, or other 
+illegal practices in connection with their respective business and operations, (b) engaged in 
+money laundering or act in breach of any Applicable Law relating to money laundering; or 
+(c) engaged in the financing of terrorism.
+f. All representations and warranties of the Borrower contained herein shall survive the 
+execution of this Agreement and be deemed to be repeated as of each day until the Final 
+Settlement Date.
+g. The Borrowers shall pay all stamp duty, registration fees, and other charges and penalties 
+payable in respect of the Facility, the Loan Documents and/or the transactions contemplated 
+thereby.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+29.2.
+In addition to the representations and warranties set out in Clause 29.1 above, the Borrower 
+hereby represent, warrant, assure and confirm that:
+a. The entry, delivery and performance by the Borrower, and the transactions contemplated by 
+the Agreement do not and will not conflict with any of its borrowing limits.
+b. All accounts and financial statements furnished by the Borrower to the Lender have been 
+prepared in accordance with generally accepted accounting standards and practices in force 
+in India consistently applied during the respective periods (except as stated in the published 
+financial statements) and present complete, true and fair financial position of the Borrower.
+c. All information provided by the Borrower to the Lender for the purposes of this Loan 
+Facility is complete, true and accurate. No information has been given or withheld which 
+results in the information contained herein or in any other Loan Documents, being untrue or 
+misleading.
+d. The Borrower is in compliance in all material respects with all applicable laws.
+e. The Borrower is able to, and have not admitted their inability to, pay their respective debts as
+they mature and have not suspended making payment on any of their respective debts and 
+will not be deemed by a court to be unable to pay their respective debts within the meaning 
+of applicable laws, nor in any such case, will it become so in consequence of entering into 
+this Agreement.
+f. The Borrower has not taken any action nor have any steps been taken or legal proceedings 
+been started or threatened against them for their winding-up, dissolution, liquidation, 
+bankruptcy or reorganization, for the enforcement of any security over their respective assets
+or for the appointment of a liquidator, supervisor, receiver, administrator, compulsory 
+manager, trustee or other similar officer in respect of them or any of their respective assets.
+g. As on the date hereof, the Borrower has not taken any corporate action, any legal 
+proceedings or other procedure or steps in relation to any bankruptcy proceedings.
+h. No Event of Default has occurred or is continuing or might reasonably be expected to result 
+from the borrowing of this Loan Facility.
+i. Save and except the encumbrance created on the Securities under this Agreement to secure 
+the Loan Amount, the Securities are free from any other encumbrance and are not subject to 
+any attachment, or other order or process issued by any governmental authority and that the 
+Borrower has a clear and marketable title to the Securities.
+j. All stamp duties in respect of the Securities, at the time of its acquisition or otherwise have 
+been duly paid.
+k. The Loan Security when created shall form a legal, valid, enforceable and binding security 
+expressed to be created on the Loan Security and all other necessary and appropriate actions 
+have been taken and/or shall be taken so that security interest is created and perfected on all 
+right, title, estate and interest of the Borrower in the Loan Security and all consents required 
+under applicable law or pursuant to an agreement with any person for the creation, 
+effectiveness, priority and enforcement of such Loan Security have been obtained.
+l. Neither any steps have been undertaken nor the Borrower has been declared to be a willful 
+defaulter.
+m. The KYC requirements of the Lender have been and shall be fulfilled and all other terms and
+conditions as may be prescribed by RBI or by the Lender from time to time have been and 
+shall be complied with.
+29.3.
+a.
+The Lender hereby represents and warrants as on the date hereof:
+It is a company duly incorporated and validly existing under applicable law and the Lender is
+duly authorised to enter into this Agreement.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+b. This Agreement has been duly and validly executed and constitutes a legal and binding 
+obligation of the Lender enforceable against it in accordance with its terms.
+30. CONFIDENTIALITY
+30.1. During the Term of the Agreement, the Borrower may receive information relating to the 
+Lender that is not known to the general public ("Confidential Information"). The Borrower 
+agrees that all Confidential Information will remain the Lender's exclusive property; (b) the 
+Borrower will use Confidential Information only as is reasonably necessary for the purpose of 
+this Agreement and ensure that persons who have access to Confidential Information will be 
+made aware of and will comply with the obligations in this provision; and (c) the Borrower will 
+not otherwise disclose Confidential Information to any individual, company, or other third party, 
+including any Affiliates.
+30.2.
+The Borrower agrees that they may not issue any press release or make any public statement 
+related to the services provided by the Lender, or use the Lender's name, trademarks or logo in 
+any way (including in promotional material) without advance written permission, or misrepresent
+or embellish the relationship between the Parties in any way.
+30.3.
+The Borrower further agrees not to disclose this Agreement or the contents hereof, and any 
+amendments or annexures hereto or any contents thereof without the prior written consent of the 
+Lender.
+31. COSTS AND EXPENSES
+31.1. All costs and expenses arising out of: (i) the grant of the Loan Facility (including but not 
+limited to any amounts payable as stamp duty on the Loan Documents) or creation and perfection
+of Loan Security; (ii) the negotiation, cost of legal and tax consultants, preparation and execution
+of this Agreement or any other agreement, document or other writings executed pursuant to the 
+provisions of this Agreement; (iii) and cost and expenses incurred for the preservation/ 
+enforcement of the Loan Security and/or after the occurrence of an Event of Default, shall be 
+solely borne by the Borrower.
+31.2. All applicable taxes levied by central and state authorities from time to time and as amended 
+from time to time, which are payable in respect of the transactions contemplated under the Loan 
+Documents shall be borne by the Borrower. Each party shall bear its own income taxes.
+31.3. All payments to be made by the Borrower to the Lender under the Agreement and Loan 
+Documents shall be made free and clear of and without deduction for or on account of taxes 
+unless the Borrower is required to make such a payment subject to the deduction or withholding 
+of taxes, in which case the sum payable by the Borrower in respect of which such deduction or 
+withholding is required to be made shall be increased to the extent necessary to ensure that, after 
+the making of the required deduction or withholding, the Lender receives and retains (free from 
+any liability in respect of any such deduction or withholding) a net sum equal to the sum which it
+would have received and so retained had no such deduction or withholding been made or 
+required to be made, except if the deduction or withholding was made in respect of any taxes 
+calculated with reference to the income of the Lender in accordance with applicable law, 
+provided that the Borrower delivers to the Lender tax withholding or tax deduction certificates 
+within 30 days in respect of such withholding or deduction evidencing that the amounts deducted
+and/or withheld have been paid and/or deposited with the relevant Governmental authority.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+32. APPROPRIATION OF PAYMENTS
+Notwithstanding anything contained under this Agreement, unless otherwise agreed to by the 
+Lender, any payments due and payable to the Lender and made by the Borrower shall be 
+appropriated towards such dues in the following order:
+a. Firstly, towards costs, charges and expenses incurred by the Lender in accordance with the 
+terms of the Loan Documents;
+b. Secondly, reimbursement of all costs and expenses paid by the Lender as provided under 
+Clause 31 (Costs and Expenses);
+c. Thirdly, towards interest, additional interest or other interest payable in accordance with the 
+terms of this Agreement; and
+d. Lastly, towards the principal amount of the Loan Facility and other Loan Amounts due and 
+payable under the Loan Documents.
+33. MISCELLANEOUS
+33.1. No Implied Waiver or Impairment: No delay or omission of the Lender in exercising any 
+right, power or remedy accruing to the Lender upon any default hereunder shall impair any such 
+right, power or remedy or be construed to be a waiver thereof or any acquiescence in such 
+default, nor shall the action or inaction of the Lender in respect of any default or any 
+acquiescence by it in any default affect or impair any right power or remedy of the Lender in 
+respect of any other defaults nor shall any single or partial exercise of any such right, power or 
+remedy preclude any further exercise thereof or the exercise of any other right, power or remedy.
+The rights and remedies of the Lender herein provided are cumulative and not exclusive of any 
+rights or remedies provided by law or equity.
+33.2. Express Waiver: A waiver or consent granted by the Lender under this Agreement will be 
+effective only if given in writing and then only in the instance and for the purpose for which it is 
+given.
+33.3. Discharges and Releases: Notwithstanding any discharge, release or settlement from time to 
+time between the Lender and Borrower, if any discharge or payment in respect of the obligations 
+of any of the Borrower under this Agreement is avoided or set aside or ordered to be surrendered,
+paid away, refunded or reduced by virtue of any provision of law or enactment relating to 
+bankruptcy, insolvency, liquidation, winding up, composition or arrangement for the time being 
+in force or for any other reason resulting in the above, the Lender shall be entitled hereafter to 
+enforce this Agreement as if no such discharge, release or settlement had occurred.
+33.4. Limitation on Rights of Others: Nothing in this Agreement, whether express or implied, 
+shall be construed to give to any person other than the Lender any legal or equitable right, 
+remedy or claim under or in respect of this Agreement, except as expressly provided in this 
+Agreement, any covenants, conditions or provisions contained herein all of which are, and shall 
+be construed to be, for the sole and exclusive benefit of the Lender.
+33.5. Other Remedies: The rights and remedies conferred upon the Lender under this agreement:
+a. Shall not prejudice any other rights or remedies to which the Lender may, independently of 
+this Agreement, whether by statute or otherwise, be entitled; and
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+b. Shall not be prejudiced by any other rights or remedies to which the Lender may, 
+independently of this Agreement, be entitled to, or any collateral or other security now or 
+hereinafter held by the Lender.
+33.6. Right of Lender: Borrower hereby agrees that the Lender shall be permitted to share the 
+details of the Borrower with its group companies / associates / partners / business partners / third 
+parties, who shall be permitted to approach / solicit / make offerings to the Borrower.
+34. SEVERABILITY
+Every provision contained in this Agreement shall be severable and distinct from every other 
+such provision and if at any time any one or more of such provisions is or becomes invalid, 
+illegal, or unenforceable in any respect under any law, the validity, legality and enforceability of 
+the remaining provisions hereof shall not be in any way affected or impaired thereby.
+35. COUNTERPARTS
+The Agreement may be executed in any number of originals or counterparts, each in like form 
+and all of which when taken together shall constitute one and the same agreement and any Party 
+may execute this Agreement by signing any one or more of such originals or counterparts. This 
+Agreement shall be deemed to have been executed when it is signed on behalf of both Parties.
+36. ELECTRONIC MEDIA
+36.1.
+The Borrower hereby confirms, acknowledges and agrees that the online acceptance of this 
+Agreement including any addendums hereto through SCCL's website or such other internet or 
+web based means results in a binding contract between the Parties and the Borrower 
+acknowledges and agrees that such electronic acceptance, electronic records, electronic 
+communications and electronic signatures shall have the same legal validity and enforceability as
+physical records, communications and signatures, to the extent recognised under the Information 
+Technology Act, 2000 and other Applicable Laws and the same shall constitute evidence of the 
+transactions and communications recorded therein.
+36.2.
+The Borrower is aware that transmission of this Agreement, addendums to the Agreement, 
+terms and conditions, instructions, acceptances and communications ("Communications") 
+through electronic means such as e-mail, facsimile, SMS text messaging, websites, online 
+acceptance, etc. ("Electronic Media") involves a number of risks including fraudulent alterations 
+and incorrect transmissions and absence of confidentiality. However, the Borrower is desirous of 
+receiving Communications from and providing Communications to the Lender through 
+Electronic Media for various matters under this Terms of Facility including in relation to the 
+Loan and the operation thereof.
+36.3.
+In consideration of the Lender permitting the same, the Borrower hereby irrevocably, 
+confirms and undertakes to the Lender as under:
+a. The Lender shall be entitled (without being bound to do so) to rely upon the 
+Communications provided through Electronic Media (and believe the same to be genuine), 
+for their requirements. In case of any question as to what were the Communications provided
+or received, the records of the Electronic Media received by the Lender shall be treated as 
+final, conclusive and binding.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+b. The Borrower has ensured and shall ensure that the Communications provided through 
+Electronic Media to the Lender are provided by the Borrower and hereby agrees and 
+confirms that the Lender shall not be responsible for conducting any verification whatsoever 
+in this regard.
+c. The Borrower confirms that the Lender shall not be bound to act in accordance with whole or
+any part of the communications as it may appear in the Communications so conveyed and the
+same shall be at the sole risk of the Borrower.
+d. The Lender shall not be liable for the consequences of any act or any refusal or omission to 
+act or deferment of action by the Lender on basis of the Communications through the 
+Electronic Media.
+e. The Lender shall not be required to await receipt of the Communications in writing before 
+taking any action in connection with the Communications provided through any Electronic 
+Media and the non-delivery and non-conformity of such Communications in writing shall not
+in any manner prejudice the Lender's rights under the Agreement or otherwise.
+f. The Lender may at any time whatsoever without assigning any reason withdraw or modify or
+add the facility/ies provided to the Borrower in relation to the Communications through 
+Electronic Media.
+37. NON-WITHDRAWAL OF LOAN AMOUNT POST COOLING PERIOD
+37.1. Non-Withdrawal & Charges:
+The borrower acknowledges that the sanctioned loan amount is available for withdrawal. In the 
+event the borrower does not withdraw the sanctioned amount within the cooling period and until 
+the end of the loan tenure, the following charges will be levied:
+Sr No
+Charge Type
+Amount (INR)
+1
+2
+3
+LIEN MARKING CHARGES
+STAMP DUTY CHARGES
+LIEN REMOVAL CHARGES
+37.2. Non-Payment of Charges:
+Rs. 450.00 + GST
+Rs. {{LAKHS}} + GST
+Rs. 100.00 + GST
+In the event the Borrower fails to pay the applicable charges, SCCL reserves the right to adjust 
+the outstanding amount from the pledged funds with addition of Invocation charges. After 
+recovery of the charges, SCCL will revoke/release the remaining pledged mutual fund units.
+38. EXCESS PAYMENT AND REFUND
+If the Borrower remits or the Lender receives any amount in excess of the amounts due and 
+payable under this Agreement, whether on account of inadvertent payment, duplicate payment, 
+advance payment, system error, reconciliation adjustment, or otherwise ("Excess Payment"), the 
+Lender shall be entitled to verify and reconcile such Excess Payment.
+Upon reconciliation, the Lender shall first appropriate the Excess Payment towards any 
+outstanding principal, interest, penal charges, fees, taxes, expenses, or any other amounts payable
+in no particular order by the Borrower under this Agreement or any other facility availed by the 
+Borrower from the Lender, to the extent permissible under applicable law.
+Where, after such appropriation, no amount remains due from the Borrower and an Excess 
+Payment continues to exist, the Lender shall refund the balance Excess Payment to the Borrower 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+through the registered bank account or such other mode as may be agreed with the Borrower, 
+subject to completion of necessary verification, regulatory requirements, and validation of the 
+Borrower's bank account details.
+The Borrower shall promptly provide such information and documents as may reasonably be 
+required by the Lender to facilitate the refund process. The Lender shall not be liable for any 
+delay in processing the refund arising due to incomplete, inaccurate, or incorrect information 
+provided by the Borrower or due to any statutory, regulatory, or judicial restrictions.
+The refund of the Excess Payment shall constitute full and final settlement of the Lender's 
+obligation in respect of such Excess Payment, and no interest shall be payable thereon unless 
+otherwise required under applicable law or expressly agreed by the Lender.
+39. INTEREST ON SAME-DAY WITHDRAWAL AND REPAYMENT
+The Borrower acknowledges and agrees that interest on each withdrawal or disbursement under 
+the Loan Facility shall accrue from the date on which the funds are disbursed or made available 
+to the Borrower.
+Where the Borrower repays, in whole or in part, any amount withdrawn under the Loan Facility 
+on the same calendar day as the date of such withdrawal, the Borrower shall nevertheless be 
+liable to pay interest for a minimum period of one (1) day on the amount so withdrawn, at the 
+applicable rate of interest specified in the Sanction Letter, Key Fact Statement (KFS), or other 
+Loan Documents.
+For the avoidance of doubt, any withdrawal under the Loan Facility shall be deemed to constitute
+utilization of the Loan from the date of disbursement, and the minimum one (1) day's interest 
+shall be payable irrespective of the time of withdrawal or repayment on such day.
+The Parties hereto have signed this Agreement in acceptance of all terms and conditions stated above 
+on {{DATE_LONG}}
+Party of the first Part-Borrower:
+1)
+Name: {{NAME}}  
+Address: {{ADDR1}}, {{ADDR2}}, 
+2)
+{{ADDR3}}
+3) 
+Signature (Borrower): 
+Party of the third Part:
+1)
+2)
+Name: Shriram Credit Company Limited
+Mailing Address: Shriram House, No.4, Burkit 
+Road, T.Nagar, Chennai, TamilNadu, 600017
+3) 
+Signature: 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+NOTICE DETAILS OF BORROWER
+Annexure-1
+    SCHEDULE OF CHARGES
+Annexure 2 (Schedule of Charges to Agreement No: MF0000000000025)
+Sr. No
+Charge Head
+Charges
+1
+2
+3
+4
+5
+6
+7
+8
+9
+Loan
+Purpose
+Tenure
+Interest Rate
+Interest Frequency
+Rs. {{AMOUNT}}
+{{PURPOSE}}
+12 Months months
+10.5 %
+Monthly
+Loan Processing Charges
+Rs. {{FEE}} + GST
+Loan Renewal Charges
+Rs. 999 + GST
+Bounce Charges
+Penal Charges
+Rs. 100 + GST per instance
+36% p.a. charges shall be payable on the unpaid 
+interest/EMI for the delayed period in case of delay in 
+payment
+Other Terms:
+The facility shall be used by the Borrower only for the mutual fund units/ securities approved by 
+SCCL.
+By signing this Schedule of Terms, the Borrower acknowledges and agrees to all of the provisions
+set out herein, as if the same were set out in full in the Agreement, mutatis mutandis
+SIGNATURE/ I Accept:
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+RISK DISCLOSURE – LAMF
+There are inherent risks associated with borrowing against Marketable Securities. You should 
+therefore consider carefully whether such borrowing is appropriate to you and your particular 
+financial circumstances. Some of the issues which you should take note of and understand in deciding 
+whether to borrow moneys on this basis, are given below. However, you should take independent 
+advice, especially on the risks involved, before entering into LAMF agreement and availing the loan 
+under LAMF facility.  SCCL is not providing personal investment advice in making the LAMF 
+facility available. In particular, SCCL, in providing this facility to you has not considered in any way 
+its suitability to your financial circumstances and needs etc.
+1.  The securities are exposed to the volatility of the market and to the determination by SCCL, of
+the value of the securities forming part of your margin / security. If there is a decrease in the
+value of the securities which are forming a part of your margin, you will be required to make up
+the shortfall of such margin on a short notice.
+SCCL may lend funds up to the point where the Security Value of your portfolio has prescribed
+margin   coverage   over   and   above   your   loan   value.   Each   approved   Security   is   assigned   a
+Valuation factor. The Market Value of a Security multiplied by its Valuation factor represents
+the maximum amount SCCL shall at any point of time lend against that Security provided it has
+prescribed margin coverage over and above the loan amount. SCCL may change this Valuation
+factor   at   its   absolute   discretion   at   any   time,   which   will   affect   the   amount   which   SCCL   is
+prepared to advance and as regards your existing loan outstanding you may be required to either
+top up your portfolio with additional acceptable securities or funds or reduce your borrowing to
+acceptable levels. In some instance the shortfall must be made good within few hours of receipt
+of notice of communication of shortfall.
+Examples:
+(a) Let's consider the following example where the value of the loan /finance amount is denoted by
+"a", value of the securities forming part of the margin is denoted by "b" and the margin % is  
+[(b-a)/b]*100 and 
+a = Rs. 40,00,000, 
+b = Rs 50,00,000, 
+Margin% = [(50,00,000 - 40,00,000)/50,00,000]*100 = 20%
+i.e., you have securities (forming margin / security) with a market value of say Rs. 50,00,000
+against a loan balance of Rs.40,00,000 from SCCL, the available margin is 20%, assuming that
+SCCL requires you to maintain atleast 20% margin in your   account in the form of approved
+securities, your position is just satisfactory.
+(b) Now taking a hypothetical example if due to fall in the market &or fall in the value of particular
+securities against which you have availed the loan, the value of your margin / security falls to say
+Rs. 45,00,000, the revised available margin % position shall stand changed as under:
+a = Rs 40,00,000, 
+b = Rs 45,00,000, 
+Margin% = [(45,00,000-40,00,000)/45,00,000]*100 = 11 %
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Now as SCCL requires you to maintain at least 20% margin in your LAMF account in the form
+of approval securities, there arises a margin shortfall in your loan account and accordingly you
+would therefore be required to repay proportionate amount of your loan according to the value of
+the   margin   shortfall   in   your   account   in   order   to   bring   your   margin%   at   desired   level   or
+alternatively, you may provide additional approved securities to be held as collateral against your
+loan. These securities would have to have a Net Asset Value in case of Mutual Fund units,
+which, when multiplied by the appropriate valuation factor, would make up the margin shortfall
+and raise your available margin% to the desired level, which in this illustration is 20%.
+If you are unable to make up the shortfall by following either or both of these courses of action,
+SCCL may be forced to sell your securities to meet the above mentioned margin shortfall in your
+account. If you are required to make good any shortfall, SCCL is entitled to exercise its rights
+against any security held by it, even if you have not received notice of the shortfall.
+As  you are required to ensure maintenance of required margin on your own without notice,
+SCCL may decide to take liquidation / sale action / redemption of your mutual fund units at any
+time without notice, if circumstances so require in the opinion and discretion of SCCL. Such
+situations may disallow you to respond by making payments if you have been depending on
+margin calls / demands by SCCL by telephone and/or email etc.
+(c)   An even more extreme situation may arise if the value of your securities falls to such levels that
+their cumulative value falls below the balance of your loan amount. In this case, even after sale /
+liquidation / redemption of your entire set of mutual fund units i.e. portfolio, there may still
+remain balance payable by you in your loan account, which you are obliged to pay. It may also
+be worth considering that as SCCL is entitled to sell any security that it holds as collateral /
+security, if necessary, to make good the shortfall it may sell/redeem such securities which you
+may not have desired to be sold.
+FURTHER   IN   MOST   OF   SUCH   SITUATIONS   EXTREME   LOSSES   MAY   ACCRUE   TO
+YOU   AS   YOUR   SECURITIES   WOULD   GET   SOLD   IN   A   DEPRESSED   MARKET
+CONDITION   AND   MAY   FETCH   YOU   MUCH   SMALLER   AMOUNTS   THAN   WOULD
+HAVE BEEN THE CASE IN DIFFERENT MARKET CONDITIONS.
+2. You should also take the precautionary measure of calling SCCL to discuss the impact on your
+position if there are changes occurring in the market which may require topping up of margin by
+you, If you are intending to travel or if you are not likely to be contactable for a period of time,
+arrangements should be made so that, if necessary, additional securities or funds can be placed
+with   SCCL.   In   this   way   you   can   protect   yourself   against   SCCL   taking   action   to   liquidate
+securities held as security, to make good any shortfall occasioned by a drop in value of the
+securities or a change in the applicable valuation factor.
+3. The amount that SCCL is prepared to advance against the securities forming part of your margin
+and the securities against which SCCL is prepared to advance money is not an indication of the
+financial stability or financial prospects of the securities selected and should not be used as a
+guide to which securities you decide to borrow against.
+4. SCCL does not provide taxation advice and recommends that you seek professional taxation
+advice before making any investment or making an application for a loan under the securities
+based lending scheme.
+5.
+If you are intending to negatively gear your investment you should be aware that you may not
+have received the income or the benefit of any tax deductions at the time you are required to pay
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+interest to SCCL. There is therefore a possible timing mismatch in terms of making an interest
+payment before you receive any tax benefit. You should ensure that you will have adequate
+income or resources at all times to make any interest payments you are required to make or that
+you   have   sufficient   borrowing   capacity   under   the   LAMF   facility   to   allow   capitalization   of
+interest.
+Signed and delivered by the within named
+Borrower:     {{NAME}}
+Place:
+Date:
+{{CITY}}
+{{DATE}}
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Annexure 2
+Loan Application Form
+Name of The borrower
+{{NAME}}
+PAN
+Loan proposal /  Customer ID
+{{PAN_MASK}}
+SCCLMF20260900155 / 
+A000000011
+Date of Birth in DD/MM/YYYY
+{{DOB}}
+Gender
+Father's Name / Spouse Name
+Mother's Name
+{{GENDER}}
+{{FATHER}}
+{{MOTHER}}
+Permanent Address
+Mobile Number
+Email id
+Occupation
+Name of the organization and address
+Loan Amount applied for (in Rs. Lakhs)
+Tenure
+Purpose of Loan(Please specify the exact 
+purpose)
+Source of Income
+Annual Income
+{{ADDR1}}, 
+{{ADDR2}}, 
+{{ADDR3}}
+{{MOBILE}}
+{{EMAIL}}
+{{OCCUPATION}}
+NA
+₹
+ {{LAKHS}}
+12 Months
+{{PURPOSE}}
+{{SOURCE}}
+{{INCOME}}
+If existing customer of SCCL, Please mention 
+loan account number
+Details of Loans from SCCL
+NA
+NA
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+I hereby declare that the information furnished are true and correct. I understand that SCCL shall 
+share the applicant's data with Credit Information Companies and other statutory bodies for the 
+purpose of verification and for complying with the laws of the land. I also understand that SCCL 
+charges different rates of interest for different categories of customers based upon its internal risk
+gradation parameters. I also understand that the terms of the loans shall be changed by SCCL 
+during the course of the loan from time to time and I/ We agree to abide by the amended terms 
+and conditions. I confirm that I am a citizen of India and are resident of India.
+Signature of the applicant: 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+
