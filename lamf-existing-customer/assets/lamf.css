@@ -727,3 +727,9 @@ body.page-screens { padding: 40px 76px; }
 .amt-edit input { width: 110px; border: 0; outline: none; font-size: 17px; font-weight: 700; background: transparent; text-align: right; }
 .sel-err { max-width: 260px; margin: 6px 0 0 auto; min-height: 0; }
 @media (max-width: 560px) { .lb-edit { width: 100%; } .lb-edit input { width: 60%; font-size: 26px; } }
+
+/* ---------- 15 / 16 KYC mocks + failure note on the KYC page (DISC-047) ---------- */
+.kyc-mock .mock-p { font-size: 13.5px; color: var(--ink-2); margin-top: -4px; }
+.mock-2btn { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mock-2btn .btn { margin-top: 26px; }
+.kyc-fail { margin: 10px 0 0; min-height: 0; }
