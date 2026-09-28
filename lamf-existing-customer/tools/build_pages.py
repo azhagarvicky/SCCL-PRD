@@ -19,6 +19,7 @@ PAGES = {
  "09) MF Central to LOS Analysing Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.curated(), LAMF.T.loader('Analyzing your mutual fund portfolio..', 2)))",
  "10) MF Central to LOS Generating Loan Page": "LAMF.render(LAMF.withModal(LAMF.T.curated(), LAMF.T.loader('Generating best loan offers for you', 3)))",
  "11) Curated Offers Page": "LAMF.render(LAMF.T.curated())",
+ "12) Mutual Fund Selection Page": "LAMF.render(LAMF.T.selection(LAMF.SEL_DEFAULT))",
 }
 TPL = """<!doctype html>
 <html lang="en">
