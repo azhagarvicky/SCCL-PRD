@@ -26,6 +26,7 @@
     '12) Mutual Fund Selection Page',
     '12.1) Mutual Fund Selection page loan amount edit',
     '12.2) Mutual Fund Selection page loan amount edit as fund wise',
+    '13) Loan Application Summary',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -409,6 +410,36 @@
     <div class="cta-bar"><button class="btn ${o.ctaDisabled ? 'btn-disabled' : 'btn-primary'}" data-cta="continue-to-apply">Continue to apply ${rs(o.cta || '2,00,00,000')}</button></div>`;
   };
   const SEL_DEFAULT = { selected: { icici: '1,40,30,794', axis: '53,69,420', kotak: '5,99,786' } };
+  /* 13 Loan application summary (same layout as the new-customer journey's 14). Figures follow the
+     loan amount chosen on screen 12 (reference values: ₹ 1,55,36,100): pledge value = amount ÷ 75% LTV,
+     monthly interest = amount × 10.5% ÷ 12, processing fee = 0.5% of amount (rounded) + 18% GST; other charges fixed. */
+  T.summary = (amount = 15536100) => {
+    const f0 = (n) => Math.round(n).toLocaleString('en-IN');
+    const f2 = (n) => n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return `
+    <div class="sticky-top">${plainHeader()}${stepper(1)}</div>
+    <main class="wrap sum-page">
+      <a class="back" data-cta="back">${ICON.back}Back</a>
+      <div class="wrap-840 sum">
+        <h3>Application details</h3>
+        <div class="sum-box"><div><span>Loan amount</span><b>${rs(f0(amount))}</b></div><div style="text-align:right"><span>Pledge Value</span><b>${rs(f2(amount / 0.75))}</b></div></div>
+        <div class="kv big"><b>Tenure</b><span>12 months</span></div>
+        <div class="kv big"><b>Disbursement Type</b><span>Multiple</span></div>
+        <div class="kv big"><b>Repayment Type</b><span>Interest Only</span></div>
+        <div class="sum-2"><div><span>Interest Rate ${i()}</span><em>10.5% p.a</em></div><div><span>Monthly Interest ${i()}</span><em>${rs(f2((amount * 0.105) / 12))}</em></div></div>
+        <h3>Charges (Inclusive of GST)</h3>
+        <div class="kv"><span class="g">Processing fee ${i()}</span><em>${rs(f0(Math.round(Math.round(amount * 0.005) * 1.18)))}</em></div>
+        <div class="kv"><span class="g">Stamp duty ${i()}</span><span>${rs('236')}</span></div>
+        <div class="kv"><span class="g">Lien Marking Charges ${i()}</span><span>${rs('531')}</span></div>
+        <div class="kv"><span class="g">Lien Removal Charges ${i()}</span><span>${rs('118')}</span></div>
+        <h3>Repayment details</h3>
+        <div class="kv"><span class="g">Interest autopay</span><span>5th of every month</span></div>
+      </div>
+      <div style="height:30px"></div>
+    </main>
+    <div class="cta-bar"><button class="btn btn-primary" style="width:178px" data-cta="continue">Continue</button></div>`;
+  };
+
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -510,7 +541,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -661,7 +692,8 @@
   };
   const selectionBehaviour = (start = {}) => {
     const maxOf = (id) => num(F[id].cl);
-    let amounts = Object.fromEntries(Object.entries(start.selected || SEL_DEFAULT.selected).map(([k, v]) => [k, num(v)]));
+    // Start from the review state, else the selection saved on Continue (Back from 13), else the default
+    let amounts = Object.fromEntries(Object.entries(start.selected || store.get(K.sel) || SEL_DEFAULT.selected).map(([k, v]) => [k, num(v)]));
     let editLoan = start.editLoan ?? null;       // string while the loan edit box is open
     let editing = start.editing || {};           // {id: string} fund boxes open
     let loanErr = '', fundErr = {};
@@ -698,7 +730,8 @@
       q('[data-cta="continue-to-apply"]').onclick = () => {
         if (editLoan != null || Object.keys(editing).length) return;          // finish editing first
         if (total() < LOAN_MIN) { loanErr = SEL_ERR.min; return paint(); }
-        toast('The next screen will be added once its screenshot is shared.');
+        store.set(K.sel, amounts);                                           // kept for the summary and for Back
+        go('13) Loan Application Summary');
       };
       // Loan amount: pencil → edit box → Update
       if (q('[data-cta="edit-loan"]')) q('[data-cta="edit-loan"]').onclick = () => { editLoan = String(total()); loanErr = ''; paint(); q('#loan-in').focus(); };
@@ -1061,6 +1094,18 @@
 
     /* ---- 12 MF selection (interactive); 12.1 / 12.2 open with the loan box / a fund box in edit mode ---- */
     '12) Mutual Fund Selection Page': () => selectionBehaviour(),
+
+    /* ---- 13 Summary: figures for the amount chosen on 12; Back → 12; Continue → next screen (pending) ---- */
+    '13) Loan Application Summary': () => {
+      const saved = store.get(K.sel);
+      if (saved) {
+        const amount = Object.values(saved).reduce((a, b) => a + b, 0);
+        const tmp = document.createElement('div'); tmp.innerHTML = T.summary(amount);
+        document.querySelector('main.sum-page').replaceWith(tmp.querySelector('main.sum-page'));
+      }
+      document.querySelector('[data-cta="back"]').onclick = () => go('12) Mutual Fund Selection Page');
+      document.querySelector('[data-cta="continue"]').onclick = () => toast('The next screen will be added once its screenshot is shared.');
+    },
     '12.1) Mutual Fund Selection page loan amount edit': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editLoan: '9530700' }),
     '12.2) Mutual Fund Selection page loan amount edit as fund wise': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editing: { icici: '100000' } }),
   };
