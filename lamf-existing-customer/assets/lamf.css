@@ -955,3 +955,5 @@ body.page-screens { padding: 40px 76px; }
 /* Checked checkboxes and the bank-card tick: black tick on yellow (DISC-064) */
 .chk input:checked { background: var(--yellow) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%230A0A0A' stroke-width='2'/%3E%3C/svg%3E") center/12px no-repeat; }
 .kyc-bank .kb-ok { color: var(--ink); }
+/* Summary values (Interest Rate, Monthly Interest, Processing fee) in black (DISC-065) */
+.kv em, .sum-2 em, .kv em .rs, .sum-2 em .rs { color: var(--ink); }
