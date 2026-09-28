@@ -42,6 +42,10 @@ PAGES = {
  "21.2) Loan Agreement e-Sign Signed Successfully": "LAMF.render(LAMF.T.esignDone())",
  "21.3) Loan Agreement Signed Successfully": "LAMF.render(LAMF.T.agreementSigned())",
  "19.1) Agreement and E-Mandate Page Loan Agreement signed": "LAMF.render(LAMF.T.agreement(true))",
+ "22) E-Mandate Page": "LAMF.render(LAMF.T.emandate())",
+ "22.1) E-Mandate NPCI Simulation Page": "LAMF.render(LAMF.T.npci())",
+ "22.2) E-Mandate Authenticated Successfully": "LAMF.render(LAMF.T.emandateDone())",
+ "23) Loan Application Submitted Page": "LAMF.render(LAMF.T.submitted())",
 }
 TPL = """<!doctype html>
 <html lang="en">
