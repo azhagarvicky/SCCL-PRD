@@ -881,3 +881,45 @@ body.page-screens { padding: 40px 76px; }
 .ag-done-ico { width: 80px; height: 90px; margin-bottom: 10px; }
 .ag-done h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; } .ag-done p { font-size: 13px; }
 @media (max-width: 600px) { .dg-otp { padding: 24px 20px; } .dg-boxes input { width: 40px; height: 44px; } }
+
+/* ---------- 22 E-Mandate (Digio look-alike), 22.1 NPCI, 22.2 exit, 23 submitted (DISC-060) ---------- */
+.em-bg { min-height: 100vh; background: #fff; padding: 22px 16px; font-family: system-ui, sans-serif; }
+.em-card { max-width: 526px; margin: 0 auto; border-radius: 12px; box-shadow: 0 2px 14px rgba(0,0,0,.12); overflow: hidden; background: #fff; }
+.em-hdr { display: flex; align-items: center; gap: 10px; padding: 12px 22px; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+.em-sec { margin-left: auto; font-size: 11px; background: #F1F4F8; border-radius: 10px; padding: 2px 8px; }
+.em-body { display: grid; grid-template-columns: 172px 1fr; }
+.em-ov { background: #EEF3FA; padding: 26px 20px; font-size: 12px; }
+.em-ov > span, .em-bank > span, .em-val span { display: block; color: #555; font-size: 10.5px; margin-top: 14px; }
+.em-ov p, .em-val p { font-size: 13px; margin-top: 3px; }
+.em-ovt { color: #1E5FBF; font-weight: 700; font-size: 12.5px !important; margin: 0 !important; }
+.em-max { display: block; font-size: 19px; margin-top: 4px; }
+.em-val { margin-top: 18px; border-left: 1px solid #9DB5DA; padding-left: 14px; } .em-val b { font-size: 11px; margin-left: -4px; }
+.em-main { font-size: 12px; }
+.em-bank { padding: 14px 24px 16px; border-bottom: 1px solid #ddd; }
+.em-bn { display: flex; align-items: center; gap: 12px; font-size: 13px; } .em-bn img { width: 28px; height: 28px; object-fit: contain; }
+.em-bank p { font-size: 13px; margin-top: 3px; } .em-acc { display: flex; gap: 8px; align-items: center; }
+.em-eye { cursor: pointer; font-size: 12px; } .em-2 { display: flex; justify-content: space-between; }
+.em-modes { padding: 14px 24px 18px; } .em-modes h4 { font-size: 16px; margin-bottom: 8px; } .em-modes > p { color: #777; font-size: 12px; margin-bottom: 10px; }
+.em-mode { display: flex; align-items: center; gap: 10px; border: 1px solid #ddd; border-radius: 4px; padding: 9px 14px; margin-bottom: 9px; color: #1E5FBF; font-weight: 700; font-size: 13px; cursor: pointer; }
+.em-mode.on { background: #0A5BC4; color: #fff; border-color: #0A5BC4; } .em-mode input { accent-color: #fff; }
+.em-chk { display: flex; gap: 14px; padding: 12px 16px; border-top: 1px solid #ddd; font-size: 10px; color: #666; line-height: 1.5; cursor: pointer; }
+.em-chk input { width: 18px; height: 18px; flex: none; accent-color: #0A5BC4; } .em-chk em { font-style: normal; color: #1E5FBF; }
+.em-foot { padding: 14px 16px 18px; text-align: center; }
+.em-submit { width: 294px; max-width: 100%; height: 40px; border: 0; border-radius: 20px; background: #0A5BC4; color: #fff; font-weight: 700; cursor: pointer; }
+.em-submit:disabled { background: #AFC9EE; cursor: not-allowed; }
+.np { text-align: center; font-family: system-ui, sans-serif; padding-top: 6px; }
+.np h2 { font-size: 20px; font-weight: 400; } .np-id { margin: 34px 0 0; font-size: 15px; }
+.np-btns { display: flex; justify-content: space-between; width: 604px; max-width: calc(100% - 32px); margin: 0 auto; }
+.np-btns button { width: 118px; height: 40px; border-radius: 20px; font-size: 14px; cursor: pointer; }
+.np-acc { background: #0A5BC4; color: #fff; border: 0; font-weight: 700; } .np-rej { background: #fff; color: #0A5BC4; border: 1px solid #0A5BC4; width: 104px !important; }
+.em-ok { width: 88px; height: 88px; margin-bottom: 18px; }
+.sb-page { max-width: 1186px; padding-bottom: 50px; }
+.sb-t { display: flex; align-items: center; gap: 10px; font-size: 21px; font-weight: 700; margin: 18px 0 18px; }
+.sb-tick svg { width: 28px; height: 28px; display: block; }
+.sb-card { border: 1px solid var(--line); border-radius: 12px; padding: 26px 36px; }
+.sb-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+.sb-row small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; } .sb-row b { font-weight: 500; white-space: nowrap; }
+.sb-cta { text-align: center; margin-top: 28px; } .sb-cta .btn { height: 42px; padding: 0 18px; }
+@media (max-width: 560px) { .em-body { grid-template-columns: 1fr; } .sb-card { padding: 16px; } }
+.em-max { font-size: 16.5px; word-break: break-all; }
+.em-2 { margin-top: 14px; } .em-2 span { display: block; color: #555; font-size: 10.5px; }

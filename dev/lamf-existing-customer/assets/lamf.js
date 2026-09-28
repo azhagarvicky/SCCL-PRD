@@ -46,6 +46,10 @@
     '21.2) Loan Agreement e-Sign Signed Successfully',
     '21.3) Loan Agreement Signed Successfully',
     '19.1) Agreement and E-Mandate Page Loan Agreement signed',
+    '22) E-Mandate Page',
+    '22.1) E-Mandate NPCI Simulation Page',
+    '22.2) E-Mandate Authenticated Successfully',
+    '23) Loan Application Submitted Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -644,11 +648,13 @@
     </main>`;
 
   /* 19 Agreement & E-Mandate (stepper step 4) */
-  T.agreement = (signed = false) => `
+  T.agreement = (signed = false, em = '') => `
     <div class="sticky-top">${plainHeader()}${stepper(4)}</div>
     <main class="wrap kyc-page ag-page">
       ${signed ? kycRow(1, 'Loan Agreement', 'done') : kycRow(1, 'Loan Agreement', 'openPending', '<button class="btn btn-primary bold kyc-btn" data-cta="sign-agreement">Sign Agreement</button>')}
-      ${signed ? kycRow(2, 'E-Mandate', 'openPending', '<button class="btn btn-primary bold kyc-btn" data-cta="setup-emandate">Set up E-Mandate</button>') : kycRow(2, 'E-Mandate', 'pending')}
+      ${!signed ? kycRow(2, 'E-Mandate', 'pending')
+        : em === 'done' ? kycRow(2, 'E-Mandate', 'done')
+        : kycRow(2, 'E-Mandate', 'openPending', `<button class="btn btn-primary bold kyc-btn" data-cta="setup-emandate">Set up E-Mandate</button>${em === 'failed' ? '<p class="field-err kyc-fail">E-Mandate was not authenticated. Please try again.</p>' : ''}`)}
     </main>`;
 
   /* 18.1 Pledge OTP popup (MF Central OTP; demo OTP 000000) */
@@ -776,6 +782,81 @@
       <p>Redirecting you back to the process in <span id="ag-count">3</span> seconds</p>
     </main>`;
 
+  /* 22 E-Mandate (Digio look-alike, prototype): overview + bank on file + verification mode + consent */
+  const fmtDate = (d) => d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  const titleCase = (t) => t.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+  T.emandate = (o = {}) => {
+    const bank = o.bank || PAN_DETAILS.CBOPA8195B.bank;
+    const first = new Date(); const last = new Date(); last.setFullYear(last.getFullYear() + 1);
+    const mode = (id, label, ico, on) => `<label class="em-mode ${on ? 'on' : ''}"><input type="radio" name="em-mode" value="${id}" ${on ? 'checked' : ''}><span class="em-ico">${ico}</span>${label}</label>`;
+    return `
+    <main class="em-bg"><div class="em-card">
+      <header class="em-hdr"><span class="dg-logo"><b>d</b>igio</span><span class="dg-mock">Mock e-Mandate page (prototype)</span><span class="em-sec">Secured by <b>digio</b></span></header>
+      <div class="em-body">
+        <aside class="em-ov">
+          <p class="em-ovt">Mandate Overview</p>
+          <span>Maximum amount</span><b class="em-max">₹${(o.max || 10000000).toLocaleString('en-US', { minimumFractionDigits: 2 })}</b>
+          <span>Frequency</span><p>Monthly</p>
+          <span>Purpose</span><p>Loan instalment payment</p>
+          <div class="em-val"><b>Validity</b>
+            <div><span>First collection date</span><p>${fmtDate(first)}</p></div>
+            <div><span>Last collection date</span><p>${fmtDate(last)}</p></div>
+          </div>
+        </aside>
+        <section class="em-main">
+          <div class="em-bank">
+            <div class="em-bn">${bank.logo ? img(bank.logo) : `<span class="kb-gen">${ICON.bank}</span>`}<b>${bank.name.toUpperCase()} LTD</b></div>
+            <span>Account Number</span><p class="em-acc"><b id="em-acc" data-full="${bank.account}">XXXX XXXX ${bank.account.slice(-4)}</b><a class="em-eye" data-cta="em-eye" title="Show / hide">👁</a></p>
+            <span>Customer Name (As per bank account)</span><p><b>${titleCase(bank.holder)}</b></p>
+            <div class="em-2"><div><span>IFSC code</span><p><b>${bank.ifsc}</b></p></div><div style="text-align:right"><span>A/C Type</span><p><b>Savings</b></p></div></div>
+          </div>
+          <div class="em-modes">
+            <h4>Select Verification Mode</h4>
+            <p>The following options are available to you on the given account:</p>
+            ${mode('debit', 'Debit Card', '💳', true)}${mode('netbanking', 'Net Banking', '🏦', false)}${mode('aadhaar', 'Aadhaar', '🆔', false)}
+          </div>
+        </section>
+      </div>
+      <label class="em-chk"><input type="checkbox" id="em-accept"><span>I hereby authorize <em>SHRIRAM CREDIT COMPANY LIMITED</em> to <em>debit</em> my Bank account, as per the mentioned mandate and bank account details. I understand that the bank where I have authorised the debit may levy mandate processing charges as mentioned in the bank's latest schedule of charges.</span></label>
+      <div class="em-foot"><button class="em-submit" data-cta="em-submit" disabled>Submit</button></div>
+    </div></main>`;
+  };
+  /* 22.1 NPCI simulation (Digio sandbox look-alike) */
+  T.npci = (txn = 'MMI000000000000000000000000') => `
+    <main class="np">
+      <h2>NPCI Simulation</h2><p>(This is a simulation of request to NPCI)</p>
+      <p class="np-id">Transaction ID <span id="np-txn">${txn}</span></p>
+      <div class="np-btns"><button class="np-acc" data-cta="npci-accept">Accept</button><button class="np-rej" data-cta="npci-reject">Reject</button></div>
+    </main>`;
+  /* 22.2 Digio exit – mandate authenticated */
+  T.emandateDone = () => `
+    <span class="dg-mock dg-mock-fixed">Mock e-Mandate page (prototype)</span>
+    <main class="dg-exit">
+      <svg viewBox="0 0 100 100" class="em-ok"><circle cx="50" cy="50" r="44" fill="#2ECC71"/><path d="M30 51l13 13 27-28" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p class="dg-exit-t">Mandate authenticated successfully.</p>
+      <p class="dg-exit-s">Please share your feedback</p><p class="dg-exit-s">You may close the window.</p>
+    </main>`;
+  /* 23 Loan application submitted (LOS) */
+  T.submitted = (o = {}) => {
+    const amt = o.amount || 20000000;
+    const row = (l, v, sub = '') => `<div class="sb-row"><div><span>${l}</span>${sub ? `<small>${sub}</small>` : ''}</div><b>${v}</b></div>`;
+    return `
+    ${plainHeader()}
+    <main class="wrap sb-page">
+      <h2 class="sb-t"><span class="sb-tick"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#12A150"/><path d="M6.8 12.4l3.4 3.4 7-7" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your loan application has been submitted</h2>
+      <div class="sb-card">
+        ${row('Loan Amount', rs(inr(amt)))}
+        ${row('Mutual Fund Value Pledged', rs(inr(amt / LTV)))}
+        ${row('Interest Rate', '10.5% p.a.')}
+        ${row('Tenure', '12 Months', '(No foreclosure charges)')}
+        ${row('Processing Fee (inclusive of taxes)', rs(inr(Math.round(Math.round(amt * 0.005) * 1.18))), 'Will be deducted at the time of first withdrawal')}
+        ${row('Repayment Type', 'Interest Only')}
+        ${row('Disbursement Type', 'Multiple')}
+      </div>
+      <div class="sb-cta"><button class="btn btn-primary bold" data-cta="view-loan">View loan details</button></div>
+    </main>`;
+  };
+
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -877,7 +958,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement', emandate: 'lamfec.emandate', emMode: 'lamfec.emMode' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -1050,6 +1131,7 @@
       store.set(K.kyc, {});                                                  // new application: KYC starts afresh
       store.set(K.pledge, '');                                               // … and pledging too
       store.set(K.agreement, '');                                            // … and the agreement
+      store.set(K.emandate, '');                                             // … and the e-mandate
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1512,14 +1594,18 @@
     '18.2) Pledging of Mutual Fund Successfully pledged': () => pledgeBehaviour('done'),
     '19) Agreement and E-Mandate Page': () => {
       const signed = store.get(K.agreement) === 'done';
-      const tmp = document.createElement('div'); tmp.innerHTML = T.agreement(signed);
+      const tmp = document.createElement('div'); tmp.innerHTML = T.agreement(signed, store.get(K.emandate));
       document.querySelector('main.ag-page').replaceWith(tmp.querySelector('main.ag-page'));
       const a = document.querySelector('[data-cta="sign-agreement"]'); if (a) a.onclick = () => go('20) Sanction Letter Page');
-      const e = document.querySelector('[data-cta="setup-emandate"]'); if (e) e.onclick = () => toast('E-Mandate will be added once its screenshot is shared.');
+      const e = document.querySelector('[data-cta="setup-emandate"]'); if (e) e.onclick = () => go('22) E-Mandate Page');
     },
     '19.1) Agreement and E-Mandate Page Loan Agreement signed': () => {
-      document.querySelector('[data-cta="setup-emandate"]').onclick = () => toast('E-Mandate will be added once its screenshot is shared.');
+      document.querySelector('[data-cta="setup-emandate"]').onclick = () => go('22) E-Mandate Page');
     },
+    '22) E-Mandate Page': () => emandateBehaviour(),
+    '22.1) E-Mandate NPCI Simulation Page': () => npciBehaviour(),
+    '22.2) E-Mandate Authenticated Successfully': () => emandateDoneBehaviour(),
+    '23) Loan Application Submitted Page': () => submittedBehaviour(),
     '20) Sanction Letter Page': () => sanctionBehaviour(),
     '21) Loan Agreement e-Sign Page': () => esignBehaviour(),
     '21.1) Loan Agreement e-Sign OTP popup': () => esignOtpBehaviour(),
@@ -1700,6 +1786,39 @@
     store.set(K.agreement, 'done');
     let left = 3; const c = document.getElementById('ag-count');
     const t = setInterval(() => { left -= 1; c.textContent = Math.max(left, 0); if (left <= 0) { clearInterval(t); go('19) Agreement and E-Mandate Page'); } }, 1000);
+  }
+
+  /* ---- 19 → 22 → 22.1 → 22.2 → 23: E-Mandate at Digio, NPCI Accept / Reject, back to LOS submitted ---- */
+  function emandateBehaviour() {
+    const pan = store.get(K.pan);
+    document.body.innerHTML = T.emandate({ bank: (PAN_DETAILS[pan] || PAN_DETAILS.CBOPA8195B).bank });
+    const q = (s) => document.querySelector(s);
+    document.querySelectorAll('.em-mode input').forEach((r) => r.addEventListener('change', () => {
+      document.querySelectorAll('.em-mode').forEach((m) => m.classList.toggle('on', m.querySelector('input').checked));
+    }));
+    const acc = q('#em-acc'); const masked = acc.textContent;
+    q('[data-cta="em-eye"]').onclick = () => { acc.textContent = acc.textContent === masked ? acc.dataset.full.replace(/(\d{4})(?=\d)/g, '$1 ') : masked; };
+    const chk = q('#em-accept'); const btn = q('[data-cta="em-submit"]');
+    chk.addEventListener('change', () => { btn.disabled = !chk.checked; });
+    btn.onclick = () => { if (chk.checked) { store.set(K.emMode, q('.em-mode input:checked').value); go('22.1) E-Mandate NPCI Simulation Page'); } };
+  }
+  function npciBehaviour() {
+    const d = new Date(); const p2 = (n) => String(n).padStart(2, '0');
+    const rand = Array.from({ length: 13 }, () => 'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)]).join('');
+    document.body.innerHTML = T.npci(`MMI${String(d.getFullYear()).slice(2)}${p2(d.getMonth() + 1)}${p2(d.getDate())}${p2(d.getHours())}${p2(d.getMinutes())}${p2(d.getSeconds())}${rand}`);
+    document.querySelector('[data-cta="npci-accept"]').onclick = () => go('22.2) E-Mandate Authenticated Successfully');
+    document.querySelector('[data-cta="npci-reject"]').onclick = () => { store.set(K.emandate, 'failed'); go('19) Agreement and E-Mandate Page'); };
+  }
+  function emandateDoneBehaviour() {
+    document.body.innerHTML = T.emandateDone();
+    store.set(K.emandate, 'done');
+    setTimeout(() => go('23) Loan Application Submitted Page'), 2000);
+  }
+  function submittedBehaviour() {
+    const ctx = loanContext();
+    const tmp = document.createElement('div'); tmp.innerHTML = T.submitted(ctx);
+    document.querySelector('main.sb-page').replaceWith(tmp.querySelector('main.sb-page'));
+    document.querySelector('[data-cta="view-loan"]').onclick = () => toast('Loan details will be added once its screenshot is shared.');
   }
 
   function kycMockBehaviour(step) {
