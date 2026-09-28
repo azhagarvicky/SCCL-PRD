@@ -29,6 +29,7 @@ PAGES = {
  "14.3) KYC Verification Page Photo verification completed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'done'}))",
  "15) DigiLocker Mock Page": "LAMF.render(LAMF.T.kycMock('aadhaar'))",
  "16) Photo Verification Mock Page": "LAMF.render(LAMF.T.kycMock('photo'))",
+ "17) Customer Details Page": "LAMF.render(LAMF.T.custDetails())",
 }
 TPL = """<!doctype html>
 <html lang="en">

@@ -745,3 +745,31 @@ body.page-screens { padding: 40px 76px; }
 .kyc-bank .kb-ok svg { width: 12px; height: 12px; }
 .kyc-cont { margin-top: 22px; }
 @media (max-width: 560px) { .kyc-bank { flex-wrap: wrap; font-size: 14px; } }
+
+/* ---------- 17 Customer details + ETB personal details (DISC-050) ---------- */
+.cd-page .loan-strip { margin-bottom: 10px; }
+.cd-sec { border-bottom: 1px solid var(--line); padding: 26px 0 28px; }
+.cd-h { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
+.cd-h .kt { font-size: 22px; }
+.cd-chev { margin-left: auto; width: 20px; height: 20px; color: var(--ink-2); transition: transform .15s; }
+.cd-chev svg { width: 20px; height: 20px; }
+.cd-sec:not(.open) .cd-chev { transform: rotate(180deg); }
+.cd-sec:not(.open) .cd-body { display: none; }
+.cd-body { margin-top: 22px; }
+.cd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+.cd-l { display: block; font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }
+.cd-l i { font-style: normal; color: var(--ink-2); margin-left: 2px; }
+.cd-v { font-size: 15px; font-weight: 500; padding-top: 4px; }
+.cd-f .field-err { margin-top: 4px; min-height: 0; }
+.cd-chk { margin-top: 16px; font-size: 14.5px; align-items: center; }
+.cd-cta { text-align: center; padding-top: 24px; }
+.cd-cta .btn { min-width: 178px; }
+.an-sub { font-size: 14px; font-weight: 700; margin: 20px 0 2px; color: var(--ink-2); }
+.an-decl .cd-chk { margin-top: 10px; font-size: 13px; }
+@media (max-width: 640px) { .cd-grid { grid-template-columns: 1fr; } .cd-h .kt { font-size: 19px; } }
+/* Stepper on phones: scroll inside itself instead of widening the page */
+@media (max-width: 760px) {
+  .stepper { overflow-x: auto; justify-content: flex-start; padding: 12px 16px 14px; scrollbar-width: none; }
+  .step { min-width: 118px; font-size: 12.5px; white-space: normal; text-align: center; }
+  .step-line { min-width: 24px; }
+}
