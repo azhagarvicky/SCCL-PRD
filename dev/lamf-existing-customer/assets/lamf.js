@@ -23,6 +23,7 @@
     '09) MF Central to LOS Analysing Mutual Fund Portfolio Page',
     '10) MF Central to LOS Generating Loan Page',
     '11) Curated Offers Page',
+    '12) Mutual Fund Selection Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -84,6 +85,8 @@
     refresh: S('<path d="M20 11a8 8 0 0 0-14.3-4.3L4 8.5M4 4v4.5h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.3L20 15.5M20 20v-4.5h-4.5"/>', '0 0 24 24', 'stroke-width="2"'),
     calendar: `<svg viewBox="0 0 24 24" fill="#555"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM12 13h5v5h-5z"/></svg>`,
     check: S('<path d="M5 12.5l4.5 4.5L19 7.5"/>', '0 0 24 24', 'stroke="#fff" stroke-width="2.6"'),
+    back: S('<path d="M20 12H4M10 6l-6 6 6 6"/>'),
+    pencil: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>', '0 0 24 24', 'stroke-width="1.5"'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -101,6 +104,7 @@
   };
 
   const rs = (v) => `<span class="rs">₹</span> ${v}`;
+  const i = () => `<span class="i">i</span>`;
   const img = (f, cls = '', style = '') => `<img src="${IMG}${f}" class="${cls}" style="${style}" alt="">`;
 
   /* ---------------- Headers ---------------- */
@@ -118,6 +122,18 @@
       <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="contact" href="https://www.shriramcredit.in/contact-us">Contact Us</a></div>
     </header>`;
 
+  /* ---------------- Stepper ---------------- */
+  const STEPS = ['Selection of Mutual Fund', 'KYC Verification & Bank details', 'Pledging of Mutual Fund', 'Agreement & E-Mandate'];
+  const stepper = (active = 1) => {
+    let h = '<div class="stepper">';
+    STEPS.forEach((s, k) => {
+      const n = k + 1, cls = n < active ? 'done' : n === active ? 'active' : '';
+      h += `<div class="step ${cls}"><span class="dot">${n < active ? ICON.check : n}</span>${s.replace('&', '&amp;')}</div>`;
+      if (n < 4) h += `<div class="step-line ${n < active ? 'done' : ''}"></div>`;
+    });
+    return h + '</div>';
+  };
+
   /* ---------------- Fund cards ---------------- */
   const fundHead = (f, name) => `
     <div class="fund-head"><span class="fund-ico">${img('funds/' + f.ico + '.png')}</span>
@@ -128,6 +144,23 @@
     <div class="fund-card"><div class="body">${fundHead(f)}
       <div class="fund-cols"><div><div class="lbl">No. of Units</div><div class="val">${U2[f.id]}</div></div>
       <div><div class="lbl">Current Value</div><div class="val">${rs(f.value)}</div></div></div></div></div>`;
+
+  // MF Selection card. opts: {checked, amount, editing}
+  const selectCard = (f, o = {}) => {
+    const amt = o.editing
+      ? `<span class="amt-edit"><span class="rs">₹</span> ${o.editing}<span class="ok">${ICON.check}</span></span>`
+      : `<span class="amt">${rs(o.amount || '0')}<span class="pen">${ICON.pencil}</span></span>`;
+    return `
+    <div class="fund-card sel-card"><div class="body">
+      <div class="sel-top">
+        <span class="cbx ${o.checked ? 'on' : ''}">${o.checked ? ICON.check : ''}</span>
+        ${fundHead(f, f.sel)}
+        <div class="sel-amt"><div class="lbl">Selected Amount ${i()}</div>${amt}</div>
+      </div>
+      <div class="fund-cols three sel-cols"><div><div class="lbl">No of Units ${i()}</div><div class="val">${f.units}</div></div>
+      <div><div class="lbl">Current Value ${i()}</div><div class="val">${rs(f.selValue)}</div></div>
+      <div><div class="lbl">Max Limit ${i()}</div><div class="val">${rs(f.cl)}</div></div></div></div></div>`;
+  };
 
   /* ---------------- Modals ---------------- */
   const closeBtn = `<button class="close" aria-label="Close">${ICON.close}</button>`;
@@ -346,6 +379,44 @@
       ${FUNDS.map(offerCard).join('')}
     </main>`;
 
+  /* 12 MF Selection (same as the new-customer journey's 13.2). o = {loan, sliderPct, editLoan, mv, count, selected:{id:amt}, editing:{id:val}, ctaDisabled, cta} */
+  const SEL_ORDER = ['icici', 'axis', 'kotak', 'nippontw', 'whiteoak', 'hsbc', 'ednifty', 'canara', 'sbi'];
+  T.selection = (o = {}) => {
+    const sel = o.selected || {};
+    return `
+    <div class="sticky-top">${plainHeader()}${stepper(1)}</div>
+    <main class="wrap sel-page">
+      <a class="back" data-cta="back">${ICON.back}Back</a>
+      <div class="loan-box">
+        <p class="lb-t">Loan Amount</p>
+        ${o.editLoan
+          ? `<div class="lb-edit"><span class="rs">₹</span><input value="${o.editLoan}"><a class="link-yellow" data-cta="update-loan">Update</a></div>`
+          : `<p class="lb-v">${rs(o.loan || '2,00,00,000')} <span class="pen">${ICON.pencilSolid}</span></p>`}
+        <div class="slider"><div class="track"><span class="fill" style="width:${o.sliderPct ?? 100}%"></span><span class="knob" style="left:${o.sliderPct ?? 100}%"></span></div>
+          <div class="ends"><span>${rs('10,000')}</span><span>${rs('2,00,00,000')}</span></div></div>
+      </div>
+      <h2 class="fs-t">Funds selected for pledging</h2>
+      <p class="fs-s">Current market value of units selected for pledging <b>${rs(o.mv || '2,66,66,667.21')}</b> <span class="gap"></span>No. of funds selected <b>${o.count ?? 3}</b></p>
+      <label class="sel-all"><span class="cbx part"><i></i></span>Select All</label>
+      <div class="mobile-strip"><span>${CUSTOMER.mobileMasked2}</span><span>9 Fund<span class="dotsep">•</span>${rs(PORTFOLIO.eligible)}</span></div>
+      ${SEL_ORDER.map((id) => selectCard(F[id], { checked: id in sel || (o.editing && id in o.editing), amount: sel[id], editing: o.editing && o.editing[id] })).join('')}
+      <div style="height:30px"></div>
+    </main>
+    <div class="cta-bar"><button class="btn ${o.ctaDisabled ? 'btn-disabled' : 'btn-primary'}" data-cta="continue-to-apply">Continue to apply ${rs(o.cta || '2,00,00,000')}</button></div>`;
+  };
+  const SEL_DEFAULT = { selected: { icici: '1,40,30,794', axis: '53,69,420', kotak: '5,99,786' } };
+
+  T.locationPopup = () => `
+    <div class="perm"><span class="x">✕</span><div class="t">uatlamf.shriramcredit.in wants to</div>
+      <div class="row"><span style="width:16px;height:16px;display:block">${ICON.pin}</span>Know your location</div>
+      <div class="btns"><button data-cta="loc-block">Block</button><button data-cta="loc-once">Just this Time</button><button data-cta="loc-allow">Allow</button></div></div>`;
+
+  T.locationToast = () => `<div class="toast"><span class="ico">i</span>Kindly provide location access in order to proceed with the loan application. <a class="link-yellow" data-cta="refresh">Refresh</a></div>`;
+
+  T.ongoingModal = () => `
+    <div class="modal m-ongoing"><p>You have an ongoing loan application, would you like to proceed further with it?</p>
+      <div class="two"><button class="btn btn-outline" data-cta="go-dashboard">No, Take me to the dashboard</button><button class="btn btn-primary" data-cta="yes-continue">Yes, Continue</button></div></div>`;
+
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -423,6 +494,12 @@
     },
     '04) Your Loans Page': {
       'apply-new-loan': '04.1) Apply for New Loan Page',
+    },
+    '11) Curated Offers Page': {
+      'start-application': '12) Mutual Fund Selection Page',
+    },
+    '12) Mutual Fund Selection Page': {
+      back: '11) Curated Offers Page',
     },
   };
 
@@ -879,6 +956,12 @@
     '08) MF Central to LOS Fetching Mutual Fund Portfolio Page': () => after(1000, '09) MF Central to LOS Analysing Mutual Fund Portfolio Page'),
     '09) MF Central to LOS Analysing Mutual Fund Portfolio Page': () => after(1000, '10) MF Central to LOS Generating Loan Page'),
     '10) MF Central to LOS Generating Loan Page': () => after(1000, '11) Curated Offers Page'),
+
+    /* ---- 12 MF selection: next step not given yet ---- */
+    '12) Mutual Fund Selection Page': () => {
+      document.querySelector('[data-cta="continue-to-apply"]').addEventListener('click', () =>
+        toast('The next screen will be added once its screenshot is shared.'));
+    },
   };
 
   function wireBehaviour() {
@@ -931,5 +1014,5 @@
     devnav();
   }
 
-  window.LAMF = { T, render, withModal, SCREENS, FLOW, BEHAVIOUR, LEGAL, OTP_RULES, OTP_ERR, MOBILE_ERR, CUSTOMER };
+  window.LAMF = { SEL_DEFAULT, T, render, withModal, SCREENS, FLOW, BEHAVIOUR, LEGAL, OTP_RULES, OTP_ERR, MOBILE_ERR, CUSTOMER };
 })();
