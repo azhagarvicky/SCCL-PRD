@@ -15,7 +15,9 @@ PAGES = {
  "06) MF Central Mock Page": "LAMF.render(LAMF.T.mfMock())",
  "07) MF Central to LOS Redirecting Page": "LAMF.render(LAMF.T.redirecting())",
  "08) MF Central to LOS Fetching Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.loader('Fetching your mutual fund portfolio..', 1)))",
- "09) MF Central to LOS Analysing Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.loader('Analyzing your mutual fund portfolio..', 2)))",
+ "09) MF Central to LOS Analysing Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.curated(), LAMF.T.loader('Analyzing your mutual fund portfolio..', 2)))",
+ "10) MF Central to LOS Generating Loan Page": "LAMF.render(LAMF.withModal(LAMF.T.curated(), LAMF.T.loader('Generating best loan offers for you', 3)))",
+ "11) Curated Offers Page": "LAMF.render(LAMF.T.curated())",
 }
 TPL = """<!doctype html>
 <html lang="en">
