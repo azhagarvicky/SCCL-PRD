@@ -718,3 +718,11 @@ body.page-screens { padding: 40px 76px; }
 .an-consent .field-err { margin: 0 0 10px; min-height: 0; }
 .an-consent .btn { height: 43px; }
 @media (max-width: 560px) { .an-opt { flex: 1; min-width: 0; } .an-card { padding: 18px 14px 24px; } }
+
+/* ---------- 12 MF selection – interactive loan / fund amounts (DISC-042) ---------- */
+.lb-v .pen, .sel-amt .pen, .cbx, .sel-all, .amt-edit .ok { cursor: pointer; }
+.lb-err { text-align: center; margin: -6px 0 10px; min-height: 0; }
+.slider .track { cursor: pointer; touch-action: none; }
+.amt-edit input { width: 110px; border: 0; outline: none; font-size: 17px; font-weight: 700; background: transparent; text-align: right; }
+.sel-err { max-width: 260px; margin: 6px 0 0 auto; min-height: 0; }
+@media (max-width: 560px) { .lb-edit { width: 100%; } .lb-edit input { width: 60%; font-size: 26px; } }

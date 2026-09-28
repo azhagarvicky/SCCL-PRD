@@ -24,6 +24,8 @@
     '10) MF Central to LOS Generating Loan Page',
     '11) Curated Offers Page',
     '12) Mutual Fund Selection Page',
+    '12.1) Mutual Fund Selection page loan amount edit',
+    '12.2) Mutual Fund Selection page loan amount edit as fund wise',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -145,23 +147,22 @@
       <div class="fund-cols"><div><div class="lbl">No. of Units</div><div class="val">${U2[f.id]}</div></div>
       <div><div class="lbl">Current Value</div><div class="val">${rs(f.value)}</div></div></div></div></div>`;
 
-  // MF Selection card. opts: {checked, amount, editing}
+  // MF Selection card. opts: {checked, amount, editing, err}. data-id hooks drive the selection logic.
   const selectCard = (f, o = {}) => {
-    const amt = o.editing
-      ? `<span class="amt-edit"><span class="rs">₹</span> ${o.editing}<span class="ok">${ICON.check}</span></span>`
-      : `<span class="amt">${rs(o.amount || '0')}<span class="pen">${ICON.pencil}</span></span>`;
+    const amt = o.editing != null
+      ? `<span class="amt-edit"><span class="rs">₹</span><input class="fund-in" data-id="${f.id}" value="${o.editing}" inputmode="numeric" maxlength="9" autocomplete="off"><a class="ok" data-fund-ok="${f.id}" title="Update">${ICON.check}</a></span>`
+      : `<span class="amt">${rs(o.amount || '0')}<a class="pen" data-fund-edit="${f.id}" title="Edit amount">${ICON.pencil}</a></span>`;
     return `
-    <div class="fund-card sel-card"><div class="body">
+    <div class="fund-card sel-card" data-card="${f.id}"><div class="body">
       <div class="sel-top">
-        <span class="cbx ${o.checked ? 'on' : ''}">${o.checked ? ICON.check : ''}</span>
+        <a class="cbx ${o.checked ? 'on' : ''}" data-fund-tick="${f.id}">${o.checked ? ICON.check : ''}</a>
         ${fundHead(f, f.sel)}
-        <div class="sel-amt"><div class="lbl">Selected Amount ${i()}</div>${amt}</div>
+        <div class="sel-amt"><div class="lbl">Selected Amount ${i()}</div>${amt}${o.err ? `<p class="field-err sel-err">${o.err}</p>` : ''}</div>
       </div>
       <div class="fund-cols three sel-cols"><div><div class="lbl">No of Units ${i()}</div><div class="val">${f.units}</div></div>
       <div><div class="lbl">Current Value ${i()}</div><div class="val">${rs(f.selValue)}</div></div>
       <div><div class="lbl">Max Limit ${i()}</div><div class="val">${rs(f.cl)}</div></div></div></div></div>`;
   };
-
   /* ---------------- Modals ---------------- */
   const closeBtn = `<button class="close" aria-label="Close">${ICON.close}</button>`;
   const withModal = (bg, modal, dark) => `<div class="blur-bg">${bg}</div><div class="overlay ${dark ? 'dark' : ''}">${modal}</div>`;
@@ -379,44 +380,35 @@
       ${FUNDS.map(offerCard).join('')}
     </main>`;
 
-  /* 12 MF Selection (same as the new-customer journey's 13.2). o = {loan, sliderPct, editLoan, mv, count, selected:{id:amt}, editing:{id:val}, ctaDisabled, cta} */
+  /* 12 MF Selection (same as the new-customer journey's 13.2 / 13.5 / 13.6, made interactive).
+     o = {loan, sliderPct, editLoan, loanErr, mv, count, selected:{id:amt}, editing:{id:val}, fundErr:{id:msg}, allState, ctaDisabled, cta} */
   const SEL_ORDER = ['icici', 'axis', 'kotak', 'nippontw', 'whiteoak', 'hsbc', 'ednifty', 'canara', 'sbi'];
   T.selection = (o = {}) => {
     const sel = o.selected || {};
+    const all = o.allState || 'part';
     return `
     <div class="sticky-top">${plainHeader()}${stepper(1)}</div>
     <main class="wrap sel-page">
       <a class="back" data-cta="back">${ICON.back}Back</a>
       <div class="loan-box">
         <p class="lb-t">Loan Amount</p>
-        ${o.editLoan
-          ? `<div class="lb-edit"><span class="rs">₹</span><input value="${o.editLoan}"><a class="link-yellow" data-cta="update-loan">Update</a></div>`
-          : `<p class="lb-v">${rs(o.loan || '2,00,00,000')} <span class="pen">${ICON.pencilSolid}</span></p>`}
-        <div class="slider"><div class="track"><span class="fill" style="width:${o.sliderPct ?? 100}%"></span><span class="knob" style="left:${o.sliderPct ?? 100}%"></span></div>
+        ${o.editLoan != null
+          ? `<div class="lb-edit"><span class="rs">₹</span><input id="loan-in" value="${o.editLoan}" inputmode="numeric" maxlength="9" autocomplete="off"><a class="link-yellow" data-cta="update-loan">Update</a></div>`
+          : `<p class="lb-v">${rs(o.loan || '2,00,00,000')} <a class="pen" data-cta="edit-loan" title="Edit loan amount">${ICON.pencilSolid}</a></p>`}
+        <p class="field-err lb-err" id="loan-err">${o.loanErr || ''}</p>
+        <div class="slider"><div class="track" id="loan-track"><span class="fill" style="width:${o.sliderPct ?? 100}%"></span><span class="knob" style="left:${o.sliderPct ?? 100}%"></span></div>
           <div class="ends"><span>${rs('10,000')}</span><span>${rs('2,00,00,000')}</span></div></div>
       </div>
       <h2 class="fs-t">Funds selected for pledging</h2>
       <p class="fs-s">Current market value of units selected for pledging <b>${rs(o.mv || '2,66,66,667.21')}</b> <span class="gap"></span>No. of funds selected <b>${o.count ?? 3}</b></p>
-      <label class="sel-all"><span class="cbx part"><i></i></span>Select All</label>
+      <label class="sel-all" data-cta="select-all"><span class="cbx ${all === 'all' ? 'on' : all === 'part' ? 'part' : ''}">${all === 'all' ? ICON.check : all === 'part' ? '<i></i>' : ''}</span>Select All</label>
       <div class="mobile-strip"><span>${CUSTOMER.mobileMasked2}</span><span>9 Fund<span class="dotsep">•</span>${rs(PORTFOLIO.eligible)}</span></div>
-      ${SEL_ORDER.map((id) => selectCard(F[id], { checked: id in sel || (o.editing && id in o.editing), amount: sel[id], editing: o.editing && o.editing[id] })).join('')}
+      ${SEL_ORDER.map((id) => selectCard(F[id], { checked: id in sel || (o.editing && id in o.editing), amount: sel[id], editing: o.editing && o.editing[id], err: o.fundErr && o.fundErr[id] })).join('')}
       <div style="height:30px"></div>
     </main>
     <div class="cta-bar"><button class="btn ${o.ctaDisabled ? 'btn-disabled' : 'btn-primary'}" data-cta="continue-to-apply">Continue to apply ${rs(o.cta || '2,00,00,000')}</button></div>`;
   };
   const SEL_DEFAULT = { selected: { icici: '1,40,30,794', axis: '53,69,420', kotak: '5,99,786' } };
-
-  T.locationPopup = () => `
-    <div class="perm"><span class="x">✕</span><div class="t">uatlamf.shriramcredit.in wants to</div>
-      <div class="row"><span style="width:16px;height:16px;display:block">${ICON.pin}</span>Know your location</div>
-      <div class="btns"><button data-cta="loc-block">Block</button><button data-cta="loc-once">Just this Time</button><button data-cta="loc-allow">Allow</button></div></div>`;
-
-  T.locationToast = () => `<div class="toast"><span class="ico">i</span>Kindly provide location access in order to proceed with the loan application. <a class="link-yellow" data-cta="refresh">Refresh</a></div>`;
-
-  T.ongoingModal = () => `
-    <div class="modal m-ongoing"><p>You have an ongoing loan application, would you like to proceed further with it?</p>
-      <div class="two"><button class="btn btn-outline" data-cta="go-dashboard">No, Take me to the dashboard</button><button class="btn btn-primary" data-cta="yes-continue">Yes, Continue</button></div></div>`;
-
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -497,9 +489,6 @@
     },
     '11) Curated Offers Page': {
       'start-application': '12) Mutual Fund Selection Page',
-    },
-    '12) Mutual Fund Selection Page': {
-      back: '11) Curated Offers Page',
     },
   };
 
@@ -654,6 +643,119 @@
       document.querySelector('[data-cta="verify-pan"]').click();
     }
     sync();
+  };
+
+  /* ---- 12 MF selection: loan amount (edit box or slider) and fund-wise amounts ----
+     Rules: loan ₹ 10,000 – ₹ 2,00,00,000; each fund ≤ its Max Limit; loan = sum of fund amounts;
+     a new loan amount is spread over the funds in list order, each filled up to its Max Limit;
+     market value of units selected = amount ÷ 75% LTV. */
+  const LOAN_MIN = 10000, LOAN_MAX = 20000000, LTV = 0.75;
+  const num = (v) => Number(String(v).replace(/[^\d]/g, '')) || 0;
+  const inr = (n) => Math.round(n).toLocaleString('en-IN');
+  const inr2 = (n) => n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const SEL_ERR = {
+    range: `Loan amount must be between ₹ ${inr(LOAN_MIN)} and ₹ ${inr(LOAN_MAX)}.`,
+    fundMax: (f) => `Amount cannot be more than the Max Limit of ₹ ${f.cl}.`,
+    total: `Total loan amount cannot be more than ₹ ${inr(LOAN_MAX)}.`,
+    min: `Minimum loan amount is ₹ ${inr(LOAN_MIN)}. Please select funds or increase the amount.`,
+  };
+  const selectionBehaviour = (start = {}) => {
+    const maxOf = (id) => num(F[id].cl);
+    let amounts = Object.fromEntries(Object.entries(start.selected || SEL_DEFAULT.selected).map(([k, v]) => [k, num(v)]));
+    let editLoan = start.editLoan ?? null;       // string while the loan edit box is open
+    let editing = start.editing || {};           // {id: string} fund boxes open
+    let loanErr = '', fundErr = {};
+    const total = () => Object.values(amounts).reduce((a, b) => a + b, 0);
+    const spread = (v) => {                      // fill funds in list order up to each Max Limit
+      const out = {}; let left = v;
+      SEL_ORDER.forEach((id) => { if (left > 0) { const a = Math.min(left, maxOf(id)); out[id] = a; left -= a; } });
+      return out;
+    };
+
+    const paint = () => {
+      const t = total();
+      const ids = Object.keys(amounts).filter((id) => amounts[id] > 0);
+      const allState = ids.length === SEL_ORDER.length ? 'all' : ids.length ? 'part' : 'none';
+      const busy = editLoan != null || Object.keys(editing).length > 0;
+      const html = T.selection({
+        loan: inr(t), editLoan, loanErr: loanErr || (!busy && t < LOAN_MIN ? SEL_ERR.min : ''),
+        sliderPct: Math.min(100, (t / LOAN_MAX) * 100), mv: inr2(t / LTV), count: ids.length, allState,
+        selected: Object.fromEntries(ids.map((id) => [id, inr(amounts[id])])), editing, fundErr,
+        ctaDisabled: busy || t < LOAN_MIN || t > LOAN_MAX, cta: inr(t),
+      });
+      const tmp = document.createElement('div'); tmp.innerHTML = html;
+      document.querySelector('main.sel-page').replaceWith(tmp.querySelector('main.sel-page'));
+      document.querySelector('.cta-bar').replaceWith(tmp.querySelector('.cta-bar'));
+      wire();
+    };
+
+    const digitsOnly = (inp) => inp.addEventListener('input', () => { inp.value = inp.value.replace(/\D/g, '').slice(0, 9); });
+
+    const setLoan = (v) => { amounts = spread(v); editing = {}; fundErr = {}; };
+    const wire = () => {
+      const q = (s) => document.querySelector(s);
+      q('[data-cta="back"]').onclick = () => go('11) Curated Offers Page');
+      q('[data-cta="continue-to-apply"]').onclick = () => {
+        if (editLoan != null || Object.keys(editing).length) return;          // finish editing first
+        if (total() < LOAN_MIN) { loanErr = SEL_ERR.min; return paint(); }
+        toast('The next screen will be added once its screenshot is shared.');
+      };
+      // Loan amount: pencil → edit box → Update
+      if (q('[data-cta="edit-loan"]')) q('[data-cta="edit-loan"]').onclick = () => { editLoan = String(total()); loanErr = ''; paint(); q('#loan-in').focus(); };
+      if (q('#loan-in')) {
+        const inp = q('#loan-in'); digitsOnly(inp);
+        const update = () => {
+          const v = num(inp.value);
+          if (v < LOAN_MIN || v > LOAN_MAX) { editLoan = inp.value; loanErr = SEL_ERR.range; return paint(); }
+          editLoan = null; loanErr = ''; setLoan(v); paint();
+        };
+        q('[data-cta="update-loan"]').onclick = update;
+        inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') update(); });
+      }
+      // Slider: click or drag sets the loan amount (steps of ₹ 1,000)
+      const track = q('#loan-track');
+      const fromX = (x) => { const r = track.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (x - r.left) / r.width)); return Math.max(LOAN_MIN, Math.round((p * LOAN_MAX) / 1000) * 1000); };
+      track.onpointerdown = (e) => {
+        if (editLoan != null) return;
+        e.preventDefault();
+        const move = (ev) => { setLoan(fromX(ev.clientX)); loanErr = ''; paint(); };
+        move(e);
+        const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+        window.addEventListener('pointermove', move); window.addEventListener('pointerup', up);
+      };
+      // Fund-wise amount: pencil → box with ✓
+      document.querySelectorAll('[data-fund-edit]').forEach((a) => { a.onclick = () => {
+        const id = a.dataset.fundEdit; editing = { ...editing, [id]: String(amounts[id] || '') }; paint();
+        const inp = document.querySelector(`.fund-in[data-id="${id}"]`); inp.focus();
+      }; });
+      document.querySelectorAll('.fund-in').forEach((inp) => {
+        digitsOnly(inp);
+        inp.addEventListener('input', () => { editing[inp.dataset.id] = inp.value; });
+        inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') document.querySelector(`[data-fund-ok="${inp.dataset.id}"]`).click(); });
+      });
+      document.querySelectorAll('[data-fund-ok]').forEach((b) => { b.onclick = () => {
+        const id = b.dataset.fundOk; const v = num(editing[id]);
+        const others = total() - (amounts[id] || 0);
+        if (v > maxOf(id)) { fundErr = { ...fundErr, [id]: SEL_ERR.fundMax(F[id]) }; return paint(); }
+        if (others + v > LOAN_MAX) { fundErr = { ...fundErr, [id]: SEL_ERR.total }; return paint(); }
+        const next = { ...amounts }; if (v > 0) next[id] = v; else delete next[id];
+        amounts = next; delete editing[id]; editing = { ...editing }; delete fundErr[id]; loanErr = ''; paint();
+      }; });
+      // Tick / untick a fund: tick adds it at its Max Limit (within the ₹ 2 crore cap)
+      document.querySelectorAll('[data-fund-tick]').forEach((c) => { c.onclick = () => {
+        const id = c.dataset.fundTick; const next = { ...amounts };
+        if (next[id]) delete next[id];
+        else { const room = LOAN_MAX - total(); if (room <= 0) { fundErr = { ...fundErr, [id]: SEL_ERR.total }; return paint(); } next[id] = Math.min(maxOf(id), room); }
+        amounts = next; delete editing[id]; editing = { ...editing }; delete fundErr[id]; loanErr = ''; paint();
+      }; });
+      q('[data-cta="select-all"]').onclick = (e) => {
+        e.preventDefault();
+        // Funds can never all be ticked within the ₹ 2 crore cap, so Select All toggles between
+        // "fill funds in list order up to ₹ 2 crore" and "clear all" (once at the cap)
+        amounts = total() >= LOAN_MAX ? {} : spread(LOAN_MAX); editing = {}; fundErr = {}; loanErr = ''; paint();
+      };
+    };
+    paint();
   };
 
   /* Auto-advance after a delay (redirect / loader screens). Leaving the page cancels it. */
@@ -957,11 +1059,10 @@
     '09) MF Central to LOS Analysing Mutual Fund Portfolio Page': () => after(1000, '10) MF Central to LOS Generating Loan Page'),
     '10) MF Central to LOS Generating Loan Page': () => after(1000, '11) Curated Offers Page'),
 
-    /* ---- 12 MF selection: next step not given yet ---- */
-    '12) Mutual Fund Selection Page': () => {
-      document.querySelector('[data-cta="continue-to-apply"]').addEventListener('click', () =>
-        toast('The next screen will be added once its screenshot is shared.'));
-    },
+    /* ---- 12 MF selection (interactive); 12.1 / 12.2 open with the loan box / a fund box in edit mode ---- */
+    '12) Mutual Fund Selection Page': () => selectionBehaviour(),
+    '12.1) Mutual Fund Selection page loan amount edit': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editLoan: '9530700' }),
+    '12.2) Mutual Fund Selection page loan amount edit as fund wise': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editing: { icici: '100000' } }),
   };
 
   function wireBehaviour() {

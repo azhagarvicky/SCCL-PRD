@@ -20,6 +20,8 @@ PAGES = {
  "10) MF Central to LOS Generating Loan Page": "LAMF.render(LAMF.withModal(LAMF.T.curated(), LAMF.T.loader('Generating best loan offers for you', 3)))",
  "11) Curated Offers Page": "LAMF.render(LAMF.T.curated())",
  "12) Mutual Fund Selection Page": "LAMF.render(LAMF.T.selection(LAMF.SEL_DEFAULT))",
+ "12.1) Mutual Fund Selection page loan amount edit": "LAMF.render(LAMF.T.selection({editLoan:'9530700', sliderPct:47.6, mv:'1,27,07,600.09', count:1, selected:{icici:'95,30,700'}, ctaDisabled:true, cta:'95,30,700'}))",
+ "12.2) Mutual Fund Selection page loan amount edit as fund wise": "LAMF.render(LAMF.T.selection({loan:'95,30,700', sliderPct:47.6, mv:'1,27,07,600.09', count:1, editing:{icici:'100000'}, cta:'95,30,700'}))",
 }
 TPL = """<!doctype html>
 <html lang="en">
