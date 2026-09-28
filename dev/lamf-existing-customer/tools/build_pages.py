@@ -38,6 +38,9 @@ PAGES = {
  "19) Agreement and E-Mandate Page": "LAMF.render(LAMF.T.agreement())",
  "20) Sanction Letter Page": "LAMF.render(LAMF.T.sanction())",
  "21) Loan Agreement e-Sign Page": "LAMF.render(LAMF.T.esign())",
+ "21.1) Loan Agreement e-Sign OTP popup": "LAMF.render(LAMF.T.esign() + LAMF.T.esignOtpModal())",
+ "21.2) Loan Agreement e-Sign Signed Successfully": "LAMF.render(LAMF.T.esignDone())",
+ "21.3) Loan Agreement Signed Successfully": "LAMF.render(LAMF.T.agreementSigned())",
  "19.1) Agreement and E-Mandate Page Loan Agreement signed": "LAMF.render(LAMF.T.agreement(true))",
 }
 TPL = """<!doctype html>

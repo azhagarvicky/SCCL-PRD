@@ -42,6 +42,9 @@
     '19) Agreement and E-Mandate Page',
     '20) Sanction Letter Page',
     '21) Loan Agreement e-Sign Page',
+    '21.1) Loan Agreement e-Sign OTP popup',
+    '21.2) Loan Agreement e-Sign Signed Successfully',
+    '21.3) Loan Agreement Signed Successfully',
     '19.1) Agreement and E-Mandate Page Loan Agreement signed',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
@@ -745,6 +748,33 @@
       <p class="dg-sec">Secured by <b>digio</b></p>
     </div>`;
   };
+
+  /* 21.1 Digio Verify OTP popup (Aadhaar / VID + OTP; demo OTP 000000) */
+  T.esignOtpModal = () => `
+    <div class="overlay dg-ov"><div class="modal dg-otp">
+      <h3>Verify OTP</h3>
+      <input class="dg-in" id="dg-aadhaar" placeholder="Enter Aadhaar or VID" inputmode="numeric" maxlength="16" autocomplete="off">
+      <p class="field-err" id="dg-aadhaar-err"></p>
+      <div class="otp dg-boxes">${'<input maxlength="1" inputmode="numeric" autocomplete="off">'.repeat(6)}</div>
+      <p class="otp-hint dg-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="dg-otp-err"></p>
+      <button class="dg-submit" data-cta="esign-submit-otp">Submit OTP</button>
+    </div></div>`;
+
+  /* 21.2 Digio exit page and 21.3 LOS "Agreement Signed successfully" */
+  T.esignDone = () => `
+    <span class="dg-mock dg-mock-fixed">Mock e-Sign page (prototype)</span>
+    <main class="dg-exit">
+      <svg viewBox="0 0 120 120" class="dg-exit-ico"><circle cx="60" cy="60" r="44" fill="#2E8B2E"/><rect x="41" y="38" width="38" height="46" rx="6" fill="#F4F7F4"/><path d="M48 58l8 8 16-17" stroke="#2E8B2E" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 72h20M52 77h16" stroke="#9AA59A" stroke-width="2.4" stroke-linecap="round"/><circle cx="18" cy="40" r="3" fill="#E4556B"/><circle cx="104" cy="44" r="3" fill="#4AA3E8"/><circle cx="96" cy="100" r="2.5" fill="#F2B233"/><circle cx="26" cy="92" r="2.5" fill="#8C6BE8"/></svg>
+      <p class="dg-exit-t">Signed Successfully</p>
+      <p class="dg-exit-s">Do not close the window. You will be redirected.</p>
+    </main>`;
+  T.agreementSigned = () => `
+    <main class="ag-done">
+      <svg viewBox="0 0 90 100" class="ag-done-ico"><circle cx="47" cy="10" r="6" fill="#7B5CF0"/><path d="M47 16v22" stroke="#999" stroke-width="1"/><circle cx="45" cy="42" r="5" fill="#222"/><path d="M45 47v22M45 55l-11 7M45 55l10-15M45 69l-8 20M45 69l8 20" stroke="#222" stroke-width="4" stroke-linecap="round"/><circle cx="22" cy="18" r="2" fill="#C9C1F5"/><circle cx="70" cy="22" r="2.5" fill="#C9C1F5"/><circle cx="28" cy="34" r="1.5" fill="#7B5CF0"/><circle cx="64" cy="38" r="1.5" fill="#7B5CF0"/></svg>
+      <h4>Agreement Signed successfully.</h4>
+      <p>Redirecting you back to the process in <span id="ag-count">3</span> seconds</p>
+    </main>`;
 
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
@@ -1492,6 +1522,9 @@
     },
     '20) Sanction Letter Page': () => sanctionBehaviour(),
     '21) Loan Agreement e-Sign Page': () => esignBehaviour(),
+    '21.1) Loan Agreement e-Sign OTP popup': () => esignOtpBehaviour(),
+    '21.2) Loan Agreement e-Sign Signed Successfully': () => esignDoneBehaviour(),
+    '21.3) Loan Agreement Signed Successfully': () => agreementSignedBehaviour(),
   };
   /* ---- 17 Customer details: collapse / expand, required fields, Confirm and Continue ---- */
   function custDetailsBehaviour() {
@@ -1624,7 +1657,49 @@
     const chk = document.getElementById('dg-accept');
     const btn = document.querySelector('[data-cta="sign-now"]');
     chk.addEventListener('change', () => { btn.disabled = !chk.checked; });
-    btn.onclick = () => { if (!chk.checked) return; store.set(K.agreement, 'done'); go('19) Agreement and E-Mandate Page'); };
+    btn.onclick = () => { if (chk.checked) go('21.1) Loan Agreement e-Sign OTP popup'); };
+  }
+
+  /* ---- 21.1 → 21.2 → 21.3 → 19: Digio OTP, signed, back to LOS with Loan Agreement complete ---- */
+  function esignOtpBehaviour() {
+    const ctx = loanContext();
+    document.body.innerHTML = T.esign(ctx) + T.esignOtpModal();
+    document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');
+    const q = (s) => document.querySelector(s);
+    const aad = q('#dg-aadhaar');
+    const boxes = [...document.querySelectorAll('.dg-boxes input')];
+    const aErr = (m) => { q('#dg-aadhaar-err').textContent = m || ''; aad.classList.toggle('has-err', !!m); };
+    const oErr = (m) => { q('#dg-otp-err').textContent = m || ''; boxes.forEach((b) => b.classList.toggle('has-err', !!m)); };
+    aad.addEventListener('input', () => { aad.value = aad.value.replace(/\D/g, '').slice(0, 16); aErr(''); });
+    boxes.forEach((box, idx) => {
+      box.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !box.value && boxes[idx - 1]) boxes[idx - 1].focus(); });
+      box.addEventListener('input', () => {
+        const d = box.value.replace(/\D/g, '');
+        if (d.length > 1) { d.slice(0, 6 - idx).split('').forEach((c, k) => { if (boxes[idx + k]) boxes[idx + k].value = c; }); boxes[Math.min(idx + d.length, 6) - 1].focus(); }
+        else { box.value = d; if (d && boxes[idx + 1]) boxes[idx + 1].focus(); }
+        oErr('');
+      });
+    });
+    q('[data-cta="esign-submit-otp"]').onclick = () => {
+      const a = aad.value; const v = boxes.map((b) => b.value).join('');
+      const ae = !a ? 'Please enter your Aadhaar number or VID.' : (a.length === 12 || a.length === 16) ? '' : 'Aadhaar number must be 12 digits or VID 16 digits.';
+      const oe = v.length !== 6 ? 'Please enter the 6-digit OTP.' : v !== OTP_RULES.demoOtp ? 'The OTP you entered is incorrect. Please try again.' : '';
+      aErr(ae); oErr(oe);
+      if (ae || oe) { if (oe && v.length === 6) boxes.forEach((b) => { b.value = ''; }); return; }
+      go('21.2) Loan Agreement e-Sign Signed Successfully');
+    };
+    aad.focus();
+  }
+  function esignDoneBehaviour() {
+    document.body.innerHTML = T.esignDone();
+    store.set(K.agreement, 'done');
+    setTimeout(() => go('21.3) Loan Agreement Signed Successfully'), 1500);
+  }
+  function agreementSignedBehaviour() {
+    document.body.innerHTML = T.agreementSigned();
+    store.set(K.agreement, 'done');
+    let left = 3; const c = document.getElementById('ag-count');
+    const t = setInterval(() => { left -= 1; c.textContent = Math.max(left, 0); if (left <= 0) { clearInterval(t); go('19) Agreement and E-Mandate Page'); } }, 1000);
   }
 
   function kycMockBehaviour(step) {

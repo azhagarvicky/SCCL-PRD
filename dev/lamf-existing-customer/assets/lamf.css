@@ -860,3 +860,24 @@ body.page-screens { padding: 40px 76px; }
 .dg-sec { font-size: 11px; color: #666; margin-top: 8px; }
 @media (max-width: 700px) { .sl-doc, .dg-doc { padding: 30px 20px; } .sl-foot { margin: 40px -20px 0; } }
 .sl-logo img { display: block; margin-left: auto; }
+
+/* ---------- 21.1 – 21.3 e-sign OTP, signed pages (DISC-059) ---------- */
+.dg-ov { background: rgba(0,0,0,.45); z-index: 60; }
+.dg-otp { width: 600px; max-width: 100%; border-radius: 4px; padding: 26px 110px 22px; text-align: center; font-family: system-ui, sans-serif; }
+.dg-otp h3 { font-size: 17px; font-weight: 400; padding-bottom: 8px; border-bottom: 1px solid #ddd; margin-bottom: 30px; }
+.dg-in { width: 100%; height: 34px; border: 1px solid #ccc; border-radius: 4px; padding: 0 10px; font-size: 14px; outline: none; }
+.dg-in:focus { border-color: #0A5BC4; }
+.dg-boxes { justify-content: space-between; margin-top: 14px; }
+.dg-boxes input { width: 48px; height: 48px; border: 1px solid #ccc; border-radius: 4px; }
+.dg-boxes input:focus { border: 2px solid #0A5BC4; }
+.dg-hint { margin: 12px auto 0; }
+.dg-otp .field-err { min-height: 0; margin-top: 6px; text-align: left; }
+.dg-submit { margin-top: 18px; width: 154px; height: 38px; border: 0; border-radius: 19px; background: #0A5BC4; color: #fff; font-weight: 700; font-size: 13.5px; cursor: pointer; }
+.dg-exit { min-height: 100vh; background: #F7F7F7; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, sans-serif; color: #444; }
+.dg-exit-ico { width: 150px; height: 150px; }
+.dg-exit-t { font-size: 16px; margin-top: 6px; } .dg-exit-s { font-size: 14px; }
+.dg-mock-fixed { position: fixed; top: 12px; left: 16px; z-index: 5; font-family: system-ui, sans-serif; }
+.ag-done { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.ag-done-ico { width: 80px; height: 90px; margin-bottom: 10px; }
+.ag-done h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; } .ag-done p { font-size: 13px; }
+@media (max-width: 600px) { .dg-otp { padding: 24px 20px; } .dg-boxes input { width: 40px; height: 44px; } }
