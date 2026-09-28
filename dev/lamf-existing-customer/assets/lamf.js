@@ -33,6 +33,7 @@
     '14.3) KYC Verification Page Photo verification completed',
     '15) DigiLocker Mock Page',
     '16) Photo Verification Mock Page',
+    '17) Customer Details Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -48,6 +49,15 @@
       bank: { holder: 'RAVI KUMAR S', account: '123405670006', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
     AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992', email: 'priya.r@example.com',
       bank: { holder: 'PRIYA R', account: '50100234561234', ifsc: 'HDFC0001234', name: 'HDFC Bank' } },
+  };
+  /* Customer details on record for each existing PAN (demo data) – used on the ETB page and screen 17 */
+  const PROFILE = {
+    CBOPA8195B: { salutation: 'Mr', name: 'RAVI KUMAR S', dob: '14/05/1988', gender: 'Male', mother: 'LAKSHMI S', father: 'SUNDARAM K', marital: 'Married',
+      purpose: 'Home Renovation', qualification: 'Graduate', occupation: 'Salaried', business: 'Services', income: 'Rs. 10 - 25 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
+      addr1: 'No. 12, 2nd Street', addr2: 'Anna Nagar West', addr3: 'Chennai, Tamil Nadu, 600040', landmark: 'Near Anna Nagar Tower Park', pincode: '600040', city: 'Chennai' },
+    AKLPS4321K: { salutation: 'Ms', name: 'PRIYA R', dob: '02/11/1992', gender: 'Female', mother: 'MEENA R', father: 'RAJAN P', marital: 'Single',
+      purpose: 'Education', qualification: 'Post Graduate', occupation: 'Salaried', business: 'Information Technology', income: 'Rs. 5 - 10 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
+      addr1: 'Flat 4B, Lake View Apartments', addr2: '5th Cross, Koramangala', addr3: 'Bengaluru, Karnataka, 560034', landmark: 'N/A', pincode: '560034', city: 'Bengaluru' },
   };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
@@ -99,6 +109,7 @@
     back: S('<path d="M20 12H4M10 6l-6 6 6 6"/>'),
     pencil: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>', '0 0 24 24', 'stroke-width="1.5"'),
     bank: S('<path d="M3 10h18L12 4z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'),
+    chev: S('<path d="M6 15l6-6 6 6"/>', '0 0 24 24', 'stroke-width="1.8"'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -326,6 +337,10 @@
         <div class="an-ro">
           <div class="wide"><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div>
         </div>
+        ${[['personal', 'Personal Details'], ['other', 'Other Details'], ['address', 'KYC Address']].map(([sec, title]) => `
+          <h5 class="an-sub">${title}</h5>
+          <div class="an-ro">${CD_FIELDS[sec].map(([k, label]) => `<div${['independent', 'addr1', 'addr2', 'addr3'].includes(k) ? ' class="wide"' : ''}><label class="field-lbl">${label}</label><input class="input readonly" data-pf="${k}" value="${o.pan ? PROFILE[o.pan][k] : ''}" readonly tabindex="-1"></div>`).join('')}</div>
+          ${sec === 'other' ? `<div class="an-decl"><label class="chk cd-chk"><input type="checkbox" data-pf="pep" ${o.pan && PROFILE[o.pan].pep ? 'checked' : ''} disabled><span>I am not a politically exposed person</span></label><label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''} disabled><span>I am a tax resident of India only</span></label></div>` : ''}`).join('')}
       </section>
 
       <section class="an-sec an-personal" id="an-bank" ${o.pan ? '' : 'hidden'}>
@@ -525,6 +540,55 @@
     </main>`;
   };
 
+  /* 17 Customer details (after KYC, existing PAN): Personal Details, Other Details, KYC Address.
+     Values come from the existing record (PROFILE) and can be corrected before Confirm and Continue.
+     Name, DOB, Gender and the KYC address are shown as text (from KYC), as in the shared screenshot. */
+  const CD_OPTIONS = {
+    salutation: ['Mr', 'Mrs', 'Ms', 'Dr'],
+    marital: ['Single', 'Married', 'Divorced', 'Widowed'],
+    purpose: ['Home Renovation', 'Education', 'Medical', 'Business', 'Travel', 'Wedding', 'Personal Use', 'Others'],
+    qualification: ['Below High School', 'High School', 'Graduate', 'Post Graduate', 'Professional', 'Others'],
+    occupation: ['Salaried', 'Self Employed Professional', 'Self Employed Business', 'Retired', 'Homemaker', 'Student', 'Others'],
+    business: ['Agriculture', 'Manufacturing', 'Trading', 'Services', 'Information Technology', 'Others'],
+    income: ['Up to Rs. 5 Lakhs', 'Rs. 5 - 10 Lakhs', 'Rs. 10 - 25 Lakhs', 'Rs. 25 Lakhs - 1 Crore', 'Above Rs. 1 Crore'],
+    source: ['Salary', 'Business Income', 'Rental Income', 'Investments', 'Agriculture', 'Others'],
+    independent: ['Yes', 'No'],
+  };
+  const CD_FIELDS = {       // key → [label, type]  (type: select | text | show)
+    personal: [['salutation', 'Salutation', 'select'], ['name', 'Name', 'show'], ['dob', 'Date of Birth', 'show'], ['gender', 'Gender', 'show'],
+      ['mother', 'Mother’s Name', 'text'], ['father', 'Father’s Name', 'text'], ['marital', 'Marital Status', 'select']],
+    other: [['purpose', 'Loan Purpose', 'select'], ['qualification', 'Qualification', 'select'], ['occupation', 'Occupation', 'select'], ['business', 'Nature of Business', 'select'],
+      ['income', 'Annual Income', 'select'], ['source', 'Source of Income', 'select'], ['independent', 'Is the applicant financially independent?', 'select']],
+    address: [['addr1', 'Address Line 1', 'show'], ['addr2', 'Address Line 2', 'show'], ['addr3', 'Address Line 3', 'show'], ['landmark', 'Landmark', 'show'],
+      ['pincode', 'Pincode', 'show'], ['city', 'City', 'show']],
+  };
+  const cdField = (p, [key, label, type]) => {
+    const v = p[key] || '';
+    if (type === 'show') return `<div class="cd-f"><span class="cd-l">${label}</span><p class="cd-v">${v}</p></div>`;
+    const input = type === 'select'
+      ? `<select class="input cd-in an-select" data-k="${key}"><option value="">Select</option>${CD_OPTIONS[key].map((o) => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>`
+      : `<input class="input cd-in" data-k="${key}" value="${v}" maxlength="60" autocomplete="off">`;
+    return `<div class="cd-f"><label class="cd-l">${label}<i>*</i></label>${input}<p class="field-err" data-err="${key}"></p></div>`;
+  };
+  const cdSection = (id, title, body) => `
+    <section class="cd-sec open" data-sec="${id}">
+      <button class="cd-h" data-toggle="${id}"><span class="kn done">${ICON.check}</span><span class="kt">${title}</span><span class="cd-chev">${ICON.chev}</span></button>
+      <div class="cd-body">${body}</div>
+    </section>`;
+  T.custDetails = (p = PROFILE.CBOPA8195B, loan = '1,55,36,100') => `
+    <div class="sticky-top">${plainHeader()}${stepper(2)}</div>
+    <main class="wrap kyc-page cd-page">
+      <a class="back" data-cta="back">${ICON.back}Back</a>
+      <div class="loan-strip">Your loan amount is ${rs(loan)} <a class="link-yellow sm" data-cta="view-details">View details</a></div>
+      ${cdSection('personal', 'Personal Details', `<div class="cd-grid">${CD_FIELDS.personal.map((f) => cdField(p, f)).join('')}</div>`)}
+      ${cdSection('other', 'Other Details', `<div class="cd-grid">${CD_FIELDS.other.map((f) => cdField(p, f)).join('')}</div>
+        <label class="chk cd-chk"><input type="checkbox" data-k="pep" ${p.pep ? 'checked' : ''}><span>I am not a politically exposed person ${i()}</span></label>
+        <label class="chk cd-chk"><input type="checkbox" data-k="tax" ${p.tax ? 'checked' : ''}><span>I am a tax resident of India only</span></label>
+        <p class="field-err" data-err="decl"></p>`)}
+      ${cdSection('address', 'KYC Address', `<div class="cd-grid">${CD_FIELDS.address.map((f) => cdField(p, f)).join('')}</div>`)}
+      <div class="cd-cta"><button class="btn btn-primary bold" data-cta="confirm-continue">Confirm and Continue</button></div>
+    </main>`;
+
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -688,6 +752,7 @@
         $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
         $('an-det-name').value = PAN_DETAILS[pan.value].name;
         $('an-det-email').value = PAN_DETAILS[pan.value].email;
+        document.querySelectorAll('[data-pf]').forEach((f) => { const v = PROFILE[pan.value][f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v; });
         const bk = PAN_DETAILS[pan.value].bank;
         $('an-bank-holder').value = bk.holder; $('an-bank-acc').value = bk.account; $('an-bank-ifsc').value = bk.ifsc;
       }
@@ -1210,7 +1275,41 @@
     /* ---- 15 / 16 mocks: Success marks the step complete, Failure returns with an error to retry ---- */
     '15) DigiLocker Mock Page': () => kycMockBehaviour('aadhaar'),
     '16) Photo Verification Mock Page': () => kycMockBehaviour('photo'),
+    '17) Customer Details Page': () => custDetailsBehaviour(),
   };
+  /* ---- 17 Customer details: collapse / expand, required fields, Confirm and Continue ---- */
+  function custDetailsBehaviour() {
+    const pan = store.get(K.pan);
+    const p = PROFILE[pan] || PROFILE.CBOPA8195B;
+    const saved = store.get(K.sel);
+    const tmp = document.createElement('div');
+    tmp.innerHTML = T.custDetails(p, saved ? inr(Object.values(saved).reduce((x, y) => x + y, 0)) : undefined);
+    document.querySelector('main.cd-page').replaceWith(tmp.querySelector('main.cd-page'));
+    const q = (s) => document.querySelector(s);
+    q('[data-cta="back"]').onclick = () => go('14) KYC Verification Page');
+    q('[data-cta="view-details"]').onclick = () => toast('This step will be added once its screenshot is shared.');
+    document.querySelectorAll('[data-toggle]').forEach((b) => { b.onclick = () => b.closest('.cd-sec').classList.toggle('open'); });
+    const err = (k, msg) => { const e = q(`[data-err="${k}"]`); if (e) e.textContent = msg || ''; const f = q(`.cd-in[data-k="${k}"]`); if (f) f.classList.toggle('has-err', !!msg); };
+    document.querySelectorAll('.cd-in').forEach((f) => f.addEventListener(f.tagName === 'SELECT' ? 'change' : 'input', () => {
+      if (f.tagName === 'INPUT') { const v = f.value.replace(/[^A-Za-z .]/g, ''); if (v !== f.value) { f.value = v; return err(f.dataset.k, 'Only letters, spaces and dots are allowed.'); } }
+      err(f.dataset.k, '');
+    }));
+    document.querySelectorAll('.cd-chk input').forEach((c) => c.addEventListener('change', () => err('decl', '')));
+    q('[data-cta="confirm-continue"]').onclick = () => {
+      let first = null;
+      document.querySelectorAll('.cd-in').forEach((f) => {
+        const label = f.closest('.cd-f').querySelector('.cd-l').firstChild.textContent.trim();
+        const bad = !f.value.trim() ? (f.tagName === 'SELECT' ? `Please select ${label.replace(/\?$/, '').toLowerCase()}.` : `Please enter ${label.toLowerCase()}.`) : '';
+        err(f.dataset.k, bad); if (bad && !first) first = f;
+      });
+      const decl = [...document.querySelectorAll('.cd-chk input')].every((c) => c.checked);
+      err('decl', decl ? '' : 'Please confirm both declarations to continue.');
+      if (!decl && !first) first = q('.cd-chk input');
+      if (first) { first.closest('.cd-sec').classList.add('open'); first.scrollIntoView({ block: 'center' }); return; }
+      toast('Details confirmed. The next screen will be added once its screenshot is shared.');
+    };
+  }
+
   function kycMockBehaviour(step) {
     const set = (result) => {
       const kyc = { ...(store.get(K.kyc) || {}), [step]: result };
@@ -1255,7 +1354,7 @@
       on('start-photo', () => go('16) Photo Verification Mock Page'));
       on('kyc-continue', () => {
         if (!kycDone) { document.getElementById('kyc-cont-err').textContent = 'Please complete Aadhaar and Photo verification to continue.'; return; }
-        toast('The next screen will be added once its screenshot is shared.');
+        go('17) Customer Details Page');
       });
     }
   }
