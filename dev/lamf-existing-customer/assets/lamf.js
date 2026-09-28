@@ -29,6 +29,10 @@
     '13) Loan Application Summary',
     '14) KYC Verification Page',
     '14.1) KYC Verification Page New PAN email verification',
+    '14.2) KYC Verification Page Aadhaar verification completed',
+    '14.3) KYC Verification Page Photo verification completed',
+    '15) DigiLocker Mock Page',
+    '16) Photo Verification Mock Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -351,6 +355,23 @@
       <button class="btn btn-disabled btn-block" data-cta="submit">Submit</button>
     </div></main>`;
 
+  /* 15 / 16 KYC mocks (stand in for DigiLocker and the photo check): Success / Failure to try both outcomes */
+  T.kycMock = (kind) => {
+    const dl = kind === 'aadhaar';
+    return `
+    ${plainHeader()}
+    <main><div class="card mock-card kyc-mock">
+      ${dl ? img('digilocker-logo.png', '', 'height:34px;display:block;margin:0 auto 10px') : ''}
+      <h2>${dl ? 'Mock DigiLocker Page' : 'Mock Photo Verification Page'}</h2>
+      <h4>${dl ? 'Aadhaar verification' : 'Photo verification'}</h4>
+      <p class="mock-p">Prototype only: choose the result to see how the journey continues.</p>
+      <div class="mock-2btn">
+        <button class="btn btn-primary bold" data-cta="mock-success">Success</button>
+        <button class="btn btn-outline" data-cta="mock-failure">Failure</button>
+      </div>
+    </div></main>`;
+  };
+
   /* 07 MF Central → LOS redirecting */
   T.redirecting = () => `${plainHeader()}<p class="redirecting">Redirecting to Dashboard...</p>`;
 
@@ -450,7 +471,7 @@
     <div class="cta-bar"><button class="btn btn-primary" style="width:178px" data-cta="continue">Continue</button></div>`;
   };
 
-  /* 14 KYC (same as the new-customer journey's 16.1 – 16.5.9). o = {email:'input'|'filled'|'done', aadhaar:'pending'|'start'|'status'|'done', photo:'pending'|'start'} */
+  /* 14 KYC (same as the new-customer journey's 16.1 – 16.5.9). o = {email:'input'|'filled'|'done', aadhaar:'pending'|'start'|'status'|'done', photo:'pending'|'start'|'done', aadErr, photoErr} */
   const kycRow = (n, title, state, extra = '') => {
     const done = state === 'done';
     const badge = state === 'done' ? '<span class="badge complete">Complete</span>' : state === 'pending' ? '<span class="badge pending">Pending</span>' : '';
@@ -471,6 +492,7 @@
       : aad === 'status' ? `<button class="btn kyc-btn status-btn"><b>Getting status</b><small>This might take up to 2m:58s</small></button>
           <p class="kyc-italic">Your Aadhaar details are being fetched from DigiLocker. This process may take a few minutes. Please keep this tab open and avoid refreshing the page.</p>` : '';
     const photoExtra = photo === 'start' ? `<button class="btn btn-primary bold kyc-btn sm" data-cta="start-photo">Start</button>` : '';
+    const failNote = (msg) => (msg ? `<p class="field-err kyc-fail">${msg}</p>` : '');
     return `
     <div class="sticky-top">${plainHeader()}${stepper(2)}</div>
     <main class="wrap kyc-page">
@@ -479,8 +501,8 @@
       <h1 class="kyc-title">KYC Verification <small>This step is required as per our lending guidelines.</small></h1>
       ${kycRow(1, 'Email Verification', email === 'done' ? 'done' : 'open', emailExtra)}
       ${kycRow(2, 'PAN Verification', 'done')}
-      ${kycRow(3, 'Aadhaar Verification with ' + DL, aad === 'done' ? 'done' : aad === 'pending' ? 'pending' : 'open', aadExtra)}
-      ${kycRow(4, 'Photo Verification', photo === 'start' ? 'open' : 'pending', photoExtra)}
+      ${kycRow(3, 'Aadhaar Verification with ' + DL, aad === 'done' ? 'done' : aad === 'pending' ? 'pending' : 'open', aadExtra + failNote(o.aadErr))}
+      ${kycRow(4, 'Photo Verification', photo === 'done' ? 'done' : photo === 'start' ? 'open' : 'pending', photoExtra + failNote(o.photoErr))}
       ${kycRow(5, 'Bank Details', 'pending')}
     </main>`;
   };
@@ -586,7 +608,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -712,7 +734,8 @@
       if (!consent.checked) return err('an-err', AN_ERR.consent);
       err('an-err', '');
       store.set(K.pan, mode === 'existing' ? pan.value : newPan.value);   // PAN used for the MF Central fetch
-      store.set(K.mode, mode);                                               // KYC: email already verified for an existing PAN
+      store.set(K.mode, mode);
+      store.set(K.kyc, {});                                                  // new application: KYC starts afresh                                               // KYC: email already verified for an existing PAN
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1160,20 +1183,49 @@
        New PAN: email still to be verified (as 16.1). Screen 14.1 always shows the New PAN state. */
     '14) KYC Verification Page': () => kycBehaviour(),
     '14.1) KYC Verification Page New PAN email verification': () => kycBehaviour('new'),
+    '14.2) KYC Verification Page Aadhaar verification completed': () => kycBehaviour('existing', { aadhaar: 'done' }),
+    '14.3) KYC Verification Page Photo verification completed': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'done' }),
+
+    /* ---- 15 / 16 mocks: Success marks the step complete, Failure returns with an error to retry ---- */
+    '15) DigiLocker Mock Page': () => kycMockBehaviour('aadhaar'),
+    '16) Photo Verification Mock Page': () => kycMockBehaviour('photo'),
   };
-  function kycBehaviour(forceMode) {
+  function kycMockBehaviour(step) {
+    const set = (result) => {
+      const kyc = { ...(store.get(K.kyc) || {}), [step]: result };
+      if (step === 'aadhaar' && result !== 'done') delete kyc.photo;       // photo comes after Aadhaar
+      store.set(K.kyc, kyc);
+      go('14) KYC Verification Page');
+    };
+    document.querySelector('[data-cta="mock-success"]').onclick = () => set('done');
+    document.querySelector('[data-cta="mock-failure"]').onclick = () => set('failed');
+  }
+  function kycBehaviour(forceMode, forceKyc) {
     {
       const mode = forceMode || store.get(K.mode) || 'existing';
       const saved = store.get(K.sel);
+      // KYC progress from the mocks: {aadhaar:'done'|'failed', photo:'done'|'failed'} (review screens force a state)
+      const kyc = forceKyc || store.get(K.kyc) || {};
       const opts = mode === 'new' ? { email: 'input' } : { email: 'done', aadhaar: 'start' };
+      if (mode !== 'new') {
+        if (kyc.aadhaar === 'failed') opts.aadErr = 'Aadhaar verification failed. Please try again.';
+        if (kyc.aadhaar === 'done') {
+          opts.aadhaar = 'done';
+          opts.photo = kyc.photo === 'done' ? 'done' : 'start';
+          if (kyc.photo === 'failed') opts.photoErr = 'Photo verification failed. Please try again.';
+        }
+      }
       if (saved) opts.loan = inr(Object.values(saved).reduce((x, y) => x + y, 0));
       const tmp = document.createElement('div');
       tmp.innerHTML = T.kyc(opts);
       document.querySelector('main.kyc-page').replaceWith(tmp.querySelector('main.kyc-page'));
       document.querySelector('[data-cta="back"]').onclick = () => go('13) Loan Application Summary');
-      document.querySelectorAll('[data-cta="verify-email"], [data-cta="view-details"], [data-cta="start-kyc"]').forEach((el) => {
+      document.querySelectorAll('[data-cta="verify-email"], [data-cta="view-details"]').forEach((el) => {
         el.onclick = () => toast('This step will be added once its screenshot is shared.');
       });
+      const on = (cta, fn) => { const el = document.querySelector(`[data-cta="${cta}"]`); if (el) el.onclick = fn; };
+      on('start-kyc', () => go('15) DigiLocker Mock Page'));
+      on('start-photo', () => go('16) Photo Verification Mock Page'));
     }
   }
   Object.assign(BEHAVIOUR, {

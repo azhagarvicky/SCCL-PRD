@@ -25,6 +25,10 @@ PAGES = {
  "13) Loan Application Summary": "LAMF.render(LAMF.T.summary())",
  "14) KYC Verification Page": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'start'}))",
  "14.1) KYC Verification Page New PAN email verification": "LAMF.render(LAMF.T.kyc({email:'input'}))",
+ "14.2) KYC Verification Page Aadhaar verification completed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'start'}))",
+ "14.3) KYC Verification Page Photo verification completed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'done'}))",
+ "15) DigiLocker Mock Page": "LAMF.render(LAMF.T.kycMock('aadhaar'))",
+ "16) Photo Verification Mock Page": "LAMF.render(LAMF.T.kycMock('photo'))",
 }
 TPL = """<!doctype html>
 <html lang="en">
