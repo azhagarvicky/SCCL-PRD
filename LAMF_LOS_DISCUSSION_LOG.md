@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-09-2026 17:20 IST
+**Last Updated:** 28-09-2026 17:31 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -64,6 +64,7 @@
 | DISC-029 | 27-09-2026 | PRD | Sl. No 1 wording & layout | (1) One line space after each field block in the description; (2) Clicked CTA values as bullet points; (3) remove the top-navigation phone number and Contact Us field specs from Sl. No 1; (4) Functionality to mention that the user can click either CTA | Functionality now reads “User clicking the “Check your eligibility in 2 minutes” CTA or the “Start Your Application” CTA in landing page to start the journey”; Clicked CTA shown as bullets; phone / Contact Us specs removed from the PRD (the prototype behaviour from DISC-023 is unchanged); a line space now separates every field block in all PRD descriptions (`.spec` in `prd.css`) | Implemented |
 | DISC-030 | 28-09-2026 | Apply for New Loan (Existing Customer) | New feature, kept separate | Build an "apply for new loan" journey for existing customers, step by step from screenshots the user shares; new pages in the same design and UI style; do not merge it with the current (new-customer) journey | Separate prototype in `lamf-existing-customer/` with its own screens, index, stylesheet, script, images and build script (`lamf-existing-customer/tools/build_pages.py`). Nothing in `lamf-journey/` is changed; its browser storage uses its own `lamfec.` keys so the two journeys never share entered data. Hosted with the rest of the repo at `/dev/lamf-existing-customer/` | Implemented |
 | DISC-031 | 28-09-2026 | Apply for New Loan – 01, 02, 03 | First three screens | Recreate the landing page, the MF linked mobile number entry page and the OTP page first | Screens 01 Landing, 02 Enter MF linked Mobile Number and 03 Enter OTP recreated with the same content, validations and OTP rules as the current journey (DISC-005 to DISC-010, DISC-013). OTP Submit does not open a next page yet: after a correct OTP a note says the next screen will be added when its screenshot is shared (PEND-027) | Implemented |
+| DISC-032 | 28-09-2026 | Apply for New Loan – 03 OTP | Demo OTP and tag | The OTP vendor is not integrated yet, so the user may enter only OTP 000000; show a tag "Please use OTP 000000 to proceed". Once the vendor is integrated the real OTP is sent and entered | Existing-customer journey only: accepted OTP changed from 123456 to 000000 (`OTP_RULES.demoOtp`); any other OTP is treated as wrong (wrong-attempt count and 60-minute block unchanged). Tag "Please use OTP 000000 to proceed" shown under the OTP boxes; its value comes from `OTP_RULES.demoOtp`. Remove the tag and the fixed OTP when the vendor is integrated (PEND-025). The new-customer journey still uses 123456 | Implemented |
 
 ---
 
