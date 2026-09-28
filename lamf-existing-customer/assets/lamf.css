@@ -680,7 +680,8 @@ body.page-screens { padding: 40px 76px; }
 .m-pantype { width: 480px; max-width: 100%; padding: 40px 40px 36px; display: flex; flex-direction: column; }
 .m-pantype h3 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
 .m-pantype .sub { font-size: 14px; color: var(--ink-2); margin-bottom: 22px; }
-.pt-opts { display: grid; gap: 12px; }
+.pt-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } /* Existing PAN | New PAN side by side (DISC-037) */
+@media (max-width: 360px) { .pt-opts { grid-template-columns: 1fr; } }
 .radio { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font-size: 15px; cursor: pointer; }
 .radio:has(input:checked) { border-color: var(--yellow); background: var(--yellow-soft); }
 .radio input { appearance: none; width: 18px; height: 18px; border: 1.8px solid var(--ink); border-radius: 50%; flex: none; margin: 0; background: #fff; }
