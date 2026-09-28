@@ -687,4 +687,9 @@ body.page-screens { padding: 40px 76px; }
 .radio input:checked { border-color: var(--yellow); box-shadow: inset 0 0 0 4px #fff; background: var(--yellow); }
 .m-pantype .field-err { margin: 10px 0 14px; }
 .pt-consent[hidden] { display: none; }
+.pt-pan { margin-top: 14px; }
+.pt-pan[hidden] { display: none; }
+.pt-pan .field-lbl { display: block; font-size: 13px; color: var(--ink-2); margin-bottom: 6px; }
+.pt-pan select { appearance: none; cursor: pointer; letter-spacing: .5px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23414651' stroke-width='2'/%3E%3C/svg%3E") right 14px center/16px no-repeat; padding-right: 40px; }
+.pt-pan select.has-err { border-color: var(--red); }
 .pt-consent { margin-bottom: 4px; }
