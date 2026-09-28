@@ -637,3 +637,54 @@ body.page-screens { padding: 40px 76px; }
   body.page-screens { padding: 24px 16px; }
   .page-screens ol { columns: 1; }
 }
+
+/* ==========================================================
+   04 Your loans (existing customer) + Apply for New Loan popup
+   ========================================================== */
+.hdr-cta { color: var(--yellow); font-weight: 700; font-size: 15px; cursor: pointer; }
+.yl { max-width: 950px; margin: 0 auto; padding: 36px 16px 60px; }
+.yl h1 { font-size: 21px; font-weight: 700; margin-bottom: 24px; }
+.yl h2 { font-size: 17px; font-weight: 500; display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.yl-badge { display: inline-flex; align-items: center; gap: 5px; background: #EAF7EE; color: #1E7B3A; font-size: 11px; font-weight: 500; padding: 3px 7px; border-radius: 4px; }
+.yl-badge i { width: 6px; height: 6px; border-radius: 50%; background: #1FA049; }
+.yl-top { display: grid; grid-template-columns: 407px 1fr; gap: 21px; margin-bottom: 22px; }
+.yl-bal { border: 1px solid var(--line); border-radius: 10px; padding: 26px 21px 22px; text-align: center; display: flex; flex-direction: column; }
+.yl-bal p { font-size: 14px; }
+.yl-bal > b { font-size: 29px; font-weight: 700; margin-top: 8px; }
+.yl-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: auto; padding-top: 30px; }
+.yl-btns .btn { height: 46px; font-size: 14px; padding: 0; }
+.yl-repay { border: 1px solid var(--yellow); color: var(--yellow); background: #fff; }
+.yl-withdraw { color: #fff; }
+.yl-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.yl-stat { border: 1px solid var(--line); border-radius: 10px; padding: 13px 11px; display: grid; gap: 5px; }
+.yl-stat span { font-size: 12.5px; }
+.yl-stat b { font-size: 16px; font-weight: 700; }
+.yl-tabs { display: flex; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
+.yl-tabs a { flex: none; white-space: nowrap; padding: 6px 14px 10px; font-size: 14.5px; font-weight: 700; border-bottom: 2px solid transparent; }
+.yl-tabs a.on { border-color: var(--yellow); }
+.yl-docs { display: flex; gap: 18px; flex-wrap: wrap; }
+.yl-doc { width: 180px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.yl-doc-top { position: relative; height: 123px; background: #F7F7F7; display: grid; place-items: center; }
+.yl-pdf svg { width: 36px; height: 43px; display: block; }
+.yl-dl { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.yl-dl svg { width: 14px; height: 14px; }
+.yl-doc-foot { padding: 11px 11px 10px; border-top: 1px solid var(--line); }
+.yl-doc-foot p { font-size: 13.5px; }
+.yl-doc-foot small { font-size: 12px; color: var(--muted); }
+@media (max-width: 760px) {
+  .yl-top { grid-template-columns: 1fr; }
+  .hdr { padding: 0 16px; }
+  .hdr-icons { gap: 14px; }
+}
+
+.m-pantype { width: 480px; max-width: 100%; padding: 40px 40px 36px; display: flex; flex-direction: column; }
+.m-pantype h3 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
+.m-pantype .sub { font-size: 14px; color: var(--ink-2); margin-bottom: 22px; }
+.pt-opts { display: grid; gap: 12px; }
+.radio { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; font-size: 15px; cursor: pointer; }
+.radio:has(input:checked) { border-color: var(--yellow); background: var(--yellow-soft); }
+.radio input { appearance: none; width: 18px; height: 18px; border: 1.8px solid var(--ink); border-radius: 50%; flex: none; margin: 0; background: #fff; }
+.radio input:checked { border-color: var(--yellow); box-shadow: inset 0 0 0 4px #fff; background: var(--yellow); }
+.m-pantype .field-err { margin: 10px 0 14px; }
+.pt-consent[hidden] { display: none; }
+.pt-consent { margin-bottom: 4px; }
