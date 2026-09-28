@@ -35,6 +35,7 @@ PAGES = {
  "18) Pledging of Mutual Fund Page": "LAMF.render(LAMF.T.pledge())",
  "18.1) Pledging of Mutual Fund OTP popup": "LAMF.render(LAMF.withModal(LAMF.T.pledge(), LAMF.T.pledgeOtpModal()))",
  "18.2) Pledging of Mutual Fund Successfully pledged": "LAMF.render(LAMF.withModal(LAMF.T.pledge(), LAMF.T.pledgedModal()))",
+ "19) Agreement and E-Mandate Page": "LAMF.render(LAMF.T.agreement())",
 }
 TPL = """<!doctype html>
 <html lang="en">
