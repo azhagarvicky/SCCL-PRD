@@ -36,6 +36,9 @@
     '16.1) KYC Verification Page Photo verification success',
     '16.2) KYC Verification Page Photo verification failed',
     '17) Customer Details Page',
+    '18) Pledging of Mutual Fund Page',
+    '18.1) Pledging of Mutual Fund OTP popup',
+    '18.2) Pledging of Mutual Fund Successfully pledged',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -606,6 +609,50 @@
       <div class="cd-cta"><button class="btn btn-primary bold" data-cta="confirm-continue">Confirm and Continue</button></div>
     </main>`;
 
+  /* 18 Pledging of Mutual Fund (stepper step 3). o = {loan, pledge, mobile, status:'pending'|'pledged'} */
+  const maskMobile2 = (m) => (m && m.length === 10 ? `+91${m[0]}XXXX${m.slice(6)}` : CUSTOMER.mobileMasked2);
+  T.pledge = (o = {}) => `
+    <div class="sticky-top">${plainHeader()}${stepper(3)}</div>
+    <main class="wrap pl-page">
+      <a class="back" data-cta="back">${ICON.back}Back</a>
+      <h3 class="pl-t">Please review and confirm the following details</h3>
+      <div class="pl-sum"><div><span>Loan Amount</span><b>${rs(o.loan || '2,00,00,000')}</b></div><div><span>Total Pledge Value</span><b>${rs(o.pledge || '2,66,66,666.67')}</b></div></div>
+      <div class="pl-card">
+        <div class="pl-row">
+          <span class="pl-logo">${img('mfcentral-logo.png')}</span>
+          <div><p class="pl-n">MF Central</p><p class="pl-v">Value of Securities <b>${rs(o.pledge || '2,66,66,666.67')}</b></p></div>
+          <span class="pl-badge ${o.status === 'pledged' ? 'ok' : ''}">${o.status === 'pledged' ? 'Pledged' : 'Pending'}</span>
+        </div>
+        <div class="pl-btns">
+          <button class="pl-view" data-cta="view-securities">View Securities</button>
+          ${o.status === 'pledged'
+            ? '<button class="pl-go done" disabled>Pledged</button>'
+            : '<button class="pl-go" data-cta="pledge-securities">Pledge Securities</button>'}
+        </div>
+      </div>
+      <p class="pl-otp-note">An OTP will be sent to ${o.mobile || CUSTOMER.mobileMasked2}</p>
+    </main>`;
+
+  /* 18.1 Pledge OTP popup (MF Central OTP; demo OTP 000000) */
+  T.pledgeOtpModal = (mobile) => `
+    <div class="modal m-otp m-plotp">${closeBtn}
+      <h3>Enter OTP to pledge your Mutual Fund</h3>
+      <p class="sent">OTP has been sent by MF Central to <b>${mobile || CUSTOMER.mobileMasked2}</b></p>
+      <div class="otp">${'<input maxlength="1" inputmode="numeric" autocomplete="off">'.repeat(6)}</div>
+      <p class="resend">Didn’t receive OTP? <span id="pl-resend"></span></p>
+      <p class="otp-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="pl-otp-err"></p>
+      <button class="btn btn-primary bold btn-block" data-cta="submit-pledge-otp">Submit OTP</button>
+    </div>`;
+
+  /* 18.2 Successfully pledged popup */
+  T.pledgedModal = () => `
+    <div class="modal m-pledged">
+      <span class="pl-tick"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#12A150"/><path d="M6.8 12.4l3.4 3.4 7-7" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <h3>Successfully pledged!</h3>
+      <p>You will be redirected in <span id="pl-count">3</span> seconds.</p>
+    </div>`;
+
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -707,7 +754,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -878,6 +925,7 @@
       store.set(K.pan, mode === 'existing' ? pan.value : newPan.value);   // PAN used for the MF Central fetch
       store.set(K.mode, mode);
       store.set(K.kyc, {});                                                  // new application: KYC starts afresh
+      store.set(K.pledge, '');                                               // … and pledging too
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1335,6 +1383,9 @@
     '15) DigiLocker Mock Page': () => kycMockBehaviour('aadhaar'),
     '16) Photo Verification Mock Page': () => kycMockBehaviour('photo'),
     '17) Customer Details Page': () => custDetailsBehaviour(),
+    '18) Pledging of Mutual Fund Page': () => pledgeBehaviour('page'),
+    '18.1) Pledging of Mutual Fund OTP popup': () => pledgeBehaviour('otp'),
+    '18.2) Pledging of Mutual Fund Successfully pledged': () => pledgeBehaviour('done'),
   };
   /* ---- 17 Customer details: collapse / expand, required fields, Confirm and Continue ---- */
   function custDetailsBehaviour() {
@@ -1367,8 +1418,79 @@
       err('decl', decl ? '' : 'Please confirm both declarations to continue.');
       if (!decl && !first) first = q('.cd-chk input');
       if (first) { first.closest('.cd-sec').classList.add('open'); first.scrollIntoView({ block: 'center' }); return; }
-      toast('Details confirmed. The next screen will be added once its screenshot is shared.');
+      go('18) Pledging of Mutual Fund Page');
     };
+  }
+
+  /* ---- 18 / 18.1 / 18.2 Pledging: Pledge Securities → OTP popup → Successfully pledged → back with status ---- */
+  function pledgeData() {
+    const saved = store.get(K.sel);
+    const loan = saved ? Object.values(saved).reduce((x, y) => x + y, 0) : 20000000;
+    return { loan: inr(loan), pledge: inr2(loan / LTV), mobile: maskMobile2(store.get(K.mobile) || CUSTOMER.mobile) };
+  }
+  function pledgeBehaviour(screen) {
+    const d = pledgeData();
+    const status = store.get(K.pledge) === 'done' ? 'pledged' : 'pending';
+    const tmp = document.createElement('div'); tmp.innerHTML = T.pledge({ ...d, status: screen === 'page' ? status : 'pending' });
+    document.querySelector('main.pl-page').replaceWith(tmp.querySelector('main.pl-page'));
+    const q = (s) => document.querySelector(s);
+    q('[data-cta="back"]').onclick = () => go('17) Customer Details Page');
+    q('[data-cta="view-securities"]').onclick = () => toast('This step will be added once its screenshot is shared.');
+    if (q('[data-cta="pledge-securities"]')) q('[data-cta="pledge-securities"]').onclick = () => go('18.1) Pledging of Mutual Fund OTP popup');
+
+    if (screen === 'otp') {
+      const modal = q('.m-plotp');
+      modal.querySelector('.sent b').textContent = d.mobile;
+      modal.querySelector('.close').onclick = () => go('18) Pledging of Mutual Fund Page');
+      const boxes = [...modal.querySelectorAll('.otp input')];
+      const errEl = q('#pl-otp-err');
+      const showErr = (m) => { errEl.textContent = m || ''; boxes.forEach((b) => b.classList.toggle('has-err', !!m)); };
+      boxes.forEach((box, idx) => {
+        box.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !box.value && boxes[idx - 1]) { boxes[idx - 1].focus(); return; }
+          if (e.key.length > 1 || e.ctrlKey || e.metaKey) return;
+          if (!/[0-9]/.test(e.key)) { e.preventDefault(); showErr(OTP_ERR.chars); }
+        });
+        box.addEventListener('input', () => {
+          const digits = box.value.replace(/\D/g, '');
+          if (digits.length > 1) {
+            digits.slice(0, 6 - idx).split('').forEach((c, k) => { if (boxes[idx + k]) boxes[idx + k].value = c; });
+            boxes[Math.min(idx + digits.length, 6) - 1].focus();
+          } else { box.value = digits; if (digits && boxes[idx + 1]) boxes[idx + 1].focus(); }
+          if (errEl.textContent) showErr('');
+        });
+      });
+      // 30-second timer, then Resend OTP (clears the boxes and restarts the timer)
+      const slot = q('#pl-resend'); let t = null;
+      const timer = () => {
+        clearInterval(t); let left = OTP_RULES.resendSeconds;
+        const paint = () => {
+          if (left > 0) { slot.innerHTML = `<b>00:${String(left).padStart(2, '0')}</b>`; left -= 1; return; }
+          clearInterval(t); slot.innerHTML = '<a class="link-yellow" id="pl-resend-cta">Resend OTP</a>';
+          q('#pl-resend-cta').onclick = () => { boxes.forEach((b) => { b.value = ''; }); showErr(''); timer(); };
+        };
+        paint(); t = setInterval(paint, 1000);
+      };
+      timer();
+      q('[data-cta="submit-pledge-otp"]').onclick = () => {
+        const v = boxes.map((b) => b.value).join('');
+        if (v.length !== 6) return showErr(OTP_ERR.incomplete);
+        if (v !== OTP_RULES.demoOtp) { boxes.forEach((b) => { b.value = ''; }); boxes[0].focus(); return showErr('The OTP you entered is incorrect. Please try again.'); }
+        clearInterval(t);
+        go('18.2) Pledging of Mutual Fund Successfully pledged');
+      };
+    }
+
+    if (screen === 'done') {
+      store.set(K.pledge, 'done');
+      let left = 3; const c = q('#pl-count');
+      const t = setInterval(() => {
+        left -= 1; c.textContent = Math.max(left, 0);
+        if (left <= 0) { clearInterval(t); go('18) Pledging of Mutual Fund Page'); }
+      }, 1000);
+    }
+
+    if (screen === 'page' && status === 'pledged') setTimeout(() => toast('Mutual funds pledged. The next screen (Agreement & E-Mandate) will be added once its screenshot is shared.'), 300);
   }
 
   function kycMockBehaviour(step) {

@@ -32,6 +32,9 @@ PAGES = {
  "16.1) KYC Verification Page Photo verification success": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'done', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'on'}))",
  "16.2) KYC Verification Page Photo verification failed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'start', photoErr:'Photo verification failed. Please try again.', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'off'}))",
  "17) Customer Details Page": "LAMF.render(LAMF.T.custDetails())",
+ "18) Pledging of Mutual Fund Page": "LAMF.render(LAMF.T.pledge())",
+ "18.1) Pledging of Mutual Fund OTP popup": "LAMF.render(LAMF.withModal(LAMF.T.pledge(), LAMF.T.pledgeOtpModal()))",
+ "18.2) Pledging of Mutual Fund Successfully pledged": "LAMF.render(LAMF.withModal(LAMF.T.pledge(), LAMF.T.pledgedModal()))",
 }
 TPL = """<!doctype html>
 <html lang="en">
