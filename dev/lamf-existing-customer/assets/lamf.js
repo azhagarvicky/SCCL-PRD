@@ -29,10 +29,12 @@
     '13) Loan Application Summary',
     '14) KYC Verification Page',
     '14.1) KYC Verification Page New PAN email verification',
-    '14.2) KYC Verification Page Aadhaar verification completed',
-    '14.3) KYC Verification Page Photo verification completed',
     '15) DigiLocker Mock Page',
+    '15.1) KYC Verification Page Aadhaar verification success',
+    '15.2) KYC Verification Page Aadhaar verification failed',
     '16) Photo Verification Mock Page',
+    '16.1) KYC Verification Page Photo verification success',
+    '16.2) KYC Verification Page Photo verification failed',
     '17) Customer Details Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
@@ -1323,8 +1325,11 @@
        New PAN: email still to be verified (as 16.1). Screen 14.1 always shows the New PAN state. */
     '14) KYC Verification Page': () => kycBehaviour(),
     '14.1) KYC Verification Page New PAN email verification': () => kycBehaviour('new'),
-    '14.2) KYC Verification Page Aadhaar verification completed': () => kycBehaviour('existing', { aadhaar: 'done' }),
-    '14.3) KYC Verification Page Photo verification completed': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'done' }),
+    // Review copies of the KYC page after each mock result (the live page 14 shows the same states)
+    '15.1) KYC Verification Page Aadhaar verification success': () => kycBehaviour('existing', { aadhaar: 'done' }),
+    '15.2) KYC Verification Page Aadhaar verification failed': () => kycBehaviour('existing', { aadhaar: 'failed' }),
+    '16.1) KYC Verification Page Photo verification success': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'done' }),
+    '16.2) KYC Verification Page Photo verification failed': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'failed' }),
 
     /* ---- 15 / 16 mocks: Success marks the step complete, Failure returns with an error to retry ---- */
     '15) DigiLocker Mock Page': () => kycMockBehaviour('aadhaar'),

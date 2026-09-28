@@ -25,10 +25,12 @@ PAGES = {
  "13) Loan Application Summary": "LAMF.render(LAMF.T.summary())",
  "14) KYC Verification Page": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'start', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'off'}))",
  "14.1) KYC Verification Page New PAN email verification": "LAMF.render(LAMF.T.kyc({email:'input'}))",
- "14.2) KYC Verification Page Aadhaar verification completed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'start'}))",
- "14.3) KYC Verification Page Photo verification completed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'done'}))",
  "15) DigiLocker Mock Page": "LAMF.render(LAMF.T.kycMock('aadhaar'))",
+ "15.1) KYC Verification Page Aadhaar verification success": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'start', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'off'}))",
+ "15.2) KYC Verification Page Aadhaar verification failed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'start', aadErr:'Aadhaar verification failed. Please try again.', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'off'}))",
  "16) Photo Verification Mock Page": "LAMF.render(LAMF.T.kycMock('photo'))",
+ "16.1) KYC Verification Page Photo verification success": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'done', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'on'}))",
+ "16.2) KYC Verification Page Photo verification failed": "LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'start', photoErr:'Photo verification failed. Please try again.', bank:{name:'ICICI Bank', account:'123405670006', ifsc:'ICIC0002692', logo:'funds/icici.png'}, cont:'off'}))",
  "17) Customer Details Page": "LAMF.render(LAMF.T.custDetails())",
 }
 TPL = """<!doctype html>
