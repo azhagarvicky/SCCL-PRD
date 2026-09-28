@@ -788,3 +788,36 @@ body.page-screens { padding: 40px 76px; }
 .an-consent .chk { margin-bottom: 12px; }
 @media (max-width: 900px) { .an-ro3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .an-ro3 { grid-template-columns: 1fr; } }
+
+/* ---------- 18 Pledging of Mutual Fund (DISC-056) ---------- */
+.pl-page { max-width: 594px; padding-bottom: 60px; }
+.pl-page .back { margin: 22px 0 18px; }
+.pl-t { font-size: 15.5px; font-weight: 700; margin-bottom: 16px; }
+.pl-sum { display: flex; gap: 44px; flex-wrap: wrap; background: var(--yellow-soft); border-radius: 10px; padding: 16px 14px 18px; margin-bottom: 18px; }
+.pl-sum > div > span { display: block; font-size: 13px; margin-bottom: 6px; }
+.pl-sum b { font-size: 24px; font-weight: 700; }
+.pl-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; position: relative; z-index: 1; }
+.pl-row { display: flex; align-items: center; gap: 10px; padding: 16px 18px; }
+.pl-logo { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; overflow: hidden; flex: none; }
+.pl-logo img { width: 100%; height: 100%; object-fit: cover; }
+.pl-n { font-size: 15px; font-weight: 500; }
+.pl-v { font-size: 14px; margin-top: 2px; }
+.pl-v b { margin-left: 4px; }
+.pl-badge { margin-left: auto; background: #FDE8E8; color: #D92C20; font-size: 13px; padding: 3px 8px; border-radius: 6px; }
+.pl-badge.ok { background: var(--green-bg); color: #1E7B3A; }
+.pl-btns { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+.pl-btns button { height: 42px; font-size: 14.5px; border: 0; cursor: pointer; }
+.pl-view { background: #fff; color: var(--yellow); font-weight: 700; }
+.pl-go { background: var(--yellow); color: var(--ink); font-weight: 700; }
+.pl-go.done { background: var(--green-bg); color: #1E7B3A; cursor: default; }
+.pl-otp-note { background: #F4F4F4; border-radius: 0 0 14px 14px; margin-top: -14px; padding: 22px 12px 10px; text-align: center; font-size: 13px; }
+.m-plotp { width: 480px; max-width: 100%; height: auto; min-height: 0; padding: 40px 36px 34px; }
+.m-plotp h3 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+.m-plotp .sent { font-size: 13.5px; color: var(--muted); margin-bottom: 18px; }
+.m-plotp .sent b { color: var(--ink-2); }
+.m-plotp .resend { font-size: 12.5px; margin-top: 10px; }
+.m-plotp .btn { margin-top: 22px; }
+.m-pledged { width: 480px; max-width: 100%; padding: 70px 30px 76px; text-align: center; }
+.m-pledged .pl-tick svg { width: 46px; height: 46px; }
+.m-pledged h3 { font-size: 21px; font-weight: 700; margin: 12px 0 10px; }
+.m-pledged p { font-size: 14px; color: var(--muted); }
