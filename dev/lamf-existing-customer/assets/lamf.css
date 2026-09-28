@@ -957,3 +957,13 @@ body.page-screens { padding: 40px 76px; }
 .kyc-bank .kb-ok { color: var(--ink); }
 /* Summary values (Interest Rate, Monthly Interest, Processing fee) in black (DISC-065) */
 .kv em, .sum-2 em, .kv em .rs, .sum-2 em .rs { color: var(--ink); }
+
+/* ---------- ETB page highlight panel (DISC-066) ---------- */
+.an-promo { display: flex; align-items: center; justify-content: space-between; gap: 18px 40px; flex-wrap: wrap; margin-top: 16px; padding: 22px 26px; border-radius: 10px; background: linear-gradient(90deg, #FFF8DC 0%, #FFFCF2 100%); border: 1px solid #FBE9A6; }
+.an-promo-rate { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.an-promo h2 { font-size: 24px; font-weight: 700; line-height: 1.25; max-width: 520px; }
+.an-promo ul { list-style: none; display: grid; gap: 12px; }
+.an-promo li { display: flex; align-items: center; gap: 12px; font-size: 14.5px; }
+.an-promo li span { width: 22px; height: 22px; display: grid; place-items: center; flex: none; }
+.an-promo li svg { width: 22px; height: 22px; }
+@media (max-width: 560px) { .an-promo { padding: 18px 16px; } .an-promo h2 { font-size: 20px; } }
