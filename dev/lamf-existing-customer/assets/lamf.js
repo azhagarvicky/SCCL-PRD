@@ -111,6 +111,7 @@
       <h3>Enter OTP</h3>
       <p class="sent">A 6-digit OTP has been sent by Shriram Credit to<br><span id="otp-mobile">${CUSTOMER.mobileMasked}</span> <a class="edit" data-cta="edit-mobile"><span style="width:12px;height:12px;display:inline-block">${ICON.pencilSolid}</span> Edit</a></p>
       <div class="otp">${'<input maxlength="1" inputmode="numeric" autocomplete="off">'.repeat(6)}</div>
+      <p class="otp-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
       <p class="resend">Didn’t Receive OTP? <span id="resend"></span></p>
       <p class="field-err" id="otp-err"></p>
       <div class="m-foot">
@@ -229,7 +230,7 @@
     resendBlockMin: 15,       // then blocked for 15 minutes
     maxWrong: 3,              // 3 wrong OTP attempts
     wrongBlockMin: 60,        // then blocked for 60 minutes
-    demoOtp: '123456',        // prototype only – no OTP service is called
+    demoOtp: '000000',        // until the OTP vendor is integrated, only this OTP is accepted
   };
   const OTP_ERR = {
     chars: 'Only numbers are allowed. Letters, spaces and special characters cannot be entered.',

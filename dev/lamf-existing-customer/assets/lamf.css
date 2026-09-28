@@ -176,6 +176,10 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
 /* ---------- On-screen note (e.g. next screen not built yet) ---------- */
 .ec-toast { position: fixed; left: 50%; top: 24px; transform: translateX(-50%); z-index: 1000; max-width: calc(100% - 32px); background: #1f1f1f; color: #fff; font-size: 14px; line-height: 1.4; padding: 12px 18px; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
 
+/* ---------- OTP tag: demo OTP until the OTP vendor is integrated ---------- */
+.otp-hint { display: block; width: fit-content; margin: 10px 0 0; padding: 5px 10px; border-radius: 6px; background: var(--yellow-soft); border: 1px solid var(--yellow); font-size: 12.5px; color: var(--ink); }
+.otp-hint b { letter-spacing: 1px; }
+
 /* ---------- Dev screen navigator (review aid; remove in final) ---------- */
 #devnav { position: fixed; right: 14px; bottom: 14px; z-index: 999; font-family: system-ui, sans-serif; font-size: 12px; }
 #devnav .bar { display: flex; align-items: center; gap: 2px; background: rgba(20,20,20,.86); color: #fff; border-radius: 20px; padding: 4px; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
