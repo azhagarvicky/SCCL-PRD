@@ -291,7 +291,7 @@
   const etbSection = (id, title, body, show) => `<section class="an-sec an-personal" id="${id}" ${show ? '' : 'hidden'}><h4>${title}</h4>${body}</section>`;
   const etbField = (pan, [k, label, type], editable) => {
     const v = pan ? PROFILE[pan][k] : '';
-    const wide = ['independent', 'addr1', 'addr2', 'addr3'].includes(k) ? ' class="wide"' : '';
+    const wide = '';                                        // 3-column grid: every field takes one column
     const input = !editable
       ? `<input class="input readonly" data-pf="${k}" value="${v}" readonly tabindex="-1">`
       : `<select class="input an-select" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select><p class="field-err" data-pf-err="${k}"></p>`;
@@ -321,10 +321,10 @@
           </select>
           <div class="an-details" id="an-details" ${o.pan ? '' : 'hidden'}>
             <h5>Existing details of this PAN</h5>
-            <div class="an-ro">
+            <div class="an-ro an-ro3">
               <div><label class="field-lbl" for="an-det-pan">PAN Number</label><input class="input readonly" id="an-det-pan" value="${o.pan || ''}" readonly tabindex="-1"></div>
               <div><label class="field-lbl" for="an-det-dob">DOB</label><div class="dob"><input class="input readonly" id="an-det-dob" value="${o.pan ? PAN_DETAILS[o.pan].dob : ''}" readonly tabindex="-1"><span>${ICON.calendar}</span></div></div>
-              <div class="wide"><label class="field-lbl" for="an-det-name">Name as per PAN</label><input class="input readonly" id="an-det-name" value="${o.pan ? PAN_DETAILS[o.pan].name : ''}" readonly tabindex="-1"></div>
+              <div><label class="field-lbl" for="an-det-name">Name as per PAN</label><input class="input readonly" id="an-det-name" value="${o.pan ? PAN_DETAILS[o.pan].name : ''}" readonly tabindex="-1"></div>
             </div>
           </div>
         </div>
@@ -344,27 +344,28 @@
 
       </section>
 
+      <section class="an-sec an-personal" id="an-bank" ${o.pan ? '' : 'hidden'}>
+        <h4>Bank details</h4>
+        <div class="an-ro an-ro3">
+          <div><label class="field-lbl" for="an-bank-holder">Account holder name</label><input class="input readonly" id="an-bank-holder" value="${o.pan ? PAN_DETAILS[o.pan].bank.holder : ''}" readonly tabindex="-1"></div>
+          <div><label class="field-lbl" for="an-bank-acc">Account number</label><input class="input readonly" id="an-bank-acc" value="${o.pan ? PAN_DETAILS[o.pan].bank.account : ''}" readonly tabindex="-1"></div>
+          <div><label class="field-lbl" for="an-bank-ifsc">IFSC code</label><input class="input readonly" id="an-bank-ifsc" value="${o.pan ? PAN_DETAILS[o.pan].bank.ifsc : ''}" readonly tabindex="-1"></div>
+        </div>
+      </section>
+
       ${etbSection('an-personal', 'Personal details', `
-        <div class="an-ro"><div class="wide"><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div></div>
-        <div class="an-ro">${CD_FIELDS.personal.map((f) => etbField(o.pan, f, ETB_EDIT.includes(f[0]))).join('')}</div>`, o.pan)}
+        <div class="an-ro an-ro3"><div><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div><div><label class="field-lbl" for="an-det-mobile">Mobile Number</label><input class="input readonly" id="an-det-mobile" value="${store.get(K.mobile) || CUSTOMER.mobile}" readonly tabindex="-1"></div></div>
+        <div class="an-ro an-ro3">${CD_FIELDS.personal.map((f) => etbField(o.pan, f, ETB_EDIT.includes(f[0]))).join('')}</div>`, o.pan)}
       ${etbSection('an-other', 'Other details', `
-        <div class="an-ro">${CD_FIELDS.other.map((f) => etbField(o.pan, f, true)).join('')}</div>
+        <div class="an-ro an-ro3">${CD_FIELDS.other.map((f) => etbField(o.pan, f, true)).join('')}</div>
         <div class="an-decl">
           <label class="chk cd-chk"><input type="checkbox" data-pf="pep" ${o.pan && PROFILE[o.pan].pep ? 'checked' : ''}><span>I am not a politically exposed person</span></label>
           <label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''}><span>I am a tax resident of India only</span></label>
           <p class="field-err" data-pf-err="decl"></p>
         </div>`, o.pan)}
       ${etbSection('an-address', 'KYC Address', `
-        <div class="an-ro">${CD_FIELDS.address.map((f) => etbField(o.pan, f, false)).join('')}</div>`, o.pan)}
+        <div class="an-ro an-ro3">${CD_FIELDS.address.map((f) => etbField(o.pan, f, false)).join('')}</div>`, o.pan)}
 
-      <section class="an-sec an-personal" id="an-bank" ${o.pan ? '' : 'hidden'}>
-        <h4>Bank details</h4>
-        <div class="an-ro">
-          <div class="wide"><label class="field-lbl" for="an-bank-holder">Account holder name</label><input class="input readonly" id="an-bank-holder" value="${o.pan ? PAN_DETAILS[o.pan].bank.holder : ''}" readonly tabindex="-1"></div>
-          <div><label class="field-lbl" for="an-bank-acc">Account number</label><input class="input readonly" id="an-bank-acc" value="${o.pan ? PAN_DETAILS[o.pan].bank.account : ''}" readonly tabindex="-1"></div>
-          <div><label class="field-lbl" for="an-bank-ifsc">IFSC code</label><input class="input readonly" id="an-bank-ifsc" value="${o.pan ? PAN_DETAILS[o.pan].bank.ifsc : ''}" readonly tabindex="-1"></div>
-        </div>
-      </section>
 
       <div class="an-consent" id="an-consent" hidden>
         <label class="chk sm"><input type="checkbox" id="mfc-consent"><span>${MFC_CONSENT}</span></label>
