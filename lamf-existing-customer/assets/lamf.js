@@ -27,6 +27,7 @@
     '12.1) Mutual Fund Selection page loan amount edit',
     '12.2) Mutual Fund Selection page loan amount edit as fund wise',
     '13) Loan Application Summary',
+    '14) KYC Verification Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -34,7 +35,7 @@
 
   /* ---------------- Demo customer data ---------------- */
   /* pans: PANs already linked to this mobile number (a customer can have at most MAX_PANS) */
-  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', mobileMasked2: '+919XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
+  const CUSTOMER = { email: 'ravikumar.s@example.com', mobile: '9597001623', mobileMasked: '+9195XXXX1623', mobileMasked2: '+919XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
   const MAX_PANS = 3;
   /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
   const PAN_DETAILS = {
@@ -438,6 +439,41 @@
       <div style="height:30px"></div>
     </main>
     <div class="cta-bar"><button class="btn btn-primary" style="width:178px" data-cta="continue">Continue</button></div>`;
+  };
+
+  /* 14 KYC (same as the new-customer journey's 16.1 – 16.5.9). o = {email:'input'|'filled'|'done', aadhaar:'pending'|'start'|'status'|'done', photo:'pending'|'start'} */
+  const kycRow = (n, title, state, extra = '') => {
+    const done = state === 'done';
+    const badge = state === 'done' ? '<span class="badge complete">Complete</span>' : state === 'pending' ? '<span class="badge pending">Pending</span>' : '';
+    return `<div class="kyc-row ${state === 'pending' || done ? '' : 'open'}">
+      <div class="kyc-h"><span class="kn ${done ? 'done' : state !== 'pending' ? 'act' : ''}">${done ? ICON.check : n}</span><span class="kt">${title}</span>${badge}</div>${extra}</div>`;
+  };
+  const DL = img('digilocker-logo.png', 'dl-inline');
+  T.kyc = (o = {}) => {
+    const loan = o.loan || '1,55,36,100';                    // loan amount chosen on screen 12
+    const email = o.email || 'input';
+    const aad = o.aadhaar || 'pending';
+    const photo = o.photo || 'pending';
+    const emailExtra = email === 'done' ? '' : `
+      <input class="input kyc-in ${email === 'filled' ? 'autofill' : ''}" value="${email === 'filled' ? CUSTOMER.email : ''}">
+      <p class="kyc-note">We will use this email address for all official communications related to your loan application and account.</p>
+      <button class="btn btn-primary bold kyc-btn" data-cta="verify-email">Verify</button>`;
+    const aadExtra = aad === 'start' ? `<button class="btn btn-primary bold kyc-btn" data-cta="start-kyc">Start KYC</button>`
+      : aad === 'status' ? `<button class="btn kyc-btn status-btn"><b>Getting status</b><small>This might take up to 2m:58s</small></button>
+          <p class="kyc-italic">Your Aadhaar details are being fetched from DigiLocker. This process may take a few minutes. Please keep this tab open and avoid refreshing the page.</p>` : '';
+    const photoExtra = photo === 'start' ? `<button class="btn btn-primary bold kyc-btn sm" data-cta="start-photo">Start</button>` : '';
+    return `
+    <div class="sticky-top">${plainHeader()}${stepper(2)}</div>
+    <main class="wrap kyc-page">
+      <a class="back" data-cta="back">${ICON.back}Back</a>
+      <div class="loan-strip">Your loan amount is ${rs(loan)} <a class="link-yellow sm" data-cta="view-details">View details</a></div>
+      <h1 class="kyc-title">KYC Verification <small>This step is required as per our lending guidelines.</small></h1>
+      ${kycRow(1, 'Email Verification', email === 'done' ? 'done' : 'open', emailExtra)}
+      ${kycRow(2, 'PAN Verification', 'done')}
+      ${kycRow(3, 'Aadhaar Verification with ' + DL, aad === 'done' ? 'done' : aad === 'pending' ? 'pending' : 'open', aadExtra)}
+      ${kycRow(4, 'Photo Verification', photo === 'start' ? 'open' : 'pending', photoExtra)}
+      ${kycRow(5, 'Bank Details', 'pending')}
+    </main>`;
   };
 
   /* ==========================================================
@@ -1104,7 +1140,21 @@
         document.querySelector('main.sum-page').replaceWith(tmp.querySelector('main.sum-page'));
       }
       document.querySelector('[data-cta="back"]').onclick = () => go('12) Mutual Fund Selection Page');
-      document.querySelector('[data-cta="continue"]').onclick = () => toast('The next screen will be added once its screenshot is shared.');
+      document.querySelector('[data-cta="continue"]').onclick = () => go('14) KYC Verification Page');
+    },
+
+    /* ---- 14 KYC: loan amount from screen 12; Back → 13; other actions pending ---- */
+    '14) KYC Verification Page': () => {
+      const saved = store.get(K.sel);
+      if (saved) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = T.kyc({ email: 'input', loan: inr(Object.values(saved).reduce((x, y) => x + y, 0)) });
+        document.querySelector('.loan-strip').replaceWith(tmp.querySelector('.loan-strip'));
+      }
+      document.querySelector('[data-cta="back"]').onclick = () => go('13) Loan Application Summary');
+      document.querySelectorAll('[data-cta="verify-email"], [data-cta="view-details"]').forEach((el) => {
+        el.onclick = () => toast('This step will be added once its screenshot is shared.');
+      });
     },
     '12.1) Mutual Fund Selection page loan amount edit': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editLoan: '9530700' }),
     '12.2) Mutual Fund Selection page loan amount edit as fund wise': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editing: { icici: '100000' } }),
