@@ -36,6 +36,9 @@ PAGES = {
  "18.1) Pledging of Mutual Fund OTP popup": "LAMF.render(LAMF.withModal(LAMF.T.pledge(), LAMF.T.pledgeOtpModal()))",
  "18.2) Pledging of Mutual Fund Successfully pledged": "LAMF.render(LAMF.withModal(LAMF.T.pledge(), LAMF.T.pledgedModal()))",
  "19) Agreement and E-Mandate Page": "LAMF.render(LAMF.T.agreement())",
+ "20) Sanction Letter Page": "LAMF.render(LAMF.T.sanction())",
+ "21) Loan Agreement e-Sign Page": "LAMF.render(LAMF.T.esign())",
+ "19.1) Agreement and E-Mandate Page Loan Agreement signed": "LAMF.render(LAMF.T.agreement(true))",
 }
 TPL = """<!doctype html>
 <html lang="en">

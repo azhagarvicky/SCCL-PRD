@@ -40,6 +40,9 @@
     '18.1) Pledging of Mutual Fund OTP popup',
     '18.2) Pledging of Mutual Fund Successfully pledged',
     '19) Agreement and E-Mandate Page',
+    '20) Sanction Letter Page',
+    '21) Loan Agreement e-Sign Page',
+    '19.1) Agreement and E-Mandate Page Loan Agreement signed',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -638,11 +641,11 @@
     </main>`;
 
   /* 19 Agreement & E-Mandate (stepper step 4) */
-  T.agreement = () => `
+  T.agreement = (signed = false) => `
     <div class="sticky-top">${plainHeader()}${stepper(4)}</div>
     <main class="wrap kyc-page ag-page">
-      ${kycRow(1, 'Loan Agreement', 'openPending', '<button class="btn btn-primary bold kyc-btn" data-cta="sign-agreement">Sign Agreement</button>')}
-      ${kycRow(2, 'E-Mandate', 'pending')}
+      ${signed ? kycRow(1, 'Loan Agreement', 'done') : kycRow(1, 'Loan Agreement', 'openPending', '<button class="btn btn-primary bold kyc-btn" data-cta="sign-agreement">Sign Agreement</button>')}
+      ${signed ? kycRow(2, 'E-Mandate', 'openPending', '<button class="btn btn-primary bold kyc-btn" data-cta="setup-emandate">Set up E-Mandate</button>') : kycRow(2, 'E-Mandate', 'pending')}
     </main>`;
 
   /* 18.1 Pledge OTP popup (MF Central OTP; demo OTP 000000) */
@@ -664,6 +667,84 @@
       <h3>Successfully pledged!</h3>
       <p>You will be redirected in <span id="pl-count">3</span> seconds.</p>
     </div>`;
+
+  /* 20 Sanction letter (in-principle e-Sanction Letter + KFS, from the shared UAT PDF) and
+     21 Loan agreement e-sign (Digio look-alike, prototype only). Figures follow the chosen loan. */
+  const inWords = (n) => {
+    const a = ['', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN', 'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN'];
+    const b = ['', '', 'TWENTY', 'THIRTY', 'FORTY', 'FIFTY', 'SIXTY', 'SEVENTY', 'EIGHTY', 'NINETY'];
+    const two = (x) => (x < 20 ? a[x] : `${b[Math.floor(x / 10)]}${x % 10 ? ' ' + a[x % 10] : ''}`);
+    const parts = [[10000000, 'CRORE'], [100000, 'LAKH'], [1000, 'THOUSAND'], [100, 'HUNDRED']];
+    let out = []; let r = Math.round(n);
+    parts.forEach(([v, w]) => { const q = Math.floor(r / v); if (q) { out.push(`${two(q)} ${w}`); r %= v; } });
+    if (r) out.push(two(r));
+    return out.join(' ') || 'ZERO';
+  };
+  const today = () => { const d = new Date(); return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`; };
+  const docFoot = `<div class="sl-foot"><b>SHRIRAM CREDIT COMPANY LIMITED</b><p>Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97</p><p>Corporate Office: No. 221, 3<sup>rd</sup> Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690</p><p><b>CIN: U65993TN1980PLC008215</b></p></div>`;
+  T.sanction = (o = {}) => {
+    const p = o.profile || PROFILE.CBOPA8195B;
+    const amt = o.amount || 20000000;
+    const r = (v) => `₹ ${v}`;
+    return `
+    <main class="sl-bg"><div class="sl-doc">
+      <div class="sl-logo">${img('shriram-logo.png')}</div>
+      <h1 class="sl-h">In principle e-Sanction Letter</h1>
+      <p class="sl-date">${today()}</p>
+      <p class="sl-name">${p.name}</p>
+      <p class="sl-addr">${p.addr1},<br>${p.addr2},<br>${p.addr3}</p>
+      <p class="sl-cid">Customer ID : ${o.customerId || 'A000000011'}</p>
+      <p>Dear Sir/Madam,</p>
+      <p><b>Reg: Your request for Financial Assistance of ${r(amt)}</b></p>
+      <p>We are pleased to inform you that based on your online loan application, we are offering you an in-principle e-Sanction of loan against Mutual funds of ${r(amt)} for the purpose of "${p.purpose}" as per the terms and conditions given in Key Fact Statement (KFS). This credit facility will be available to you on execution of all the necessary documents and collateral pledge/lien mark in favor of SHRIRAM CREDIT COMPANY LIMITED.</p>
+      <p>In case of any clarification, please do not hesitate to contact us at lassupport@shriramcredit.in</p>
+      <p>Thank you, and we assure you of our best services at all times.</p>
+      <p>Yours faithfully,<br><b>SHRIRAM CREDIT COMPANY LIMITED</b></p>
+      ${docFoot}
+      <h2 class="sl-h2">Annexure A: Key Fact Statement</h2>
+      <p class="sl-sub">Part 1 – Interest rate and fees / charges</p>
+      <table class="sl-t">
+        <tr><th>Sr No</th><th>Parameter</th><th>Details</th></tr>
+        <tr><td>1 (a)</td><td>Type of Loan</td><td>Loan Against pledge of Mutual Funds</td></tr>
+        <tr><td>1 (b)</td><td>Loan proposal / Customer ID</td><td>${o.proposal || 'SCCLMF20260900155'} / ${o.customerId || 'A000000011'}</td></tr>
+        <tr><td>2</td><td>Sanctioned Loan Amount (₹)</td><td>${r(amt)}</td></tr>
+        <tr><td>3</td><td>Loan Term (months)</td><td>12 Months</td></tr>
+        <tr><td>4</td><td>Instalment Details</td><td>Type of instalments: Monthly · Number of Dues: 12 Months<br>– Interest: 12 Months (Fixed) · – Principal: 1 (bullet at maturity)<br>Due: ${r(((amt * 0.105) / 12).toFixed(2))} · Commencement of repayment, post sanction (in days): 36</td></tr>
+        <tr><td>5</td><td>Rate of Interest per annum (%) and type</td><td>10.5 % p.a. and Fixed</td></tr>
+        <tr><td>6 (a)</td><td>Fees / charges payable to RE</td><td>Processing Fee: One-time | ${r(Math.round(amt * 0.005))} + GST<br>Loan Renewal Charges: Recurring | Annual | ₹ 999 + GST<br>Bank Swap Charges: Recurring | ₹ 250 + GST</td></tr>
+        <tr><td>6 (b)</td><td>Payable to Third Party through RE</td><td>Lien Marking Charges: One-time | ₹ 450 + GST<br>Lien Removal Charges: Event-based | ₹ 100 + GST<br>Stamp Duty: One-time (As per State) | ₹ 200 + GST</td></tr>
+        <tr><td>8</td><td>Purpose of Loan</td><td>${p.purpose}</td></tr>
+      </table>
+      ${docFoot}
+    </div></main>
+    <div class="sl-bar">
+      <label class="sl-chk"><input type="checkbox" id="sl-accept"><span>I accept the terms of the Sanction letter and Key Fact Statement (KFS), including all applicable charges, interest rates, and repayment schedules. I confirm that I understand these conditions and agree to proceed with the loan agreement.</span></label>
+      <button class="sl-submit" data-cta="sanction-submit" disabled>Submit</button>
+    </div>`;
+  };
+
+  T.esign = (o = {}) => {
+    const amt = o.amount || 20000000;
+    return `
+    <header class="dg-hdr"><span class="dg-logo"><b>d</b>igio</span><span class="dg-mock">Mock e-Sign page (prototype)</span></header>
+    <main class="dg-bg"><div class="sl-doc dg-doc">
+      <div class="sl-logo">${img('shriram-logo.png')}</div>
+      <h1 class="sl-h dg-h">LOAN CUM PLEDGE AGREEMENT</h1>
+      <p>This Agreement made on ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}, between:</p>
+      <p>(1) The Borrower the details where of are given at the end of the Agreement, (here in after called the "<b>Borrower</b>") of the First Part</p>
+      <p><b>AND</b></p>
+      <p>(2) Shriram Credit Company Limited., a Company incorporated under the Companies Act, 1956 having CIN No. U65993TN1980PLC008215 and having its registered office situated at Shriram House, No.4, Burkit Road, T.Nagar, Chennai, TamilNadu, 600017 having RBI registration number-B-07.00709, (here in after called "<b>SCCL</b> or the <b>Lender</b>") of the Third Part.</p>
+      <p>(The expression 'Borrower and SCCL/ Lender' shall, unless repugnant to the context or meaning thereof be deemed to include their respective legal heirs, executors and administrators and shall be deemed to include his/her/its/their respective successors and permitted assigns in the case of the Borrower and its assigns in the case of SCCL/ Lender)</p>
+      <p>(The expressions Borrower and SCCL shall hereinafter collectively be referred to as the "<b>Parties</b>" and individually as the "<b>Party</b>")</p>
+      <p><b>WHEREAS</b> the Borrower being in need of funds has approached SCCL for a loan of Rs. ${amt} (Rupees ${inWords(amt)}) (hereinafter referred to as the "<b>Loan Facility</b>")</p>
+      <p class="dg-more">… (remaining clauses of the agreement)</p>
+    </div></main>
+    <div class="dg-bar">
+      <label class="dg-chk"><input type="checkbox" id="dg-accept" checked><span>1. By continuing, I agree to do eKyc using Aadhaar to eSign with one of ESPs (CVL or Emudra or Protean) Digio is registered as ASP<br>2. I confirm that ${o.mobile || '+91XXXXXXXXXX'} belongs to me and verified with <b>SHRIRAM CREDIT COMPANY LIMITED</b></span></label>
+      <button class="dg-sign" data-cta="sign-now">Sign Now</button>
+      <p class="dg-sec">Secured by <b>digio</b></p>
+    </div>`;
+  };
 
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
@@ -766,7 +847,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -938,6 +1019,7 @@
       store.set(K.mode, mode);
       store.set(K.kyc, {});                                                  // new application: KYC starts afresh
       store.set(K.pledge, '');                                               // … and pledging too
+      store.set(K.agreement, '');                                            // … and the agreement
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1399,8 +1481,17 @@
     '18.1) Pledging of Mutual Fund OTP popup': () => pledgeBehaviour('otp'),
     '18.2) Pledging of Mutual Fund Successfully pledged': () => pledgeBehaviour('done'),
     '19) Agreement and E-Mandate Page': () => {
-      document.querySelector('[data-cta="sign-agreement"]').onclick = () => toast('This step will be added once its screenshot is shared.');
+      const signed = store.get(K.agreement) === 'done';
+      const tmp = document.createElement('div'); tmp.innerHTML = T.agreement(signed);
+      document.querySelector('main.ag-page').replaceWith(tmp.querySelector('main.ag-page'));
+      const a = document.querySelector('[data-cta="sign-agreement"]'); if (a) a.onclick = () => go('20) Sanction Letter Page');
+      const e = document.querySelector('[data-cta="setup-emandate"]'); if (e) e.onclick = () => toast('E-Mandate will be added once its screenshot is shared.');
     },
+    '19.1) Agreement and E-Mandate Page Loan Agreement signed': () => {
+      document.querySelector('[data-cta="setup-emandate"]').onclick = () => toast('E-Mandate will be added once its screenshot is shared.');
+    },
+    '20) Sanction Letter Page': () => sanctionBehaviour(),
+    '21) Loan Agreement e-Sign Page': () => esignBehaviour(),
   };
   /* ---- 17 Customer details: collapse / expand, required fields, Confirm and Continue ---- */
   function custDetailsBehaviour() {
@@ -1505,6 +1596,35 @@
       }, 1000);
     }
 
+  }
+
+  /* ---- 19 → 20 → 21 → 19: Sign Agreement → sanction letter (accept + Submit) → e-sign → Loan Agreement complete ---- */
+  function loanContext() {
+    const pan = store.get(K.pan);
+    const base = PROFILE[pan] || PROFILE.CBOPA8195B;
+    const prof = store.get(K.profile);
+    const saved = store.get(K.sel);
+    return {
+      profile: prof && prof.pan === pan ? { ...base, ...prof.edits } : base,
+      amount: saved ? Object.values(saved).reduce((x, y) => x + y, 0) : 20000000,
+      mobile: '+91' + (store.get(K.mobile) || CUSTOMER.mobile),
+    };
+  }
+  function sanctionBehaviour() {
+    const ctx = loanContext();
+    document.body.innerHTML = T.sanction(ctx);
+    const chk = document.getElementById('sl-accept');
+    const btn = document.querySelector('[data-cta="sanction-submit"]');
+    chk.addEventListener('change', () => { btn.disabled = !chk.checked; });
+    btn.onclick = () => { if (chk.checked) go('21) Loan Agreement e-Sign Page'); };
+  }
+  function esignBehaviour() {
+    const ctx = loanContext();
+    document.body.innerHTML = T.esign(ctx);
+    const chk = document.getElementById('dg-accept');
+    const btn = document.querySelector('[data-cta="sign-now"]');
+    chk.addEventListener('change', () => { btn.disabled = !chk.checked; });
+    btn.onclick = () => { if (!chk.checked) return; store.set(K.agreement, 'done'); go('19) Agreement and E-Mandate Page'); };
   }
 
   function kycMockBehaviour(step) {
