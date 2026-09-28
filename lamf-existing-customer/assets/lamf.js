@@ -81,7 +81,7 @@
 
   /* Existing loan shown on "Your loans" (values from the shared screenshot) */
   const LOAN = {
-    product: 'Loan Against Mutual Fund', status: 'Active',
+    product: 'Loan Against Mutual Fund', status: 'Active', number: 'SCCLMF20250600042', pan: 'CBOPA8195B',
     available: '5,000', sanctioned: '10,000', pledgedValue: '15,384.61', withdrawn: '5,000',
     principal: '4,500', interestDue: '2.88', repaid: '15,102.88',
     statements: [['Holding Statement', '27/09/2026'], ['Client Statement', '27/09/2026']],
@@ -1638,11 +1638,8 @@
     '22.1) E-Mandate NPCI Simulation Page': () => npciBehaviour(),
     '22.2) E-Mandate Authenticated Successfully': () => emandateDoneBehaviour(),
     '23) Loan Application Submitted Page': () => submittedBehaviour(),
-    '24) Your Loans Page New Loan Submitted': () => {
-      const ctx = loanContext();
-      const tmp = document.createElement('div'); tmp.innerHTML = T.loanSubmitted(ctx);
-      document.querySelector('main.yl').replaceWith(tmp.querySelector('main.yl'));
-    },
+    '24) Your Loans Page New Loan Submitted': () => yourLoansBehaviour('new'),
+    '04) Your Loans Page': () => yourLoansBehaviour('existing'),
     '20) Sanction Letter Page': () => sanctionBehaviour(),
     '21) Loan Agreement e-Sign Page': () => esignBehaviour(),
     '21.1) Loan Agreement e-Sign OTP popup': () => esignOtpBehaviour(),
@@ -1856,6 +1853,39 @@
     const tmp = document.createElement('div'); tmp.innerHTML = T.submitted(ctx);
     document.querySelector('main.sb-page').replaceWith(tmp.querySelector('main.sb-page'));
     document.querySelector('[data-cta="view-loan"]').onclick = () => go('24) Your Loans Page New Loan Submitted');
+  }
+
+  /* ---- 04 / 24 Your loans: one card per loan on this mobile number; the page shows the selected loan.
+     The new loan is listed once the application is submitted (E-Mandate authenticated) or on screen 24. ---- */
+  function customerLoans(showNew) {
+    const loans = [{ id: 'existing', number: LOAN.number, pan: LOAN.pan, status: 'Active', amount: 10000 }];
+    if (showNew || store.get(K.emandate) === 'done') {
+      const ctx = loanContext();
+      loans.push({ id: 'new', number: 'SCCLMF20260900155', pan: store.get(K.pan) || 'CBOPA8195B', status: 'Submitted', amount: ctx.amount });
+    }
+    return loans;
+  }
+  function yourLoansBehaviour(defaultId) {
+    const loans = customerLoans(defaultId === 'new');
+    const paint = (id) => {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = id === 'new' ? T.loanSubmitted(loanContext()) : T.loans();
+      const main = tmp.querySelector('main.yl');
+      if (loans.length > 1) {
+        main.querySelector('h1').insertAdjacentHTML('afterend', `
+          <div class="yl-sel" role="tablist" aria-label="Your loans">${loans.map((l) => `
+            <button class="yl-lc ${l.id === id ? 'on' : ''}" data-loan="${l.id}" role="tab" aria-selected="${l.id === id}">
+              <span class="yl-lc-top"><span class="yl-lc-no">${l.number}</span><span class="yl-badge ${l.status === 'Active' ? '' : 'sub'}"><i></i>${l.status}</span></span>
+              <span class="yl-lc-p">Loan Against Mutual Fund</span>
+              <span class="yl-lc-pan">PAN ${maskPan(l.pan)}</span>
+              <b class="yl-lc-amt">${rs(inr(l.amount))}</b>
+            </button>`).join('')}
+          </div>`);
+      }
+      document.querySelector('main.yl').replaceWith(main);
+      document.querySelectorAll('[data-loan]').forEach((b) => { b.onclick = () => paint(b.dataset.loan); });
+    };
+    paint(loans.some((l) => l.id === defaultId) ? defaultId : loans[loans.length - 1].id);
   }
 
   function kycMockBehaviour(step) {
