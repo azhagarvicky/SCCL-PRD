@@ -39,6 +39,7 @@
     '18) Pledging of Mutual Fund Page',
     '18.1) Pledging of Mutual Fund OTP popup',
     '18.2) Pledging of Mutual Fund Successfully pledged',
+    '19) Agreement and E-Mandate Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -521,6 +522,9 @@
   /* 14 KYC (same as the new-customer journey's 16.1 – 16.5.9). o = {email:'input'|'filled'|'done', aadhaar:'pending'|'start'|'status'|'done', photo:'pending'|'start'|'done', aadErr, photoErr} */
   const kycRow = (n, title, state, extra = '') => {
     const done = state === 'done';
+    if (state === 'openPending') {     // current step, still pending, with its action (Agreement & E-Mandate)
+      return `<div class="kyc-row open"><div class="kyc-h"><span class="kn act">${n}</span><span class="kt">${title}</span><span class="badge pending">Pending</span></div>${extra}</div>`;
+    }
     if (state === 'doneOpen') {        // complete, but its details stay visible (Bank Details for an existing PAN)
       return `<div class="kyc-row open"><div class="kyc-h"><span class="kn act">${n}</span><span class="kt">${title}</span><span class="badge complete">Complete</span></div>${extra}</div>`;
     }
@@ -631,6 +635,14 @@
         </div>
       </div>
       <p class="pl-otp-note">An OTP will be sent to ${o.mobile || CUSTOMER.mobileMasked2}</p>
+    </main>`;
+
+  /* 19 Agreement & E-Mandate (stepper step 4) */
+  T.agreement = () => `
+    <div class="sticky-top">${plainHeader()}${stepper(4)}</div>
+    <main class="wrap kyc-page ag-page">
+      ${kycRow(1, 'Loan Agreement', 'openPending', '<button class="btn btn-primary bold kyc-btn" data-cta="sign-agreement">Sign Agreement</button>')}
+      ${kycRow(2, 'E-Mandate', 'pending')}
     </main>`;
 
   /* 18.1 Pledge OTP popup (MF Central OTP; demo OTP 000000) */
@@ -1386,6 +1398,9 @@
     '18) Pledging of Mutual Fund Page': () => pledgeBehaviour('page'),
     '18.1) Pledging of Mutual Fund OTP popup': () => pledgeBehaviour('otp'),
     '18.2) Pledging of Mutual Fund Successfully pledged': () => pledgeBehaviour('done'),
+    '19) Agreement and E-Mandate Page': () => {
+      document.querySelector('[data-cta="sign-agreement"]').onclick = () => toast('This step will be added once its screenshot is shared.');
+    },
   };
   /* ---- 17 Customer details: collapse / expand, required fields, Confirm and Continue ---- */
   function custDetailsBehaviour() {
@@ -1486,11 +1501,10 @@
       let left = 3; const c = q('#pl-count');
       const t = setInterval(() => {
         left -= 1; c.textContent = Math.max(left, 0);
-        if (left <= 0) { clearInterval(t); go('18) Pledging of Mutual Fund Page'); }
+        if (left <= 0) { clearInterval(t); go('19) Agreement and E-Mandate Page'); }
       }, 1000);
     }
 
-    if (screen === 'page' && status === 'pledged') setTimeout(() => toast('Mutual funds pledged. The next screen (Agreement & E-Mandate) will be added once its screenshot is shared.'), 300);
   }
 
   function kycMockBehaviour(step) {
