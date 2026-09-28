@@ -931,3 +931,13 @@ body.page-screens { padding: 40px 76px; }
 .yl-off .yl-repay:disabled { background: #fff; color: var(--yellow); } .yl-off .yl-withdraw:disabled { background: var(--yellow); color: #fff; }
 .yl-empty { background: #F9F9F9; border-radius: 12px; padding: 18px 16px 24px; text-align: center; font-size: 14px; }
 .yl-empty svg { width: 36px; height: 40px; margin-bottom: 6px; }
+
+/* ---------- Your loans – loan selector when one mobile number has several loans (DISC-062) ---------- */
+.yl-sel { display: flex; gap: 14px; overflow-x: auto; margin: -8px 0 24px; padding-bottom: 4px; scrollbar-width: thin; }
+.yl-lc { flex: 0 0 230px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer; display: grid; gap: 4px; }
+.yl-lc.on { border-color: var(--yellow); background: var(--yellow-soft); box-shadow: 0 0 0 1px var(--yellow); }
+.yl-lc-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.yl-lc-no { font-size: 11.5px; color: var(--muted); letter-spacing: .3px; }
+.yl-lc-p { font-size: 13.5px; font-weight: 500; }
+.yl-lc-pan { font-size: 12px; color: var(--ink-2); letter-spacing: .4px; }
+.yl-lc-amt { font-size: 16px; font-weight: 700; }
