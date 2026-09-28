@@ -776,3 +776,15 @@ body.page-screens { padding: 40px 76px; }
 .field-lbl .req { font-style: normal; margin-left: 2px; }
 .an-personal .an-ro + .an-ro { margin-top: 4px; }
 .an-personal .field-err { margin-top: 4px; min-height: 0; }
+
+/* ---------- ETB page redesign: full-width sections, three fields per row (DISC-053) ---------- */
+.an-sec { max-width: none; }
+.an-sec + .an-sec, .an-sec + .an-personal { margin-top: 18px; }
+.an-ro3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px 18px; }
+.an-existing .an-select { max-width: 460px; }
+.an-new { max-width: 560px; }
+.an-details { padding: 16px 18px 18px; }
+.an-consent { max-width: 460px; margin: 26px auto 0; }
+.an-consent .chk { margin-bottom: 12px; }
+@media (max-width: 900px) { .an-ro3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .an-ro3 { grid-template-columns: 1fr; } }
