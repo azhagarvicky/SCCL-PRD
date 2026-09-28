@@ -923,3 +923,11 @@ body.page-screens { padding: 40px 76px; }
 @media (max-width: 560px) { .em-body { grid-template-columns: 1fr; } .sb-card { padding: 16px; } }
 .em-max { font-size: 16.5px; word-break: break-all; }
 .em-2 { margin-top: 14px; } .em-2 span { display: block; color: #555; font-size: 10.5px; }
+
+/* ---------- 24 Your loans – submitted loan (DISC-061) ---------- */
+.yl-badge.sub { background: #FFF1EA; color: #E8661C; } .yl-badge.sub i { background: #F07A2B; }
+.yl-note { font-size: 12px !important; margin-top: auto; padding-top: 22px; }
+.yl-off { padding-top: 10px; } .yl-off .btn:disabled { opacity: .55; cursor: not-allowed; }
+.yl-off .yl-repay:disabled { background: #fff; color: var(--yellow); } .yl-off .yl-withdraw:disabled { background: var(--yellow); color: #fff; }
+.yl-empty { background: #F9F9F9; border-radius: 12px; padding: 18px 16px 24px; text-align: center; font-size: 14px; }
+.yl-empty svg { width: 36px; height: 40px; margin-bottom: 6px; }

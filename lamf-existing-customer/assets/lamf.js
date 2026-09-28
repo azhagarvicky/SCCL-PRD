@@ -50,6 +50,7 @@
     '22.1) E-Mandate NPCI Simulation Page',
     '22.2) E-Mandate Authenticated Successfully',
     '23) Loan Application Submitted Page',
+    '24) Your Loans Page New Loan Submitted',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -836,6 +837,34 @@
       <p class="dg-exit-t">Mandate authenticated successfully.</p>
       <p class="dg-exit-s">Please share your feedback</p><p class="dg-exit-s">You may close the window.</p>
     </main>`;
+  /* 24 Your loans – the new loan just submitted (withdrawal page; withdraw allowed once active) */
+  T.loanSubmitted = (o = {}) => {
+    const amt = o.amount || 20000000;
+    const stat2 = (label, v) => `<div class="yl-stat"><span>${label}</span><b>${v}</b></div>`;
+    return `
+    ${appHeader()}
+    <main class="yl">
+      <h1>Your loans</h1>
+      <h2>Loan Against Mutual Fund <span class="yl-badge sub"><i></i>Submitted</span></h2>
+      <div class="yl-top">
+        <div class="yl-bal">
+          <p>Available Withdrawal Balance</p>
+          <b><span class="rs">₹</span> ${inr(amt)}</b>
+          <p class="yl-note">You can withdraw once your loan is active.</p>
+          <div class="yl-btns yl-off"><button class="btn yl-repay" disabled>Repay</button><button class="btn btn-primary yl-withdraw" disabled>Withdraw</button></div>
+        </div>
+        <div class="yl-stats">
+          ${stat2('Sanctioned Amount', rs(inr(amt)))}${stat2('Value of Pledged Funds', rs(inr2(amt / LTV)))}
+          ${stat2('Total Withdrawn', rs('0'))}${stat2('Principal Outstanding', '-')}
+          ${stat2('Interest Due', rs('0'))}${stat2('Repaid Amount', '-')}
+        </div>
+      </div>
+      <nav class="yl-tabs">${['Statements', 'Transaction Details', 'Pledged Mutual Funds Details', 'Loan Details', 'Repayment Schedule']
+        .map((t, k) => `<a class="${k === 0 ? 'on' : ''}">${t}</a>`).join('')}</nav>
+      <div class="yl-empty"><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.4" stroke-linejoin="round"><path d="M6 2.8h8.5L19 7.3v13.9H6z"/><path d="M14.5 2.8v4.5H19M9 11h7M9 14h7M9 17h7"/></svg><p>All statements will appear here.</p></div>
+    </main>`;
+  };
+
   /* 23 Loan application submitted (LOS) */
   T.submitted = (o = {}) => {
     const amt = o.amount || 20000000;
@@ -933,6 +962,9 @@
       'start-application': '02) Enter MF linked Mobile Number',
     },
     '04) Your Loans Page': {
+      'apply-new-loan': '04.1) Apply for New Loan Page',
+    },
+    '24) Your Loans Page New Loan Submitted': {
       'apply-new-loan': '04.1) Apply for New Loan Page',
     },
     '11) Curated Offers Page': {
@@ -1606,6 +1638,11 @@
     '22.1) E-Mandate NPCI Simulation Page': () => npciBehaviour(),
     '22.2) E-Mandate Authenticated Successfully': () => emandateDoneBehaviour(),
     '23) Loan Application Submitted Page': () => submittedBehaviour(),
+    '24) Your Loans Page New Loan Submitted': () => {
+      const ctx = loanContext();
+      const tmp = document.createElement('div'); tmp.innerHTML = T.loanSubmitted(ctx);
+      document.querySelector('main.yl').replaceWith(tmp.querySelector('main.yl'));
+    },
     '20) Sanction Letter Page': () => sanctionBehaviour(),
     '21) Loan Agreement e-Sign Page': () => esignBehaviour(),
     '21.1) Loan Agreement e-Sign OTP popup': () => esignOtpBehaviour(),
@@ -1818,7 +1855,7 @@
     const ctx = loanContext();
     const tmp = document.createElement('div'); tmp.innerHTML = T.submitted(ctx);
     document.querySelector('main.sb-page').replaceWith(tmp.querySelector('main.sb-page'));
-    document.querySelector('[data-cta="view-loan"]').onclick = () => toast('Loan details will be added once its screenshot is shared.');
+    document.querySelector('[data-cta="view-loan"]').onclick = () => go('24) Your Loans Page New Loan Submitted');
   }
 
   function kycMockBehaviour(step) {
