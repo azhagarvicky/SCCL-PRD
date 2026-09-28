@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>14) Loan Application Summary</title>
+<title>04.2) Apply for New Loan Existing PAN selected</title>
 <link rel="stylesheet" href="assets/lamf.css?v=8e4a432">
 </head>
 <body>
 <script src="assets/lamf.js?v=8e4a432"></script>
-<script>LAMF.render(LAMF.T.summary())</script>
-<script src="assets/review.js?v=8e4a432"></script>
+<script>LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.panTypeModal('existing')))</script>
 </body>
 </html>

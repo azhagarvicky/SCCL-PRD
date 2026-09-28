@@ -12,17 +12,32 @@
     '01) LAMF Landing Page',
     '02) Enter MF linked Mobile Number',
     '03) Enter OTP for MF linked Mobile Number Verification',
+    '04) Your Loans Page',
+    '04.1) Apply for New Loan PAN type popup',
+    '04.2) Apply for New Loan Existing PAN selected',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
   const logoLink = (inner) => `<a class="logo" href="index.html" title="Home">${inner}</a>`;
 
   /* ---------------- Demo customer data ---------------- */
-  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623' };
+  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', pan: 'CBOPA 8195 B' };
+
+  /* Existing loan shown on "Your loans" (values from the shared screenshot) */
+  const LOAN = {
+    product: 'Loan Against Mutual Fund', status: 'Active',
+    available: '5,000', sanctioned: '10,000', pledgedValue: '15,384.61', withdrawn: '5,000',
+    principal: '4,500', interestDue: '2.88', repaid: '15,102.88',
+    statements: [['Holding Statement', '27/09/2026'], ['Client Statement', '27/09/2026']],
+  };
 
   /* ---------------- Icons ---------------- */
   const S = (p, vb = '0 0 24 24', extra = '') => `<svg viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" ${extra}>${p}</svg>`;
   const ICON = {
+    gauge: S('<path d="M3.5 17.5a9 9 0 1 1 17 0z" /><path d="M12 14l4.5-5" /><path d="M6.5 14h1.5M16 14h1.5"/>'),
+    user: S('<circle cx="12" cy="8" r="4.2"/><path d="M4 20.5c1.2-3.8 4.4-5.5 8-5.5s6.8 1.7 8 5.5"/>'),
+    download: S('<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>', '0 0 24 24', 'stroke-width="1.8"'),
+    pdf: `<svg viewBox="0 0 40 48"><path d="M6 1h21l12 12v31a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3z" fill="#E4E4E7"/><path d="M27 1v9a3 3 0 0 0 3 3h9z" fill="#C9C9CF"/><rect x="0" y="22" width="30" height="14" rx="2" fill="#E5483B"/><text x="15" y="32.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial, sans-serif">PDF</text></svg>`,
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -41,7 +56,12 @@
 
   const img = (f, cls = '', style = '') => `<img src="${IMG}${f}" class="${cls}" style="${style}" alt="">`;
 
-  /* ---------------- Header ---------------- */
+  /* ---------------- Headers ---------------- */
+  // Logged-in header: "Apply for New Loan" replaces "My Portfolio" (existing customer)
+  const appHeader = () => `
+    <header class="hdr">${logoLink(img('shriram-logo.png'))}
+      <div class="hdr-icons"><a class="hdr-cta" data-cta="apply-new-loan">Apply for New Loan</a><span>${ICON.gauge}</span><span>${ICON.user}</span></div>
+    </header>`;
   const header = () => `
     <header class="hdr site">
       ${logoLink(img('shriram-logo.png'))}
@@ -120,6 +140,49 @@
       </div>
     </div>`;
 
+  /* 04 Your loans (existing customer, after OTP) */
+  const stat = (label, v) => `<div class="yl-stat"><span>${label}</span><b><span class="rs">₹</span> ${v}</b></div>`;
+  T.loans = () => `
+    ${appHeader()}
+    <main class="yl">
+      <h1>Your loans</h1>
+      <h2>${LOAN.product} <span class="yl-badge"><i></i>${LOAN.status}</span></h2>
+      <div class="yl-top">
+        <div class="yl-bal">
+          <p>Available Withdrawal Balance</p>
+          <b><span class="rs">₹</span> ${LOAN.available}</b>
+          <div class="yl-btns"><a class="btn yl-repay" data-cta="repay">Repay</a><a class="btn btn-primary yl-withdraw" data-cta="withdraw">Withdraw</a></div>
+        </div>
+        <div class="yl-stats">
+          ${stat('Sanctioned Amount', LOAN.sanctioned)}${stat('Value of Pledged Funds', LOAN.pledgedValue)}
+          ${stat('Total Withdrawn', LOAN.withdrawn)}${stat('Principal Outstanding', LOAN.principal)}
+          ${stat('Interest Due', LOAN.interestDue)}${stat('Repaid Amount', LOAN.repaid)}
+        </div>
+      </div>
+      <nav class="yl-tabs">${['Statements', 'Transaction Details', 'Pledged Mutual Funds Details', 'Loan Details', 'Repayment Schedule']
+        .map((t, k) => `<a class="${k === 0 ? 'on' : ''}">${t}</a>`).join('')}</nav>
+      <div class="yl-docs">${LOAN.statements.map(([n, d]) => `
+        <div class="yl-doc"><div class="yl-doc-top"><span class="yl-pdf">${ICON.pdf}</span><a class="yl-dl" title="Download">${ICON.download}</a></div>
+          <div class="yl-doc-foot"><p>${n}</p><small>${d}</small></div></div>`).join('')}
+      </div>
+    </main>`;
+
+  /* 04.1 / 04.2 Apply for New Loan – PAN type popup. sel: '' | 'existing' | 'new' */
+  T.panTypeModal = (sel = '') => `
+    <div class="modal m-pantype">${closeBtn}
+      <h3>Apply for New Loan</h3>
+      <p class="sub">Select the PAN you want to apply the new loan with</p>
+      <div class="pt-opts">
+        <label class="radio"><input type="radio" name="pan-type" value="existing" ${sel === 'existing' ? 'checked' : ''}><span>Existing PAN</span></label>
+        <label class="radio"><input type="radio" name="pan-type" value="new" ${sel === 'new' ? 'checked' : ''}><span>New PAN</span></label>
+      </div>
+      <p class="field-err" id="pan-type-err"></p>
+      <div class="m-foot">
+        <label class="chk sm pt-consent" id="pt-consent-row" ${sel === 'existing' ? '' : 'hidden'}><input type="checkbox" id="mfc-consent"><span>I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.</span></label>
+        <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
+      </div>
+    </div>`;
+
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
      Replace each line with the exact legal wording before this goes live.
@@ -195,6 +258,9 @@
       'check-eligibility': '02) Enter MF linked Mobile Number',
       'start-application': '02) Enter MF linked Mobile Number',
     },
+    '04) Your Loans Page': {
+      'apply-new-loan': '04.1) Apply for New Loan PAN type popup',
+    },
   };
 
   const currentScreen = () => decodeURIComponent(location.pathname.split('/').pop()).replace(/\.html$/, '');
@@ -239,6 +305,51 @@
     wrong: (left) => `The OTP you entered is incorrect. Please try again. ${left} attempt${left === 1 ? '' : 's'} remaining.`,
     resendBlocked: (m) => `You have used all ${OTP_RULES.maxResend} OTP resend attempts. Please try again after ${m} minute${m === 1 ? '' : 's'}.`,
     wrongBlocked: (m) => `You have entered an incorrect OTP ${OTP_RULES.maxWrong} times. Please try again after ${m} minute${m === 1 ? '' : 's'}.`,
+  };
+
+  const PAN_TYPE_ERR = {
+    none: 'Please select PAN type.',
+    consent: 'Please provide the consent to proceed.',
+  };
+
+  /* 04.1 / 04.2 – Apply for New Loan popup: one of two radios, consent only for Existing PAN */
+  const panTypeBehaviour = () => {
+    const modal = document.querySelector('.m-pantype');
+    const radios = [...modal.querySelectorAll('input[name="pan-type"]')];
+    const consentRow = document.getElementById('pt-consent-row');
+    const consent = document.getElementById('mfc-consent');
+    const err = document.getElementById('pan-type-err');
+    const cta = modal.querySelector('[data-cta="continue"]');
+    const picked = () => (radios.find((r) => r.checked) || {}).value || '';
+    const showErr = (msg) => { err.textContent = msg || ''; };
+
+    // Continue looks enabled only when it can proceed: New PAN, or Existing PAN + consent
+    const sync = () => {
+      const v = picked();
+      consentRow.hidden = v !== 'existing';
+      if (v !== 'existing') consent.checked = false;         // consent belongs to Existing PAN only
+      const ok = v === 'new' || (v === 'existing' && consent.checked);
+      cta.classList.toggle('btn-primary', ok);
+      cta.classList.toggle('bold', ok);
+      cta.classList.toggle('btn-disabled', !ok);
+    };
+    radios.forEach((r) => r.addEventListener('change', () => { showErr(''); sync(); }));
+    consent.addEventListener('change', () => { if (consent.checked) showErr(''); sync(); });
+
+    // Close icon: close the popup, back to Your loans
+    modal.querySelector('.close').onclick = () => go('04) Your Loans Page');
+
+    cta.addEventListener('click', () => {
+      const v = picked();
+      if (!v) return showErr(PAN_TYPE_ERR.none);
+      if (v === 'existing' && !consent.checked) return showErr(PAN_TYPE_ERR.consent);
+      showErr('');
+      // Next screens are not built yet; they are added when their screenshots are shared.
+      toast(v === 'existing'
+        ? 'Existing PAN selected. The next screen will be added once its screenshot is shared.'
+        : 'New PAN selected. The next screen will be added once its screenshot is shared.');
+    });
+    sync();
   };
 
   const MOBILE_ERR = {
@@ -459,17 +570,19 @@
           return showErr(OTP_ERR.wrong(OTP_RULES.maxWrong - st.wrong));
         }
 
-        // OTP verified. The next screen for the existing customer is not built yet,
-        // so the user stays here with a note until that screenshot is shared.
+        // OTP verified: existing customer lands on "Your loans"
         st = { resend: 0, wrong: 0, blockedUntil: 0, reason: '' }; save();
         showErr('');
-        toast('OTP verified. The next screen will be added once its screenshot is shared.');
+        go('04) Your Loans Page');
       });
 
       // initial state
       if (isBlocked()) showBlocked(); else startTimer();
       sync();
     },
+
+    '04.1) Apply for New Loan PAN type popup': panTypeBehaviour,
+    '04.2) Apply for New Loan Existing PAN selected': panTypeBehaviour,
   };
 
   function wireBehaviour() {

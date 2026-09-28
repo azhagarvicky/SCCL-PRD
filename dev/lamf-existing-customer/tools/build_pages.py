@@ -8,6 +8,9 @@ PAGES = {
  "01) LAMF Landing Page": "LAMF.render(LAMF.T.landing())",
  "02) Enter MF linked Mobile Number": "LAMF.render(LAMF.withModal(LAMF.T.landing(), LAMF.T.mobileModal()))",
  "03) Enter OTP for MF linked Mobile Number Verification": "LAMF.render(LAMF.withModal(LAMF.T.landing(), LAMF.T.otpModal()))",
+ "04) Your Loans Page": "LAMF.render(LAMF.T.loans())",
+ "04.1) Apply for New Loan PAN type popup": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.panTypeModal()))",
+ "04.2) Apply for New Loan Existing PAN selected": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.panTypeModal('existing')))",
 }
 TPL = """<!doctype html>
 <html lang="en">
