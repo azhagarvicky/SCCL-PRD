@@ -44,8 +44,10 @@
   const MAX_PANS = 3;
   /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
   const PAN_DETAILS = {
-    CBOPA8195B: { name: 'RAVI KUMAR S', dob: '14/05/1988', email: 'ravikumar.s@example.com' },
-    AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992', email: 'priya.r@example.com' },
+    CBOPA8195B: { name: 'RAVI KUMAR S', dob: '14/05/1988', email: 'ravikumar.s@example.com',
+      bank: { holder: 'RAVI KUMAR S', account: '123405670006', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
+    AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992', email: 'priya.r@example.com',
+      bank: { holder: 'PRIYA R', account: '50100234561234', ifsc: 'HDFC0001234', name: 'HDFC Bank' } },
   };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
@@ -96,6 +98,7 @@
     check: S('<path d="M5 12.5l4.5 4.5L19 7.5"/>', '0 0 24 24', 'stroke="#fff" stroke-width="2.6"'),
     back: S('<path d="M20 12H4M10 6l-6 6 6 6"/>'),
     pencil: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>', '0 0 24 24', 'stroke-width="1.5"'),
+    bank: S('<path d="M3 10h18L12 4z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -325,6 +328,15 @@
         </div>
       </section>
 
+      <section class="an-sec an-personal" id="an-bank" ${o.pan ? '' : 'hidden'}>
+        <h4>Bank details</h4>
+        <div class="an-ro">
+          <div class="wide"><label class="field-lbl" for="an-bank-holder">Account holder name</label><input class="input readonly" id="an-bank-holder" value="${o.pan ? PAN_DETAILS[o.pan].bank.holder : ''}" readonly tabindex="-1"></div>
+          <div><label class="field-lbl" for="an-bank-acc">Account number</label><input class="input readonly" id="an-bank-acc" value="${o.pan ? PAN_DETAILS[o.pan].bank.account : ''}" readonly tabindex="-1"></div>
+          <div><label class="field-lbl" for="an-bank-ifsc">IFSC code</label><input class="input readonly" id="an-bank-ifsc" value="${o.pan ? PAN_DETAILS[o.pan].bank.ifsc : ''}" readonly tabindex="-1"></div>
+        </div>
+      </section>
+
       <div class="an-consent" id="an-consent" hidden>
         <label class="chk sm"><input type="checkbox" id="mfc-consent"><span>${MFC_CONSENT}</span></label>
         <p class="field-err" id="an-err"></p>
@@ -474,6 +486,9 @@
   /* 14 KYC (same as the new-customer journey's 16.1 – 16.5.9). o = {email:'input'|'filled'|'done', aadhaar:'pending'|'start'|'status'|'done', photo:'pending'|'start'|'done', aadErr, photoErr} */
   const kycRow = (n, title, state, extra = '') => {
     const done = state === 'done';
+    if (state === 'doneOpen') {        // complete, but its details stay visible (Bank Details for an existing PAN)
+      return `<div class="kyc-row open"><div class="kyc-h"><span class="kn act">${n}</span><span class="kt">${title}</span><span class="badge complete">Complete</span></div>${extra}</div>`;
+    }
     const badge = state === 'done' ? '<span class="badge complete">Complete</span>' : state === 'pending' ? '<span class="badge pending">Pending</span>' : '';
     return `<div class="kyc-row ${state === 'pending' || done ? '' : 'open'}">
       <div class="kyc-h"><span class="kn ${done ? 'done' : state !== 'pending' ? 'act' : ''}">${done ? ICON.check : n}</span><span class="kt">${title}</span>${badge}</div>${extra}</div>`;
@@ -503,7 +518,10 @@
       ${kycRow(2, 'PAN Verification', 'done')}
       ${kycRow(3, 'Aadhaar Verification with ' + DL, aad === 'done' ? 'done' : aad === 'pending' ? 'pending' : 'open', aadExtra + failNote(o.aadErr))}
       ${kycRow(4, 'Photo Verification', photo === 'done' ? 'done' : photo === 'start' ? 'open' : 'pending', photoExtra + failNote(o.photoErr))}
-      ${kycRow(5, 'Bank Details', 'pending')}
+      ${o.bank
+        ? kycRow(5, 'Bank Details', 'doneOpen', `<div class="kyc-bank">${o.bank.logo ? img(o.bank.logo, 'kb-logo') : `<span class="kb-logo kb-gen">${ICON.bank}</span>`}<span>${o.bank.name} <span class="kb-n">${o.bank.account.slice(-4)}</span></span><b>IFSC</b><span class="kb-n">${o.bank.ifsc}</span><span class="kb-ok">${ICON.check}</span></div>`)
+        : kycRow(5, 'Bank Details', 'pending')}
+      ${o.cont ? `<button class="btn ${o.cont === 'on' ? 'btn-primary' : 'btn-disabled'} bold kyc-btn kyc-cont" data-cta="kyc-continue">Continue</button><p class="field-err kyc-fail" id="kyc-cont-err"></p>` : ''}
     </main>`;
   };
 
@@ -670,8 +688,11 @@
         $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
         $('an-det-name').value = PAN_DETAILS[pan.value].name;
         $('an-det-email').value = PAN_DETAILS[pan.value].email;
+        const bk = PAN_DETAILS[pan.value].bank;
+        $('an-bank-holder').value = bk.holder; $('an-bank-acc').value = bk.account; $('an-bank-ifsc').value = bk.ifsc;
       }
       $('an-personal').hidden = !(mode === 'existing' && pan.value);   // email etc. held for the existing PAN
+      $('an-bank').hidden = $('an-personal').hidden;                    // bank account held for the existing PAN
       $('an-consent').hidden = !ready();                     // consent only after a PAN is selected / verified
       if (!ready()) consent.checked = false;
       const ok = ready() && consent.checked;
@@ -1216,6 +1237,12 @@
         }
       }
       if (saved) opts.loan = inr(Object.values(saved).reduce((x, y) => x + y, 0));
+      // Existing PAN: bank account on file → Bank Details complete; only Aadhaar and Photo are asked
+      const kycDone = kyc.aadhaar === 'done' && kyc.photo === 'done';
+      if (mode !== 'new') {
+        opts.bank = PAN_DETAILS[store.get(K.pan)] ? PAN_DETAILS[store.get(K.pan)].bank : PAN_DETAILS.CBOPA8195B.bank;
+        opts.cont = kycDone ? 'on' : 'off';
+      }
       const tmp = document.createElement('div');
       tmp.innerHTML = T.kyc(opts);
       document.querySelector('main.kyc-page').replaceWith(tmp.querySelector('main.kyc-page'));
@@ -1226,6 +1253,10 @@
       const on = (cta, fn) => { const el = document.querySelector(`[data-cta="${cta}"]`); if (el) el.onclick = fn; };
       on('start-kyc', () => go('15) DigiLocker Mock Page'));
       on('start-photo', () => go('16) Photo Verification Mock Page'));
+      on('kyc-continue', () => {
+        if (!kycDone) { document.getElementById('kyc-cont-err').textContent = 'Please complete Aadhaar and Photo verification to continue.'; return; }
+        toast('The next screen will be added once its screenshot is shared.');
+      });
     }
   }
   Object.assign(BEHAVIOUR, {
