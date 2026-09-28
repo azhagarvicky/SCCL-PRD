@@ -46,6 +46,7 @@ PAGES = {
  "22.1) E-Mandate NPCI Simulation Page": "LAMF.render(LAMF.T.npci())",
  "22.2) E-Mandate Authenticated Successfully": "LAMF.render(LAMF.T.emandateDone())",
  "23) Loan Application Submitted Page": "LAMF.render(LAMF.T.submitted())",
+ "24) Your Loans Page New Loan Submitted": "LAMF.render(LAMF.T.loanSubmitted())",
 }
 TPL = """<!doctype html>
 <html lang="en">
