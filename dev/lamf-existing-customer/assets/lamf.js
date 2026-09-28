@@ -770,7 +770,10 @@
         $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
         $('an-det-name').value = PAN_DETAILS[pan.value].name;
         $('an-det-email').value = PAN_DETAILS[pan.value].email;
-        document.querySelectorAll('[data-pf]').forEach((f) => { const v = PROFILE[pan.value][f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v; });
+        // record of the previous loan, with any changes the customer already made for this PAN on top
+        const prof = store.get(K.profile);
+        const rec = { ...PROFILE[pan.value], ...(prof && prof.pan === pan.value ? prof.edits : {}) };
+        document.querySelectorAll('[data-pf]').forEach((f) => { const v = rec[f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v; });
         document.querySelectorAll('[data-pf-err]').forEach((e) => { e.textContent = ''; });
         const bk = PAN_DETAILS[pan.value].bank;
         $('an-bank-holder').value = bk.holder; $('an-bank-acc').value = bk.account; $('an-bank-ifsc').value = bk.ifsc;
@@ -788,6 +791,14 @@
     opts.forEach((b) => b.addEventListener('click', () => { mode = b.dataset.mode; err('an-mode-err', ''); err('an-err', ''); sync(); }));
     pan.addEventListener('change', () => { err('an-err', ''); sync(); });
     consent.addEventListener('change', () => { if (consent.checked) err('an-err', ''); sync(); });
+    // Every change to an editable detail is saved at once, so screen 17 always shows the latest values
+    const saveEdits = () => {
+      if (!pan.value) return;
+      const edits = {};
+      document.querySelectorAll('select[data-pf], .an-decl input').forEach((f) => { edits[f.dataset.pf] = f.type === 'checkbox' ? f.checked : f.value; });
+      store.set(K.profile, { pan: pan.value, edits });
+    };
+    document.querySelectorAll('select[data-pf], .an-decl input').forEach((f) => f.addEventListener('change', saveEdits));
     document.querySelectorAll('select[data-pf]').forEach((f) => f.addEventListener('change', () => {
       document.querySelector(`[data-pf-err="${f.dataset.pf}"]`).textContent = ''; f.classList.remove('has-err');
       if ($('an-err').textContent === AN_ERR.details) err('an-err', '');
