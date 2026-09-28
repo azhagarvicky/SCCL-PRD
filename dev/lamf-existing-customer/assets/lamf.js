@@ -32,6 +32,11 @@
   /* pans: PANs already linked to this mobile number (a customer can have at most MAX_PANS) */
   const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', mobileMasked2: '+919XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
   const MAX_PANS = 3;
+  /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
+  const PAN_DETAILS = {
+    CBOPA8195B: { name: 'RAVI KUMAR S', dob: '14/05/1988' },
+    AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992' },
+  };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
 
@@ -249,8 +254,11 @@
           </select>
           <div class="an-details" id="an-details" ${o.pan ? '' : 'hidden'}>
             <h5>Existing details of this PAN</h5>
-            <div class="an-grid"><div><span>PAN</span><b id="an-det-pan">${o.pan ? maskPan(o.pan) : ''}</b></div></div>
-            <p class="an-note">The details already held for this PAN will be listed here (fields to be confirmed).</p>
+            <div class="an-ro">
+              <div><label class="field-lbl" for="an-det-pan">PAN Number</label><input class="input readonly" id="an-det-pan" value="${o.pan || ''}" readonly tabindex="-1"></div>
+              <div><label class="field-lbl" for="an-det-dob">DOB</label><div class="dob"><input class="input readonly" id="an-det-dob" value="${o.pan ? PAN_DETAILS[o.pan].dob : ''}" readonly tabindex="-1"><span>${ICON.calendar}</span></div></div>
+              <div class="wide"><label class="field-lbl" for="an-det-name">Name as per PAN</label><input class="input readonly" id="an-det-name" value="${o.pan ? PAN_DETAILS[o.pan].name : ''}" readonly tabindex="-1"></div>
+            </div>
           </div>
         </div>
 
@@ -493,7 +501,11 @@
       $('an-existing').hidden = mode !== 'existing';
       $('an-new').hidden = mode !== 'new';
       $('an-details').hidden = !(mode === 'existing' && pan.value);
-      if (pan.value) $('an-det-pan').textContent = maskPan(pan.value);
+      if (pan.value) {                                        // existing details, unmasked, not editable
+        $('an-det-pan').value = pan.value;
+        $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
+        $('an-det-name').value = PAN_DETAILS[pan.value].name;
+      }
       $('an-consent').hidden = !ready();                     // consent only after a PAN is selected / verified
       if (!ready()) consent.checked = false;
       const ok = ready() && consent.checked;
