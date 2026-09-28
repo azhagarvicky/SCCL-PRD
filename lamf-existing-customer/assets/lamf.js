@@ -127,6 +127,8 @@
     pencil: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>', '0 0 24 24', 'stroke-width="1.5"'),
     bank: S('<path d="M3 10h18L12 4z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'),
     chev: S('<path d="M6 15l6-6 6 6"/>', '0 0 24 24', 'stroke-width="1.8"'),
+    coins: S('<ellipse cx="9" cy="7" rx="6" ry="2.5"/><path d="M3 7v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5V7"/><path d="M9 13.5v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4c0-1.4-2.7-2.5-6-2.5"/>', '0 0 24 24', 'stroke="#FFCB08" stroke-width="1.5"'),
+    bolt: S('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>', '0 0 24 24', 'stroke="#FFCB08" stroke-width="1.5"'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -319,6 +321,11 @@
     <div class="an-strip"><div class="an-in">Apply for a new Loan Against Mutual Fund</div></div>
     <main class="an-bg"><div class="an-in"><div class="an-card">
       <div class="an-welcome"><div><small>Welcome Back,</small><b>${maskMobile(store.get(K.mobile) || CUSTOMER.mobile)}</b></div></div>
+      <div class="an-promo">
+        <div><p class="an-promo-rate">Interest rates starting from 10.5% p.a.*</p>
+          <h2>Get a Loan up to 75% of your eligible Mutual Fund portfolio</h2></div>
+        <ul><li><span>${ICON.coins}</span>Interest-only EMI payments</li><li><span>${ICON.bolt}</span>Disbursal in 2 hours post application</li></ul>
+      </div>
       <h3 class="an-h">Welcome back! Apply for a new loan below.</h3>
       <p class="an-p">We have fetched the details of your existing loan. You can continue with your existing account by selecting your PAN.<br>To apply with a different PAN, click ‘Apply with New PAN’ and verify it.</p>
 
