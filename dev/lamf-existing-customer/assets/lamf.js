@@ -285,6 +285,18 @@
   /* 04.1 – 04.3 Apply for New Loan page (layout modelled on the Shriram Finance FD
      "existing customer" page). o.mode: '' | 'existing' | 'new'; o.pan: pre-selected PAN (review screens) */
   const MFC_CONSENT = 'I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.';
+  /* ETB page customer-details sections (DISC-052): Personal details – only Salutation and Marital Status
+     editable; Other details – all editable; KYC Address – read-only. Email ID stays read-only (already verified). */
+  const ETB_EDIT = ['salutation', 'marital'];
+  const etbSection = (id, title, body, show) => `<section class="an-sec an-personal" id="${id}" ${show ? '' : 'hidden'}><h4>${title}</h4>${body}</section>`;
+  const etbField = (pan, [k, label, type], editable) => {
+    const v = pan ? PROFILE[pan][k] : '';
+    const wide = ['independent', 'addr1', 'addr2', 'addr3'].includes(k) ? ' class="wide"' : '';
+    const input = !editable
+      ? `<input class="input readonly" data-pf="${k}" value="${v}" readonly tabindex="-1">`
+      : `<select class="input an-select" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select><p class="field-err" data-pf-err="${k}"></p>`;
+    return `<div${wide}><label class="field-lbl">${label}${editable ? '<i class="req">*</i>' : ''}</label>${input}</div>`;
+  };
   T.applyNew = (o = {}) => `
     ${plainHeader()}
     <div class="an-strip"><div class="an-in">Apply for a new Loan Against Mutual Fund</div></div>
@@ -332,16 +344,18 @@
 
       </section>
 
-      <section class="an-sec an-personal" id="an-personal" ${o.pan ? '' : 'hidden'}>
-        <h4>Personal details</h4>
-        <div class="an-ro">
-          <div class="wide"><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div>
-        </div>
-        ${[['personal', 'Personal Details'], ['other', 'Other Details'], ['address', 'KYC Address']].map(([sec, title]) => `
-          <h5 class="an-sub">${title}</h5>
-          <div class="an-ro">${CD_FIELDS[sec].map(([k, label]) => `<div${['independent', 'addr1', 'addr2', 'addr3'].includes(k) ? ' class="wide"' : ''}><label class="field-lbl">${label}</label><input class="input readonly" data-pf="${k}" value="${o.pan ? PROFILE[o.pan][k] : ''}" readonly tabindex="-1"></div>`).join('')}</div>
-          ${sec === 'other' ? `<div class="an-decl"><label class="chk cd-chk"><input type="checkbox" data-pf="pep" ${o.pan && PROFILE[o.pan].pep ? 'checked' : ''} disabled><span>I am not a politically exposed person</span></label><label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''} disabled><span>I am a tax resident of India only</span></label></div>` : ''}`).join('')}
-      </section>
+      ${etbSection('an-personal', 'Personal details', `
+        <div class="an-ro"><div class="wide"><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div></div>
+        <div class="an-ro">${CD_FIELDS.personal.map((f) => etbField(o.pan, f, ETB_EDIT.includes(f[0]))).join('')}</div>`, o.pan)}
+      ${etbSection('an-other', 'Other details', `
+        <div class="an-ro">${CD_FIELDS.other.map((f) => etbField(o.pan, f, true)).join('')}</div>
+        <div class="an-decl">
+          <label class="chk cd-chk"><input type="checkbox" data-pf="pep" ${o.pan && PROFILE[o.pan].pep ? 'checked' : ''}><span>I am not a politically exposed person</span></label>
+          <label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''}><span>I am a tax resident of India only</span></label>
+          <p class="field-err" data-pf-err="decl"></p>
+        </div>`, o.pan)}
+      ${etbSection('an-address', 'KYC Address', `
+        <div class="an-ro">${CD_FIELDS.address.map((f) => etbField(o.pan, f, false)).join('')}</div>`, o.pan)}
 
       <section class="an-sec an-personal" id="an-bank" ${o.pan ? '' : 'hidden'}>
         <h4>Bank details</h4>
@@ -556,7 +570,7 @@
   };
   const CD_FIELDS = {       // key → [label, type]  (type: select | text | show)
     personal: [['salutation', 'Salutation', 'select'], ['name', 'Name', 'show'], ['dob', 'Date of Birth', 'show'], ['gender', 'Gender', 'show'],
-      ['mother', 'Mother’s Name', 'text'], ['father', 'Father’s Name', 'text'], ['marital', 'Marital Status', 'select']],
+      ['mother', 'Mother’s Name', 'show'], ['father', 'Father’s Name', 'show'], ['marital', 'Marital Status', 'select']],
     other: [['purpose', 'Loan Purpose', 'select'], ['qualification', 'Qualification', 'select'], ['occupation', 'Occupation', 'select'], ['business', 'Nature of Business', 'select'],
       ['income', 'Annual Income', 'select'], ['source', 'Source of Income', 'select'], ['independent', 'Is the applicant financially independent?', 'select']],
     address: [['addr1', 'Address Line 1', 'show'], ['addr2', 'Address Line 2', 'show'], ['addr3', 'Address Line 3', 'show'], ['landmark', 'Landmark', 'show'],
@@ -690,7 +704,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -721,6 +735,7 @@
     pan: 'Please select PAN.',
     verify: 'Please verify your PAN to continue.',
     consent: 'Please provide the consent to proceed.',
+    details: 'Please complete the highlighted details.',
     name: 'Please enter your name as per PAN.',
     nameChars: 'Only letters, spaces and dots are allowed.',
     dob: 'Please enter a valid date of birth (DD/MM/YYYY).',
@@ -739,6 +754,7 @@
     const name = $('np-name'), dob = $('np-dob'), newPan = $('np-pan');
     let mode = (opts.find((b) => b.classList.contains('on')) || {}).dataset?.mode || '';
     let verified = false;
+    let shownPan = '';                                       // PAN whose details are on screen
     const err = (id, msg, input) => { $(id).textContent = msg || ''; if (input) input.classList.toggle('has-err', !!msg); };
 
     const ready = () => (mode === 'existing' && !!pan.value) || (mode === 'new' && verified);
@@ -747,17 +763,19 @@
       $('an-existing').hidden = mode !== 'existing';
       $('an-new').hidden = mode !== 'new';
       $('an-details').hidden = !(mode === 'existing' && pan.value);
-      if (pan.value) {                                        // existing details, unmasked, not editable
+      if (pan.value && pan.value !== shownPan) {             // existing details of the newly chosen PAN
+        shownPan = pan.value;
         $('an-det-pan').value = pan.value;
         $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
         $('an-det-name').value = PAN_DETAILS[pan.value].name;
         $('an-det-email').value = PAN_DETAILS[pan.value].email;
         document.querySelectorAll('[data-pf]').forEach((f) => { const v = PROFILE[pan.value][f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v; });
+        document.querySelectorAll('[data-pf-err]').forEach((e) => { e.textContent = ''; });
         const bk = PAN_DETAILS[pan.value].bank;
         $('an-bank-holder').value = bk.holder; $('an-bank-acc').value = bk.account; $('an-bank-ifsc').value = bk.ifsc;
       }
-      $('an-personal').hidden = !(mode === 'existing' && pan.value);   // email etc. held for the existing PAN
-      $('an-bank').hidden = $('an-personal').hidden;                    // bank account held for the existing PAN
+      const showDetails = mode === 'existing' && !!pan.value;          // details held for the existing PAN
+      ['an-personal', 'an-other', 'an-address', 'an-bank'].forEach((id) => { $(id).hidden = !showDetails; });
       $('an-consent').hidden = !ready();                     // consent only after a PAN is selected / verified
       if (!ready()) consent.checked = false;
       const ok = ready() && consent.checked;
@@ -769,6 +787,14 @@
     opts.forEach((b) => b.addEventListener('click', () => { mode = b.dataset.mode; err('an-mode-err', ''); err('an-err', ''); sync(); }));
     pan.addEventListener('change', () => { err('an-err', ''); sync(); });
     consent.addEventListener('change', () => { if (consent.checked) err('an-err', ''); sync(); });
+    document.querySelectorAll('select[data-pf]').forEach((f) => f.addEventListener('change', () => {
+      document.querySelector(`[data-pf-err="${f.dataset.pf}"]`).textContent = ''; f.classList.remove('has-err');
+      if ($('an-err').textContent === AN_ERR.details) err('an-err', '');
+    }));
+    document.querySelectorAll('.an-decl input').forEach((c) => c.addEventListener('change', () => {
+      document.querySelector('[data-pf-err="decl"]').textContent = '';
+      if ($('an-err').textContent === AN_ERR.details) err('an-err', '');
+    }));
 
     // ---- New PAN verification ----
     const lock = (on) => { [name, dob, newPan].forEach((i) => { i.readOnly = on; i.classList.toggle('readonly', on); }); };
@@ -817,11 +843,27 @@
       if (!mode) return err('an-mode-err', AN_ERR.mode);
       if (mode === 'existing' && !pan.value) return err('an-err', AN_ERR.pan);
       if (mode === 'new' && !verified) return err('an-err', AN_ERR.verify);
+      if (mode === 'existing') {                               // editable customer details must be complete
+        let bad = null;
+        document.querySelectorAll('select[data-pf]').forEach((f) => {
+          const label = f.closest('div').querySelector('.field-lbl').firstChild.textContent.trim().replace(/\?$/, '').toLowerCase();
+          const e = document.querySelector(`[data-pf-err="${f.dataset.pf}"]`);
+          e.textContent = f.value ? '' : `Please select ${label}.`; f.classList.toggle('has-err', !f.value);
+          if (!f.value && !bad) bad = f;
+        });
+        const decl = [...document.querySelectorAll('.an-decl input')].every((c) => c.checked);
+        document.querySelector('[data-pf-err="decl"]').textContent = decl ? '' : 'Please confirm both declarations to continue.';
+        if (!decl && !bad) bad = document.querySelector('.an-decl input');
+        if (bad) { bad.scrollIntoView({ block: 'center' }); return err('an-err', AN_ERR.details); }
+        const edits = {};
+        document.querySelectorAll('select[data-pf], .an-decl input').forEach((f) => { edits[f.dataset.pf] = f.type === 'checkbox' ? f.checked : f.value; });
+        store.set(K.profile, { pan: pan.value, edits });                      // carried to Customer Details (17)
+      }
       if (!consent.checked) return err('an-err', AN_ERR.consent);
       err('an-err', '');
       store.set(K.pan, mode === 'existing' ? pan.value : newPan.value);   // PAN used for the MF Central fetch
       store.set(K.mode, mode);
-      store.set(K.kyc, {});                                                  // new application: KYC starts afresh                                               // KYC: email already verified for an existing PAN
+      store.set(K.kyc, {});                                                  // new application: KYC starts afresh
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1280,7 +1322,9 @@
   /* ---- 17 Customer details: collapse / expand, required fields, Confirm and Continue ---- */
   function custDetailsBehaviour() {
     const pan = store.get(K.pan);
-    const p = PROFILE[pan] || PROFILE.CBOPA8195B;
+    const base = PROFILE[pan] || PROFILE.CBOPA8195B;
+    const prof = store.get(K.profile);                        // changes made on the ETB page
+    const p = prof && prof.pan === pan ? { ...base, ...prof.edits } : base;
     const saved = store.get(K.sel);
     const tmp = document.createElement('div');
     tmp.innerHTML = T.custDetails(p, saved ? inr(Object.values(saved).reduce((x, y) => x + y, 0)) : undefined);
