@@ -13,8 +13,9 @@
     '02) Enter MF linked Mobile Number',
     '03) Enter OTP for MF linked Mobile Number Verification',
     '04) Your Loans Page',
-    '04.1) Apply for New Loan PAN type popup',
+    '04.1) Apply for New Loan Page',
     '04.2) Apply for New Loan Existing PAN selected',
+    '04.3) Apply for New Loan New PAN verified',
     '05) LOS to MF Central Redirection loading page',
     '06) MF Central Mock Page',
     '07) MF Central to LOS Redirecting Page',
@@ -76,6 +77,8 @@
     download: S('<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>', '0 0 24 24', 'stroke-width="1.8"'),
     pdf: `<svg viewBox="0 0 40 48"><path d="M6 1h21l12 12v31a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3z" fill="#E4E4E7"/><path d="M27 1v9a3 3 0 0 0 3 3h9z" fill="#C9C9CF"/><rect x="0" y="22" width="30" height="14" rx="2" fill="#E5483B"/><text x="15" y="32.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial, sans-serif">PDF</text></svg>`,
     refresh: S('<path d="M20 11a8 8 0 0 0-14.3-4.3L4 8.5M4 4v4.5h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.3L20 15.5M20 20v-4.5h-4.5"/>', '0 0 24 24', 'stroke-width="2"'),
+    calendar: `<svg viewBox="0 0 24 24" fill="#555"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM12 13h5v5h-5z"/></svg>`,
+    check: S('<path d="M5 12.5l4.5 4.5L19 7.5"/>', '0 0 24 24', 'stroke="#fff" stroke-width="2.6"'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -219,28 +222,58 @@
       </div>
     </main>`;
 
-  /* 04.1 / 04.2 Apply for New Loan – PAN type popup. sel: '' | 'existing' | 'new' */
-  T.panTypeModal = (sel = '') => `
-    <div class="modal m-pantype">${closeBtn}
-      <h3>Apply for New Loan</h3>
-      <p class="sub">Select the PAN you want to apply the new loan with</p>
-      <div class="pt-opts">
-        <label class="radio"><input type="radio" name="pan-type" value="existing" ${sel === 'existing' ? 'checked' : ''}><span>Existing PAN</span></label>
-        <label class="radio"><input type="radio" name="pan-type" value="new" ${sel === 'new' ? 'checked' : ''}><span>New PAN</span></label>
-      </div>
-      <div class="pt-pan" id="pt-pan-row" ${sel === 'existing' ? '' : 'hidden'}>
-        <label class="field-lbl" for="pt-pan">Select PAN</label>
-        <select class="input" id="pt-pan">
-          <option value="">Select PAN</option>
-          ${CUSTOMER.pans.slice(0, MAX_PANS).map((p) => `<option value="${p}">${maskPan(p)}</option>`).join('')}
-        </select>
-      </div>
-      <p class="field-err" id="pan-type-err"></p>
-      <div class="m-foot">
-        <label class="chk sm pt-consent" id="pt-consent-row" ${sel === 'existing' ? '' : 'hidden'}><input type="checkbox" id="mfc-consent"><span>I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.</span></label>
-        <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
-      </div>
-    </div>`;
+  /* 04.1 – 04.3 Apply for New Loan page (layout modelled on the Shriram Finance FD
+     "existing customer" page). o.mode: '' | 'existing' | 'new'; o.pan: pre-selected PAN (review screens) */
+  const MFC_CONSENT = 'I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.';
+  T.applyNew = (o = {}) => `
+    ${plainHeader()}
+    <div class="an-strip"><div class="an-in">Apply for a new Loan Against Mutual Fund</div></div>
+    <main class="an-bg"><div class="an-in"><div class="an-card">
+      <div class="an-welcome"><div><small>Welcome Back,</small><b>${maskMobile(store.get(K.mobile) || CUSTOMER.mobile)}</b></div></div>
+      <h3 class="an-h">Welcome back! Apply for a new loan below.</h3>
+      <p class="an-p">We have fetched the details of your existing loan. You can continue with your existing account by selecting your PAN.<br>To apply with a different PAN, click ‘Apply with New PAN’ and verify it.</p>
+
+      <section class="an-sec">
+        <h4>Borrower PAN details</h4>
+        <div class="an-toggle">
+          <button class="an-opt ${o.mode === 'existing' ? 'on' : ''}" data-mode="existing">Use Existing PAN</button>
+          <button class="an-opt ${o.mode === 'new' ? 'on' : ''}" data-mode="new">Apply with New PAN</button>
+        </div>
+        <p class="field-err" id="an-mode-err"></p>
+
+        <div class="an-existing" id="an-existing" ${o.mode === 'existing' ? '' : 'hidden'}>
+          <label class="field-lbl" for="an-pan">Select the PAN to fetch the borrower details</label>
+          <select class="input an-select" id="an-pan">
+            <option value="">Select PAN</option>
+            ${CUSTOMER.pans.slice(0, MAX_PANS).map((p) => `<option value="${p}" ${o.pan === p ? 'selected' : ''}>${maskPan(p)}</option>`).join('')}
+          </select>
+          <div class="an-details" id="an-details" ${o.pan ? '' : 'hidden'}>
+            <h5>Existing details of this PAN</h5>
+            <div class="an-grid"><div><span>PAN</span><b id="an-det-pan">${o.pan ? maskPan(o.pan) : ''}</b></div></div>
+            <p class="an-note">The details already held for this PAN will be listed here (fields to be confirmed).</p>
+          </div>
+        </div>
+
+        <div class="an-new" id="an-new" ${o.mode === 'new' ? '' : 'hidden'}>
+          <h5>PAN Details</h5><p class="sub">Please verify your PAN to get the best loan offers</p>
+          <label class="field-lbl">Mobile Number</label><input class="input readonly" value="${store.get(K.mobile) || CUSTOMER.mobile}" readonly>
+          <label class="field-lbl" for="np-name">Name as per PAN</label><input class="input" id="np-name" maxlength="100" autocomplete="off">
+          <p class="field-err" id="np-name-err"></p>
+          <label class="field-lbl" for="np-dob">DOB</label><div class="dob"><input class="input" id="np-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" autocomplete="off"><span>${ICON.calendar}</span></div>
+          <p class="field-err" id="np-dob-err"></p>
+          <label class="field-lbl" for="np-pan">PAN Number</label><input class="input" id="np-pan" placeholder="ABCDE1234F" maxlength="10" autocomplete="off">
+          <p class="field-err" id="np-pan-err"></p>
+          <button class="btn btn-primary bold btn-block" data-cta="verify-pan">Verify PAN</button>
+          <p class="an-ok" id="np-ok" hidden><span>${ICON.check}</span>PAN verified successfully</p>
+        </div>
+
+        <div class="an-consent" id="an-consent" hidden>
+          <label class="chk sm"><input type="checkbox" id="mfc-consent"><span>${MFC_CONSENT}</span></label>
+          <p class="field-err" id="an-err"></p>
+          <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
+        </div>
+      </section>
+    </div></div></main>`;
 
   /* 05 LOS → MF Central redirect popup (countdown 3, 2, 1) */
   T.mfcModal = () => `
@@ -381,7 +414,7 @@
       'start-application': '02) Enter MF linked Mobile Number',
     },
     '04) Your Loans Page': {
-      'apply-new-loan': '04.1) Apply for New Loan PAN type popup',
+      'apply-new-loan': '04.1) Apply for New Loan Page',
     },
   };
 
@@ -429,58 +462,108 @@
     wrongBlocked: (m) => `You have entered an incorrect OTP ${OTP_RULES.maxWrong} times. Please try again after ${m} minute${m === 1 ? '' : 's'}.`,
   };
 
-  const PAN_TYPE_ERR = {
-    none: 'Please select PAN type.',
+  const AN_ERR = {
+    mode: 'Please select Use Existing PAN or Apply with New PAN.',
     pan: 'Please select PAN.',
+    verify: 'Please verify your PAN to continue.',
     consent: 'Please provide the consent to proceed.',
+    name: 'Please enter your name as per PAN.',
+    nameChars: 'Only letters, spaces and dots are allowed.',
+    dob: 'Please enter a valid date of birth (DD/MM/YYYY).',
+    age: 'You must be at least 18 years old to apply.',
+    panFormat: 'Please enter a valid PAN (e.g. ABCDE1234F).',
+    panLinked: 'This PAN is already linked to your account. Please choose Use Existing PAN.',
+    panMax: `You can link at most ${MAX_PANS} PANs to one mobile number.`,
   };
 
-  /* 04.1 / 04.2 – Apply for New Loan popup: one of two radios; Existing PAN shows the
-     PAN dropdown (masked, max 3) and the MF Central consent, both required */
-  const panTypeBehaviour = () => {
-    const modal = document.querySelector('.m-pantype');
-    const radios = [...modal.querySelectorAll('input[name="pan-type"]')];
-    const panRow = document.getElementById('pt-pan-row');
-    const pan = document.getElementById('pt-pan');
-    const consentRow = document.getElementById('pt-consent-row');
-    const consent = document.getElementById('mfc-consent');
-    const err = document.getElementById('pan-type-err');
-    const cta = modal.querySelector('[data-cta="continue"]');
-    const picked = () => (radios.find((r) => r.checked) || {}).value || '';
-    const showErr = (msg) => { err.textContent = msg || ''; pan.classList.toggle('has-err', msg === PAN_TYPE_ERR.pan); };
+  /* 04.1 – 04.3 Apply for New Loan page: Existing PAN (dropdown → details) or New PAN
+     (verify) → MF Central consent → Continue → MF Central redirection (05) */
+  const applyNewBehaviour = () => {
+    const $ = (id) => document.getElementById(id);
+    const opts = [...document.querySelectorAll('.an-opt')];
+    const pan = $('an-pan'), cta = document.querySelector('[data-cta="continue"]'), consent = $('mfc-consent');
+    const name = $('np-name'), dob = $('np-dob'), newPan = $('np-pan');
+    let mode = (opts.find((b) => b.classList.contains('on')) || {}).dataset?.mode || '';
+    let verified = false;
+    const err = (id, msg, input) => { $(id).textContent = msg || ''; if (input) input.classList.toggle('has-err', !!msg); };
 
-    // Continue looks enabled only when it can proceed: New PAN, or Existing PAN + PAN chosen + consent
+    const ready = () => (mode === 'existing' && !!pan.value) || (mode === 'new' && verified);
     const sync = () => {
-      const existing = picked() === 'existing';
-      panRow.hidden = !existing;
-      consentRow.hidden = !existing;
-      if (!existing) { pan.value = ''; consent.checked = false; }   // both belong to Existing PAN only
-      const ok = picked() === 'new' || (existing && !!pan.value && consent.checked);
+      opts.forEach((b) => b.classList.toggle('on', b.dataset.mode === mode));
+      $('an-existing').hidden = mode !== 'existing';
+      $('an-new').hidden = mode !== 'new';
+      $('an-details').hidden = !(mode === 'existing' && pan.value);
+      if (pan.value) $('an-det-pan').textContent = maskPan(pan.value);
+      $('an-consent').hidden = !ready();                     // consent only after a PAN is selected / verified
+      if (!ready()) consent.checked = false;
+      const ok = ready() && consent.checked;
       cta.classList.toggle('btn-primary', ok);
       cta.classList.toggle('bold', ok);
       cta.classList.toggle('btn-disabled', !ok);
     };
-    radios.forEach((r) => r.addEventListener('change', () => { showErr(''); sync(); }));
-    pan.addEventListener('change', () => { if (pan.value && err.textContent === PAN_TYPE_ERR.pan) showErr(''); sync(); });
-    consent.addEventListener('change', () => { if (consent.checked && err.textContent === PAN_TYPE_ERR.consent) showErr(''); sync(); });
 
-    // Close icon: close the popup, back to Your loans
-    modal.querySelector('.close').onclick = () => go('04) Your Loans Page');
+    opts.forEach((b) => b.addEventListener('click', () => { mode = b.dataset.mode; err('an-mode-err', ''); err('an-err', ''); sync(); }));
+    pan.addEventListener('change', () => { err('an-err', ''); sync(); });
+    consent.addEventListener('change', () => { if (consent.checked) err('an-err', ''); sync(); });
 
-    cta.addEventListener('click', () => {
-      const v = picked();
-      if (!v) return showErr(PAN_TYPE_ERR.none);
-      if (v === 'existing') {
-        if (!pan.value) return showErr(PAN_TYPE_ERR.pan);
-        if (!consent.checked) return showErr(PAN_TYPE_ERR.consent);
-        showErr('');
-        store.set(K.pan, pan.value);                              // PAN used for the MF Central fetch
-        return go('05) LOS to MF Central Redirection loading page');
-      }
-      showErr('');
-      // New PAN flow is not built yet; it is added when its screenshots are shared.
-      toast('New PAN selected. The next screen will be added once its screenshot is shared.');
+    // ---- New PAN verification ----
+    const lock = (on) => { [name, dob, newPan].forEach((i) => { i.readOnly = on; i.classList.toggle('readonly', on); }); };
+    const unverify = () => { if (!verified) return; verified = false; $('np-ok').hidden = true; sync(); };
+    name.addEventListener('input', () => {
+      const v = name.value.replace(/[^A-Za-z .]/g, '');
+      if (v !== name.value) { name.value = v; err('np-name-err', AN_ERR.nameChars, name); } else err('np-name-err', '', name);
+      unverify();
     });
+    dob.addEventListener('input', () => {                     // digits only, slashes added automatically
+      const d = dob.value.replace(/\D/g, '').slice(0, 8);
+      dob.value = d.length > 4 ? `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}` : d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
+      err('np-dob-err', '', dob); unverify();
+    });
+    newPan.addEventListener('input', () => {
+      newPan.value = newPan.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 10);
+      err('np-pan-err', '', newPan); unverify();
+    });
+    const dobError = (v) => {
+      const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v);
+      if (!m) return AN_ERR.dob;
+      const [dd, mm, yy] = [+m[1], +m[2], +m[3]];
+      const d = new Date(yy, mm - 1, dd);
+      if (d.getFullYear() !== yy || d.getMonth() !== mm - 1 || d.getDate() !== dd || d > new Date() || yy < 1900) return AN_ERR.dob;
+      const adult = new Date(yy + 18, mm - 1, dd);
+      return adult > new Date() ? AN_ERR.age : '';
+    };
+    document.querySelector('[data-cta="verify-pan"]').addEventListener('click', () => {
+      const n = name.value.trim(), p = newPan.value;
+      const eName = n ? '' : AN_ERR.name;
+      const eDob = dobError(dob.value);
+      let ePan = /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(p) ? '' : AN_ERR.panFormat;
+      if (!ePan && CUSTOMER.pans.includes(p)) ePan = AN_ERR.panLinked;
+      else if (!ePan && CUSTOMER.pans.length >= MAX_PANS) ePan = AN_ERR.panMax;
+      err('np-name-err', eName, name); err('np-dob-err', eDob, dob); err('np-pan-err', ePan, newPan);
+      if (eName || eDob || ePan) return;
+      // Prototype: a valid, not-yet-linked PAN is treated as verified (no PAN service is called)
+      verified = true; lock(true);
+      $('np-ok').hidden = false;
+      document.querySelector('[data-cta="verify-pan"]').hidden = true;
+      sync();
+    });
+
+    // ---- Continue ----
+    cta.addEventListener('click', () => {
+      if (!mode) return err('an-mode-err', AN_ERR.mode);
+      if (mode === 'existing' && !pan.value) return err('an-err', AN_ERR.pan);
+      if (mode === 'new' && !verified) return err('an-err', AN_ERR.verify);
+      if (!consent.checked) return err('an-err', AN_ERR.consent);
+      err('an-err', '');
+      store.set(K.pan, mode === 'existing' ? pan.value : newPan.value);   // PAN used for the MF Central fetch
+      go('05) LOS to MF Central Redirection loading page');
+    });
+
+    // Review screen 04.3 opens with a New PAN already verified (sample values)
+    if (currentScreen() === '04.3) Apply for New Loan New PAN verified') {
+      name.value = 'SAMPLE NAME'; dob.value = '01/01/1990'; newPan.value = 'ABCPD1234E';
+      document.querySelector('[data-cta="verify-pan"]').click();
+    }
     sync();
   };
 
@@ -716,10 +799,11 @@
       sync();
     },
 
-    '04.1) Apply for New Loan PAN type popup': panTypeBehaviour,
-    '04.2) Apply for New Loan Existing PAN selected': panTypeBehaviour,
+    '04.1) Apply for New Loan Page': applyNewBehaviour,
+    '04.2) Apply for New Loan Existing PAN selected': applyNewBehaviour,
+    '04.3) Apply for New Loan New PAN verified': applyNewBehaviour,
 
-    /* ---- 05 Redirect popup: 3, 2, 1 then MF Central; close → back to Your loans ---- */
+    /* ---- 05 Redirect popup: 3, 2, 1 then MF Central; close → back to the Apply for New Loan page ---- */
     '05) LOS to MF Central Redirection loading page': () => {
       const count = document.getElementById('mfc-count');
       let left = 3;
@@ -729,7 +813,7 @@
         clearInterval(t);
         go('06) MF Central Mock Page');
       }, 1000);
-      document.querySelector('.m-mfc .close').onclick = () => { clearInterval(t); go('04) Your Loans Page'); };
+      document.querySelector('.m-mfc .close').onclick = () => { clearInterval(t); go('04.1) Apply for New Loan Page'); };
     },
 
     /* ---- 06 MF Central mock: 6-digit OTP, only 000000 accepted for now ---- */
