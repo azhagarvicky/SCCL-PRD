@@ -20,6 +20,8 @@
     '07) MF Central to LOS Redirecting Page',
     '08) MF Central to LOS Fetching Mutual Fund Portfolio Page',
     '09) MF Central to LOS Analysing Mutual Fund Portfolio Page',
+    '10) MF Central to LOS Generating Loan Page',
+    '11) Curated Offers Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -27,7 +29,7 @@
 
   /* ---------------- Demo customer data ---------------- */
   /* pans: PANs already linked to this mobile number (a customer can have at most MAX_PANS) */
-  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
+  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', mobileMasked2: '+919XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
   const MAX_PANS = 3;
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
@@ -40,6 +42,32 @@
     statements: [['Holding Statement', '27/09/2026'], ['Client Statement', '27/09/2026']],
   };
 
+  /* Portfolio fetched from MF Central (demo data, same as the new-customer journey) */
+  const PORTFOLIO = {
+    total: '12,04,62,749.99', nonEligible: '3,13,02,090.97', eligible: '8,91,60,659.02',
+    creditLimit: '6,19,13,200', interest: '10.50% p.a.', fee: '3,09,566', tenure: '12',
+    lastUpdated: '21-09-2026 16:11:46', count: 13, eligibleCount: 9, neCount: 4,
+  };
+  /* Order = MF Central response order (Curated offers / All tab) */
+  const FUNDS = [
+    { id: 'axis', ico: 'axis', name: 'Axis Quant Fund', sel: 'Axis Quant Fund - Regular Plan - Growth', units: '67891.247', value: '71,59,227.04', selValue: '71,59,227.04', cl: '53,69,420' },
+    { id: 'canara', ico: 'canara', name: 'CANARA ROBECO LARGE CAP FUND', sel: 'CANARA ROBECO LARGE CAP FUND - DIRECT PLAN - GROWTH OPTION', units: '16000.568', value: '33,69,214.00', selValue: '33,69,214', cl: '21,89,989' },
+    { id: 'edus', ico: 'edelweiss', name: 'Edelweiss US Technology Equity Fund of Fund', units: '67989.436', value: '1,43,37,367.50', cl: '0', ne: true },
+    { id: 'icici', ico: 'icici', name: 'ICICI Prudential Global Stable Equity Fund (FOF)', sel: 'ICICI Prudential Global Stable Equity Fund (FOF) - Growth', units: '93001.867', value: '1,87,07,725.46', selValue: '1,87,07,725.46', cl: '1,40,30,794' },
+    { id: 'hsbc', ico: 'hsbc', name: 'HSBC Small Cap Fund', sel: 'HSBC Small Cap Fund - Regular Growth', units: '99000.769', value: '1,14,48,795.43', selValue: '1,14,48,795.43', cl: '74,41,717' },
+    { id: 'ednifty', ico: 'edelweiss2', name: 'Edelweiss NIFTY PSU Bond Plus SDL Apr 2026 50:50 Index Fund', sel: 'Edelweiss NIFTY PSU Bond Plus SDL Apr 2026 50:50 Index Fund - Direct Plan - Growth', units: '78975.346', value: '52,63,414.60', selValue: '52,63,414.6', cl: '39,47,560' },
+    { id: 'nippontw', ico: 'nippon', name: 'Nippon India Taiwan Equity fund- Regular Plan- Growth Option-', sel: 'Nippon India Taiwan Equity fund- Regular Plan- Growth Option', units: '65789.564', value: '2,31,36,498.87', selValue: '2,31,36,498.87', cl: '1,50,38,724' },
+    { id: 'motnasdaq', ico: 'motilal', name: 'Motilal Oswal Nasdaq 100 Fund of Fund', units: '87966.345', value: '1,60,86,801.36', cl: '0', ne: true },
+    { id: 'kotak', ico: 'kotak', name: 'Kotak Corporate Bond Fund- Direct Plan- Growth Option-', sel: 'Kotak Corporate Bond Fund- Direct Plan- Growth Option', units: '99892.678', value: '55,79,425.62', selValue: '55,79,425.62', cl: '41,84,569' },
+    { id: 'sbi', ico: 'sbi', name: 'SBI SAVINGS FUND', sel: 'SBI SAVINGS FUND - REGULAR PLAN - GROWTH', units: '97001.785', value: '28,78,838.38', selValue: '28,78,838.38', cl: '21,59,128' },
+    { id: 'nipponhy', ico: 'nippon2', name: 'Nippon India Aggressive Hybrid Fund', units: '7890.867', value: '3,32,478.52', cl: '0', ne: true },
+    { id: 'whiteoak', ico: 'whiteoak', name: 'Whiteoak Capital Large & Mid Cap Fund Regular Plan Growth', sel: 'Whiteoak Capital Large & Mid Cap Fund Regular Plan Growth', units: '98000.346', value: '1,16,17,519.62', selValue: '1,16,17,519.62', cl: '75,51,387' },
+    { id: 'motbse', ico: 'motilal2', name: 'Motilal Oswal BSE Enhanced Value Index Fund', units: '9870.978', value: '5,45,443.59', cl: '0', ne: true },
+  ];
+  const F = Object.fromEntries(FUNDS.map((f) => [f.id, f]));
+  // Units shown on Curated offers page (2 decimals, as in screenshot)
+  const U2 = { axis: '67891.25', canara: '16000.57', edus: '67989.44', icici: '93001.87', hsbc: '99000.77', ednifty: '78975.35', nippontw: '65789.56', motnasdaq: '87966.35', kotak: '99892.68', sbi: '97001.79', nipponhy: '7890.87', whiteoak: '98000.35', motbse: '9870.98' };
+
   /* ---------------- Icons ---------------- */
   const S = (p, vb = '0 0 24 24', extra = '') => `<svg viewBox="${vb}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" ${extra}>${p}</svg>`;
   const ICON = {
@@ -47,6 +75,7 @@
     user: S('<circle cx="12" cy="8" r="4.2"/><path d="M4 20.5c1.2-3.8 4.4-5.5 8-5.5s6.8 1.7 8 5.5"/>'),
     download: S('<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>', '0 0 24 24', 'stroke-width="1.8"'),
     pdf: `<svg viewBox="0 0 40 48"><path d="M6 1h21l12 12v31a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3z" fill="#E4E4E7"/><path d="M27 1v9a3 3 0 0 0 3 3h9z" fill="#C9C9CF"/><rect x="0" y="22" width="30" height="14" rx="2" fill="#E5483B"/><text x="15" y="32.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial, sans-serif">PDF</text></svg>`,
+    refresh: S('<path d="M20 11a8 8 0 0 0-14.3-4.3L4 8.5M4 4v4.5h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.3L20 15.5M20 20v-4.5h-4.5"/>', '0 0 24 24', 'stroke-width="2"'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
     pencilSolid: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`,
     phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>`,
@@ -63,6 +92,7 @@
     s8: S('<path d="M11 17l2 2a1.4 1.4 0 0 0 2-2"/><path d="M14 14l2.5 2.5a1.4 1.4 0 0 0 2-2l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a1.4 1.4 0 0 1-2-2l2.8-2.8a3.9 3.9 0 0 1 4.8-.6l.5.3a3 3 0 0 0 2 .4H21v7h-1.5"/><path d="M3 5h2.5l3 1.5M3 12h1.5l6 6"/><path d="M3 5v7"/>'),
   };
 
+  const rs = (v) => `<span class="rs">₹</span> ${v}`;
   const img = (f, cls = '', style = '') => `<img src="${IMG}${f}" class="${cls}" style="${style}" alt="">`;
 
   /* ---------------- Headers ---------------- */
@@ -79,6 +109,17 @@
       <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
       <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="contact" href="https://www.shriramcredit.in/contact-us">Contact Us</a></div>
     </header>`;
+
+  /* ---------------- Fund cards ---------------- */
+  const fundHead = (f, name) => `
+    <div class="fund-head"><span class="fund-ico">${img('funds/' + f.ico + '.png')}</span>
+      <div><div class="fund-name">${name || f.name}</div><div class="folio">Folio No. 14816008</div></div></div>`;
+
+  // Curated offers list card (No. of Units 2dp + Current Value)
+  const offerCard = (f) => `
+    <div class="fund-card"><div class="body">${fundHead(f)}
+      <div class="fund-cols"><div><div class="lbl">No. of Units</div><div class="val">${U2[f.id]}</div></div>
+      <div><div class="lbl">Current Value</div><div class="val">${rs(f.value)}</div></div></div></div></div>`;
 
   /* ---------------- Modals ---------------- */
   const closeBtn = `<button class="close" aria-label="Close">${ICON.close}</button>`;
@@ -230,12 +271,39 @@
   /* 08 / 09 loaders (skeleton + title), shown over the Your loans page */
   T.loader = (title, variant = 1) => {
     const bar2 = variant === 1 ? '<span class="skel-bar" style="width:113px"></span><span class="skel-bar" style="width:139px"></span>'
-      : '<span class="skel-bar" style="width:76px"></span><span class="skel-bar" style="width:2px"></span>';
+      : variant === 2 ? '<span class="skel-bar" style="width:76px"></span><span class="skel-bar" style="width:2px"></span>'
+      : '<span class="skel-bar" style="width:119px"></span><span class="skel-bar" style="width:66px"></span>';
     return `<div class="modal loader-modal"><div class="skel">
       <div class="skel-row" style="margin-left:22px"><span class="skel-sq" style="width:44px;height:44px"></span><div style="display:grid;gap:9px"><span class="skel-bar" style="width:90px"></span><span class="skel-bar" style="width:107px"></span></div></div>
       <div class="skel-row dark"><span class="skel-sq" style="width:56px;height:56px"></span><div style="display:grid;gap:12px">${bar2}</div></div>
       </div><h3>${title}</h3><p>This might take a min, thanks for your patience</p></div>`;
   };
+
+  /* 11 Curated offers (same as the new-customer journey's screen 12) */
+  T.curated = (o = {}) => `
+    ${plainHeader()}
+    <div class="info-banner">${img('banner-icon.png')}${o.banner || 'Borrow only what you need and pay interest only on the utilised amount'}</div>
+    <main class="wrap-980 curated">
+      <h3 class="co-t">Curated offers for you</h3>
+      <p class="co-s">Processing fee and monthly EMI shown are indicative. Final values will depend on the actual loan amount availed.</p>
+      <div class="offer ${o.dropoff ? 'drop' : ''}">
+        ${o.dropoff ? '<div class="offer-prog">1/4 Complete your application to get cash</div>' : ''}
+        <div class="offer-in">
+          <div class="offer-row"><span class="ol">Credit Limit</span><a class="ov" data-cta="how-calculated">${rs(PORTFOLIO.creditLimit)}</a></div>
+          <div class="offer-grid">
+            <div><span>Interest Rate</span><u>${PORTFOLIO.interest}</u></div>
+            <div style="text-align:center"><span>Processing Fee</span><u>${rs(PORTFOLIO.fee)}</u></div>
+            <div style="text-align:right"><span>Tenure in Months</span><u>${PORTFOLIO.tenure}</u></div>
+          </div>
+        </div>
+        ${o.dropoff ? `<div class="offer-2btn"><button class="discard" data-cta="discard">Discard</button><button class="btn-primary" data-cta="continue">Continue</button></div>`
+                    : `<button class="offer-btn" data-cta="start-application">Start Application</button>`}
+      </div>
+      <p class="tpv">Total Portfolio Value <span>${rs(PORTFOLIO.total)}</span></p>
+      <p class="lu">Last updated: ${PORTFOLIO.lastUpdated} <a class="rf" data-cta="refresh-portfolio"><span>${ICON.refresh}</span>Refresh portfolio</a></p>
+      <div class="mobile-strip"><span>${CUSTOMER.mobileMasked2}</span><span>13 Security<span class="dotsep">•</span>${rs(PORTFOLIO.total)}</span></div>
+      ${FUNDS.map(offerCard).join('')}
+    </main>`;
 
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
@@ -710,13 +778,11 @@
       sync();
     },
 
-    /* ---- 07 → 08 → 09: each moves on automatically after 1 second ---- */
+    /* ---- 07 → 08 → 09 → 10 → 11: each moves on automatically after 1 second ---- */
     '07) MF Central to LOS Redirecting Page': () => after(1000, '08) MF Central to LOS Fetching Mutual Fund Portfolio Page'),
     '08) MF Central to LOS Fetching Mutual Fund Portfolio Page': () => after(1000, '09) MF Central to LOS Analysing Mutual Fund Portfolio Page'),
-    '09) MF Central to LOS Analysing Mutual Fund Portfolio Page': () => {
-      // Next screen not given yet: after 1 second a note says so.
-      setTimeout(() => toast('Portfolio analysed. The next screen will be added once its screenshot is shared.'), 1000);
-    },
+    '09) MF Central to LOS Analysing Mutual Fund Portfolio Page': () => after(1000, '10) MF Central to LOS Generating Loan Page'),
+    '10) MF Central to LOS Generating Loan Page': () => after(1000, '11) Curated Offers Page'),
   };
 
   function wireBehaviour() {
