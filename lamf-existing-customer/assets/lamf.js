@@ -28,6 +28,7 @@
     '12.2) Mutual Fund Selection page loan amount edit as fund wise',
     '13) Loan Application Summary',
     '14) KYC Verification Page',
+    '14.1) KYC Verification Page New PAN email verification',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
@@ -39,8 +40,8 @@
   const MAX_PANS = 3;
   /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
   const PAN_DETAILS = {
-    CBOPA8195B: { name: 'RAVI KUMAR S', dob: '14/05/1988' },
-    AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992' },
+    CBOPA8195B: { name: 'RAVI KUMAR S', dob: '14/05/1988', email: 'ravikumar.s@example.com' },
+    AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992', email: 'priya.r@example.com' },
   };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
@@ -311,12 +312,20 @@
           <p class="an-ok" id="np-ok" hidden><span>${ICON.check}</span>PAN verified successfully</p>
         </div>
 
-        <div class="an-consent" id="an-consent" hidden>
-          <label class="chk sm"><input type="checkbox" id="mfc-consent"><span>${MFC_CONSENT}</span></label>
-          <p class="field-err" id="an-err"></p>
-          <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
+      </section>
+
+      <section class="an-sec an-personal" id="an-personal" ${o.pan ? '' : 'hidden'}>
+        <h4>Personal details</h4>
+        <div class="an-ro">
+          <div class="wide"><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div>
         </div>
       </section>
+
+      <div class="an-consent" id="an-consent" hidden>
+        <label class="chk sm"><input type="checkbox" id="mfc-consent"><span>${MFC_CONSENT}</span></label>
+        <p class="field-err" id="an-err"></p>
+        <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
+      </div>
     </div></div></main>`;
 
   /* 05 LOS → MF Central redirect popup (countdown 3, 2, 1) */
@@ -577,7 +586,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -638,7 +647,9 @@
         $('an-det-pan').value = pan.value;
         $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
         $('an-det-name').value = PAN_DETAILS[pan.value].name;
+        $('an-det-email').value = PAN_DETAILS[pan.value].email;
       }
+      $('an-personal').hidden = !(mode === 'existing' && pan.value);   // email etc. held for the existing PAN
       $('an-consent').hidden = !ready();                     // consent only after a PAN is selected / verified
       if (!ready()) consent.checked = false;
       const ok = ready() && consent.checked;
@@ -701,6 +712,7 @@
       if (!consent.checked) return err('an-err', AN_ERR.consent);
       err('an-err', '');
       store.set(K.pan, mode === 'existing' ? pan.value : newPan.value);   // PAN used for the MF Central fetch
+      store.set(K.mode, mode);                                               // KYC: email already verified for an existing PAN
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1144,21 +1156,30 @@
     },
 
     /* ---- 14 KYC: loan amount from screen 12; Back → 13; other actions pending ---- */
-    '14) KYC Verification Page': () => {
+    /* Existing PAN: email is already verified → Email Verification complete, Aadhaar "Start KYC" (as 16.4).
+       New PAN: email still to be verified (as 16.1). Screen 14.1 always shows the New PAN state. */
+    '14) KYC Verification Page': () => kycBehaviour(),
+    '14.1) KYC Verification Page New PAN email verification': () => kycBehaviour('new'),
+  };
+  function kycBehaviour(forceMode) {
+    {
+      const mode = forceMode || store.get(K.mode) || 'existing';
       const saved = store.get(K.sel);
-      if (saved) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = T.kyc({ email: 'input', loan: inr(Object.values(saved).reduce((x, y) => x + y, 0)) });
-        document.querySelector('.loan-strip').replaceWith(tmp.querySelector('.loan-strip'));
-      }
+      const opts = mode === 'new' ? { email: 'input' } : { email: 'done', aadhaar: 'start' };
+      if (saved) opts.loan = inr(Object.values(saved).reduce((x, y) => x + y, 0));
+      const tmp = document.createElement('div');
+      tmp.innerHTML = T.kyc(opts);
+      document.querySelector('main.kyc-page').replaceWith(tmp.querySelector('main.kyc-page'));
       document.querySelector('[data-cta="back"]').onclick = () => go('13) Loan Application Summary');
-      document.querySelectorAll('[data-cta="verify-email"], [data-cta="view-details"]').forEach((el) => {
+      document.querySelectorAll('[data-cta="verify-email"], [data-cta="view-details"], [data-cta="start-kyc"]').forEach((el) => {
         el.onclick = () => toast('This step will be added once its screenshot is shared.');
       });
-    },
+    }
+  }
+  Object.assign(BEHAVIOUR, {
     '12.1) Mutual Fund Selection page loan amount edit': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editLoan: '9530700' }),
     '12.2) Mutual Fund Selection page loan amount edit as fund wise': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editing: { icici: '100000' } }),
-  };
+  });
 
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
