@@ -11,6 +11,11 @@ PAGES = {
  "04) Your Loans Page": "LAMF.render(LAMF.T.loans())",
  "04.1) Apply for New Loan PAN type popup": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.panTypeModal()))",
  "04.2) Apply for New Loan Existing PAN selected": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.panTypeModal('existing')))",
+ "05) LOS to MF Central Redirection loading page": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.mfcModal()))",
+ "06) MF Central Mock Page": "LAMF.render(LAMF.T.mfMock())",
+ "07) MF Central to LOS Redirecting Page": "LAMF.render(LAMF.T.redirecting())",
+ "08) MF Central to LOS Fetching Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.loader('Fetching your mutual fund portfolio..', 1)))",
+ "09) MF Central to LOS Analysing Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.loans(), LAMF.T.loader('Analyzing your mutual fund portfolio..', 2)))",
 }
 TPL = """<!doctype html>
 <html lang="en">

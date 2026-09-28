@@ -15,13 +15,22 @@
     '04) Your Loans Page',
     '04.1) Apply for New Loan PAN type popup',
     '04.2) Apply for New Loan Existing PAN selected',
+    '05) LOS to MF Central Redirection loading page',
+    '06) MF Central Mock Page',
+    '07) MF Central to LOS Redirecting Page',
+    '08) MF Central to LOS Fetching Mutual Fund Portfolio Page',
+    '09) MF Central to LOS Analysing Mutual Fund Portfolio Page',
   ];
   const href = (name) => encodeURIComponent(name + '.html');
   /* The Shriram Credit logo on every screen goes back to this prototype's home page */
   const logoLink = (inner) => `<a class="logo" href="index.html" title="Home">${inner}</a>`;
 
   /* ---------------- Demo customer data ---------------- */
-  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', pan: 'CBOPA 8195 B' };
+  /* pans: PANs already linked to this mobile number (a customer can have at most MAX_PANS) */
+  const CUSTOMER = { mobile: '9597001623', mobileMasked: '+9195XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
+  const MAX_PANS = 3;
+  /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
+  const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
 
   /* Existing loan shown on "Your loans" (values from the shared screenshot) */
   const LOAN = {
@@ -62,6 +71,8 @@
     <header class="hdr">${logoLink(img('shriram-logo.png'))}
       <div class="hdr-icons"><a class="hdr-cta" data-cta="apply-new-loan">Apply for New Loan</a><span>${ICON.gauge}</span><span>${ICON.user}</span></div>
     </header>`;
+  // Logged-in header without the Apply CTA (MF Central hand-off screens)
+  const plainHeader = () => `<header class="hdr">${logoLink(img('shriram-logo.png'))}<div class="hdr-icons"><span>${ICON.gauge}</span><span>${ICON.user}</span></div></header>`;
   const header = () => `
     <header class="hdr site">
       ${logoLink(img('shriram-logo.png'))}
@@ -176,12 +187,55 @@
         <label class="radio"><input type="radio" name="pan-type" value="existing" ${sel === 'existing' ? 'checked' : ''}><span>Existing PAN</span></label>
         <label class="radio"><input type="radio" name="pan-type" value="new" ${sel === 'new' ? 'checked' : ''}><span>New PAN</span></label>
       </div>
+      <div class="pt-pan" id="pt-pan-row" ${sel === 'existing' ? '' : 'hidden'}>
+        <label class="field-lbl" for="pt-pan">Select PAN</label>
+        <select class="input" id="pt-pan">
+          <option value="">Select PAN</option>
+          ${CUSTOMER.pans.slice(0, MAX_PANS).map((p) => `<option value="${p}">${maskPan(p)}</option>`).join('')}
+        </select>
+      </div>
       <p class="field-err" id="pan-type-err"></p>
       <div class="m-foot">
         <label class="chk sm pt-consent" id="pt-consent-row" ${sel === 'existing' ? '' : 'hidden'}><input type="checkbox" id="mfc-consent"><span>I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.</span></label>
         <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
       </div>
     </div>`;
+
+  /* 05 LOS → MF Central redirect popup (countdown 3, 2, 1) */
+  T.mfcModal = () => `
+    <div class="modal m-mfc">${closeBtn}
+      ${img('mfcentral-logo.png', 'mfc-logo')}
+      <p class="redir">Redirecting to MF Central in <span id="mfc-count">3</span> seconds</p>
+      <div class="prog"><span></span></div>
+      <h4>Here’s what you need to do</h4>
+      <div class="todo"><span>1</span><p>Enter the 6-digit OTP received from MF Central on your mobile number.</p></div>
+      <div class="todo"><span>2</span><p>Select all the AMCs and continue</p></div>
+      <div class="note"><b>Note</b> You’ll return to the process automatically after completing this step.</div>
+    </div>`;
+
+  /* 06 MF Central mock (stands in for the MF Central OTP page) */
+  T.mfMock = () => `
+    ${plainHeader()}
+    <main><div class="card mock-card">
+      <h2>Mock MFCentral Page</h2><h4>Enter Otp</h4>
+      <div class="otp" style="justify-content:center">${'<input maxlength="1" inputmode="numeric" autocomplete="off">'.repeat(6)}</div>
+      <p class="otp-hint" style="margin:12px auto 0">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="mock-err" style="text-align:center"></p>
+      <button class="btn btn-disabled btn-block" data-cta="submit">Submit</button>
+    </div></main>`;
+
+  /* 07 MF Central → LOS redirecting */
+  T.redirecting = () => `${plainHeader()}<p class="redirecting">Redirecting to Dashboard...</p>`;
+
+  /* 08 / 09 loaders (skeleton + title), shown over the Your loans page */
+  T.loader = (title, variant = 1) => {
+    const bar2 = variant === 1 ? '<span class="skel-bar" style="width:113px"></span><span class="skel-bar" style="width:139px"></span>'
+      : '<span class="skel-bar" style="width:76px"></span><span class="skel-bar" style="width:2px"></span>';
+    return `<div class="modal loader-modal"><div class="skel">
+      <div class="skel-row" style="margin-left:22px"><span class="skel-sq" style="width:44px;height:44px"></span><div style="display:grid;gap:9px"><span class="skel-bar" style="width:90px"></span><span class="skel-bar" style="width:107px"></span></div></div>
+      <div class="skel-row dark"><span class="skel-sq" style="width:56px;height:56px"></span><div style="display:grid;gap:12px">${bar2}</div></div>
+      </div><h3>${title}</h3><p>This might take a min, thanks for your patience</p></div>`;
+  };
 
   /* ==========================================================
      LEGAL – T&C / Privacy Policy popup content (same summaries as lamf-journey).
@@ -281,7 +335,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -309,32 +363,38 @@
 
   const PAN_TYPE_ERR = {
     none: 'Please select PAN type.',
+    pan: 'Please select PAN.',
     consent: 'Please provide the consent to proceed.',
   };
 
-  /* 04.1 / 04.2 – Apply for New Loan popup: one of two radios, consent only for Existing PAN */
+  /* 04.1 / 04.2 – Apply for New Loan popup: one of two radios; Existing PAN shows the
+     PAN dropdown (masked, max 3) and the MF Central consent, both required */
   const panTypeBehaviour = () => {
     const modal = document.querySelector('.m-pantype');
     const radios = [...modal.querySelectorAll('input[name="pan-type"]')];
+    const panRow = document.getElementById('pt-pan-row');
+    const pan = document.getElementById('pt-pan');
     const consentRow = document.getElementById('pt-consent-row');
     const consent = document.getElementById('mfc-consent');
     const err = document.getElementById('pan-type-err');
     const cta = modal.querySelector('[data-cta="continue"]');
     const picked = () => (radios.find((r) => r.checked) || {}).value || '';
-    const showErr = (msg) => { err.textContent = msg || ''; };
+    const showErr = (msg) => { err.textContent = msg || ''; pan.classList.toggle('has-err', msg === PAN_TYPE_ERR.pan); };
 
-    // Continue looks enabled only when it can proceed: New PAN, or Existing PAN + consent
+    // Continue looks enabled only when it can proceed: New PAN, or Existing PAN + PAN chosen + consent
     const sync = () => {
-      const v = picked();
-      consentRow.hidden = v !== 'existing';
-      if (v !== 'existing') consent.checked = false;         // consent belongs to Existing PAN only
-      const ok = v === 'new' || (v === 'existing' && consent.checked);
+      const existing = picked() === 'existing';
+      panRow.hidden = !existing;
+      consentRow.hidden = !existing;
+      if (!existing) { pan.value = ''; consent.checked = false; }   // both belong to Existing PAN only
+      const ok = picked() === 'new' || (existing && !!pan.value && consent.checked);
       cta.classList.toggle('btn-primary', ok);
       cta.classList.toggle('bold', ok);
       cta.classList.toggle('btn-disabled', !ok);
     };
     radios.forEach((r) => r.addEventListener('change', () => { showErr(''); sync(); }));
-    consent.addEventListener('change', () => { if (consent.checked) showErr(''); sync(); });
+    pan.addEventListener('change', () => { if (pan.value && err.textContent === PAN_TYPE_ERR.pan) showErr(''); sync(); });
+    consent.addEventListener('change', () => { if (consent.checked && err.textContent === PAN_TYPE_ERR.consent) showErr(''); sync(); });
 
     // Close icon: close the popup, back to Your loans
     modal.querySelector('.close').onclick = () => go('04) Your Loans Page');
@@ -342,15 +402,22 @@
     cta.addEventListener('click', () => {
       const v = picked();
       if (!v) return showErr(PAN_TYPE_ERR.none);
-      if (v === 'existing' && !consent.checked) return showErr(PAN_TYPE_ERR.consent);
+      if (v === 'existing') {
+        if (!pan.value) return showErr(PAN_TYPE_ERR.pan);
+        if (!consent.checked) return showErr(PAN_TYPE_ERR.consent);
+        showErr('');
+        store.set(K.pan, pan.value);                              // PAN used for the MF Central fetch
+        return go('05) LOS to MF Central Redirection loading page');
+      }
       showErr('');
-      // Next screens are not built yet; they are added when their screenshots are shared.
-      toast(v === 'existing'
-        ? 'Existing PAN selected. The next screen will be added once its screenshot is shared.'
-        : 'New PAN selected. The next screen will be added once its screenshot is shared.');
+      // New PAN flow is not built yet; it is added when its screenshots are shared.
+      toast('New PAN selected. The next screen will be added once its screenshot is shared.');
     });
     sync();
   };
+
+  /* Auto-advance after a delay (redirect / loader screens). Leaving the page cancels it. */
+  const after = (ms, screen) => setTimeout(() => go(screen), ms);
 
   const MOBILE_ERR = {
     empty: 'Please enter your MF linked mobile number.',
@@ -583,6 +650,73 @@
 
     '04.1) Apply for New Loan PAN type popup': panTypeBehaviour,
     '04.2) Apply for New Loan Existing PAN selected': panTypeBehaviour,
+
+    /* ---- 05 Redirect popup: 3, 2, 1 then MF Central; close → back to Your loans ---- */
+    '05) LOS to MF Central Redirection loading page': () => {
+      const count = document.getElementById('mfc-count');
+      let left = 3;
+      const t = setInterval(() => {
+        left -= 1;
+        if (left > 0) { count.textContent = left; return; }
+        clearInterval(t);
+        go('06) MF Central Mock Page');
+      }, 1000);
+      document.querySelector('.m-mfc .close').onclick = () => { clearInterval(t); go('04) Your Loans Page'); };
+    },
+
+    /* ---- 06 MF Central mock: 6-digit OTP, only 000000 accepted for now ---- */
+    '06) MF Central Mock Page': () => {
+      const boxes = [...document.querySelectorAll('.mock-card .otp input')];
+      const err = document.getElementById('mock-err');
+      const cta = document.querySelector('.mock-card [data-cta="submit"]');
+      const value = () => boxes.map((b) => b.value).join('');
+      const showErr = (msg) => { err.textContent = msg || ''; boxes.forEach((b) => b.classList.toggle('has-err', !!msg)); };
+      const sync = () => {
+        const ok = value().length === OTP_RULES.length;
+        cta.classList.toggle('btn-primary', ok);
+        cta.classList.toggle('bold', ok);
+        cta.classList.toggle('btn-disabled', !ok);
+      };
+      boxes.forEach((box, idx) => {
+        box.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && !box.value && boxes[idx - 1]) { boxes[idx - 1].focus(); return; }
+          if (e.key.length > 1 || e.ctrlKey || e.metaKey) return;
+          if (!/[0-9]/.test(e.key)) { e.preventDefault(); showErr(OTP_ERR.chars); }
+        });
+        box.addEventListener('input', () => {
+          const before = box.value;
+          const digits = before.replace(/\D/g, '');
+          if (digits.length > 1) {                   // pasted OTP → spread across the boxes
+            digits.slice(0, OTP_RULES.length - idx).split('').forEach((d, k) => { if (boxes[idx + k]) boxes[idx + k].value = d; });
+            boxes[Math.min(idx + digits.length, OTP_RULES.length) - 1].focus();
+          } else {
+            box.value = digits;
+            if (digits && boxes[idx + 1]) boxes[idx + 1].focus();
+          }
+          if (digits !== before) showErr(OTP_ERR.chars);
+          else if (err.textContent) showErr('');
+          sync();
+        });
+      });
+      cta.addEventListener('click', () => {
+        const v = value();
+        if (v.length !== OTP_RULES.length) return showErr(OTP_ERR.incomplete);
+        if (v !== OTP_RULES.demoOtp) {
+          boxes.forEach((b) => { b.value = ''; }); boxes[0].focus(); sync();
+          return showErr('The OTP you entered is incorrect. Please try again.');
+        }
+        go('07) MF Central to LOS Redirecting Page');
+      });
+      sync();
+    },
+
+    /* ---- 07 → 08 → 09: each moves on automatically after 1 second ---- */
+    '07) MF Central to LOS Redirecting Page': () => after(1000, '08) MF Central to LOS Fetching Mutual Fund Portfolio Page'),
+    '08) MF Central to LOS Fetching Mutual Fund Portfolio Page': () => after(1000, '09) MF Central to LOS Analysing Mutual Fund Portfolio Page'),
+    '09) MF Central to LOS Analysing Mutual Fund Portfolio Page': () => {
+      // Next screen not given yet: after 1 second a note says so.
+      setTimeout(() => toast('Portfolio analysed. The next screen will be added once its screenshot is shared.'), 1000);
+    },
   };
 
   function wireBehaviour() {
