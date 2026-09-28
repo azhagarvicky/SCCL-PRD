@@ -29,12 +29,14 @@
     '13) Loan Application Summary',
     '14) KYC Verification Page',
     '14.1) KYC Verification Page New PAN email verification',
+    '14.2) KYC Verification Page New PAN email OTP popup',
     '15) DigiLocker Mock Page',
     '15.1) KYC Verification Page Aadhaar verification success',
     '15.2) KYC Verification Page Aadhaar verification failed',
     '16) Photo Verification Mock Page',
     '16.1) KYC Verification Page Photo verification success',
     '16.2) KYC Verification Page Photo verification failed',
+    '16.3) KYC Verification Page New PAN bank details',
     '17) Customer Details Page',
     '18) Pledging of Mutual Fund Page',
     '18.1) Pledging of Mutual Fund OTP popup',
@@ -577,7 +579,7 @@
       ${kycRow(4, 'Photo Verification', photo === 'done' ? 'done' : photo === 'start' ? 'open' : 'pending', photoExtra + failNote(o.photoErr))}
       ${o.bank
         ? kycRow(5, 'Bank Details', 'doneOpen', `<div class="kyc-bank">${o.bank.logo ? img(o.bank.logo, 'kb-logo') : `<span class="kb-logo kb-gen">${ICON.bank}</span>`}<span>${o.bank.name} <span class="kb-n">${o.bank.account.slice(-4)}</span></span><b>IFSC</b><span class="kb-n">${o.bank.ifsc}</span><span class="kb-ok">${ICON.check}</span></div>`)
-        : kycRow(5, 'Bank Details', 'pending')}
+        : o.bankForm ? kycRow(5, 'Bank Details', 'openPending', o.bankForm) : kycRow(5, 'Bank Details', 'pending')}
       ${o.cont ? `<button class="btn ${o.cont === 'on' ? 'btn-primary' : 'btn-disabled'} bold kyc-btn kyc-cont" data-cta="kyc-continue">Continue</button><p class="field-err kyc-fail" id="kyc-cont-err"></p>` : ''}
     </main>`;
   };
@@ -665,6 +667,48 @@
         : kycRow(2, 'E-Mandate', 'openPending', `<button class="btn btn-primary bold kyc-btn" data-cta="setup-emandate">Set up E-Mandate</button>${em === 'failed' ? '<p class="field-err kyc-fail">E-Mandate was not authenticated. Please try again.</p>' : ''}`)}
     </main>`;
 
+  /* 14 Bank Details form for a New PAN (no bank on file) – layout after the FD page's bank section:
+     enter manually or fetch with a UPI ID; demo IFSC / UPI lookups (no bank service is called) */
+  const IFSC_BANKS = { ICIC: 'ICICI Bank', HDFC: 'HDFC Bank', SBIN: 'State Bank of India', UTIB: 'Axis Bank', KKBK: 'Kotak Mahindra Bank', PUNB: 'Punjab National Bank', BARB: 'Bank of Baroda', CNRB: 'Canara Bank', IDIB: 'Indian Bank', IOBA: 'Indian Overseas Bank' };
+  T.bankForm = (holder = '') => `
+    <div class="bk-form">
+      <p class="bk-note"><b>Note:</b> The bank account holder name must match the name as per PAN. In case of a mismatch, the loan cannot be disbursed to this account.</p>
+      <p class="bk-l">Select one option to fetch your bank details</p>
+      <div class="bk-opts">
+        <button class="bk-opt on" data-bk="manual"><span class="bk-dot"></span>Enter manually</button>
+        <button class="bk-opt" data-bk="upi"><span class="bk-dot"></span>Fetch the details using UPI ID</button>
+      </div>
+      <div class="bk-manual">
+        <div class="bk-grid">
+          <div><label class="field-lbl">Account number<i class="req">*</i></label><input class="input" id="bk-acc" type="password" inputmode="numeric" maxlength="18" autocomplete="off"><p class="field-err" data-bk-err="acc"></p></div>
+          <div><label class="field-lbl">Confirm Account Number<i class="req">*</i></label><input class="input" id="bk-acc2" inputmode="numeric" maxlength="18" autocomplete="off"><p class="field-err" data-bk-err="acc2"></p></div>
+          <div><label class="field-lbl">IFSC code<i class="req">*</i></label><input class="input" id="bk-ifsc" maxlength="11" placeholder="e.g. HDFC0001234" autocomplete="off"><p class="field-err" data-bk-err="ifsc"></p><a class="link-yellow bk-ifsc-help" data-cta="ifsc-help">don’t know IFSC?</a></div>
+          <div><label class="field-lbl">Bank name</label><input class="input readonly" id="bk-bank" readonly tabindex="-1" placeholder="Filled from IFSC"></div>
+          <div><label class="field-lbl">Bank branch</label><input class="input readonly" id="bk-branch" readonly tabindex="-1" placeholder="Filled from IFSC"></div>
+          <div><label class="field-lbl">Account type<i class="req">*</i></label><select class="input an-select" id="bk-type"><option value="">Select</option><option>Savings</option><option>Current</option></select><p class="field-err" data-bk-err="type"></p></div>
+          <div><label class="field-lbl">Account holder name<i class="req">*</i></label><input class="input" id="bk-holder" value="${holder}" maxlength="60" autocomplete="off"><p class="field-err" data-bk-err="holder"></p></div>
+        </div>
+      </div>
+      <div class="bk-upi" hidden>
+        <div class="bk-grid">
+          <div><label class="field-lbl">UPI ID<i class="req">*</i></label><input class="input" id="bk-upi" placeholder="e.g. name@okhdfcbank" autocomplete="off"><p class="field-err" data-bk-err="upi"></p></div>
+        </div>
+      </div>
+      <button class="btn btn-primary bold kyc-btn" data-cta="verify-bank">Verify Bank Account</button>
+    </div>`;
+
+  /* 14.2 Email OTP popup (New PAN; layout as in the UAT screenshot, demo OTP 000000) */
+  T.emailOtpModal = (email) => `
+    <div class="modal m-otp m-eotp2">
+      <h3>Enter OTP</h3>
+      <p class="sent">A 6-digit OTP has been sent to your registered email address<br><b>${email}</b></p>
+      <div class="otp">${'<input maxlength="1" inputmode="numeric" autocomplete="off">'.repeat(6)}</div>
+      <p class="resend">Didn’t receive OTP? <span id="email-resend"></span></p>
+      <p class="otp-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="email-otp-err"></p>
+      <button class="btn btn-disabled btn-block" data-cta="submit-email-otp">Submit OTP</button>
+    </div>`;
+
   /* 18.1 Pledge OTP popup (MF Central OTP; demo OTP 000000) */
   T.pledgeOtpModal = (mobile) => `
     <div class="modal m-otp m-plotp">${closeBtn}
@@ -706,33 +750,7 @@
     return `
     <main class="sl-bg"><div class="sl-doc">
       <div class="sl-logo">${img('shriram-logo.png')}</div>
-      <h1 class="sl-h">In principle e-Sanction Letter</h1>
-      <p class="sl-date">${today()}</p>
-      <p class="sl-name">${p.name}</p>
-      <p class="sl-addr">${p.addr1},<br>${p.addr2},<br>${p.addr3}</p>
-      <p class="sl-cid">Customer ID : ${o.customerId || 'A000000011'}</p>
-      <p>Dear Sir/Madam,</p>
-      <p><b>Reg: Your request for Financial Assistance of ${r(amt)}</b></p>
-      <p>We are pleased to inform you that based on your online loan application, we are offering you an in-principle e-Sanction of loan against Mutual funds of ${r(amt)} for the purpose of "${p.purpose}" as per the terms and conditions given in Key Fact Statement (KFS). This credit facility will be available to you on execution of all the necessary documents and collateral pledge/lien mark in favor of SHRIRAM CREDIT COMPANY LIMITED.</p>
-      <p>In case of any clarification, please do not hesitate to contact us at lassupport@shriramcredit.in</p>
-      <p>Thank you, and we assure you of our best services at all times.</p>
-      <p>Yours faithfully,<br><b>SHRIRAM CREDIT COMPANY LIMITED</b></p>
-      ${docFoot}
-      <h2 class="sl-h2">Annexure A: Key Fact Statement</h2>
-      <p class="sl-sub">Part 1 – Interest rate and fees / charges</p>
-      <table class="sl-t">
-        <tr><th>Sr No</th><th>Parameter</th><th>Details</th></tr>
-        <tr><td>1 (a)</td><td>Type of Loan</td><td>Loan Against pledge of Mutual Funds</td></tr>
-        <tr><td>1 (b)</td><td>Loan proposal / Customer ID</td><td>${o.proposal || 'SCCLMF20260900155'} / ${o.customerId || 'A000000011'}</td></tr>
-        <tr><td>2</td><td>Sanctioned Loan Amount (₹)</td><td>${r(amt)}</td></tr>
-        <tr><td>3</td><td>Loan Term (months)</td><td>12 Months</td></tr>
-        <tr><td>4</td><td>Instalment Details</td><td>Type of instalments: Monthly · Number of Dues: 12 Months<br>– Interest: 12 Months (Fixed) · – Principal: 1 (bullet at maturity)<br>Due: ${r(((amt * 0.105) / 12).toFixed(2))} · Commencement of repayment, post sanction (in days): 36</td></tr>
-        <tr><td>5</td><td>Rate of Interest per annum (%) and type</td><td>10.5 % p.a. and Fixed</td></tr>
-        <tr><td>6 (a)</td><td>Fees / charges payable to RE</td><td>Processing Fee: One-time | ${r(Math.round(amt * 0.005))} + GST<br>Loan Renewal Charges: Recurring | Annual | ₹ 999 + GST<br>Bank Swap Charges: Recurring | ₹ 250 + GST</td></tr>
-        <tr><td>6 (b)</td><td>Payable to Third Party through RE</td><td>Lien Marking Charges: One-time | ₹ 450 + GST<br>Lien Removal Charges: Event-based | ₹ 100 + GST<br>Stamp Duty: One-time (As per State) | ₹ 200 + GST</td></tr>
-        <tr><td>8</td><td>Purpose of Loan</td><td>${p.purpose}</td></tr>
-      </table>
-      ${docFoot}
+      <div class="doc-text" data-doc="sanction-letter">Loading the sanction letter…</div>
     </div></main>
     <div class="sl-bar">
       <label class="sl-chk"><input type="checkbox" id="sl-accept"><span>I accept the terms of the Sanction letter and Key Fact Statement (KFS), including all applicable charges, interest rates, and repayment schedules. I confirm that I understand these conditions and agree to proceed with the loan agreement.</span></label>
@@ -746,15 +764,7 @@
     <header class="dg-hdr"><span class="dg-logo"><b>d</b>igio</span><span class="dg-mock">Mock e-Sign page (prototype)</span></header>
     <main class="dg-bg"><div class="sl-doc dg-doc">
       <div class="sl-logo">${img('shriram-logo.png')}</div>
-      <h1 class="sl-h dg-h">LOAN CUM PLEDGE AGREEMENT</h1>
-      <p>This Agreement made on ${new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}, between:</p>
-      <p>(1) The Borrower the details where of are given at the end of the Agreement, (here in after called the "<b>Borrower</b>") of the First Part</p>
-      <p><b>AND</b></p>
-      <p>(2) Shriram Credit Company Limited., a Company incorporated under the Companies Act, 1956 having CIN No. U65993TN1980PLC008215 and having its registered office situated at Shriram House, No.4, Burkit Road, T.Nagar, Chennai, TamilNadu, 600017 having RBI registration number-B-07.00709, (here in after called "<b>SCCL</b> or the <b>Lender</b>") of the Third Part.</p>
-      <p>(The expression 'Borrower and SCCL/ Lender' shall, unless repugnant to the context or meaning thereof be deemed to include their respective legal heirs, executors and administrators and shall be deemed to include his/her/its/their respective successors and permitted assigns in the case of the Borrower and its assigns in the case of SCCL/ Lender)</p>
-      <p>(The expressions Borrower and SCCL shall hereinafter collectively be referred to as the "<b>Parties</b>" and individually as the "<b>Party</b>")</p>
-      <p><b>WHEREAS</b> the Borrower being in need of funds has approached SCCL for a loan of Rs. ${amt} (Rupees ${inWords(amt)}) (hereinafter referred to as the "<b>Loan Facility</b>")</p>
-      <p class="dg-more">… (remaining clauses of the agreement)</p>
+      <div class="doc-text" data-doc="loan-agreement">Loading the loan agreement…</div>
     </div></main>
     <div class="dg-bar">
       <label class="dg-chk"><input type="checkbox" id="dg-accept" checked><span>1. By continuing, I agree to do eKyc using Aadhaar to eSign with one of ESPs (CVL or Emudra or Protean) Digio is registered as ASP<br>2. I confirm that ${o.mobile || '+91XXXXXXXXXX'} belongs to me and verified with <b>SHRIRAM CREDIT COMPANY LIMITED</b></span></label>
@@ -816,7 +826,7 @@
             <div class="em-bn">${bank.logo ? img(bank.logo) : `<span class="kb-gen">${ICON.bank}</span>`}<b>${bank.name.toUpperCase()} LTD</b></div>
             <span>Account Number</span><p class="em-acc"><b id="em-acc" data-full="${bank.account}">XXXX XXXX ${bank.account.slice(-4)}</b><a class="em-eye" data-cta="em-eye" title="Show / hide">👁</a></p>
             <span>Customer Name (As per bank account)</span><p><b>${titleCase(bank.holder)}</b></p>
-            <div class="em-2"><div><span>IFSC code</span><p><b>${bank.ifsc}</b></p></div><div style="text-align:right"><span>A/C Type</span><p><b>Savings</b></p></div></div>
+            <div class="em-2"><div><span>IFSC code</span><p><b>${bank.ifsc}</b></p></div><div style="text-align:right"><span>A/C Type</span><p><b>${bank.type || 'Savings'}</b></p></div></div>
           </div>
           <div class="em-modes">
             <h4>Select Verification Mode</h4>
@@ -997,7 +1007,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement', emandate: 'lamfec.emandate', emMode: 'lamfec.emMode' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement', emandate: 'lamfec.emandate', emMode: 'lamfec.emMode', newPan: 'lamfec.newPan', email: 'lamfec.email', emailDraft: 'lamfec.emailDraft', newBank: 'lamfec.newBank' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -1137,6 +1147,7 @@
       if (eName || eDob || ePan) return;
       // Prototype: a valid, not-yet-linked PAN is treated as verified (no PAN service is called)
       verified = true; lock(true);
+      store.set(K.newPan, { name: n.toUpperCase(), dob: dob.value, pan: p });
       $('np-ok').hidden = false;
       document.querySelector('[data-cta="verify-pan"]').hidden = true;
       sync();
@@ -1171,6 +1182,8 @@
       store.set(K.pledge, '');                                               // … and pledging too
       store.set(K.agreement, '');                                            // … and the agreement
       store.set(K.emandate, '');                                             // … and the e-mandate
+      store.set(K.email, '');                                                // … and the email verification (New PAN)
+      store.set(K.newBank, null);                                            // … and the New PAN bank details
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1618,11 +1631,13 @@
        New PAN: email still to be verified (as 16.1). Screen 14.1 always shows the New PAN state. */
     '14) KYC Verification Page': () => kycBehaviour(),
     '14.1) KYC Verification Page New PAN email verification': () => kycBehaviour('new'),
+    '14.2) KYC Verification Page New PAN email OTP popup': () => kycBehaviour('new', undefined, true),
     // Review copies of the KYC page after each mock result (the live page 14 shows the same states)
     '15.1) KYC Verification Page Aadhaar verification success': () => kycBehaviour('existing', { aadhaar: 'done' }),
     '15.2) KYC Verification Page Aadhaar verification failed': () => kycBehaviour('existing', { aadhaar: 'failed' }),
     '16.1) KYC Verification Page Photo verification success': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'done' }),
     '16.2) KYC Verification Page Photo verification failed': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'failed' }),
+    '16.3) KYC Verification Page New PAN bank details': () => kycBehaviour('new', { aadhaar: 'done', photo: 'done' }, false, 'form'),
 
     /* ---- 15 / 16 mocks: Success marks the step complete, Failure returns with an error to retry ---- */
     '15) DigiLocker Mock Page': () => kycMockBehaviour('aadhaar'),
@@ -1759,13 +1774,43 @@
   }
 
   /* ---- 19 → 20 → 21 → 19: Sign Agreement → sanction letter (accept + Submit) → e-sign → Loan Agreement complete ---- */
+  /* Full sanction letter / loan agreement text (from the shared UAT PDFs, personal details replaced by
+     placeholders) filled with this application's details. Files: assets/docs/*.txt */
+  function docValues(ctx) {
+    const p = ctx.profile; const amt = ctx.amount; const d = new Date(); const p2 = (n) => String(n).padStart(2, '0');
+    const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+    return {
+      NAME: p.name, ADDR1: p.addr1, ADDR2: p.addr2, ADDR3: p.addr3, CITY: p.city, DOB: p.dob, GENDER: p.gender,
+      FATHER: p.father, MOTHER: p.mother, MOBILE: store.get(K.mobile) || CUSTOMER.mobile, EMAIL: ctx.email,
+      PAN_MASK: 'XXXXX' + (ctx.pan || 'CBOPA8195B').slice(5), DATE_LONG: `${p2(d.getDate())} ${mon} ${d.getFullYear()}`,
+      DATE: `${p2(d.getDate())}/${p2(d.getMonth() + 1)}/${d.getFullYear()}`, PURPOSE: p.purpose, OCCUPATION: p.occupation,
+      SOURCE: p.source, INCOME: p.income, LAKHS: (amt / 100000).toFixed(2), AMOUNT_WORDS: inWords(amt), AMOUNT: String(amt),
+      DUE: ((amt * 0.105) / 12).toFixed(2), FEE: String(Math.round(amt * 0.005)),
+    };
+  }
+  function loadDoc(el, name, ctx) {
+    const v = docValues(ctx);
+    const esc = (t) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    fetch(`assets/docs/${name}.txt`).then((r) => r.text()).then((t) => {
+      el.innerHTML = esc(t)
+        .replace(/\{\{(\w+)\}\}/g, (m, k) => `<b>${esc(String(v[k] ?? ''))}</b>`)
+        .replace(/^(SHRIRAM CREDIT COMPANY LIMITED ?)$/gm, '<span class="doc-foot">$1</span>');
+    }).catch(() => { el.textContent = 'The document could not be loaded.'; });
+  }
+
   function loanContext() {
     const pan = store.get(K.pan);
     const base = PROFILE[pan] || PROFILE.CBOPA8195B;
     const prof = store.get(K.profile);
     const saved = store.get(K.sel);
+    const np = store.get(K.newPan);
+    const isNew = store.get(K.mode) === 'new' && np;
+    let profile = prof && prof.pan === pan ? { ...base, ...prof.edits } : base;
+    if (isNew) profile = { ...profile, name: np.name, dob: np.dob };
     return {
-      profile: prof && prof.pan === pan ? { ...base, ...prof.edits } : base,
+      pan,
+      email: isNew ? (store.get(K.email) || CUSTOMER.email) : ((PAN_DETAILS[pan] || PAN_DETAILS.CBOPA8195B).email),
+      profile,
       amount: saved ? Object.values(saved).reduce((x, y) => x + y, 0) : 20000000,
       mobile: '+91' + (store.get(K.mobile) || CUSTOMER.mobile),
     };
@@ -1773,6 +1818,7 @@
   function sanctionBehaviour() {
     const ctx = loanContext();
     document.body.innerHTML = T.sanction(ctx);
+    loadDoc(document.querySelector('[data-doc]'), 'sanction-letter', ctx);
     const chk = document.getElementById('sl-accept');
     const btn = document.querySelector('[data-cta="sanction-submit"]');
     chk.addEventListener('change', () => { btn.disabled = !chk.checked; });
@@ -1781,6 +1827,7 @@
   function esignBehaviour() {
     const ctx = loanContext();
     document.body.innerHTML = T.esign(ctx);
+    loadDoc(document.querySelector('[data-doc]'), 'loan-agreement', ctx);
     const chk = document.getElementById('dg-accept');
     const btn = document.querySelector('[data-cta="sign-now"]');
     chk.addEventListener('change', () => { btn.disabled = !chk.checked; });
@@ -1791,6 +1838,7 @@
   function esignOtpBehaviour() {
     const ctx = loanContext();
     document.body.innerHTML = T.esign(ctx) + T.esignOtpModal();
+    loadDoc(document.querySelector('[data-doc]'), 'loan-agreement', ctx);
     document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');
     const q = (s) => document.querySelector(s);
     const aad = q('#dg-aadhaar');
@@ -1832,7 +1880,8 @@
   /* ---- 19 → 22 → 22.1 → 22.2 → 23: E-Mandate at Digio, NPCI Accept / Reject, back to LOS submitted ---- */
   function emandateBehaviour() {
     const pan = store.get(K.pan);
-    document.body.innerHTML = T.emandate({ bank: (PAN_DETAILS[pan] || PAN_DETAILS.CBOPA8195B).bank });
+    const newBank = store.get(K.mode) === 'new' ? store.get(K.newBank) : null;   // New PAN: the bank verified on the KYC page
+    document.body.innerHTML = T.emandate({ bank: newBank || (PAN_DETAILS[pan] || PAN_DETAILS.CBOPA8195B).bank });
     const q = (s) => document.querySelector(s);
     document.querySelectorAll('.em-mode input').forEach((r) => r.addEventListener('change', () => {
       document.querySelectorAll('.em-mode').forEach((m) => m.classList.toggle('on', m.querySelector('input').checked));
@@ -1905,44 +1954,157 @@
     document.querySelector('[data-cta="mock-success"]').onclick = () => set('done');
     document.querySelector('[data-cta="mock-failure"]').onclick = () => set('failed');
   }
-  function kycBehaviour(forceMode, forceKyc) {
-    {
-      const mode = forceMode || store.get(K.mode) || 'existing';
-      const saved = store.get(K.sel);
-      // KYC progress from the mocks: {aadhaar:'done'|'failed', photo:'done'|'failed'} (review screens force a state)
-      const kyc = forceKyc || store.get(K.kyc) || {};
-      const opts = mode === 'new' ? { email: 'input' } : { email: 'done', aadhaar: 'start' };
-      if (mode !== 'new') {
-        if (kyc.aadhaar === 'failed') opts.aadErr = 'Aadhaar verification failed. Please try again.';
-        if (kyc.aadhaar === 'done') {
-          opts.aadhaar = 'done';
-          opts.photo = kyc.photo === 'done' ? 'done' : 'start';
-          if (kyc.photo === 'failed') opts.photoErr = 'Photo verification failed. Please try again.';
-        }
+  /* New PAN Bank Details: manual entry (account + confirm, IFSC → bank / branch, type, holder) or UPI ID fetch */
+  function wireBankForm(done) {
+    const f = document.querySelector('.bk-form');
+    const $ = (id) => f.querySelector('#' + id);
+    const err = (k, m) => { const e = f.querySelector(`[data-bk-err="${k}"]`); if (e) e.textContent = m || ''; const map = { acc: 'bk-acc', acc2: 'bk-acc2', ifsc: 'bk-ifsc', type: 'bk-type', holder: 'bk-holder', upi: 'bk-upi' }; if (map[k]) $(map[k]).classList.toggle('has-err', !!m); };
+    let mode = 'manual';
+    f.querySelectorAll('[data-bk]').forEach((b) => { b.onclick = () => {
+      mode = b.dataset.bk;
+      f.querySelectorAll('[data-bk]').forEach((x) => x.classList.toggle('on', x === b));
+      f.querySelector('.bk-manual').hidden = mode !== 'manual';
+      f.querySelector('.bk-upi').hidden = mode !== 'upi';
+    }; });
+    ['bk-acc', 'bk-acc2'].forEach((id) => $(id).addEventListener('input', () => { $(id).value = $(id).value.replace(/\D/g, '').slice(0, 18); err(id === 'bk-acc' ? 'acc' : 'acc2', ''); }));
+    $('bk-ifsc').addEventListener('input', () => {
+      const v = $('bk-ifsc').value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 11); $('bk-ifsc').value = v; err('ifsc', '');
+      const ok = /^[A-Z]{4}0[A-Z0-9]{6}$/.test(v);
+      $('bk-bank').value = ok ? (IFSC_BANKS[v.slice(0, 4)] || 'Bank (demo lookup)') : '';
+      $('bk-branch').value = ok ? `Branch ${v.slice(5)} (demo)` : '';
+    });
+    $('bk-type').addEventListener('change', () => err('type', ''));
+    $('bk-holder').addEventListener('input', () => { const h = $('bk-holder'); h.value = h.value.replace(/[^A-Za-z .]/g, ''); err('holder', ''); });
+    $('bk-upi').addEventListener('input', () => err('upi', ''));
+    f.querySelector('[data-cta="ifsc-help"]').onclick = () => toast('IFSC search will be added once its screenshot is shared.');
+    f.querySelector('[data-cta="verify-bank"]').onclick = () => {
+      const holderName = ((store.get(K.newPan) || {}).name || $('bk-holder').value || '').toUpperCase();
+      if (mode === 'upi') {
+        const u = $('bk-upi').value.trim();
+        if (!/^[\w.\-]{2,}@[A-Za-z]{2,}$/.test(u)) return err('upi', 'Please enter a valid UPI ID (e.g. name@okhdfcbank).');
+        // Prototype: any valid UPI ID returns this demo account
+        store.set(K.newBank, { holder: holderName, account: '50100987654321', ifsc: 'HDFC0001234', name: 'HDFC Bank', type: 'Savings', via: 'UPI' });
+        return done();
       }
-      if (saved) opts.loan = inr(Object.values(saved).reduce((x, y) => x + y, 0));
-      // Existing PAN: bank account on file → Bank Details complete; only Aadhaar and Photo are asked
-      const kycDone = kyc.aadhaar === 'done' && kyc.photo === 'done';
-      if (mode !== 'new') {
-        opts.bank = PAN_DETAILS[store.get(K.pan)] ? PAN_DETAILS[store.get(K.pan)].bank : PAN_DETAILS.CBOPA8195B.bank;
-        opts.cont = kycDone ? 'on' : 'off';
-      }
-      const tmp = document.createElement('div');
-      tmp.innerHTML = T.kyc(opts);
-      document.querySelector('main.kyc-page').replaceWith(tmp.querySelector('main.kyc-page'));
-      document.querySelector('[data-cta="back"]').onclick = () => go('13) Loan Application Summary');
-      document.querySelectorAll('[data-cta="verify-email"], [data-cta="view-details"]').forEach((el) => {
-        el.onclick = () => toast('This step will be added once its screenshot is shared.');
-      });
-      const on = (cta, fn) => { const el = document.querySelector(`[data-cta="${cta}"]`); if (el) el.onclick = fn; };
-      on('start-kyc', () => go('15) DigiLocker Mock Page'));
-      on('start-photo', () => go('16) Photo Verification Mock Page'));
-      on('kyc-continue', () => {
-        if (!kycDone) { document.getElementById('kyc-cont-err').textContent = 'Please complete Aadhaar and Photo verification to continue.'; return; }
-        go('17) Customer Details Page');
-      });
-    }
+      const a = $('bk-acc').value, a2 = $('bk-acc2').value, i = $('bk-ifsc').value, t = $('bk-type').value, h = $('bk-holder').value.trim();
+      const e = {
+        acc: !a ? 'Please enter your account number.' : a.length < 9 ? 'Account number must be 9 to 18 digits.' : '',
+        acc2: !a2 ? 'Please confirm your account number.' : a2 !== a ? 'Account numbers do not match.' : '',
+        ifsc: /^[A-Z]{4}0[A-Z0-9]{6}$/.test(i) ? '' : 'Please enter a valid IFSC code (e.g. HDFC0001234).',
+        type: t ? '' : 'Please select account type.',
+        holder: h ? '' : 'Please enter the account holder name.',
+      };
+      Object.entries(e).forEach(([k, m]) => err(k, m));
+      if (Object.values(e).some(Boolean)) return;
+      store.set(K.newBank, { holder: h.toUpperCase(), account: a, ifsc: i, name: $('bk-bank').value, type: t, via: 'Manual' });
+      done();
+    };
   }
+
+  function kycBehaviour(forceMode, forceKyc, openEmailOtp, bankReview) {   // bankReview: 'form' | 'shown' (review screen 16.3)
+    const mode = forceMode || store.get(K.mode) || 'existing';
+    const saved = store.get(K.sel);
+    // KYC progress from the mocks: {aadhaar:'done'|'failed', photo:'done'|'failed'} (review screens force a state)
+    const kyc = forceKyc || store.get(K.kyc) || {};
+    // Existing PAN: email already verified. New PAN: verified here through the email OTP popup.
+    const emailDone = !openEmailOtp && (mode !== 'new' || !!bankReview || !!store.get(K.email));   // 14.2 review screen always shows the popup
+    const opts = emailDone ? { email: 'done', aadhaar: 'start' } : { email: 'input' };
+    if (emailDone) {
+      if (kyc.aadhaar === 'failed') opts.aadErr = 'Aadhaar verification failed. Please try again.';
+      if (kyc.aadhaar === 'done') {
+        opts.aadhaar = 'done';
+        opts.photo = kyc.photo === 'done' ? 'done' : 'start';
+        if (kyc.photo === 'failed') opts.photoErr = 'Photo verification failed. Please try again.';
+      }
+    }
+    if (saved) opts.loan = inr(Object.values(saved).reduce((x, y) => x + y, 0));
+    const kycDone = kyc.aadhaar === 'done' && kyc.photo === 'done';
+    // Existing PAN: bank account on file → Bank Details complete; only Aadhaar and Photo are asked
+    const newBank = mode === 'new' && bankReview !== 'form' ? store.get(K.newBank) : null;
+    if (mode !== 'new') {
+      opts.bank = PAN_DETAILS[store.get(K.pan)] ? PAN_DETAILS[store.get(K.pan)].bank : PAN_DETAILS.CBOPA8195B.bank;
+      opts.cont = kycDone ? 'on' : 'off';
+    } else if (emailDone) {
+      // New PAN: no bank on file → Bank Details form after Photo; verified account shown like the existing-PAN card
+      if (newBank) opts.bank = newBank;
+      else if (kyc.photo === 'done') opts.bankForm = T.bankForm((store.get(K.newPan) || {}).name || '');
+      opts.cont = kycDone && newBank ? 'on' : 'off';
+    }
+    const allDone = kycDone && (mode !== 'new' || !!newBank);
+    const tmp = document.createElement('div');
+    tmp.innerHTML = T.kyc(opts);
+    document.querySelector('main.kyc-page').replaceWith(tmp.querySelector('main.kyc-page'));
+    document.querySelector('[data-cta="back"]').onclick = () => go('13) Loan Application Summary');
+    const on = (cta, fn) => { const el = document.querySelector(`[data-cta="${cta}"]`); if (el) el.onclick = fn; };
+    on('view-details', () => toast('This step will be added once its screenshot is shared.'));
+    on('start-kyc', () => go('15) DigiLocker Mock Page'));
+    on('start-photo', () => go('16) Photo Verification Mock Page'));
+    on('kyc-continue', () => {
+      if (!allDone) {
+        document.getElementById('kyc-cont-err').textContent = mode === 'new'
+          ? 'Please complete Aadhaar, Photo and Bank verification to continue.'
+          : 'Please complete Aadhaar and Photo verification to continue.';
+        return;
+      }
+      go('17) Customer Details Page');
+    });
+    if (document.querySelector('.bk-form')) wireBankForm(() => kycBehaviour(forceMode, forceKyc, false, bankReview && 'shown'));
+
+    // ---- New PAN: email → Verify → email OTP popup (demo OTP 000000) → Email Verification complete ----
+    const emailIn = document.querySelector('.kyc-in');
+    if (!emailIn) return;
+    emailIn.insertAdjacentHTML('afterend', '<p class="field-err" id="kyc-email-err"></p>');
+    const eErr = (m) => { document.getElementById('kyc-email-err').textContent = m || ''; emailIn.classList.toggle('has-err', !!m); };
+    emailIn.value = store.get(K.emailDraft) || '';
+    emailIn.setAttribute('placeholder', 'Enter your email address');
+    emailIn.addEventListener('input', () => { eErr(''); store.set(K.emailDraft, emailIn.value.trim()); });
+    const openOtp = (email) => {
+      document.body.insertAdjacentHTML('beforeend', `<div class="overlay em-otp-ov">${T.emailOtpModal(email)}</div>`);
+      document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');
+      const ov = document.querySelector('.em-otp-ov');
+      const boxes = [...ov.querySelectorAll('.otp input')];
+      const cta = ov.querySelector('[data-cta="submit-email-otp"]');
+      const oErr = (m) => { ov.querySelector('#email-otp-err').textContent = m || ''; boxes.forEach((b) => b.classList.toggle('has-err', !!m)); };
+      const sync = () => { const ok = boxes.every((b) => b.value); cta.classList.toggle('btn-primary', ok); cta.classList.toggle('bold', ok); cta.classList.toggle('btn-disabled', !ok); };
+      boxes.forEach((box, idx) => {
+        box.addEventListener('keydown', (e) => { if (e.key === 'Backspace' && !box.value && boxes[idx - 1]) boxes[idx - 1].focus(); });
+        box.addEventListener('input', () => {
+          const d = box.value.replace(/\D/g, '');
+          if (d.length > 1) { d.slice(0, 6 - idx).split('').forEach((c, k) => { if (boxes[idx + k]) boxes[idx + k].value = c; }); boxes[Math.min(idx + d.length, 6) - 1].focus(); }
+          else { box.value = d; if (d && boxes[idx + 1]) boxes[idx + 1].focus(); }
+          oErr(''); sync();
+        });
+      });
+      const slot = ov.querySelector('#email-resend'); let t = null;
+      const timer = () => {
+        clearInterval(t); let left = OTP_RULES.resendSeconds;
+        const paint = () => {
+          if (left > 0) { slot.innerHTML = `<b>0:${String(left).padStart(2, '0')}</b> <span class="mut">Resend OTP</span>`; left -= 1; return; }
+          clearInterval(t); slot.innerHTML = '<a class="link-yellow" id="email-resend-cta">Resend OTP</a>';
+          ov.querySelector('#email-resend-cta').onclick = () => { boxes.forEach((b) => { b.value = ''; }); oErr(''); sync(); timer(); };
+        };
+        paint(); t = setInterval(paint, 1000);
+      };
+      timer(); sync(); boxes[0].focus();
+      cta.onclick = () => {
+        const v = boxes.map((b) => b.value).join('');
+        if (v.length !== 6) return oErr(OTP_ERR.incomplete);
+        if (v !== OTP_RULES.demoOtp) { boxes.forEach((b) => { b.value = ''; }); boxes[0].focus(); sync(); return oErr('The OTP you entered is incorrect. Please try again.'); }
+        clearInterval(t);
+        store.set(K.email, email);                        // email verified → used on the sanction letter / agreement
+        ov.remove(); document.body.classList.remove('modal-open'); document.documentElement.classList.remove('modal-open');
+        kycBehaviour(forceMode, forceKyc);
+      };
+    };
+    on('verify-email', () => {
+      const v = emailIn.value.trim();
+      if (!v) return eErr('Please enter your email address.');
+      if (!/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v)) return eErr('Please enter a valid email address.');
+      eErr(''); openOtp(v);
+    });
+    if (openEmailOtp) { emailIn.value = emailIn.value || 'ravikumar.s@example.com'; openOtp(emailIn.value); }
+  }
+
   Object.assign(BEHAVIOUR, {
     '12.1) Mutual Fund Selection page loan amount edit': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editLoan: '9530700' }),
     '12.2) Mutual Fund Selection page loan amount edit as fund wise': () => selectionBehaviour({ selected: { icici: '95,30,700' }, editing: { icici: '100000' } }),

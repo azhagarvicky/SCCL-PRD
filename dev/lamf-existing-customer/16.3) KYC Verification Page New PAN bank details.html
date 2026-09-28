@@ -3,12 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>10) MF Central to LOS Analysing Mutual Fund Portfolio Page</title>
+<title>16.3) KYC Verification Page New PAN bank details</title>
 <link rel="stylesheet" href="assets/lamf.css?v=d9d4cc7">
 </head>
 <body>
 <script src="assets/lamf.js?v=d9d4cc7"></script>
-<script>LAMF.render(LAMF.withModal(LAMF.T.curated(), LAMF.loader('Analyzing your mutual fund portfolio..', 2)))</script>
-<script src="assets/review.js?v=d9d4cc7"></script>
+<script>LAMF.render(LAMF.T.kyc({email:'done', aadhaar:'done', photo:'done', bankForm:LAMF.T.bankForm(), cont:'off'}))</script>
 </body>
 </html>
