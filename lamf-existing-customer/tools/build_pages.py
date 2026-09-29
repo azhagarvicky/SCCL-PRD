@@ -68,19 +68,37 @@ for name, code in PAGES.items():
     with open(os.path.join(ROOT, name + ".html"), "w") as f:
         f.write(TPL.format(title=html.escape(name), code=code))
 
-items = "\n".join(f'<li><a href="{quote(n + ".html")}">{html.escape(n)}</a></li>' for n in PAGES)
-INDEX = f"""<!doctype html>
+# Home page (index.html: Start the journey / View all pages) and screen list (screens.html).
+# Same look as the lamf-journey home page; styles live in lamf.css (.page-home / .page-screens).
+LOGO = '<a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>'
+PAGE = """<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LAMF – Apply for New Loan (Existing Customer)</title>
+<title>{title}</title>
 <link rel="stylesheet" href="assets/lamf.css">
 </head>
-<body class="page-screens"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><h1>LAMF – Apply for New Loan (Existing Customer) – Screens</h1><p>{len(PAGES)} screens, in screenshot order. Use the ☰ bar (bottom-right) or ← / → keys on any screen to move between them.</p><ol>{items}</ol>
+<body class="{cls}">{body}
 </body>
 </html>
 """
+first = next(iter(PAGES))
+home = (f'<header class="home-top">{LOGO}</header>'
+        '<main class="home">'
+        '<p class="home-kicker">Shriram Credit · Loan Against Mutual Funds</p>'
+        '<h1>LAMF – Apply for New Loan (Existing Customer)</h1>'
+        '<p class="home-sub">Clickable prototype of the new loan journey for existing customers.</p>'
+        '<div class="home-ctas">'
+        f'<a class="home-cta" href="{quote(first + ".html")}">Start the journey →</a>'
+        '<a class="home-cta" href="screens.html">View all pages →</a>'
+        '</div></main>')
+items = "\n".join(f'<li><a href="{quote(n + ".html")}">{html.escape(n)}</a></li>' for n in PAGES)
+screens = (LOGO + '<h1>LAMF – Apply for New Loan (Existing Customer) – Screens</h1>'
+           f'<p>{len(PAGES)} screens, in screenshot order. Use the ☰ bar (bottom-right) or ← / → keys on any screen to move between them.</p>'
+           f'<ol>{items}</ol>')
 with open(os.path.join(ROOT, "index.html"), "w") as f:
-    f.write(INDEX)
-print(len(PAGES), "pages + index.html written")
+    f.write(PAGE.format(title="LAMF – Apply for New Loan (Existing Customer)", cls="page-home", body=home))
+with open(os.path.join(ROOT, "screens.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – Apply for New Loan (Existing Customer) – Screens", cls="page-screens", body=screens))
+print(len(PAGES), "pages + index.html (home) + screens.html written")
