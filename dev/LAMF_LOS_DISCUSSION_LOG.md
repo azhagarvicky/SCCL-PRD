@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 13:07 IST
+**Last Updated:** 29-09-2026 13:11 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -109,6 +109,7 @@
 | DISC-074 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | KYC Address inside Personal & PAN details | KYC Address to be part of the Personal &amp; PAN details section, same label + bold value format, as one line: “No. 12, 2nd Street, Anna Nagar West, Near Anna Nagar Tower Park, Chennai, Tamil Nadu, 600040.” | Separate KYC Address section removed; **KYC Address** shown full-width at the end of Personal &amp; PAN details (address lines, landmark, city, state, pin code, joined with commas and ending with a full stop; a landmark of N/A is left out). Still read-only | Implemented |
 | DISC-075 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Other details dropdown style | Other details dropdowns to follow the shared reference (Relationship / Title): small grey label with red * inside the box at the top, bold value below, chevron on the right, rounded border | All 7 Other details dropdowns (Loan Purpose, Qualification, Occupation, Nature of Business, Annual Income, Source of Income, financially independent?) use the floating-label style; 3 per row (2 on tablets, 1 on phones). Empty value → red border + “Please select …”. Checks and saving to screen 17 unchanged. Salutation / Marital Status keep the earlier style (not in Other details) | Implemented |
 | DISC-076 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Other details values not bold | User: “dont bold the values its looking not good” (Other details dropdowns, DISC-075) | Selected values in the Other details dropdowns now in regular weight; label, border and chevron unchanged | Implemented |
+| DISC-077 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Prefetched value text format | Reference: the values on the existing journey’s Your loans cards (e.g. Sanctioned Amount ₹ 2,00,00,000). Values on the ETB page must use that text format; field names stay as they are | Prefetched values (Personal &amp; PAN details incl. KYC Address, Bank details) now use the Your loans value style: 16px, bold, black, same font, 5px below the label. Field names unchanged (12.5px grey). Other details dropdown values stay regular (DISC-076) | Implemented |
 
 ---
 
