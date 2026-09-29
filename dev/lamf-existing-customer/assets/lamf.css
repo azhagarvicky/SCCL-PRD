@@ -1007,8 +1007,9 @@ body.page-screens { padding: 40px 76px; }
 .an-kvs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 24px; }
 .an-kv { min-width: 0; }
 .an-kv.wide { grid-column: span 2; }
+.an-kv.full { grid-column: 1 / -1; }
 .an-kv span { display: block; font-size: 12.5px; color: var(--muted); }
 .an-kv b { display: block; margin-top: 6px; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
 .an-edit { margin-top: 14px; padding-top: 6px; border-top: 1px dashed var(--line); }
 @media (max-width: 900px) { .an-kvs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .an-kvs { grid-template-columns: 1fr; } .an-kv.wide { grid-column: auto; } .an-panopt { flex: 1; min-width: 0; } }
+@media (max-width: 480px) { .an-kvs { grid-template-columns: 1fr; } .an-kv.wide, .an-kv.full { grid-column: auto; } .an-panopt { flex: 1; min-width: 0; } }
