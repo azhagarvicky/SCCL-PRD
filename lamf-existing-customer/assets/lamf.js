@@ -322,18 +322,17 @@
      ETB_RO: data-ro key → [label, wide]; etbRecord(pan) gives every value for one existing PAN. */
   const ETB_RO = {
     personal: [['name', 'Name as per PAN'], ['pan', 'PAN Number'], ['dob', 'Date of Birth'], ['gender', 'Gender'],
-      ['email', 'Email ID'], ['mobile', 'Mobile Number'], ['mother', 'Mother’s Name'], ['father', 'Father’s Name']],
+      ['email', 'Email ID'], ['mobile', 'Mobile Number'], ['mother', 'Mother’s Name'], ['father', 'Father’s Name'], ['kycAddress', 'KYC Address', 'full']],
     bank: [['holder', 'Account Holder Name'], ['bankName', 'Bank Name'], ['account', 'Account Number'], ['ifsc', 'IFSC Code']],
-    address: [['address', 'Address', true], ['landmark', 'Landmark'], ['city', 'City'], ['state', 'State'], ['pincode', 'Pin Code']],
   };
   const etbRecord = (pan) => {
     if (!pan) return {};
     const pr = PROFILE[pan], d = PAN_DETAILS[pan];
     return { ...pr, name: d.name, pan, dob: d.dob, email: d.email, mobile: store.get(K.mobile) || CUSTOMER.mobile,
-      holder: d.bank.holder, bankName: d.bank.name, account: d.bank.account, ifsc: d.bank.ifsc, address: [pr.addr1, pr.addr2].join(', ') };
+      holder: d.bank.holder, bankName: d.bank.name, account: d.bank.account, ifsc: d.bank.ifsc, kycAddress: `${[pr.addr1, pr.addr2, pr.landmark !== 'N/A' && pr.landmark, pr.city, pr.state, pr.pincode].filter(Boolean).join(', ')}.` };   // one line, e.g. “No. 12, …, Chennai, Tamil Nadu, 600040.”
   };
   const etbKv = (rec, list) => `<div class="an-kvs">${list.map(([k, label, wide]) =>
-    `<div class="an-kv${wide ? ' wide' : ''}"><span>${label}</span><b data-ro="${k}">${rec[k] || ''}</b></div>`).join('')}</div>`;
+    `<div class="an-kv${wide ? ` ${wide === 'full' ? 'full' : 'wide'}` : ''}"><span>${label}</span><b data-ro="${k}">${rec[k] || ''}</b></div>`).join('')}</div>`;
   T.applyNew = (o = {}) => `
     ${plainHeader()}
     <div class="an-strip"><div class="an-in">Apply for a new Loan Against Mutual Fund</div></div>
@@ -388,7 +387,6 @@
           <label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''}><span>I am a tax resident of India only</span></label>
           <p class="field-err" data-pf-err="decl"></p>
         </div>`, o.pan)}
-      ${etbSection('an-address', 'KYC Address', etbKv(etbRecord(o.pan), ETB_RO.address), o.pan)}
 
 
       <div class="an-consent" id="an-consent" hidden>
@@ -1075,7 +1073,7 @@
         document.querySelectorAll('[data-pf-err]').forEach((e) => { e.textContent = ''; });
       }
       const showDetails = mode === 'existing' && !!pan.value;          // details held for the existing PAN
-      ['an-personal', 'an-other', 'an-address', 'an-bank'].forEach((id) => { $(id).hidden = !showDetails; });
+      ['an-personal', 'an-other', 'an-bank'].forEach((id) => { $(id).hidden = !showDetails; });
       $('an-consent').hidden = !ready();                     // consent only after a PAN is selected / verified
       if (!ready()) consent.checked = false;
       const ok = ready() && consent.checked;
