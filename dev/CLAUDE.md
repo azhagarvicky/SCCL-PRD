@@ -30,7 +30,9 @@ GitHub is the only shared memory, so these rules apply to every session, local o
 3. Commit and **push to `dev` straight away** (`git push origin HEAD:dev`). Unpushed work is
    invisible on the other devices. Every push to `dev` auto-deploys to
    https://azhagarvicky.github.io/SCCL-PRD/dev/
-4. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
+4. PRD Status column: **YTS** (yet to start), **WIP** (in progress), **Completed** (done). Never set a
+   row to Completed yourself — only when the user confirms that row (DISC-086).
+5. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
    user explicitly says so** ("push to production"). Then production gets everything that is on
    `dev`, unchanged, so both sites are identical (DISC-027).
 

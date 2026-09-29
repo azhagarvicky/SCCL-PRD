@@ -34,8 +34,13 @@ def pend(*ids):
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
 
-OK = 'Confirmed'
-WIP = 'Pending Confirmation'
+# Row status (DISC-086): YTS = yet to start, WIP = in progress, DONE = Completed.
+# A row is moved to Completed only on the owner's explicit confirmation.
+YTS = 'YTS'
+WIP = 'WIP'
+DONE = 'Completed'
+OK = WIP   # field-level status inside a row (not displayed)
+TAG = {YTS: 'yts', WIP: 'wip', DONE: 'ok'}
 
 # ---- PRD content ----------------------------------------------------------
 MODULES = [
@@ -55,7 +60,7 @@ MODULES = [
                + spec(Field_Name='Start Your Application', Field_Type='CTA (Button)',
                       Action='Placed below the 8-step “How to Apply” section. On click, the system shall perform the same action as the “Check your eligibility in 2 minutes” CTA and open the mobile number pop up.')),
       'data': '<b>Clicked CTA:</b><ul><li>Check your eligibility in 2 minutes</li><li>Start Your Application</li></ul><br><b>Clicked Timestamp:</b><br>DD-MMM-YYYY; HH:MM:SS',
-      'status': OK,
+      'status': WIP,
     },
     {
       'sl': '2',
@@ -65,7 +70,7 @@ MODULES = [
                'While the pop up is open the background page shall remain frozen and shall not scroll; the pop up itself '
                'shall scroll only when its content does not fit the screen (for example when the customer has zoomed in).</p>'),
       'data': 'Mobile Number: 10 digit numeric<br>Consent Accepted: Yes/No<br>Consent Date &amp; Time: Timestamp',
-      'status': OK,
+      'status': WIP,
       'fields': [
         (img('f02-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
             Action='After clicking this, navigate user to landing page by closing this pop up'), OK),
@@ -110,7 +115,7 @@ MODULES = [
       'data': ('OTP Entered: 6 digit numeric<br>OTP Verified: Yes/No<br>OTP Verified Date &amp; Time: Timestamp<br>'
                'Resend Count: 0–3<br>Wrong Attempt Count: 0–3<br>Blocked Until: Timestamp<br>'
                'Experian Consent: Yes/No<br>Experian Consent Date &amp; Time: Timestamp'),
-      'status': OK,
+      'status': WIP,
       'fields': [
         (img('f03-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
             Action='After clicking this, close the pop up and navigate the user to the landing page'), OK),
@@ -152,7 +157,7 @@ MODULES = [
                'wait for the response.</p>'
                '<p><b>Field level requirements for this screen are yet to be confirmed</b> ' + pend('P-06') + '</p>'),
       'data': 'Mobile Number: carried from Module 1<br>Experian API Triggered: Yes/No<br>Experian Response: ' + pend('P-09'),
-      'status': WIP,
+      'status': YTS,
     },
   ],
  },
@@ -246,7 +251,7 @@ def render():
             span = f' rowspan="{len(fields) + 1}"' if fields else ''
             out.append(f'<tr><td{span} class="sl">{r["sl"]}</td><td class="shot">{r["shot"]}</td>'
                        f'<td{span}>{r["func"]}</td><td>{r["desc"]}</td>'
-                       f'<td{span} class="dp">{r["data"]}</td><td{span}><span class="tag {"ok" if r["status"]==OK else "wip"}">{r["status"]}</span></td></tr>')
+                       f'<td{span} class="dp">{r["data"]}</td><td{span}><span class="tag {TAG[r["status"]]}">{r["status"]}</span></td></tr>')
             for shot, desc, st in fields:
                 out.append(f'<tr><td class="shot">{shot}</td><td>{desc}</td></tr>')
         out.append('</tbody></table>')
@@ -297,8 +302,10 @@ HTML = f"""<!doctype html>
   <a class="prd-link" href="screens.html">All screens →</a>
 </header>
 <main class="prd-body">
-<p class="note">This document is generated from the confirmed discussion log. Sections marked
-<span class="tag wip">Pending Confirmation</span> are not yet confirmed and must not be treated as final requirements.</p>
+<p class="note">This document is generated from the confirmed discussion log. Status:
+<span class="tag yts">YTS</span> yet to start ·
+<span class="tag wip">WIP</span> in progress – not final ·
+<span class="tag ok">Completed</span> confirmed as done by the product owner.</p>
 {render()}
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
@@ -319,8 +326,10 @@ BODY = f"""<header class="prd-head">
   <a class="prd-link" href="#SCREENS">All screens →</a>
 </header>
 <main class="prd-body">
-<p class="note">This document is generated from the confirmed discussion log. Sections marked
-<span class="tag wip">Pending Confirmation</span> are not yet confirmed and must not be treated as final requirements.</p>
+<p class="note">This document is generated from the confirmed discussion log. Status:
+<span class="tag yts">YTS</span> yet to start ·
+<span class="tag wip">WIP</span> in progress – not final ·
+<span class="tag ok">Completed</span> confirmed as done by the product owner.</p>
 {render()}
 </main>"""
 with open(os.path.join(ROOT, 'assets', 'prd-body.js'), 'w') as f:
