@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 13:19 IST
+**Last Updated:** 29-09-2026 13:23 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -111,6 +111,7 @@
 | DISC-076 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Other details values not bold | User: “dont bold the values its looking not good” (Other details dropdowns, DISC-075) | Selected values in the Other details dropdowns now in regular weight; label, border and chevron unchanged | Implemented |
 | DISC-077 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Prefetched value text format | Reference: the values on the existing journey’s Your loans cards (e.g. Sanctioned Amount ₹ 2,00,00,000). Values on the ETB page must use that text format; field names stay as they are | Prefetched values (Personal &amp; PAN details incl. KYC Address, Bank details) now use the Your loans value style: 16px, bold, black, same font, 5px below the label. Field names unchanged (12.5px grey). Other details dropdown values stay regular (DISC-076) | Implemented |
 | DISC-078 | 29-09-2026 | Apply for New Loan – 04.1 ETB page / 17 | Values not bold; dropdown values; occupation Other | (1) Bank details and Personal &amp; PAN details values not bold (still black). (2) Dropdown values: Salutation (Mr, Mrs, Ms); Marital Status (Single, Married); Loan Purpose (Home Renovation, Vacation, Medical Emergency, Education, Buying of Vehicle, Land Purchases, Emergency fund requirement); Occupation (Salaried, Self Employed, Student, Retired, Home maker, Other) – Other opens a text field “Please specify occupation*”; Nature of Business (Retail &amp; Manufacturing, Medical &amp; Health, Agriculture, Real Estate / Construction, Banking / Finance, Information Technology, Hotel Industry, Others (E-commerce, Education, Export-Import, Services etc.), Investment Income, Rental Income, Pension); Annual Income (Up to Rs. 5 Lakhs, Rs. 5 Lakhs to Rs. 10 Lakhs, Rs. 10 Lakhs to Rs. 25 Lakhs, Above Rs. 25 Lakhs); financially independent (Yes, No) | Values now regular weight, black. Lists updated on the ETB page and screen 17. Occupation = Other shows “Please specify occupation*” (floating style on ETB) – required (“Please specify your occupation.”), letters, spaces and . &amp; - / only, max 50; hidden and cleared when another occupation is chosen; carried to screen 17 and to the loan agreement (Occupation). Demo data moved into the new lists (Nature of Business Banking / Finance for CB*P*****B; income labels). Qualification and Source of Income lists unchanged (not in the shared list – PEND-061) | Implemented |
+| DISC-079 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Values bold again, smaller | User: values look better in bold, but the capital letters (names as per PAN) look too big | Prefetched values (Personal &amp; PAN details incl. KYC Address, Bank details) back to bold, size reduced from 16px to 14px with slight letter spacing so all-caps names look balanced; black colour and labels unchanged | Implemented |
 
 ---
 
