@@ -60,23 +60,23 @@
 
   /* ---------------- Demo customer data ---------------- */
   /* pans: PANs already linked to this mobile number (a customer can have at most MAX_PANS) */
-  const CUSTOMER = { email: 'ravikumar.s@example.com', mobile: '9597001623', mobileMasked: '+9195XXXX1623', mobileMasked2: '+919XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
+  const CUSTOMER = { email: 'azhagarsamy.s@example.com', mobile: '9597001623', mobileMasked: '+9195XXXX1623', mobileMasked2: '+919XXXX1623', pans: ['CBOPA8195B', 'AKLPS4321K'] };
   const MAX_PANS = 3;
   /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
   const PAN_DETAILS = {
-    CBOPA8195B: { name: 'RAVI KUMAR S', dob: '14/05/1988', email: 'ravikumar.s@example.com',
-      bank: { holder: 'RAVI KUMAR S', account: '123405670006', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
-    AKLPS4321K: { name: 'PRIYA R', dob: '02/11/1992', email: 'priya.r@example.com',
-      bank: { holder: 'PRIYA R', account: '50100234561234', ifsc: 'HDFC0001234', name: 'HDFC Bank' } },
+    CBOPA8195B: { name: 'AZHAGARSAMY SUBBURAJ', dob: '14/05/1988', email: 'azhagarsamy.s@example.com',
+      bank: { holder: 'AZHAGARSAMY SUBBURAJ', account: '001201548736', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
+    AKLPS4321K: { name: 'AZHAGAR VICKY', dob: '02/11/1992', email: 'azhagar.vicky@example.com',
+      bank: { holder: 'AZHAGAR VICKY', account: '001201927415', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
   };
   /* Customer details on record for each existing PAN (demo data) – used on the ETB page and screen 17 */
   const PROFILE = {
-    CBOPA8195B: { salutation: 'Mr', name: 'RAVI KUMAR S', dob: '14/05/1988', gender: 'Male', mother: 'LAKSHMI S', father: 'SUNDARAM K', marital: 'Married',
+    CBOPA8195B: { salutation: 'Mr', name: 'AZHAGARSAMY SUBBURAJ', dob: '14/05/1988', gender: 'Male', mother: 'LAKSHMI', father: 'SUBBURAJ A', marital: 'Married',
       purpose: 'Home Renovation', qualification: 'Graduate', occupation: 'Salaried', business: 'Banking / Finance', income: 'Rs. 10 Lakhs to Rs. 25 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
-      addr1: 'No. 12, 2nd Street', addr2: 'Anna Nagar West', addr3: 'Chennai, Tamil Nadu, 600040', landmark: 'Near Anna Nagar Tower Park', pincode: '600040', city: 'Chennai', state: 'Tamil Nadu' },
-    AKLPS4321K: { salutation: 'Ms', name: 'PRIYA R', dob: '02/11/1992', gender: 'Female', mother: 'MEENA R', father: 'RAJAN P', marital: 'Single',
+      addr1: '13/33, Kamaraj 3rd Street', addr2: 'Choolaimedu', addr3: 'Chennai, Tamil Nadu, 600094', landmark: 'N/A', pincode: '600094', city: 'Chennai', state: '' },
+    AKLPS4321K: { salutation: 'Mr', name: 'AZHAGAR VICKY', dob: '02/11/1992', gender: 'Male', mother: 'VIJAYA', father: 'SUBBURAJ A', marital: 'Single',
       purpose: 'Education', qualification: 'Post Graduate', occupation: 'Salaried', business: 'Information Technology', income: 'Rs. 5 Lakhs to Rs. 10 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
-      addr1: 'Flat 4B, Lake View Apartments', addr2: '5th Cross, Koramangala', addr3: 'Bengaluru, Karnataka, 560034', landmark: 'N/A', pincode: '560034', city: 'Bengaluru', state: 'Karnataka' },
+      addr1: '13/33, Kamaraj 3rd Street', addr2: 'Choolaimedu', addr3: 'Chennai, Tamil Nadu, 600094', landmark: 'N/A', pincode: '600094', city: 'Chennai', state: '' },
   };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
@@ -2127,7 +2127,7 @@
       if (!/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v)) return eErr('Please enter a valid email address.');
       eErr(''); openOtp(v);
     });
-    if (openEmailOtp) { emailIn.value = emailIn.value || 'ravikumar.s@example.com'; openOtp(emailIn.value); }
+    if (openEmailOtp) { emailIn.value = emailIn.value || 'azhagarsamy.s@example.com'; openOtp(emailIn.value); }
   }
 
   Object.assign(BEHAVIOUR, {
