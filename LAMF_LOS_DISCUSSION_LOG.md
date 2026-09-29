@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 13:11 IST
+**Last Updated:** 29-09-2026 13:19 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -110,6 +110,7 @@
 | DISC-075 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Other details dropdown style | Other details dropdowns to follow the shared reference (Relationship / Title): small grey label with red * inside the box at the top, bold value below, chevron on the right, rounded border | All 7 Other details dropdowns (Loan Purpose, Qualification, Occupation, Nature of Business, Annual Income, Source of Income, financially independent?) use the floating-label style; 3 per row (2 on tablets, 1 on phones). Empty value → red border + “Please select …”. Checks and saving to screen 17 unchanged. Salutation / Marital Status keep the earlier style (not in Other details) | Implemented |
 | DISC-076 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Other details values not bold | User: “dont bold the values its looking not good” (Other details dropdowns, DISC-075) | Selected values in the Other details dropdowns now in regular weight; label, border and chevron unchanged | Implemented |
 | DISC-077 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Prefetched value text format | Reference: the values on the existing journey’s Your loans cards (e.g. Sanctioned Amount ₹ 2,00,00,000). Values on the ETB page must use that text format; field names stay as they are | Prefetched values (Personal &amp; PAN details incl. KYC Address, Bank details) now use the Your loans value style: 16px, bold, black, same font, 5px below the label. Field names unchanged (12.5px grey). Other details dropdown values stay regular (DISC-076) | Implemented |
+| DISC-078 | 29-09-2026 | Apply for New Loan – 04.1 ETB page / 17 | Values not bold; dropdown values; occupation Other | (1) Bank details and Personal &amp; PAN details values not bold (still black). (2) Dropdown values: Salutation (Mr, Mrs, Ms); Marital Status (Single, Married); Loan Purpose (Home Renovation, Vacation, Medical Emergency, Education, Buying of Vehicle, Land Purchases, Emergency fund requirement); Occupation (Salaried, Self Employed, Student, Retired, Home maker, Other) – Other opens a text field “Please specify occupation*”; Nature of Business (Retail &amp; Manufacturing, Medical &amp; Health, Agriculture, Real Estate / Construction, Banking / Finance, Information Technology, Hotel Industry, Others (E-commerce, Education, Export-Import, Services etc.), Investment Income, Rental Income, Pension); Annual Income (Up to Rs. 5 Lakhs, Rs. 5 Lakhs to Rs. 10 Lakhs, Rs. 10 Lakhs to Rs. 25 Lakhs, Above Rs. 25 Lakhs); financially independent (Yes, No) | Values now regular weight, black. Lists updated on the ETB page and screen 17. Occupation = Other shows “Please specify occupation*” (floating style on ETB) – required (“Please specify your occupation.”), letters, spaces and . &amp; - / only, max 50; hidden and cleared when another occupation is chosen; carried to screen 17 and to the loan agreement (Occupation). Demo data moved into the new lists (Nature of Business Banking / Finance for CB*P*****B; income labels). Qualification and Source of Income lists unchanged (not in the shared list – PEND-061) | Implemented |
 
 ---
 
@@ -577,6 +578,7 @@
 | PEND-058 | Apply for New Loan – colours | Landing page headline “Get Loan Against Mutual Fund for Personal Needs”: keep “Loan Against Mutual Fund” yellow (live site design) or make it black too? | 29-09-2026 | Open |
 | PEND-059 | Apply for New Loan – documents | The full sanction letter / agreement keep the sample's derived figures (APR 11.13 %, Annexure B totals, Annexure C repayment schedule) – should these be recalculated for the chosen loan amount, or is the sample acceptable for the prototype? Is publishing the real PDFs wanted (they contain personal data and the site is public)? | 29-09-2026 | Open |
 | PEND-060 | Apply for New Loan – New PAN bank details | New PAN has no bank account on file: which screens capture / verify the bank account (penny drop? UPI?) so that Bank Details completes and Continue appears? | 29-09-2026 | Answered – DISC-069 (FD bank details layout) |
+| PEND-061 | Apply for New Loan – Other details | Qualification and Source of Income were not in the shared dropdown list: keep the current values (Qualification: Below High School … Others; Source of Income: Salary, Business Income, Rental Income, Investments, Agriculture, Others), or share the lists / remove the fields? | 29-09-2026 | Open |
 
 ---
 
@@ -645,6 +647,7 @@
 | IMP-059 | `T.applyNew`: `.an-panopt` buttons + hidden `#an-pan`; `ETB_RO` / `etbRecord` / `etbKv` render prefetched values (`data-ro`), filled on PAN change in `applyNewBehaviour`; `PROFILE` gets `state`. CSS `.an-panopt`, `.an-kvs` (4 / 2 / 1 columns). Checked in the browser: PAN buttons switch details (both PANs), editable fields keep their checks (marital empty → error), Continue → 05 with the chosen PAN, review screens 04.2 / 04.3 and screen 17 fine, no horizontal scroll at 390px, no page errors | 29-09-2026 |
 | IMP-060 | `ETB_RO.personal` gets `kycAddress` (full width, `.an-kv.full`); `ETB_RO.address` and the `an-address` section removed; `etbRecord` builds the one-line address. Checked in the browser: text matches the requested format, both PANs, Continue flow and 390px layout fine, no page errors | 29-09-2026 |
 | IMP-061 | `etbFloat` template (`.an-fl`, `.an-fl-box`, `.an-fl-sel`) for Other details; CSS grid `.an-fls`. Checked in the browser: error and clear, Continue saves the edits and screen 17 shows them, 390px layout fine, no page errors | 29-09-2026 |
+| IMP-062 | `CD_OPTIONS` updated; `CD_FIELDS.other` gets `occupationOther` (text); `etbFloat` renders it (hidden unless Other); ETB behaviour: `showOther`, input filter, required check, saved in `lamfec.profile`; screen 17 toggles / validates it; `docValues` OCCUPATION uses the specified text; option text escaped for “&amp;”. Checked in the browser: lists, Other → field → error / filter / save → screen 17 → agreement text, no page errors | 29-09-2026 |
 
 ---
 
