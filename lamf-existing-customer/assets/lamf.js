@@ -31,11 +31,11 @@
     '14.1) KYC Verification Page New PAN email verification',
     '14.2) KYC Verification Page New PAN email OTP popup',
     '15) DigiLocker Mock Page',
-    '15.1) KYC Verification Page Aadhaar verification success',
-    '15.2) KYC Verification Page Aadhaar verification failed',
+    '15.1) KYC Verification Page New PAN Aadhaar verification success',
+    '15.2) KYC Verification Page New PAN Aadhaar verification failed',
     '16) Photo Verification Mock Page',
-    '16.1) KYC Verification Page Photo verification success',
-    '16.2) KYC Verification Page Photo verification failed',
+    '16.1) KYC Verification Page New PAN Photo verification success',
+    '16.2) KYC Verification Page New PAN Photo verification failed',
     '16.3) KYC Verification Page New PAN bank details',
     '17) Customer Details Page',
     '18) Pledging of Mutual Fund Page',
@@ -64,9 +64,9 @@
   const MAX_PANS = 3;
   /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
   const PAN_DETAILS = {
-    CBOPA8195B: { name: 'AZHAGARSAMY SUBBURAJ', dob: '14/05/1988', email: 'azhagarsamy.s@example.com',
+    CBOPA8195B: { name: 'AZHAGARSAMY SUBBURAJ', dob: '14/05/1988', email: 'azhagarsamy.s@example.com', aadhaar: 'XXXX XXXX 5627',
       bank: { holder: 'AZHAGARSAMY SUBBURAJ', account: '001201548736', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
-    AKLPS4321K: { name: 'AZHAGAR VICKY', dob: '02/11/1992', email: 'azhagar.vicky@example.com',
+    AKLPS4321K: { name: 'AZHAGAR VICKY', dob: '02/11/1992', email: 'azhagar.vicky@example.com', aadhaar: 'XXXX XXXX 8093',
       bank: { holder: 'AZHAGAR VICKY', account: '001201927415', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
   };
   /* Customer details on record for each existing PAN (demo data) – used on the ETB page and screen 17 */
@@ -331,14 +331,14 @@
   /* Prefetched (read-only) values are shown as label + bold value (FD "Personal Details of Depositor" layout, DISC-073).
      ETB_RO: data-ro key → [label, wide]; etbRecord(pan) gives every value for one existing PAN. */
   const ETB_RO = {
-    personal: [['name', 'Name as per PAN'], ['pan', 'PAN Number'], ['dob', 'Date of Birth'], ['gender', 'Gender'],
+    personal: [['name', 'Name as per PAN'], ['pan', 'PAN Number'], ['aadhaar', 'Aadhaar Number'], ['dob', 'Date of Birth'], ['gender', 'Gender'],
       ['email', 'Email ID'], ['mobile', 'Mobile Number'], ['mother', 'Mother’s Name'], ['father', 'Father’s Name'], ['kycAddress', 'KYC Address', 'full']],
     bank: [['holder', 'Account Holder Name'], ['bankName', 'Bank Name'], ['account', 'Account Number'], ['ifsc', 'IFSC Code']],
   };
   const etbRecord = (pan) => {
     if (!pan) return {};
     const pr = PROFILE[pan], d = PAN_DETAILS[pan];
-    return { ...pr, name: d.name, pan, dob: d.dob, email: d.email, mobile: store.get(K.mobile) || CUSTOMER.mobile,
+    return { ...pr, name: d.name, pan, aadhaar: d.aadhaar, dob: d.dob, email: d.email, mobile: store.get(K.mobile) || CUSTOMER.mobile,
       holder: d.bank.holder, bankName: d.bank.name, account: d.bank.account, ifsc: d.bank.ifsc, kycAddress: `${[pr.addr1, pr.addr2, pr.landmark !== 'N/A' && pr.landmark, pr.city, pr.state, pr.pincode].filter(Boolean).join(', ')}.` };   // one line, e.g. “No. 12, …, Chennai, Tamil Nadu, 600040.”
   };
   const etbKv = (rec, list) => `<div class="an-kvs">${list.map(([k, label, wide]) =>
@@ -552,7 +552,7 @@
       return `<div class="kyc-row open"><div class="kyc-h"><span class="kn act">${n}</span><span class="kt">${title}</span><span class="badge pending">Pending</span></div>${extra}</div>`;
     }
     if (state === 'doneOpen') {        // complete, but its details stay visible (Bank Details for an existing PAN)
-      return `<div class="kyc-row open"><div class="kyc-h"><span class="kn act">${n}</span><span class="kt">${title}</span><span class="badge complete">Complete</span></div>${extra}</div>`;
+      return `<div class="kyc-row open"><div class="kyc-h"><span class="kn done">${ICON.check}</span><span class="kt">${title}</span><span class="badge complete">Complete</span></div>${extra}</div>`;
     }
     const badge = state === 'done' ? '<span class="badge complete">Complete</span>' : state === 'pending' ? '<span class="badge pending">Pending</span>' : '';
     return `<div class="kyc-row ${state === 'pending' || done ? '' : 'open'}">
@@ -1655,10 +1655,10 @@
     '14.1) KYC Verification Page New PAN email verification': () => kycBehaviour('new'),
     '14.2) KYC Verification Page New PAN email OTP popup': () => kycBehaviour('new', undefined, true),
     // Review copies of the KYC page after each mock result (the live page 14 shows the same states)
-    '15.1) KYC Verification Page Aadhaar verification success': () => kycBehaviour('existing', { aadhaar: 'done' }),
-    '15.2) KYC Verification Page Aadhaar verification failed': () => kycBehaviour('existing', { aadhaar: 'failed' }),
-    '16.1) KYC Verification Page Photo verification success': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'done' }),
-    '16.2) KYC Verification Page Photo verification failed': () => kycBehaviour('existing', { aadhaar: 'done', photo: 'failed' }),
+    '15.1) KYC Verification Page New PAN Aadhaar verification success': () => kycBehaviour('new', { aadhaar: 'done' }, false, 'shown'),
+    '15.2) KYC Verification Page New PAN Aadhaar verification failed': () => kycBehaviour('new', { aadhaar: 'failed' }, false, 'shown'),
+    '16.1) KYC Verification Page New PAN Photo verification success': () => kycBehaviour('new', { aadhaar: 'done', photo: 'done' }, false, 'shown'),
+    '16.2) KYC Verification Page New PAN Photo verification failed': () => kycBehaviour('new', { aadhaar: 'done', photo: 'failed' }, false, 'shown'),
     '16.3) KYC Verification Page New PAN bank details': () => kycBehaviour('new', { aadhaar: 'done', photo: 'done' }, false, 'form'),
 
     /* ---- 15 / 16 mocks: Success marks the step complete, Failure returns with an error to retry ---- */
@@ -2029,8 +2029,9 @@
   function kycBehaviour(forceMode, forceKyc, openEmailOtp, bankReview) {   // bankReview: 'form' | 'shown' (review screen 16.3)
     const mode = forceMode || store.get(K.mode) || 'existing';
     const saved = store.get(K.sel);
-    // KYC progress from the mocks: {aadhaar:'done'|'failed', photo:'done'|'failed'} (review screens force a state)
-    const kyc = forceKyc || store.get(K.kyc) || {};
+    // KYC progress from the mocks: {aadhaar:'done'|'failed', photo:'done'|'failed'} (review screens force a state).
+    // Existing PAN (ETB): Aadhaar and Photo already verified on the earlier loan → shown as Complete (DISC-081)
+    const kyc = mode !== 'new' ? { aadhaar: 'done', photo: 'done' } : (forceKyc || store.get(K.kyc) || {});
     // Existing PAN: email already verified. New PAN: verified here through the email OTP popup.
     const emailDone = !openEmailOtp && (mode !== 'new' || !!bankReview || !!store.get(K.email));   // 14.2 review screen always shows the popup
     const opts = emailDone ? { email: 'done', aadhaar: 'start' } : { email: 'input' };
@@ -2044,7 +2045,7 @@
     }
     if (saved) opts.loan = inr(Object.values(saved).reduce((x, y) => x + y, 0));
     const kycDone = kyc.aadhaar === 'done' && kyc.photo === 'done';
-    // Existing PAN: bank account on file → Bank Details complete; only Aadhaar and Photo are asked
+    // Existing PAN: bank account on file → Bank Details complete; every KYC step is complete
     const newBank = mode === 'new' && bankReview !== 'form' ? store.get(K.newBank) : null;
     if (mode !== 'new') {
       opts.bank = PAN_DETAILS[store.get(K.pan)] ? PAN_DETAILS[store.get(K.pan)].bank : PAN_DETAILS.CBOPA8195B.bank;
