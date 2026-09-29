@@ -318,6 +318,12 @@
       : `<select class="input an-select" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select><p class="field-err" data-pf-err="${k}"></p>`;
     return `<div${wide}><label class="field-lbl">${label}${editable ? '<i class="req">*</i>' : ''}</label>${input}</div>`;
   };
+  /* Other details: floating-label dropdown (label inside the box, bold value, chevron right) – DISC-075 */
+  const etbFloat = (pan, [k, label]) => {
+    const v = pan ? PROFILE[pan][k] : '';
+    return `<div class="an-fl"><label class="an-fl-box"><span class="field-lbl">${label}<i class="req">*</i></span>
+      <select class="an-fl-sel" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select></label><p class="field-err" data-pf-err="${k}"></p></div>`;
+  };
   /* Prefetched (read-only) values are shown as label + bold value (FD "Personal Details of Depositor" layout, DISC-073).
      ETB_RO: data-ro key → [label, wide]; etbRecord(pan) gives every value for one existing PAN. */
   const ETB_RO = {
@@ -381,7 +387,7 @@
         <div class="an-ro an-ro3 an-edit">${CD_FIELDS.personal.filter((f) => ETB_EDIT.includes(f[0])).map((f) => etbField(o.pan, f, true)).join('')}</div>`, o.pan)}
       ${etbSection('an-bank', 'Bank details', etbKv(etbRecord(o.pan), ETB_RO.bank), o.pan)}
       ${etbSection('an-other', 'Other details', `
-        <div class="an-ro an-ro3">${CD_FIELDS.other.map((f) => etbField(o.pan, f, true)).join('')}</div>
+        <div class="an-fls">${CD_FIELDS.other.map((f) => etbFloat(o.pan, f)).join('')}</div>
         <div class="an-decl">
           <label class="chk cd-chk"><input type="checkbox" data-pf="pep" ${o.pan && PROFILE[o.pan].pep ? 'checked' : ''}><span>I am not a politically exposed person</span></label>
           <label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''}><span>I am a tax resident of India only</span></label>
