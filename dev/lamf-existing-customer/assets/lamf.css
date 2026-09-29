@@ -1021,7 +1021,7 @@ body.page-screens { padding: 40px 76px; }
 .an-fl-box:has(.has-err) { border-color: var(--red); }
 .an-fl-box .field-lbl { display: block; margin: 0; font-size: 11.5px; font-weight: 400; color: #667085; line-height: 1.3; }
 .an-fl-box .req { color: var(--red); }
-.an-fl-sel { appearance: none; -webkit-appearance: none; display: block; width: 100%; margin-top: 2px; padding: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 600; color: var(--ink); cursor: pointer; }
+.an-fl-sel { appearance: none; -webkit-appearance: none; display: block; width: 100%; margin-top: 2px; padding: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; font-weight: 400; color: var(--ink); cursor: pointer; }
 .an-fl .field-err { margin-top: 4px; min-height: 0; }
 @media (max-width: 900px) { .an-fls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .an-fls { grid-template-columns: 1fr; } }
