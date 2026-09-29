@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 13:02 IST
+**Last Updated:** 29-09-2026 13:06 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -107,6 +107,7 @@
 | DISC-072 | 29-09-2026 | Apply for New Loan – review comments | Remove the comments feature | User: “remove the comments feature now” (for the Apply for New Loan prototype, added in DISC-071) | Comments button removed from the Apply for New Loan (existing customer) home page, screen list and all 44 screens; its copy of review.js deleted. The LAMF journey keeps its Comments feature unchanged (review.js back to its version before DISC-071) | Implemented |
 | DISC-073 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | PAN buttons, merged Personal & PAN details, prefetched values as text | (1) Instead of the PAN dropdown, show the existing PANs as buttons like the FD reference (Use Existing PAN / Apply with New PAN style). (2) Merge the Personal details and PAN details. (3) All prefetched values shown in the FD “Personal Details of Depositor” format (grey label, bold value below) | Existing PANs shown as buttons (masked, e.g. CB*P*****B, max 3; the selected one is yellow). New section **Personal &amp; PAN details**: Name as per PAN, PAN Number, Date of Birth, Gender, Email ID, Mobile Number, Mother’s Name, Father’s Name as label + bold value; Salutation* and Marital Status* stay editable below. Bank details (Account Holder Name, Bank Name, Account Number, IFSC Code) and KYC Address (Address, Landmark, City, State, Pin Code) in the same text format. Other details stay editable dropdowns + 2 declarations. The separate “Existing details of this PAN” box is removed. Values stay unmasked as agreed earlier | Implemented |
 | DISC-074 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | KYC Address inside Personal & PAN details | KYC Address to be part of the Personal &amp; PAN details section, same label + bold value format, as one line: “No. 12, 2nd Street, Anna Nagar West, Near Anna Nagar Tower Park, Chennai, Tamil Nadu, 600040.” | Separate KYC Address section removed; **KYC Address** shown full-width at the end of Personal &amp; PAN details (address lines, landmark, city, state, pin code, joined with commas and ending with a full stop; a landmark of N/A is left out). Still read-only | Implemented |
+| DISC-075 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Other details dropdown style | Other details dropdowns to follow the shared reference (Relationship / Title): small grey label with red * inside the box at the top, bold value below, chevron on the right, rounded border | All 7 Other details dropdowns (Loan Purpose, Qualification, Occupation, Nature of Business, Annual Income, Source of Income, financially independent?) use the floating-label style; 3 per row (2 on tablets, 1 on phones). Empty value → red border + “Please select …”. Checks and saving to screen 17 unchanged. Salutation / Marital Status keep the earlier style (not in Other details) | Implemented |
 
 ---
 
@@ -641,6 +642,7 @@
 | IMP-058 | Reverted IMP-057: `lamf-existing-customer/tools/build_pages.py` no longer adds review.js, `lamf-existing-customer/assets/review.js` deleted, `lamf-journey/assets/review.js` and `CLAUDE.md` restored to their earlier versions; pages rebuilt, no page references review.js | 29-09-2026 |
 | IMP-059 | `T.applyNew`: `.an-panopt` buttons + hidden `#an-pan`; `ETB_RO` / `etbRecord` / `etbKv` render prefetched values (`data-ro`), filled on PAN change in `applyNewBehaviour`; `PROFILE` gets `state`. CSS `.an-panopt`, `.an-kvs` (4 / 2 / 1 columns). Checked in the browser: PAN buttons switch details (both PANs), editable fields keep their checks (marital empty → error), Continue → 05 with the chosen PAN, review screens 04.2 / 04.3 and screen 17 fine, no horizontal scroll at 390px, no page errors | 29-09-2026 |
 | IMP-060 | `ETB_RO.personal` gets `kycAddress` (full width, `.an-kv.full`); `ETB_RO.address` and the `an-address` section removed; `etbRecord` builds the one-line address. Checked in the browser: text matches the requested format, both PANs, Continue flow and 390px layout fine, no page errors | 29-09-2026 |
+| IMP-061 | `etbFloat` template (`.an-fl`, `.an-fl-box`, `.an-fl-sel`) for Other details; CSS grid `.an-fls`. Checked in the browser: error and clear, Continue saves the edits and screen 17 shows them, 390px layout fine, no page errors | 29-09-2026 |
 
 ---
 
