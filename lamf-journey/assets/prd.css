@@ -53,6 +53,7 @@ body.prd { background: #F4F5F6; color: #111; }
 .pend-ref { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 9px; border-radius: 999px; background: var(--amber-bg); border: 1px solid #F0B429; color: #7A4B00; font-size: 11.5px; font-weight: 700; line-height: 1.5; white-space: nowrap; cursor: pointer; }
 .pend-ref::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); margin-right: 6px; vertical-align: 1px; }
 .pend-ref:hover { background: #FBD58A; }
+.todo-ref { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 9px; border-radius: 999px; background: #EFF8FF; border: 1px solid #84CAFF; color: #175CD3; font-size: 11.5px; font-weight: 700; line-height: 1.5; white-space: nowrap; }   /* DISC-088 */
 .pend-ref:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .prd-body tr:target td, .prd-body tr.flash td { animation: row-flash 2.2s ease-out; }
 @keyframes row-flash { 0%, 40% { background: #FFE58F; } 100% { background: #fff; } }

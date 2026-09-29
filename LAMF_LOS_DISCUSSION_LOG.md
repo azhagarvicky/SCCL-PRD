@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 18:10 IST
+**Last Updated:** 29-09-2026 18:33 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -120,6 +120,7 @@
 | DISC-085 | 29-09-2026 | Apply for New Loan – prototype home page | View all pages as a link | “View all pages” to be a hyperlink below the Start the journey button, not a second button | Home page: one yellow **Start the journey →** button, with **View all pages** as an underlined text link (black text, yellow underline) centred below it; links unchanged (01 Landing Page / screen list) | Implemented |
 | DISC-086 | 29-09-2026 | PRD | Status column values | Status column to use YTS (to be started), WIP (in progress) and Completed (done). A row is changed to Completed only on the owner's confirmation | PRD status tags changed: YTS grey, WIP amber, Completed green; legend added at the top of the PRD. Sl. No 1–3 set to WIP (built, awaiting the owner's confirmation to mark Completed); Sl. No 4 (PAN Verification) set to YTS. Rule added to CLAUDE.md | Implemented |
 | DISC-087 | 29-09-2026 | PRD | Data Points Required format | In the Data Points Required column the field name is bold and the value is regular, e.g. **Mobile Number:** 8098122853 – for the entire column | Applied to every row of the column (`data_points()` in `tools/build_prd.py`), so new rows follow it automatically. Values kept as they were (e.g. “10 digit numeric”) | Implemented |
+| DISC-088 | 29-09-2026 | PRD | Sl. No 1 Completed; Sl. No 2 data points; P-01 | (1) Mark Sl. No 1 Completed; once Completed nothing in that row changes unless the owner says so. (2) Sl. No 2 Data Points Required: Mobile Number: 9597001623; Consent Accepted: Yes / No as bullets; Consent Date & Time: DD-MMM-YYYY; HH:MM:SS. (3) P-01: use the validation messages as displayed in the PRD; they are not integrated in the live journey, so mark them as to be implemented – and use this marking wherever it applies | Sl. No 1 set to Completed and frozen (rule added to CLAUDE.md). Sl. No 2 data points updated. P-01 moved to Completed Clarifications; the Mobile Number field's Note now carries a blue “To be implemented” badge (`todo()` in `tools/build_prd.py`) for use wherever something is defined in the PRD but not yet in the live LOS journey. Also fixed a DISC-087 formatting bug that bolded “DD-MMM-YYYY; HH:” in Sl. No 1 and 2 | Implemented |
 
 ---
 
@@ -548,7 +549,7 @@
 | PEND-019 | Experian | Failure behaviour if the Experian credit-score call fails or times out; score thresholds and their effect on offers | 23-09-2026 | Open |
 | PEND-020 | OTP service | Failure behaviour if OTP send/verify API fails | 23-09-2026 | Open |
 | PEND-021 | OTP | OTP validity/expiry period (how long an OTP stays usable) | 23-09-2026 | Open |
-| PEND-022 | Module 1 | **Conflict to resolve:** the shared sample PRD lists the mobile-number validations as `*Required`, `*Invalid mobile number` and `Error: Invalid phone number`, while the messages confirmed verbally on 22-09-2026 and built in the prototype are longer and more explicit. Confirm which wording is approved (tracked as P-01 in the PRD) | 23-09-2026 | Open |
+| PEND-022 | Module 1 | **Conflict to resolve:** the shared sample PRD lists the mobile-number validations as `*Required`, `*Invalid mobile number` and `Error: Invalid phone number`, while the messages confirmed verbally on 22-09-2026 and built in the prototype are longer and more explicit. Confirm which wording is approved (tracked as P-01 in the PRD) | 23-09-2026 | **Answered 29-09-2026** – use the PRD wording; marked To be implemented in the live journey (DISC-088) |
 | PEND-023 | All | In the live LOS journey, where should the header Shriram Credit logo go (shriramcredit.in, the LAMF landing page, or nowhere)? The prototype sends it to its own review home page (DISC-016) | 24-09-2026 | Open |
 | PEND-024 | Experian | What exactly the Experian call returns (INT-001 Expected Output): only the credit score, or the score plus the full credit report (existing loans, EMIs, missed payments, recent enquiries)? How is "No record found" (new-to-credit customer) handled? Depends on the Experian service contracted (PRD P-09) | 24-09-2026 | Open |
 | PEND-025 | OTP service | Which vendor provides the OTP send/verify service (INT-002)? Verify-failure behaviour is tracked with PEND-020 (PRD P-10) | 24-09-2026 | Open |
