@@ -12,6 +12,7 @@ PAGES = {
  "04.1) Apply for New Loan Page": "LAMF.render(LAMF.T.applyNew())",
  "04.2) Apply for New Loan Existing PAN selected": "LAMF.render(LAMF.T.applyNew({mode:'existing', pan:'CBOPA8195B'}))",
  "04.3) Apply for New Loan New PAN verified": "LAMF.render(LAMF.T.applyNew({mode:'new'}))",
+ "04.4) Your Loans Page Resume Loan Application": "LAMF.render(LAMF.T.loans())",
  "05) LOS to MF Central Redirection loading page": "LAMF.render(LAMF.withModal(LAMF.T.applyNew(), LAMF.T.mfcModal()))",
  "06) MF Central Mock Page": "LAMF.render(LAMF.T.mfMock())",
  "07) MF Central to LOS Redirecting Page": "LAMF.render(LAMF.T.redirecting())",
