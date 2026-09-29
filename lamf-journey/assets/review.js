@@ -17,13 +17,7 @@
     if (f === 'SCCL_LAMF_LOS_PRD') return 'PRD';
     return f;
   };
-  // Two prototypes share the one comments sheet: pages of the Apply for New Loan (existing customer)
-  // prototype (its pages load this script with data-proto="etb") carry the ETB prefix, and each
-  // prototype lists only its own comments.
-  const ETB = 'New Loan (ETB) – ';
-  const PREFIX = (document.currentScript && document.currentScript.dataset.proto === 'etb') ? ETB : '';
-  const mine = (it) => String(it.page || '').startsWith(ETB) === !!PREFIX;
-  const PAGE = PREFIX + pageName(), ALL = PREFIX + 'All pages';
+  const PAGE = pageName(), ALL = 'All pages';
   const SITE = /\/dev\//.test(location.pathname) ? 'Development'
     : ['localhost', '127.0.0.1'].includes(location.hostname) ? 'Local' : 'Production';
   const store = (s) => ({ get(k) { try { return JSON.parse(s.getItem(k)); } catch (e) { return null; } },
@@ -130,15 +124,15 @@
   /* ---------- load ---------- */
   async function load(force) {
     if (!ENDPOINT) { $('.rv-count').textContent = 'off'; $('.rv-list').innerHTML = '<div class="rv-err">Comments are not connected yet.</div>'; return; }
-    const cached = !force && ss.get('rv-cache' + PREFIX);
+    const cached = !force && ss.get('rv-cache');
     if (cached && Date.now() - cached.t < 30000) { items = cached.items; return draw(); }
     if (root.classList.contains('rv-open')) $('.rv-list').innerHTML = '<div class="rv-empty">Loading…</div>';
     try {
       const r = await fetch(ENDPOINT);
       const data = await r.json();
       if (!data.ok) throw new Error(data.error || 'error');
-      items = data.rows.reverse().filter(mine);          // newest first, this prototype only
-      ss.set('rv-cache' + PREFIX, { t: Date.now(), items });
+      items = data.rows.reverse();                       // newest first
+      ss.set('rv-cache', { t: Date.now(), items });
       draw();
     } catch (e) {
       $('.rv-count').textContent = '!';
