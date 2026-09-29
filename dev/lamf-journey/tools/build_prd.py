@@ -27,8 +27,9 @@ def data_points(html_):
     e.g. <b>Mobile Number:</b> 10 digit numeric. Lines already starting in bold are kept."""
     out = []
     for seg in html_.split('<br>'):
-        m = re.match(r'^([^:<]{1,60}):\s*(.*)$', seg, re.S)
-        out.append(f'<b>{m.group(1)}:</b> {m.group(2)}' if m else seg)
+        # a field name is followed by ": " (or ends the line); "HH:MM:SS" formats are left alone
+        m = re.match(r'^([^:<]{1,60}):(?:\s+(.*))?$', seg, re.S)
+        out.append(f'<b>{m.group(1)}:</b> {m.group(2) or ""}' if m else seg)
     return '<br>'.join(out)
 
 def pend(*ids):
@@ -39,6 +40,10 @@ def pend(*ids):
           "t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}}return false")
     return ' '.join(f'<a class="pend-ref" href="#{p}" onclick="{js.format(p=p)}" title="Open pending clarification {p}">'
                     f'Pending · {p}</a>' for p in ids)
+
+def todo(text='To be implemented'):
+    """Blue badge: defined in this PRD but not yet built in the live LOS journey (DISC-088)."""
+    return f'<span class="todo-ref" title="Defined in the PRD, not yet in the live LOS journey">{text}</span>'
 
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
@@ -69,7 +74,7 @@ MODULES = [
                + spec(Field_Name='Start Your Application', Field_Type='CTA (Button)',
                       Action='Placed below the 8-step “How to Apply” section. On click, the system shall perform the same action as the “Check your eligibility in 2 minutes” CTA and open the mobile number pop up.')),
       'data': '<b>Clicked CTA:</b><ul><li>Check your eligibility in 2 minutes</li><li>Start Your Application</li></ul><br><b>Clicked Timestamp:</b><br>DD-MMM-YYYY; HH:MM:SS',
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner – do not change without the owner's instruction
     },
     {
       'sl': '2',
@@ -78,7 +83,7 @@ MODULES = [
       'desc': ('<p>The system shall display the “Enter your MF linked Mobile Number” pop up over the landing page. '
                'While the pop up is open the background page shall remain frozen and shall not scroll; the pop up itself '
                'shall scroll only when its content does not fit the screen (for example when the customer has zoomed in).</p>'),
-      'data': 'Mobile Number: 10 digit numeric<br>Consent Accepted: Yes/No<br>Consent Date &amp; Time: Timestamp',
+      'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': WIP,
       'fields': [
         (img('f02-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
@@ -93,7 +98,7 @@ MODULES = [
               '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5',
               '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character',
             ],
-            Note='Wording to be aligned with the approved copy ' + pend('P-01')), OK),
+            Note=todo() + ' The validation messages above are the approved wording (P-01, answered). They are not yet in the live LOS journey and have to be implemented.'), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled',
             Validation='“Please accept the T&amp;C and Privacy Policy to continue.” – displayed when the customer clicks Continue CTA without ticking the checkbox'), OK),
@@ -217,7 +222,6 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
  ('P-04', 'Module 2', 'OTP validity / expiry period.'),
@@ -242,6 +246,8 @@ COMPLETED = [
   'Returns to the mobile number screen (02) with the entered number prefilled.', '23-09-2026'),
  ('P-15', 'Module 2', 'Which screen opens after a successful OTP submission?',
   'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
+ ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.',
+  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are marked ' + todo() + '.', '29-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------

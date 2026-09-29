@@ -31,7 +31,10 @@ GitHub is the only shared memory, so these rules apply to every session, local o
    invisible on the other devices. Every push to `dev` auto-deploys to
    https://azhagarvicky.github.io/SCCL-PRD/dev/
 4. PRD Status column: **YTS** (yet to start), **WIP** (in progress), **Completed** (done). Never set a
-   row to Completed yourself — only when the user confirms that row (DISC-086).
+   row to Completed yourself — only when the user confirms that row (DISC-086). A **Completed row is
+   frozen**: change nothing in it (text, data points, screenshots, or shared formatting that would
+   alter it) unless the user explicitly asks for that row to change (DISC-088).
+   Mark anything defined in the PRD but not yet in the live LOS journey with `todo()` (“To be implemented”).
 5. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
    user explicitly says so** ("push to production"). Then production gets everything that is on
    `dev`, unchanged, so both sites are identical (DISC-027).
