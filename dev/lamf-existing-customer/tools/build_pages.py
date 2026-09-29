@@ -61,6 +61,7 @@ TPL = """<!doctype html>
 <body>
 <script src="assets/lamf.js"></script>
 <script>{code}</script>
+<script src="assets/review.js" data-proto="etb"></script>
 </body>
 </html>
 """
@@ -80,6 +81,7 @@ PAGE = """<!doctype html>
 <link rel="stylesheet" href="assets/lamf.css">
 </head>
 <body class="{cls}">{body}
+<script src="assets/review.js" data-proto="etb"></script>
 </body>
 </html>
 """
