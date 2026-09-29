@@ -72,10 +72,10 @@
   /* Customer details on record for each existing PAN (demo data) – used on the ETB page and screen 17 */
   const PROFILE = {
     CBOPA8195B: { salutation: 'Mr', name: 'RAVI KUMAR S', dob: '14/05/1988', gender: 'Male', mother: 'LAKSHMI S', father: 'SUNDARAM K', marital: 'Married',
-      purpose: 'Home Renovation', qualification: 'Graduate', occupation: 'Salaried', business: 'Services', income: 'Rs. 10 - 25 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
+      purpose: 'Home Renovation', qualification: 'Graduate', occupation: 'Salaried', business: 'Banking / Finance', income: 'Rs. 10 Lakhs to Rs. 25 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
       addr1: 'No. 12, 2nd Street', addr2: 'Anna Nagar West', addr3: 'Chennai, Tamil Nadu, 600040', landmark: 'Near Anna Nagar Tower Park', pincode: '600040', city: 'Chennai', state: 'Tamil Nadu' },
     AKLPS4321K: { salutation: 'Ms', name: 'PRIYA R', dob: '02/11/1992', gender: 'Female', mother: 'MEENA R', father: 'RAJAN P', marital: 'Single',
-      purpose: 'Education', qualification: 'Post Graduate', occupation: 'Salaried', business: 'Information Technology', income: 'Rs. 5 - 10 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
+      purpose: 'Education', qualification: 'Post Graduate', occupation: 'Salaried', business: 'Information Technology', income: 'Rs. 5 Lakhs to Rs. 10 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
       addr1: 'Flat 4B, Lake View Apartments', addr2: '5th Cross, Koramangala', addr3: 'Bengaluru, Karnataka, 560034', landmark: 'N/A', pincode: '560034', city: 'Bengaluru', state: 'Karnataka' },
   };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
@@ -315,14 +315,18 @@
     const wide = '';                                        // 3-column grid: every field takes one column
     const input = !editable
       ? `<input class="input readonly" data-pf="${k}" value="${v}" readonly tabindex="-1">`
-      : `<select class="input an-select" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select><p class="field-err" data-pf-err="${k}"></p>`;
+      : `<select class="input an-select" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option value="${opt.replace(/&/g, '&amp;')}" ${opt === v ? 'selected' : ''}>${opt.replace(/&/g, '&amp;')}</option>`).join('')}</select><p class="field-err" data-pf-err="${k}"></p>`;
     return `<div${wide}><label class="field-lbl">${label}${editable ? '<i class="req">*</i>' : ''}</label>${input}</div>`;
   };
   /* Other details: floating-label dropdown (label inside the box, bold value, chevron right) – DISC-075 */
-  const etbFloat = (pan, [k, label]) => {
-    const v = pan ? PROFILE[pan][k] : '';
+  const etbFloat = (pan, [k, label, type]) => {
+    const v = pan ? PROFILE[pan][k] || '' : '';
+    if (type === 'text') {                                   // occupation "Other" → specify (shown only then)
+      return `<div class="an-fl" data-other-of="occupation" ${pan && PROFILE[pan].occupation === 'Other' ? '' : 'hidden'}><label class="an-fl-box an-fl-text"><span class="field-lbl">${label}<i class="req">*</i></span>
+      <input class="an-fl-sel" data-pf="${k}" value="${v}" maxlength="50" autocomplete="off"></label><p class="field-err" data-pf-err="${k}"></p></div>`;
+    }
     return `<div class="an-fl"><label class="an-fl-box"><span class="field-lbl">${label}<i class="req">*</i></span>
-      <select class="an-fl-sel" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select></label><p class="field-err" data-pf-err="${k}"></p></div>`;
+      <select class="an-fl-sel" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option value="${opt.replace(/&/g, '&amp;')}" ${opt === v ? 'selected' : ''}>${opt.replace(/&/g, '&amp;')}</option>`).join('')}</select></label><p class="field-err" data-pf-err="${k}"></p></div>`;
   };
   /* Prefetched (read-only) values are shown as label + bold value (FD "Personal Details of Depositor" layout, DISC-073).
      ETB_RO: data-ro key → [label, wide]; etbRecord(pan) gives every value for one existing PAN. */
@@ -590,20 +594,21 @@
      Values come from the existing record (PROFILE) and can be corrected before Confirm and Continue.
      Name, DOB, Gender and the KYC address are shown as text (from KYC), as in the shared screenshot. */
   const CD_OPTIONS = {
-    salutation: ['Mr', 'Mrs', 'Ms', 'Dr'],
-    marital: ['Single', 'Married', 'Divorced', 'Widowed'],
-    purpose: ['Home Renovation', 'Education', 'Medical', 'Business', 'Travel', 'Wedding', 'Personal Use', 'Others'],
+    salutation: ['Mr', 'Mrs', 'Ms'],
+    marital: ['Single', 'Married'],
+    purpose: ['Home Renovation', 'Vacation', 'Medical Emergency', 'Education', 'Buying of Vehicle', 'Land Purchases', 'Emergency fund requirement'],
     qualification: ['Below High School', 'High School', 'Graduate', 'Post Graduate', 'Professional', 'Others'],
-    occupation: ['Salaried', 'Self Employed Professional', 'Self Employed Business', 'Retired', 'Homemaker', 'Student', 'Others'],
-    business: ['Agriculture', 'Manufacturing', 'Trading', 'Services', 'Information Technology', 'Others'],
-    income: ['Up to Rs. 5 Lakhs', 'Rs. 5 - 10 Lakhs', 'Rs. 10 - 25 Lakhs', 'Rs. 25 Lakhs - 1 Crore', 'Above Rs. 1 Crore'],
+    occupation: ['Salaried', 'Self Employed', 'Student', 'Retired', 'Home maker', 'Other'],        // Other → “Please specify occupation”
+    business: ['Retail & Manufacturing', 'Medical & Health', 'Agriculture', 'Real Estate / Construction', 'Banking / Finance', 'Information Technology',
+      'Hotel Industry', 'Others (E-commerce, Education, Export-Import, Services etc.)', 'Investment Income', 'Rental Income', 'Pension'],
+    income: ['Up to Rs. 5 Lakhs', 'Rs. 5 Lakhs to Rs. 10 Lakhs', 'Rs. 10 Lakhs to Rs. 25 Lakhs', 'Above Rs. 25 Lakhs'],
     source: ['Salary', 'Business Income', 'Rental Income', 'Investments', 'Agriculture', 'Others'],
     independent: ['Yes', 'No'],
   };
   const CD_FIELDS = {       // key → [label, type]  (type: select | text | show)
     personal: [['salutation', 'Salutation', 'select'], ['name', 'Name', 'show'], ['dob', 'Date of Birth', 'show'], ['gender', 'Gender', 'show'],
       ['mother', 'Mother’s Name', 'show'], ['father', 'Father’s Name', 'show'], ['marital', 'Marital Status', 'select']],
-    other: [['purpose', 'Loan Purpose', 'select'], ['qualification', 'Qualification', 'select'], ['occupation', 'Occupation', 'select'], ['business', 'Nature of Business', 'select'],
+    other: [['purpose', 'Loan Purpose', 'select'], ['qualification', 'Qualification', 'select'], ['occupation', 'Occupation', 'select'], ['occupationOther', 'Please specify occupation', 'text'], ['business', 'Nature of Business', 'select'],
       ['income', 'Annual Income', 'select'], ['source', 'Source of Income', 'select'], ['independent', 'Is the applicant financially independent?', 'select']],
     address: [['addr1', 'Address Line 1', 'show'], ['addr2', 'Address Line 2', 'show'], ['addr3', 'Address Line 3', 'show'], ['landmark', 'Landmark', 'show'],
       ['pincode', 'Pincode', 'show'], ['city', 'City', 'show']],
@@ -612,9 +617,10 @@
     const v = p[key] || '';
     if (type === 'show') return `<div class="cd-f"><span class="cd-l">${label}</span><p class="cd-v">${v}</p></div>`;
     const input = type === 'select'
-      ? `<select class="input cd-in an-select" data-k="${key}"><option value="">Select</option>${CD_OPTIONS[key].map((o) => `<option ${o === v ? 'selected' : ''}>${o}</option>`).join('')}</select>`
+      ? `<select class="input cd-in an-select" data-k="${key}"><option value="">Select</option>${CD_OPTIONS[key].map((o) => `<option value="${o.replace(/&/g, '&amp;')}" ${o === v ? 'selected' : ''}>${o.replace(/&/g, '&amp;')}</option>`).join('')}</select>`
       : `<input class="input cd-in" data-k="${key}" value="${v}" maxlength="60" autocomplete="off">`;
-    return `<div class="cd-f"><label class="cd-l">${label}<i>*</i></label>${input}<p class="field-err" data-err="${key}"></p></div>`;
+    const hide = key === 'occupationOther' && p.occupation !== 'Other' ? ' hidden' : '';
+    return `<div class="cd-f"${key === 'occupationOther' ? ' data-other-of="occupation"' : ''}${hide}><label class="cd-l">${label}<i>*</i></label>${input}<p class="field-err" data-err="${key}"></p></div>`;
   };
   const cdSection = (id, title, body) => `
     <section class="cd-sec open" data-sec="${id}">
@@ -1060,6 +1066,9 @@
     let mode = (opts.find((b) => b.classList.contains('on')) || {}).dataset?.mode || '';
     let verified = false;
     let shownPan = '';                                       // PAN whose details are on screen
+    // Occupation "Other" → "Please specify occupation" text field (letters, spaces, . & - / only)
+    const occ = document.querySelector('select[data-pf="occupation"]'), occOther = document.querySelector('[data-pf="occupationOther"]');
+    const showOther = () => { const on = occ.value === 'Other'; occOther.closest('.an-fl').hidden = !on; if (!on) { occOther.value = ''; document.querySelector('[data-pf-err="occupationOther"]').textContent = ''; occOther.closest('.an-fl-box').classList.remove('has-err'); } };
     const err = (id, msg, input) => { $(id).textContent = msg || ''; if (input) input.classList.toggle('has-err', !!msg); };
 
     const ready = () => (mode === 'existing' && !!pan.value) || (mode === 'new' && verified);
@@ -1075,7 +1084,8 @@
         // record of the previous loan, with any changes the customer already made for this PAN on top
         const prof = store.get(K.profile);
         const rec = { ...PROFILE[pan.value], ...(prof && prof.pan === pan.value ? prof.edits : {}) };
-        document.querySelectorAll('[data-pf]').forEach((f) => { const v = rec[f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v; });
+        document.querySelectorAll('[data-pf]').forEach((f) => { const v = rec[f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v || ''; });
+        showOther();
         document.querySelectorAll('[data-pf-err]').forEach((e) => { e.textContent = ''; });
       }
       const showDetails = mode === 'existing' && !!pan.value;          // details held for the existing PAN
@@ -1095,10 +1105,19 @@
     const saveEdits = () => {
       if (!pan.value) return;
       const edits = {};
-      document.querySelectorAll('select[data-pf], .an-decl input').forEach((f) => { edits[f.dataset.pf] = f.type === 'checkbox' ? f.checked : f.value; });
+      document.querySelectorAll('select[data-pf], .an-decl input, input[data-pf="occupationOther"]').forEach((f) => { edits[f.dataset.pf] = f.type === 'checkbox' ? f.checked : f.value.trim(); });
       store.set(K.profile, { pan: pan.value, edits });
     };
     document.querySelectorAll('select[data-pf], .an-decl input').forEach((f) => f.addEventListener('change', saveEdits));
+    occ.addEventListener('change', () => { showOther(); saveEdits(); });
+    occOther.addEventListener('input', () => {
+      const v = occOther.value.replace(/[^A-Za-z .&\-/]/g, '');
+      const bad = v !== occOther.value; occOther.value = v;
+      document.querySelector('[data-pf-err="occupationOther"]').textContent = bad ? 'Only letters, spaces and . & - / are allowed.' : '';
+      occOther.closest('.an-fl-box').classList.toggle('has-err', bad);
+      if ($('an-err').textContent === AN_ERR.details) err('an-err', '');
+      saveEdits();
+    });
     document.querySelectorAll('select[data-pf]').forEach((f) => f.addEventListener('change', () => {
       document.querySelector(`[data-pf-err="${f.dataset.pf}"]`).textContent = ''; f.classList.remove('has-err');
       if ($('an-err').textContent === AN_ERR.details) err('an-err', '');
@@ -1164,12 +1183,17 @@
           e.textContent = f.value ? '' : `Please select ${label}.`; f.classList.toggle('has-err', !f.value);
           if (!f.value && !bad) bad = f;
         });
+        if (occ.value === 'Other') {                         // specify occupation is required when shown
+          const e = occOther.value.trim() ? '' : 'Please specify your occupation.';
+          document.querySelector('[data-pf-err="occupationOther"]').textContent = e; occOther.closest('.an-fl-box').classList.toggle('has-err', !!e);
+          if (e && !bad) bad = occOther;
+        }
         const decl = [...document.querySelectorAll('.an-decl input')].every((c) => c.checked);
         document.querySelector('[data-pf-err="decl"]').textContent = decl ? '' : 'Please confirm both declarations to continue.';
         if (!decl && !bad) bad = document.querySelector('.an-decl input');
         if (bad) { bad.scrollIntoView({ block: 'center' }); return err('an-err', AN_ERR.details); }
         const edits = {};
-        document.querySelectorAll('select[data-pf], .an-decl input').forEach((f) => { edits[f.dataset.pf] = f.type === 'checkbox' ? f.checked : f.value; });
+        document.querySelectorAll('select[data-pf], .an-decl input, input[data-pf="occupationOther"]').forEach((f) => { edits[f.dataset.pf] = f.type === 'checkbox' ? f.checked : f.value.trim(); });
         store.set(K.profile, { pan: pan.value, edits });                      // carried to Customer Details (17)
       }
       if (!consent.checked) return err('an-err', AN_ERR.consent);
@@ -1682,15 +1706,18 @@
     document.querySelectorAll('[data-toggle]').forEach((b) => { b.onclick = () => b.closest('.cd-sec').classList.toggle('open'); });
     const err = (k, msg) => { const e = q(`[data-err="${k}"]`); if (e) e.textContent = msg || ''; const f = q(`.cd-in[data-k="${k}"]`); if (f) f.classList.toggle('has-err', !!msg); };
     document.querySelectorAll('.cd-in').forEach((f) => f.addEventListener(f.tagName === 'SELECT' ? 'change' : 'input', () => {
-      if (f.tagName === 'INPUT') { const v = f.value.replace(/[^A-Za-z .]/g, ''); if (v !== f.value) { f.value = v; return err(f.dataset.k, 'Only letters, spaces and dots are allowed.'); } }
+      if (f.tagName === 'INPUT') { const v = f.value.replace(/[^A-Za-z .&\-/]/g, ''); if (v !== f.value) { f.value = v; return err(f.dataset.k, 'Only letters, spaces and . & - / are allowed.'); } }
       err(f.dataset.k, '');
     }));
     document.querySelectorAll('.cd-chk input').forEach((c) => c.addEventListener('change', () => err('decl', '')));
+    const occ17 = q('.cd-in[data-k="occupation"]'), other17 = q('[data-other-of="occupation"]');
+    occ17.addEventListener('change', () => { other17.hidden = occ17.value !== 'Other'; if (other17.hidden) { other17.querySelector('input').value = ''; err('occupationOther', ''); } });
     q('[data-cta="confirm-continue"]').onclick = () => {
       let first = null;
       document.querySelectorAll('.cd-in').forEach((f) => {
+        if (f.closest('[hidden]')) return;                   // hidden "specify occupation" is not asked
         const label = f.closest('.cd-f').querySelector('.cd-l').firstChild.textContent.trim();
-        const bad = !f.value.trim() ? (f.tagName === 'SELECT' ? `Please select ${label.replace(/\?$/, '').toLowerCase()}.` : `Please enter ${label.toLowerCase()}.`) : '';
+        const bad = !f.value.trim() ? (f.tagName === 'SELECT' ? `Please select ${label.replace(/\?$/, '').toLowerCase()}.` : f.dataset.k === 'occupationOther' ? 'Please specify your occupation.' : `Please enter ${label.toLowerCase()}.`) : '';
         err(f.dataset.k, bad); if (bad && !first) first = f;
       });
       const decl = [...document.querySelectorAll('.cd-chk input')].every((c) => c.checked);
@@ -1781,7 +1808,7 @@
       NAME: p.name, ADDR1: p.addr1, ADDR2: p.addr2, ADDR3: p.addr3, CITY: p.city, DOB: p.dob, GENDER: p.gender,
       FATHER: p.father, MOTHER: p.mother, MOBILE: store.get(K.mobile) || CUSTOMER.mobile, EMAIL: ctx.email,
       PAN_MASK: 'XXXXX' + (ctx.pan || 'CBOPA8195B').slice(5), DATE_LONG: `${p2(d.getDate())} ${mon} ${d.getFullYear()}`,
-      DATE: `${p2(d.getDate())}/${p2(d.getMonth() + 1)}/${d.getFullYear()}`, PURPOSE: p.purpose, OCCUPATION: p.occupation,
+      DATE: `${p2(d.getDate())}/${p2(d.getMonth() + 1)}/${d.getFullYear()}`, PURPOSE: p.purpose, OCCUPATION: p.occupation === 'Other' ? (p.occupationOther || 'Other') : p.occupation,
       SOURCE: p.source, INCOME: p.income, LAKHS: (amt / 100000).toFixed(2), AMOUNT_WORDS: inWords(amt), AMOUNT: String(amt),
       DUE: ((amt * 0.105) / 12).toFixed(2), FEE: String(Math.round(amt * 0.005)),
     };
