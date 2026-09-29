@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 18:07 IST
+**Last Updated:** 29-09-2026 18:10 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -119,6 +119,7 @@
 | DISC-084 | 29-09-2026 | Apply for New Loan – 04 Your loans | Resume only for the demo number; amount format | (1) In the resume panel the ₹ sign sat on its own line above the amount – fix the format. (2) The resume scenario must appear only when the mobile number 6666666666 is used, so it can be presented to stakeholders | (1) ₹ and amount on one line (“₹ 2,00,00,000”). (2) Only mobile **6666666666**: after OTP it always gets a fresh unfinished application – existing PAN CB*P*****B, ₹ 2,00,00,000, started 2 days ago, stopped at KYC Verification &amp; Bank details – so Your loans shows the Active + In Progress cards and Resume Loan Application → KYC page (all complete, Continue). Every other number never shows a resume card, even after dropping off. Review screen 04.4 unchanged | Implemented |
 | DISC-085 | 29-09-2026 | Apply for New Loan – prototype home page | View all pages as a link | “View all pages” to be a hyperlink below the Start the journey button, not a second button | Home page: one yellow **Start the journey →** button, with **View all pages** as an underlined text link (black text, yellow underline) centred below it; links unchanged (01 Landing Page / screen list) | Implemented |
 | DISC-086 | 29-09-2026 | PRD | Status column values | Status column to use YTS (to be started), WIP (in progress) and Completed (done). A row is changed to Completed only on the owner's confirmation | PRD status tags changed: YTS grey, WIP amber, Completed green; legend added at the top of the PRD. Sl. No 1–3 set to WIP (built, awaiting the owner's confirmation to mark Completed); Sl. No 4 (PAN Verification) set to YTS. Rule added to CLAUDE.md | Implemented |
+| DISC-087 | 29-09-2026 | PRD | Data Points Required format | In the Data Points Required column the field name is bold and the value is regular, e.g. **Mobile Number:** 8098122853 – for the entire column | Applied to every row of the column (`data_points()` in `tools/build_prd.py`), so new rows follow it automatically. Values kept as they were (e.g. “10 digit numeric”) | Implemented |
 
 ---
 
