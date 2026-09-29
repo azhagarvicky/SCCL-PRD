@@ -90,9 +90,9 @@ home = (f'<header class="home-top">{LOGO}</header>'
         '<p class="home-kicker">Shriram Credit · Loan Against Mutual Funds</p>'
         '<h1>LAMF – Apply for New Loan (Existing Customer)</h1>'
         '<p class="home-sub">Clickable prototype of the new loan journey for existing customers.</p>'
-        '<div class="home-ctas">'
+        '<div class="home-ctas home-stack">'
         f'<a class="home-cta" href="{quote(first + ".html")}">Start the journey →</a>'
-        '<a class="home-cta" href="screens.html">View all pages →</a>'
+        '<a class="home-link" href="screens.html">View all pages</a>'
         '</div></main>')
 items = "\n".join(f'<li><a href="{quote(n + ".html")}">{html.escape(n)}</a></li>' for n in PAGES)
 screens = (LOGO + '<h1>LAMF – Apply for New Loan (Existing Customer) – Screens</h1>'

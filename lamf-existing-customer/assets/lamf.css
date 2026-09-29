@@ -1055,3 +1055,8 @@ body.page-screens { padding: 40px 76px; }
 @media (max-width: 760px) { .yl-resume { grid-template-columns: 1fr; } .rsm-kv { grid-template-columns: 1fr 1fr; } .rsm-btn { width: 100%; min-width: 0; } }
 .yl-badge { white-space: nowrap; }
 .rsm-kv b { white-space: nowrap; }
+
+/* Home page: Start the journey button with "View all pages" as a link below it (DISC-085) */
+.page-home .home-stack { flex-direction: column; align-items: center; gap: 18px; }
+.page-home .home-link { font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.page-home .home-link:hover { text-decoration-color: var(--ink); }
