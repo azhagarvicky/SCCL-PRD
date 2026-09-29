@@ -1029,3 +1029,29 @@ body.page-screens { padding: 40px 76px; }
 .an-fl-box.an-fl-text { background-image: none; padding-right: 14px; cursor: text; }
 .an-fl-text .an-fl-sel { cursor: text; }
 .cd-f[hidden], .an-fl[hidden] { display: none; }
+
+/* ---------- Your loans: application left part-way – In Progress card + resume panel (DISC-083) ---------- */
+.yl-badge.prog { background: #EAF1FF; color: #1D5BD8; } .yl-badge.prog i { background: #2F6FED; }
+.yl-lc-go { font-size: 12.5px; font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 3px; margin-top: 2px; }
+.yl-resume { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 21px; }
+.rsm-l { border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 24px; background: #fff; }
+.rsm-t { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.rsm-s { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+.rsm-kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0 22px; padding: 14px 16px; background: #F9F9F9; border-radius: 10px; }
+.rsm-kv span { display: block; font-size: 12px; color: var(--muted); }
+.rsm-kv b { display: block; margin-top: 4px; font-size: 14.5px; font-weight: 700; }
+.rsm-btn { min-width: 260px; height: 48px; padding: 0 26px; }
+.rsm-steps { list-style: none; border: 1px solid var(--line); border-radius: 12px; padding: 10px 20px; background: #fff; }
+.rsm-steps li { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.rsm-steps li:last-child { border-bottom: 0; }
+.rsm-dot { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 1px solid #C8C8C8; font-size: 12px; color: var(--muted); background: #fff; }
+.rsm-dot svg { width: 13px; height: 13px; }
+.rsm-steps li.done .rsm-dot { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
+.rsm-steps li.now .rsm-dot { border: 2px solid var(--yellow); color: var(--ink); font-weight: 700; }
+.rsm-steps li.now .rsm-n { font-weight: 700; }
+.rsm-b { font-size: 11.5px; padding: 3px 8px; border-radius: 4px; background: #F2F2F2; color: var(--muted); white-space: nowrap; }
+.rsm-steps li.done .rsm-b { background: #EAF7EE; color: #1E7B3A; }
+.rsm-steps li.now .rsm-b { background: #EAF1FF; color: #1D5BD8; }
+@media (max-width: 760px) { .yl-resume { grid-template-columns: 1fr; } .rsm-kv { grid-template-columns: 1fr 1fr; } .rsm-btn { width: 100%; min-width: 0; } }
+.yl-badge { white-space: nowrap; }
+.rsm-kv b { white-space: nowrap; }

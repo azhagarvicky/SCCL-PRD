@@ -16,6 +16,7 @@
     '04.1) Apply for New Loan Page',
     '04.2) Apply for New Loan Existing PAN selected',
     '04.3) Apply for New Loan New PAN verified',
+    '04.4) Your Loans Page Resume Loan Application',
     '05) LOS to MF Central Redirection loading page',
     '06) MF Central Mock Page',
     '07) MF Central to LOS Redirecting Page',
@@ -890,6 +891,42 @@
     </main>`;
   };
 
+  /* 04 / 04.4 Your loans – an application the customer left part-way (DISC-083). o = {resume, amount, pan}.
+     RESUME_AT: journey screen → [stage shown to the customer, stepper step 1–4] */
+  const RESUME_AT = {
+    '11) Curated Offers Page': ['Loan offers', 1],
+    '12) Mutual Fund Selection Page': ['Selection of Mutual Fund', 1],
+    '13) Loan Application Summary': ['Loan application summary', 1],
+    '14) KYC Verification Page': ['KYC Verification & Bank details', 2],
+    '17) Customer Details Page': ['Customer details', 2],
+    '18) Pledging of Mutual Fund Page': ['Pledging of Mutual Fund', 3],
+    '19) Agreement and E-Mandate Page': ['Agreement & E-Mandate', 4],
+  };
+  T.loanResume = (o = {}) => {
+    const [stage, step] = RESUME_AT[o.resume.screen] || RESUME_AT['12) Mutual Fund Selection Page'];
+    const d = new Date(o.resume.at || Date.now());
+    const started = `${String(d.getDate()).padStart(2, '0')} ${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()]} ${d.getFullYear()}`;
+    const kv = (l, v) => `<div><span>${l}</span><b>${v}</b></div>`;
+    return `
+    ${appHeader()}
+    <main class="yl">
+      <h1>Your loans</h1>
+      <h2>Loan Against Mutual Fund <span class="yl-badge prog"><i></i>In Progress</span></h2>
+      <div class="yl-resume">
+        <div class="rsm-l">
+          <p class="rsm-t">Your loan application is incomplete</p>
+          <p class="rsm-s">You stopped at <b>${stage.replace('&', '&amp;')}</b>. Resume to continue from where you left – the details you already entered are saved.</p>
+          <div class="rsm-kv">${kv('Loan Amount', o.amount ? rs(inr(o.amount)) : '–')}${kv('PAN', maskPan(o.pan || 'CBOPA8195B'))}${kv('Started on', started)}</div>
+          <button class="btn btn-primary bold rsm-btn" data-cta="resume-loan">Resume Loan Application</button>
+        </div>
+        <ol class="rsm-steps">${STEPS.map((t, k) => {
+          const n = k + 1, st = n < step ? 'done' : n === step ? 'now' : '';
+          return `<li class="${st}"><span class="rsm-dot">${n < step ? ICON.check : n}</span><span class="rsm-n">${t.replace('&', '&amp;')}</span><span class="rsm-b">${n < step ? 'Completed' : n === step ? 'In progress' : 'Pending'}</span></li>`;
+        }).join('')}</ol>
+      </div>
+    </main>`;
+  };
+
   /* 23 Loan application submitted (LOS) */
   T.submitted = (o = {}) => {
     const amt = o.amount || 20000000;
@@ -989,6 +1026,9 @@
     '04) Your Loans Page': {
       'apply-new-loan': '04.1) Apply for New Loan Page',
     },
+    '04.4) Your Loans Page Resume Loan Application': {
+      'apply-new-loan': '04.1) Apply for New Loan Page',
+    },
     '24) Your Loans Page New Loan Submitted': {
       'apply-new-loan': '04.1) Apply for New Loan Page',
     },
@@ -1015,7 +1055,7 @@
      ========================================================== */
   /* Storage keys use their own prefix so this prototype never reads or
      overwrites the new-customer journey's data (same site, same browser). */
-  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement', emandate: 'lamfec.emandate', emMode: 'lamfec.emMode', newPan: 'lamfec.newPan', email: 'lamfec.email', emailDraft: 'lamfec.emailDraft', newBank: 'lamfec.newBank' };
+  const K = { mobile: 'lamfec.mobile', otp: 'lamfec.otp', pan: 'lamfec.pan', sel: 'lamfec.sel', mode: 'lamfec.mode', kyc: 'lamfec.kyc', profile: 'lamfec.profile', pledge: 'lamfec.pledge', agreement: 'lamfec.agreement', emandate: 'lamfec.emandate', emMode: 'lamfec.emMode', newPan: 'lamfec.newPan', email: 'lamfec.email', emailDraft: 'lamfec.emailDraft', newBank: 'lamfec.newBank', resume: 'lamfec.resume' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -1206,6 +1246,7 @@
       store.set(K.emandate, '');                                             // … and the e-mandate
       store.set(K.email, '');                                                // … and the email verification (New PAN)
       store.set(K.newBank, null);                                            // … and the New PAN bank details
+      store.set(K.resume, null);                                             // … and any earlier unfinished application
       go('05) LOS to MF Central Redirection loading page');
     });
 
@@ -1684,6 +1725,7 @@
     '23) Loan Application Submitted Page': () => submittedBehaviour(),
     '24) Your Loans Page New Loan Submitted': () => yourLoansBehaviour('new'),
     '04) Your Loans Page': () => yourLoansBehaviour('existing'),
+    '04.4) Your Loans Page Resume Loan Application': () => yourLoansBehaviour('existing', true),
     '20) Sanction Letter Page': () => sanctionBehaviour(),
     '21) Loan Agreement e-Sign Page': () => esignBehaviour(),
     '21.1) Loan Agreement e-Sign OTP popup': () => esignOtpBehaviour(),
@@ -1927,6 +1969,7 @@
   function emandateDoneBehaviour() {
     document.body.innerHTML = T.emandateDone();
     store.set(K.emandate, 'done');
+    store.set(K.resume, null);                               // application submitted: nothing left to resume
     setTimeout(() => go('23) Loan Application Submitted Page'), 2000);
   }
   function submittedBehaviour() {
@@ -1938,33 +1981,44 @@
 
   /* ---- 04 / 24 Your loans: one card per loan on this mobile number; the page shows the selected loan.
      The new loan is listed once the application is submitted (E-Mandate authenticated) or on screen 24. ---- */
-  function customerLoans(showNew) {
+  function customerLoans(showNew, resume) {
     const loans = [{ id: 'existing', number: LOAN.number, pan: LOAN.pan, status: 'Active', amount: 10000 }];
     if (showNew || store.get(K.emandate) === 'done') {
       const ctx = loanContext();
       loans.push({ id: 'new', number: 'SCCLMF20260900155', pan: store.get(K.pan) || 'CBOPA8195B', status: 'Submitted', amount: ctx.amount });
+    } else if (resume) {                                     // application left part-way: In Progress card
+      const saved = store.get(K.sel);
+      loans.push({ id: 'resume', number: 'SCCLMF20260900155', pan: store.get(K.pan) || 'CBOPA8195B', status: 'In Progress',
+        amount: saved ? Object.values(saved).reduce((x, y) => x + y, 0) : 0 });
     }
     return loans;
   }
-  function yourLoansBehaviour(defaultId) {
-    const loans = customerLoans(defaultId === 'new');
+  /* reviewResume: review screen 04.4 shows a sample application left at KYC when none is saved */
+  function yourLoansBehaviour(defaultId, reviewResume) {
+    const resume = store.get(K.resume) || (reviewResume ? { screen: '14) KYC Verification Page', at: Date.now() } : null);
+    const loans = customerLoans(defaultId === 'new', resume);
+    if (reviewResume && !store.get(K.resume)) loans.forEach((l) => { if (l.id === 'resume' && !l.amount) l.amount = 20000000; });   // review sample amount
+    if (defaultId === 'existing' && loans.some((l) => l.id === 'resume')) defaultId = 'resume';   // after OTP: open the unfinished application
     const paint = (id) => {
       const tmp = document.createElement('div');
-      tmp.innerHTML = id === 'new' ? T.loanSubmitted(loanContext()) : T.loans();
+      const cur = loans.find((l) => l.id === id);
+      tmp.innerHTML = id === 'new' ? T.loanSubmitted(loanContext()) : id === 'resume' ? T.loanResume({ resume, amount: cur.amount, pan: cur.pan }) : T.loans();
       const main = tmp.querySelector('main.yl');
       if (loans.length > 1) {
         main.querySelector('h1').insertAdjacentHTML('afterend', `
           <div class="yl-sel" role="tablist" aria-label="Your loans">${loans.map((l) => `
             <button class="yl-lc ${l.id === id ? 'on' : ''}" data-loan="${l.id}" role="tab" aria-selected="${l.id === id}">
-              <span class="yl-lc-top"><span class="yl-lc-no">${l.number}</span><span class="yl-badge ${l.status === 'Active' ? '' : 'sub'}"><i></i>${l.status}</span></span>
+              <span class="yl-lc-top"><span class="yl-lc-no">${l.number}</span><span class="yl-badge ${l.status === 'Active' ? '' : l.status === 'In Progress' ? 'prog' : 'sub'}"><i></i>${l.status}</span></span>
               <span class="yl-lc-p">Loan Against Mutual Fund</span>
               <span class="yl-lc-pan">PAN ${maskPan(l.pan)}</span>
-              <b class="yl-lc-amt">${rs(inr(l.amount))}</b>
+              <b class="yl-lc-amt">${l.amount ? rs(inr(l.amount)) : 'Amount not selected'}</b>${l.id === 'resume' ? '<span class="yl-lc-go">Resume application →</span>' : ''}
             </button>`).join('')}
           </div>`);
       }
       document.querySelector('main.yl').replaceWith(main);
       document.querySelectorAll('[data-loan]').forEach((b) => { b.onclick = () => paint(b.dataset.loan); });
+      const rb = document.querySelector('[data-cta="resume-loan"]');
+      if (rb) rb.onclick = () => go(resume.screen);                   // back to the step where the customer stopped
     };
     paint(loans.some((l) => l.id === defaultId) ? defaultId : loans[loans.length - 1].id);
   }
@@ -2137,7 +2191,10 @@
   });
 
   function wireBehaviour() {
-    const fn = BEHAVIOUR[currentScreen()];
+    // Remember the last journey step reached, so a customer who leaves can resume from Your loans (DISC-083)
+    const scr = currentScreen(), prev = store.get(K.resume);
+    if (RESUME_AT[scr] && store.get(K.mode) && store.get(K.emandate) !== 'done') store.set(K.resume, { screen: scr, at: (prev && prev.at) || Date.now() });
+    const fn = BEHAVIOUR[scr];
     if (fn) fn();
   }
 
