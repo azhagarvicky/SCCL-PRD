@@ -1596,6 +1596,7 @@
 
         // OTP verified: existing customer lands on "Your loans"
         st = { resend: 0, wrong: 0, blockedUntil: 0, reason: '' }; save();
+        if (store.get(K.mobile) === RESUME_DEMO_MOBILE) seedResumeDemo();   // stakeholder demo: an application left at KYC
         showErr('');
         go('04) Your Loans Page');
       });
@@ -1993,9 +1994,20 @@
     }
     return loans;
   }
+  /* Resume scenario only for the demo mobile number 6666666666 (DISC-084): after OTP it gets an application
+     left at KYC (existing PAN, ₹ 2,00,00,000, started 2 days ago). Every other number never shows a resume card. */
+  const RESUME_DEMO_MOBILE = '6666666666';
+  function seedResumeDemo() {
+    store.set(K.mode, 'existing'); store.set(K.pan, 'CBOPA8195B'); store.set(K.profile, null);
+    store.set(K.sel, { icici: 14030794, axis: 5369420, kotak: 599786 });      // = ₹ 2,00,00,000
+    store.set(K.kyc, {}); store.set(K.pledge, ''); store.set(K.agreement, ''); store.set(K.emandate, ''); store.set(K.emMode, null);
+    store.set(K.email, ''); store.set(K.newBank, null);
+    store.set(K.resume, { screen: '14) KYC Verification Page', at: Date.now() - 2 * 86400000 });
+  }
   /* reviewResume: review screen 04.4 shows a sample application left at KYC when none is saved */
   function yourLoansBehaviour(defaultId, reviewResume) {
-    const resume = store.get(K.resume) || (reviewResume ? { screen: '14) KYC Verification Page', at: Date.now() } : null);
+    const demo = store.get(K.mobile) === RESUME_DEMO_MOBILE;
+    const resume = (demo || reviewResume) && (store.get(K.resume) || (reviewResume ? { screen: '14) KYC Verification Page', at: Date.now() } : null));
     const loans = customerLoans(defaultId === 'new', resume);
     if (reviewResume && !store.get(K.resume)) loans.forEach((l) => { if (l.id === 'resume' && !l.amount) l.amount = 20000000; });   // review sample amount
     if (defaultId === 'existing' && loans.some((l) => l.id === 'resume')) defaultId = 'resume';   // after OTP: open the unfinished application
