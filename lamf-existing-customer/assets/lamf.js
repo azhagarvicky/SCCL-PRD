@@ -64,9 +64,9 @@
   const MAX_PANS = 3;
   /* Details already held for each existing PAN (demo data), shown unmasked and read-only */
   const PAN_DETAILS = {
-    CBOPA8195B: { name: 'AZHAGARSAMY SUBBURAJ', dob: '14/05/1988', email: 'azhagarsamy.s@example.com', aadhaar: 'XXXX XXXX 5627',
+    CBOPA8195B: { name: 'AZHAGARSAMY SUBBURAJ', dob: '14/05/1988', email: 'azhagarsamy.s@example.com', aadhaar: '4829 1736 5627',
       bank: { holder: 'AZHAGARSAMY SUBBURAJ', account: '001201548736', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
-    AKLPS4321K: { name: 'AZHAGAR VICKY', dob: '02/11/1992', email: 'azhagar.vicky@example.com', aadhaar: 'XXXX XXXX 8093',
+    AKLPS4321K: { name: 'AZHAGAR VICKY', dob: '02/11/1992', email: 'azhagar.vicky@example.com', aadhaar: '7351 2864 8093',
       bank: { holder: 'AZHAGAR VICKY', account: '001201927415', ifsc: 'ICIC0002692', name: 'ICICI Bank', logo: 'funds/icici.png' } },
   };
   /* Customer details on record for each existing PAN (demo data) – used on the ETB page and screen 17 */

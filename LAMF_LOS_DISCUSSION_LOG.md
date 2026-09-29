@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 13:51 IST
+**Last Updated:** 29-09-2026 14:05 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -114,6 +114,7 @@
 | DISC-079 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Values bold again, smaller | User: values look better in bold, but the capital letters (names as per PAN) look too big | Prefetched values (Personal &amp; PAN details incl. KYC Address, Bank details) back to bold, size reduced from 16px to 14px with slight letter spacing so all-caps names look balanced; black colour and labels unchanged | Implemented |
 | DISC-080 | 29-09-2026 | Apply for New Loan – demo customer data | New demo names, bank and address | User supplied the demo values: names AZHAGARSAMY SUBBURAJ / AZHAGAR VICKY; mother LAKSHMI / VIJAYA; father SUBBURAJ A; dummy account numbers with IFSC ICIC0002692; address 13/33, Kamaraj 3rd Street, Choolaimedu, Chennai, 600094 | CB*P*****B → AZHAGARSAMY SUBBURAJ (mother LAKSHMI, father SUBBURAJ A, azhagarsamy.s@example.com, ICICI Bank 001201548736); AK*P*****K → AZHAGAR VICKY (mother VIJAYA, father SUBBURAJ A, Mr / Male, azhagar.vicky@example.com, ICICI Bank 001201927415); both IFSC ICIC0002692 and KYC Address “13/33, Kamaraj 3rd Street, Choolaimedu, Chennai, 600094.”. Used everywhere the demo data appears (ETB page, KYC bank card, screen 17, e-mandate, sanction letter / agreement) | Implemented |
 | DISC-081 | 29-09-2026 | Apply for New Loan – 14 KYC / 04.1 ETB page | Existing PAN: Aadhaar and Photo complete; Aadhaar Number on ETB page | (1) For an ETB customer with an existing PAN, Aadhaar Verification and Photo Verification are not required – show them as Complete. (2) Show the Aadhaar Number in the Personal details section of the ETB page | Existing PAN KYC page: Email, PAN, Aadhaar, Photo and Bank Details all **Complete** (ticks), bank card shown, Continue yellow → Customer Details (17); the DigiLocker / Photo mocks are only used for New PAN. The Aadhaar / Photo review screens are now the New PAN ones (15.1 / 15.2 / 16.1 / 16.2 renamed “… New PAN …”). ETB page Personal &amp; PAN details: **Aadhaar Number** after PAN Number, masked to the last 4 digits (XXXX XXXX 5627 / XXXX XXXX 8093) as UIDAI requires for display | Implemented |
+| DISC-082 | 29-09-2026 | Apply for New Loan – 04.1 ETB page | Aadhaar Number not masked | User: “aadhar number should not be masked” | Aadhaar Number shown in full (demo numbers 4829 1736 5627 / 7351 2864 8093), replacing the masked display of DISC-081. For the live system: UIDAI rules normally allow only the last 4 digits to be displayed – to be confirmed with compliance (PEND-062) | Implemented |
 
 ---
 
@@ -582,6 +583,7 @@
 | PEND-059 | Apply for New Loan – documents | The full sanction letter / agreement keep the sample's derived figures (APR 11.13 %, Annexure B totals, Annexure C repayment schedule) – should these be recalculated for the chosen loan amount, or is the sample acceptable for the prototype? Is publishing the real PDFs wanted (they contain personal data and the site is public)? | 29-09-2026 | Open |
 | PEND-060 | Apply for New Loan – New PAN bank details | New PAN has no bank account on file: which screens capture / verify the bank account (penny drop? UPI?) so that Bank Details completes and Continue appears? | 29-09-2026 | Answered – DISC-069 (FD bank details layout) |
 | PEND-061 | Apply for New Loan – Other details | Qualification and Source of Income were not in the shared dropdown list: keep the current values (Qualification: Below High School … Others; Source of Income: Salary, Business Income, Rental Income, Investments, Agriculture, Others), or share the lists / remove the fields? | 29-09-2026 | Open |
+| PEND-062 | Apply for New Loan – Aadhaar display | The prototype shows the full Aadhaar number on the ETB page (DISC-082). UIDAI / Aadhaar Act rules normally allow only masked Aadhaar (last 4 digits) to be displayed – confirm with compliance which display the live system should use | 29-09-2026 | Open |
 
 ---
 
