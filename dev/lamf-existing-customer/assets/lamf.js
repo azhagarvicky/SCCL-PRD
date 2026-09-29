@@ -73,10 +73,10 @@
   const PROFILE = {
     CBOPA8195B: { salutation: 'Mr', name: 'RAVI KUMAR S', dob: '14/05/1988', gender: 'Male', mother: 'LAKSHMI S', father: 'SUNDARAM K', marital: 'Married',
       purpose: 'Home Renovation', qualification: 'Graduate', occupation: 'Salaried', business: 'Services', income: 'Rs. 10 - 25 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
-      addr1: 'No. 12, 2nd Street', addr2: 'Anna Nagar West', addr3: 'Chennai, Tamil Nadu, 600040', landmark: 'Near Anna Nagar Tower Park', pincode: '600040', city: 'Chennai' },
+      addr1: 'No. 12, 2nd Street', addr2: 'Anna Nagar West', addr3: 'Chennai, Tamil Nadu, 600040', landmark: 'Near Anna Nagar Tower Park', pincode: '600040', city: 'Chennai', state: 'Tamil Nadu' },
     AKLPS4321K: { salutation: 'Ms', name: 'PRIYA R', dob: '02/11/1992', gender: 'Female', mother: 'MEENA R', father: 'RAJAN P', marital: 'Single',
       purpose: 'Education', qualification: 'Post Graduate', occupation: 'Salaried', business: 'Information Technology', income: 'Rs. 5 - 10 Lakhs', source: 'Salary', independent: 'Yes', pep: true, tax: true,
-      addr1: 'Flat 4B, Lake View Apartments', addr2: '5th Cross, Koramangala', addr3: 'Bengaluru, Karnataka, 560034', landmark: 'N/A', pincode: '560034', city: 'Bengaluru' },
+      addr1: 'Flat 4B, Lake View Apartments', addr2: '5th Cross, Koramangala', addr3: 'Bengaluru, Karnataka, 560034', landmark: 'N/A', pincode: '560034', city: 'Bengaluru', state: 'Karnataka' },
   };
   /* PAN mask: keep characters 1, 2, 4 and 10 → CBOPA8195B shows as CB*P*****B */
   const maskPan = (p) => p.split('').map((c, k) => ([0, 1, 3, 9].includes(k) ? c : '*')).join('');
@@ -318,6 +318,22 @@
       : `<select class="input an-select" data-pf="${k}"><option value="">Select</option>${CD_OPTIONS[k].map((opt) => `<option ${opt === v ? 'selected' : ''}>${opt}</option>`).join('')}</select><p class="field-err" data-pf-err="${k}"></p>`;
     return `<div${wide}><label class="field-lbl">${label}${editable ? '<i class="req">*</i>' : ''}</label>${input}</div>`;
   };
+  /* Prefetched (read-only) values are shown as label + bold value (FD "Personal Details of Depositor" layout, DISC-073).
+     ETB_RO: data-ro key → [label, wide]; etbRecord(pan) gives every value for one existing PAN. */
+  const ETB_RO = {
+    personal: [['name', 'Name as per PAN'], ['pan', 'PAN Number'], ['dob', 'Date of Birth'], ['gender', 'Gender'],
+      ['email', 'Email ID'], ['mobile', 'Mobile Number'], ['mother', 'Mother’s Name'], ['father', 'Father’s Name']],
+    bank: [['holder', 'Account Holder Name'], ['bankName', 'Bank Name'], ['account', 'Account Number'], ['ifsc', 'IFSC Code']],
+    address: [['address', 'Address', true], ['landmark', 'Landmark'], ['city', 'City'], ['state', 'State'], ['pincode', 'Pin Code']],
+  };
+  const etbRecord = (pan) => {
+    if (!pan) return {};
+    const pr = PROFILE[pan], d = PAN_DETAILS[pan];
+    return { ...pr, name: d.name, pan, dob: d.dob, email: d.email, mobile: store.get(K.mobile) || CUSTOMER.mobile,
+      holder: d.bank.holder, bankName: d.bank.name, account: d.bank.account, ifsc: d.bank.ifsc, address: [pr.addr1, pr.addr2].join(', ') };
+  };
+  const etbKv = (rec, list) => `<div class="an-kvs">${list.map(([k, label, wide]) =>
+    `<div class="an-kv${wide ? ' wide' : ''}"><span>${label}</span><b data-ro="${k}">${rec[k] || ''}</b></div>`).join('')}</div>`;
   T.applyNew = (o = {}) => `
     ${plainHeader()}
     <div class="an-strip"><div class="an-in">Apply for a new Loan Against Mutual Fund</div></div>
@@ -340,19 +356,10 @@
         <p class="field-err" id="an-mode-err"></p>
 
         <div class="an-existing" id="an-existing" ${o.mode === 'existing' ? '' : 'hidden'}>
-          <label class="field-lbl" for="an-pan">Select the PAN to fetch the borrower details</label>
-          <select class="input an-select" id="an-pan">
-            <option value="">Select PAN</option>
-            ${CUSTOMER.pans.slice(0, MAX_PANS).map((p) => `<option value="${p}" ${o.pan === p ? 'selected' : ''}>${maskPan(p)}</option>`).join('')}
-          </select>
-          <div class="an-details" id="an-details" ${o.pan ? '' : 'hidden'}>
-            <h5>Existing details of this PAN</h5>
-            <div class="an-ro an-ro3">
-              <div><label class="field-lbl" for="an-det-pan">PAN Number</label><input class="input readonly" id="an-det-pan" value="${o.pan || ''}" readonly tabindex="-1"></div>
-              <div><label class="field-lbl" for="an-det-dob">DOB</label><div class="dob"><input class="input readonly" id="an-det-dob" value="${o.pan ? PAN_DETAILS[o.pan].dob : ''}" readonly tabindex="-1"><span>${ICON.calendar}</span></div></div>
-              <div><label class="field-lbl" for="an-det-name">Name as per PAN</label><input class="input readonly" id="an-det-name" value="${o.pan ? PAN_DETAILS[o.pan].name : ''}" readonly tabindex="-1"></div>
-            </div>
-          </div>
+          <p class="field-lbl">Select the PAN to fetch the borrower details</p>
+          <div class="an-toggle an-pans">${CUSTOMER.pans.slice(0, MAX_PANS).map((p) =>
+            `<button class="an-panopt ${o.pan === p ? 'on' : ''}" data-pan="${p}">${maskPan(p)}</button>`).join('')}</div>
+          <input type="hidden" id="an-pan" value="${o.pan || ''}">
         </div>
 
         <div class="an-new" id="an-new" ${o.mode === 'new' ? '' : 'hidden'}>
@@ -370,18 +377,10 @@
 
       </section>
 
-      <section class="an-sec an-personal" id="an-bank" ${o.pan ? '' : 'hidden'}>
-        <h4>Bank details</h4>
-        <div class="an-ro an-ro3">
-          <div><label class="field-lbl" for="an-bank-holder">Account holder name</label><input class="input readonly" id="an-bank-holder" value="${o.pan ? PAN_DETAILS[o.pan].bank.holder : ''}" readonly tabindex="-1"></div>
-          <div><label class="field-lbl" for="an-bank-acc">Account number</label><input class="input readonly" id="an-bank-acc" value="${o.pan ? PAN_DETAILS[o.pan].bank.account : ''}" readonly tabindex="-1"></div>
-          <div><label class="field-lbl" for="an-bank-ifsc">IFSC code</label><input class="input readonly" id="an-bank-ifsc" value="${o.pan ? PAN_DETAILS[o.pan].bank.ifsc : ''}" readonly tabindex="-1"></div>
-        </div>
-      </section>
-
-      ${etbSection('an-personal', 'Personal details', `
-        <div class="an-ro an-ro3"><div><label class="field-lbl" for="an-det-email">Email ID</label><input class="input readonly" id="an-det-email" value="${o.pan ? PAN_DETAILS[o.pan].email : ''}" readonly tabindex="-1"></div><div><label class="field-lbl" for="an-det-mobile">Mobile Number</label><input class="input readonly" id="an-det-mobile" value="${store.get(K.mobile) || CUSTOMER.mobile}" readonly tabindex="-1"></div></div>
-        <div class="an-ro an-ro3">${CD_FIELDS.personal.map((f) => etbField(o.pan, f, ETB_EDIT.includes(f[0]))).join('')}</div>`, o.pan)}
+      ${etbSection('an-personal', 'Personal &amp; PAN details', `
+        ${etbKv(etbRecord(o.pan), ETB_RO.personal)}
+        <div class="an-ro an-ro3 an-edit">${CD_FIELDS.personal.filter((f) => ETB_EDIT.includes(f[0])).map((f) => etbField(o.pan, f, true)).join('')}</div>`, o.pan)}
+      ${etbSection('an-bank', 'Bank details', etbKv(etbRecord(o.pan), ETB_RO.bank), o.pan)}
       ${etbSection('an-other', 'Other details', `
         <div class="an-ro an-ro3">${CD_FIELDS.other.map((f) => etbField(o.pan, f, true)).join('')}</div>
         <div class="an-decl">
@@ -389,8 +388,7 @@
           <label class="chk cd-chk"><input type="checkbox" data-pf="tax" ${o.pan && PROFILE[o.pan].tax ? 'checked' : ''}><span>I am a tax resident of India only</span></label>
           <p class="field-err" data-pf-err="decl"></p>
         </div>`, o.pan)}
-      ${etbSection('an-address', 'KYC Address', `
-        <div class="an-ro an-ro3">${CD_FIELDS.address.map((f) => etbField(o.pan, f, false)).join('')}</div>`, o.pan)}
+      ${etbSection('an-address', 'KYC Address', etbKv(etbRecord(o.pan), ETB_RO.address), o.pan)}
 
 
       <div class="an-consent" id="an-consent" hidden>
@@ -1065,20 +1063,16 @@
       opts.forEach((b) => b.classList.toggle('on', b.dataset.mode === mode));
       $('an-existing').hidden = mode !== 'existing';
       $('an-new').hidden = mode !== 'new';
-      $('an-details').hidden = !(mode === 'existing' && pan.value);
+      document.querySelectorAll('.an-panopt').forEach((b) => b.classList.toggle('on', b.dataset.pan === pan.value));
       if (pan.value && pan.value !== shownPan) {             // existing details of the newly chosen PAN
         shownPan = pan.value;
-        $('an-det-pan').value = pan.value;
-        $('an-det-dob').value = PAN_DETAILS[pan.value].dob;
-        $('an-det-name').value = PAN_DETAILS[pan.value].name;
-        $('an-det-email').value = PAN_DETAILS[pan.value].email;
+        const ro = etbRecord(pan.value);                       // prefetched values (label + bold value)
+        document.querySelectorAll('[data-ro]').forEach((b) => { b.textContent = ro[b.dataset.ro] || ''; });
         // record of the previous loan, with any changes the customer already made for this PAN on top
         const prof = store.get(K.profile);
         const rec = { ...PROFILE[pan.value], ...(prof && prof.pan === pan.value ? prof.edits : {}) };
         document.querySelectorAll('[data-pf]').forEach((f) => { const v = rec[f.dataset.pf]; if (f.type === 'checkbox') f.checked = !!v; else f.value = v; });
         document.querySelectorAll('[data-pf-err]').forEach((e) => { e.textContent = ''; });
-        const bk = PAN_DETAILS[pan.value].bank;
-        $('an-bank-holder').value = bk.holder; $('an-bank-acc').value = bk.account; $('an-bank-ifsc').value = bk.ifsc;
       }
       const showDetails = mode === 'existing' && !!pan.value;          // details held for the existing PAN
       ['an-personal', 'an-other', 'an-address', 'an-bank'].forEach((id) => { $(id).hidden = !showDetails; });
@@ -1091,7 +1085,7 @@
     };
 
     opts.forEach((b) => b.addEventListener('click', () => { mode = b.dataset.mode; err('an-mode-err', ''); err('an-err', ''); sync(); }));
-    pan.addEventListener('change', () => { err('an-err', ''); sync(); });
+    document.querySelectorAll('.an-panopt').forEach((b) => b.addEventListener('click', () => { pan.value = b.dataset.pan; err('an-err', ''); sync(); }));
     consent.addEventListener('change', () => { if (consent.checked) err('an-err', ''); sync(); });
     // Every change to an editable detail is saved at once, so screen 17 always shows the latest values
     const saveEdits = () => {

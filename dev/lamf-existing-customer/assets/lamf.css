@@ -998,3 +998,17 @@ body.page-screens { padding: 40px 76px; }
 .bk-manual[hidden], .bk-upi[hidden] { display: none; }
 .bk-form .kyc-btn { margin-top: 22px; width: auto; min-width: 192px; padding: 0 28px; white-space: nowrap; }
 @media (max-width: 640px) { .bk-grid { grid-template-columns: 1fr; } .bk-opt { flex: 1 1 100%; } }
+
+/* ---------- ETB page: PAN buttons, merged Personal & PAN details, prefetched values as label + bold value (DISC-073) ---------- */
+.an-pans { margin-top: 8px; }
+.an-panopt { min-width: 150px; height: 38px; padding: 0 18px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font-size: 13.5px; font-weight: 500; letter-spacing: .5px; color: var(--ink); cursor: pointer; }
+.an-panopt.on { background: var(--yellow-soft); border-color: var(--yellow); font-weight: 700; }
+.an-existing > .field-lbl { margin: 10px 0 0; }
+.an-kvs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px 24px; }
+.an-kv { min-width: 0; }
+.an-kv.wide { grid-column: span 2; }
+.an-kv span { display: block; font-size: 12.5px; color: var(--muted); }
+.an-kv b { display: block; margin-top: 6px; font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }
+.an-edit { margin-top: 14px; padding-top: 6px; border-top: 1px dashed var(--line); }
+@media (max-width: 900px) { .an-kvs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .an-kvs { grid-template-columns: 1fr; } .an-kv.wide { grid-column: auto; } .an-panopt { flex: 1; min-width: 0; } }
