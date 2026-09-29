@@ -1009,7 +1009,7 @@ body.page-screens { padding: 40px 76px; }
 .an-kv.wide { grid-column: span 2; }
 .an-kv.full { grid-column: 1 / -1; }
 .an-kv span { display: block; font-size: 12.5px; color: var(--muted); }
-.an-kv b { display: block; margin-top: 5px; font-size: 16px; font-weight: 400; color: var(--ink); line-height: 1.4; overflow-wrap: anywhere; }   /* value text as on Your loans (.yl-stat b), DISC-077 */
+.an-kv b { display: block; margin-top: 5px; font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.45; letter-spacing: .2px; overflow-wrap: anywhere; }   /* bold, smaller so all-caps values do not look oversized (DISC-079) */
 .an-edit { margin-top: 14px; padding-top: 6px; border-top: 1px dashed var(--line); }
 @media (max-width: 900px) { .an-kvs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 480px) { .an-kvs { grid-template-columns: 1fr; } .an-kv.wide, .an-kv.full { grid-column: auto; } .an-panopt { flex: 1; min-width: 0; } }
