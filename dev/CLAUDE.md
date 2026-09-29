@@ -42,7 +42,7 @@ GitHub is the only shared memory, so these rules apply to every session, local o
 ## 4. Source vs generated files
 
 - Source (edit these): `lamf-journey/assets/lamf.js` (screen templates, `FLOW` / `BEHAVIOUR` maps,
-  `OTP_RULES`), `lamf-journey/assets/lamf.css`, `lamf-journey/assets/review.js` (review comments; `lamf-existing-customer/assets/review.js` is an identical copy – keep both the same), `lamf-journey/tools/comments-apps-script.gs`, `comment-status.json`, `lamf-journey/assets/prd.css`,
+  `OTP_RULES`), `lamf-journey/assets/lamf.css`, `lamf-journey/assets/review.js` (review comments), `lamf-journey/tools/comments-apps-script.gs`, `comment-status.json`, `lamf-journey/assets/prd.css`,
   `lamf-journey/tools/build_pages.py` (screen list), `lamf-journey/tools/build_prd.py` (PRD content),
   `LAMF_LOS_DISCUSSION_LOG.md`, `.github/workflows/`.
 - Generated (never edit by hand): the numbered screen `.html` files, `lamf-journey/index.html`,
