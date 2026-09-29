@@ -2,7 +2,7 @@
 # (SL.No | Screenshot | Functionality | Description | Data Points Required | Status).
 # Content lives in MODULES below — update it after every confirmed discussion, then run:
 #   python3 tools/build_prd.py
-import os, html, datetime
+import os, re, html, datetime
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UPDATED = datetime.datetime.now().strftime('%d-%m-%Y %H:%M')
@@ -21,6 +21,15 @@ def spec(**kw):
                 v = '<ul>' + ''.join(f'<li>{x}</li>' for x in v) + '</ul>'
             rows.append(f'<p><b>{label}:</b> {v}</p>')
     return '<div class="spec">' + ''.join(rows) + '</div>'
+
+def data_points(html_):
+    """Data Points Required: field name in bold, value in regular weight (DISC-087),
+    e.g. <b>Mobile Number:</b> 10 digit numeric. Lines already starting in bold are kept."""
+    out = []
+    for seg in html_.split('<br>'):
+        m = re.match(r'^([^:<]{1,60}):\s*(.*)$', seg, re.S)
+        out.append(f'<b>{m.group(1)}:</b> {m.group(2)}' if m else seg)
+    return '<br>'.join(out)
 
 def pend(*ids):
     """Amber badge that marks something as not yet decided and jumps to its
@@ -251,7 +260,7 @@ def render():
             span = f' rowspan="{len(fields) + 1}"' if fields else ''
             out.append(f'<tr><td{span} class="sl">{r["sl"]}</td><td class="shot">{r["shot"]}</td>'
                        f'<td{span}>{r["func"]}</td><td>{r["desc"]}</td>'
-                       f'<td{span} class="dp">{r["data"]}</td><td{span}><span class="tag {TAG[r["status"]]}">{r["status"]}</span></td></tr>')
+                       f'<td{span} class="dp">{data_points(r["data"])}</td><td{span}><span class="tag {TAG[r["status"]]}">{r["status"]}</span></td></tr>')
             for shot, desc, st in fields:
                 out.append(f'<tr><td class="shot">{shot}</td><td>{desc}</td></tr>')
         out.append('</tbody></table>')
