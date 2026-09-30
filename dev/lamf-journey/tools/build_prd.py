@@ -64,6 +64,9 @@ TO_IMPLEMENT = [
  ('CR-04', 'Module 1', 'Sl. No 2 – Mobile Number field (non numeric character)',
   change('No validation – the character simply cannot be entered',
          'The character still cannot be entered, and “Only numbers are allowed. Letters, spaces and special characters cannot be entered.” is displayed when the customer attempts a non numeric character'), '30-09-2026'),
+ ('CR-05', 'Module 2', 'Sl. No 3 – Enter OTP field (non numeric character)',
+  change('No validation – the character simply cannot be entered',
+         'The character still cannot be entered, and “Only numbers are allowed. Letters, spaces and special characters cannot be entered.” is displayed when the customer attempts a non numeric character'), '30-09-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -127,7 +130,7 @@ MODULES = [
                    ('Validation messages', '<ul><li>“*Required”</li><li>“*Invalid mobile number”</li><li>“Error: Invalid phone number”</li></ul>'),
                ])),
       'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner – do not change without the owner's instruction
       'fields': [
         (img('f02-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
             Action='After clicking this, navigate user to landing page by closing this pop up'), OK),
@@ -137,10 +140,10 @@ MODULES = [
             Action='User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable.',
             # Current live LOS behaviour (DISC-095); the new wording is tracked only in Pending Changes
             Validation=[
-              '“*Required” – displayed when user clicks Continue CTA without entering the mobile number ' + todo('CR-01'),
-              '“*Invalid mobile number” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field ' + todo('CR-02'),
-              '“Error: Invalid phone number” – displayed when the mobile number starts with 0 to 5 and the user clicks Continue CTA ' + todo('CR-03'),
-              'No message – a non numeric character simply cannot be entered ' + todo('CR-04'),
+              '“*Required” – displayed when user clicks Continue CTA without entering the mobile number',
+              '“*Invalid mobile number” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field',
+              '“Error: Invalid phone number” – displayed when the mobile number starts with 0 to 5 and the user clicks Continue CTA',
+              'No message – a non numeric character simply cannot be entered',
             ]), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
@@ -165,10 +168,28 @@ MODULES = [
       'func': 'User entering the OTP received on the MF linked mobile number to complete the mobile number verification',
       'desc': ('<p>On successful submission of the mobile number, the system shall send a 6 digit OTP to the MF linked '
                'mobile number and display the “Enter OTP” pop up over the landing page. The mobile number shall be displayed '
-               'in masked format (+91, first 2 digits, XXXX, last 4 digits).</p>'),
-      'data': ('OTP Entered: 6 digit numeric<br>OTP Verified: Yes/No<br>OTP Verified Date &amp; Time: Timestamp<br>'
-               'Resend Count: 0–3<br>Wrong Attempt Count: 0–3<br>Blocked Until: Timestamp<br>'
-               'Experian Consent: Yes/No<br>Experian Consent Date &amp; Time: Timestamp'),
+               'in masked format (+91, first 2 digits, XXXX, last 4 digits).</p>'
+               + screen_content([
+                   ('Pop up title', '“Enter OTP”'),
+                   ('Close icon', '(X) at the top right'),
+                   ('Sent message', '“A 6-digit OTP has been sent by Shriram Credit to” followed by the masked mobile number and the “Edit” link'),
+                   ('OTP boxes', '6 single digit boxes'),
+                   ('Resend line', '“Didn’t Receive OTP?” with the countdown timer (0:30 to 0:01), then the “Resend OTP” link'),
+                   ('Experian consent checkbox text', '“I hereby consent to appoint Shriram Credit as my authorised representative to receive my credit information from Experian for the purpose of providing/ evaluating loan offers.”'),
+                   ('CTA', '“Submit OTP” – grey until all 6 digits are entered and the consent is ticked, then yellow'),
+                   ('Validation messages', '<ul><li>“Invalid OTP”</li>'
+                    '<li>“Maximum OTP retry limit reached. Please retry again after 60 minute(s).”</li>'
+                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”</li>'
+                    '<li>“Please provide the consent to proceed.”</li></ul>'),
+               ])),
+      'data': ('<b>OTP Entered:</b> 6 digit numeric<br><br>'
+               '<b>OTP Verified:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>OTP Verified Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Resend Count:</b> 0–3<br><br>'
+               '<b>Wrong Attempt Count:</b> 0–3<br><br>'
+               '<b>Blocked Until:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Experian Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Experian Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
       'status': WIP,
       'fields': [
         (img('f03-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
@@ -182,23 +203,23 @@ MODULES = [
             Minimum_Character='6 Char', Maximum_Character='6 Char', Value_Type='User inputs',
             Input_Value_format='Numeric only',
             Action='User has to enter the 6 digit OTP received on the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable and the customer shall not be able to enter more than 6 characters.',
+            # Current live LOS behaviour (DISC-096)
             Validation=[
-              '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character',
-              '“Please enter the 6-digit OTP.” – displayed when the customer clicks Submit OTP with fewer than 6 digits',
-              '“The OTP you entered is incorrect. Please try again. N attempt(s) remaining.” – displayed on a wrong OTP (1st and 2nd attempt)',
+              'No message – a non numeric character simply cannot be entered',
+              '“Invalid OTP” – displayed on a wrong OTP (1st, 2nd and 3rd attempt)',
             ]), OK),
         (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
-            Condition='The customer may resend back to back 3 times. On the 3rd resend the customer shall be blocked and shall not be able to proceed for 15 minutes. The waiting time displayed shall be calculated from the blocked date and time, so a customer returning after 10 minutes shall see the balance 5 minutes.',
-            Validation='“You have used all 3 OTP resend attempts. Please try again after N minutes.”'), OK),
+            Condition='The customer can click Resend OTP 3 times (1st, 2nd and 3rd). On the next click the customer is blocked from resending for 15 minutes.',
+            Validation='“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).” – displayed when the customer clicks Resend OTP after the 3rd resend'), OK),
         (img('f03-consent.png', 360), spec(Field_Name='(Checkbox) Experian consent', Field_Type='Check box',
             Action='User has to tick this checkbox to appoint Shriram Credit as the authorised representative to receive the credit information from Experian for the purpose of providing / evaluating loan offers.',
             Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered.',
             Validation='“Please provide the consent to proceed.”'), OK),
         (img('f03-cta.png', 360), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall check all the conditions of this screen. If every condition is met, the system shall verify the OTP, trigger the Experian API with the mobile number to retrieve the credit score, and navigate the customer to the PAN Verification screen. If any condition fails, the respective validation shall be displayed and the customer shall not be allowed to proceed.',
-            Condition='3 consecutive wrong OTP attempts shall block the customer for 60 minutes, with the remaining time calculated from the blocked date and time. While blocked, the OTP boxes, consent checkbox, Submit OTP and Resend OTP shall be disabled.',
-            Validation='“You have entered an incorrect OTP 3 times. Please try again after N minutes.”'), OK),
+            Condition='Enabled only after all 6 OTP digits are entered and the Experian consent is ticked, so no validation is shown for fewer than 6 digits. After 3 consecutive wrong OTP attempts the customer is blocked for 60 minutes.',
+            Validation='“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – displayed on the next attempt after 3 wrong OTPs'), OK),
       ],
     },
     {

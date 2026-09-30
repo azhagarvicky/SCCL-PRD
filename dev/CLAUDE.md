@@ -36,9 +36,9 @@ GitHub is the only shared memory, so these rules apply to every session, local o
    alter it) unless the user explicitly asks for that row to change (DISC-088).
    The Sl. No rows describe the **current live LOS journey** only; upcoming behaviour is never written
    into a row (DISC-095). Anything the live LOS journey has to change is a change request: add it to
-   `TO_IMPLEMENT` (CR-01, CR-02 …) in `tools/build_prd.py` — shown as **Pending Changes** — and put only a
-   `todo('CR-xx')` tag where it is defined; the current vs required detail goes in Pending Changes, not in the
-   Sl. No row (DISC-093, DISC-094). Move it to `IMPLEMENTED` (**Completed Changes**) only when the user
+   `TO_IMPLEMENT` (CR-01, CR-02 …) in `tools/build_prd.py` — shown as **Pending Changes**. Do **not** put
+   `todo('CR-xx')` tags in the Sl. No rows; the change requests live only in the Pending Changes section
+   until the user says to mark them in the rows (DISC-096). Move it to `IMPLEMENTED` (**Completed Changes**) only when the user
    confirms it is live (DISC-091), and at the same time update the row to the new behaviour.
    Each Sl. No description ends with a **Screen Content** list (`screen_content()`) of every text shown on
    that screen (DISC-094).
