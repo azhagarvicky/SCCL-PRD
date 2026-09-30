@@ -70,6 +70,9 @@ TO_IMPLEMENT = [
  ('CR-06', 'Module 2', 'Sl. No 3 – Enter OTP field (wrong OTP, 1st to 3rd back to back attempt)',
   change('“Invalid OTP” on the 1st, 2nd and 3rd back to back wrong attempt',
          '“The OTP you entered is incorrect. Please try again. You have 2 attempts left.” (1st wrong attempt) / “The OTP you entered is incorrect. Please try again. You have 1 attempt left.” (2nd) / “The OTP you entered is incorrect. You have no attempts left.” (3rd). The block message on the next attempt stays as it is today'), '30-09-2026'),
+ ('CR-09', 'Module 2', 'Sl. No 3 – Enter OTP field (OTP submitted after 30 seconds)',
+  change('“Invalid request id”',
+         '“Your OTP has expired. Please click Resend OTP to get a new OTP.” – displayed when the customer submits the OTP more than 30 seconds after it was sent'), '30-09-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -188,6 +191,7 @@ MODULES = [
                    ('Validation messages', '<ul><li>“Invalid OTP” ' + todo('CR-06') + '</li>'
                     '<li>“Maximum OTP retry limit reached. Please retry again after N minute(s).” – N is the time left in the 60 minute block</li>'
                     '<li>“Error: Maximum OTP resend limit reached. Please retry again after N minute(s).” – N is the time left in the 15 minute block</li>'
+                    '<li>“Invalid request id” – OTP submitted after 30 seconds ' + todo('CR-09') + '</li>'
                     '<li>No message for a non numeric character ' + todo('CR-05') + '</li></ul>'),
                ])),
       'data': ('<b>OTP Entered:</b> 6 digit numeric<br><br>'
@@ -216,6 +220,7 @@ MODULES = [
             Validation=[
               '“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt ' + todo('CR-06'),
               '“Maximum OTP retry limit reached. Please retry again after N minute(s).” – after 3 back to back wrong OTP attempts in the same pop up the customer is blocked for 60 minutes; displayed on the next attempt. N is the time left in the 60 minute block (e.g. a customer returning after 10 minutes sees 50)',
+              '“Invalid request id” – displayed when the customer submits the OTP more than 30 seconds after it was sent (the OTP is valid for 30 seconds) ' + todo('CR-09'),
             ]), OK),
         (states(('f03-resend.png', 'Before – timer running, Resend OTP disabled'), ('f03-resend-enabled.png', 'After – timer ends, Resend OTP enabled')), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
@@ -308,7 +313,6 @@ PENDING = [
  ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
- ('P-04', 'Module 2', 'OTP validity / expiry period.'),
  ('P-05', 'Module 2', 'Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.'),
  ('P-06', 'Module 3', 'PAN Verification screen: field level rules, PAN format validation, name as per PAN matching logic and DOB / age rule.'),
  ('P-07', 'Module 2', 'Experian failure / timeout behaviour and the effect of the score on eligibility and offers.'),
@@ -321,7 +325,7 @@ PENDING = [
 # P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
 COMPLETED = [
  ('P-11', 'Module 2', 'OTP length, resend timer duration and number of resends allowed.',
-  '6 digit OTP; 30 second resend timer; 3 resends allowed, after which the number is blocked for 15 minutes. OTP validity is still open ' + pend('P-04'), '23-09-2026'),
+  '6 digit OTP; 30 second resend timer; 3 resends allowed, after which the number is blocked for 15 minutes. OTP validity: 30 seconds (see P-04).', '23-09-2026'),
  ('P-12', 'Module 2', 'Wrong OTP handling – message, maximum attempts and lockout.',
   'A validation message is shown for a wrong OTP; after 3 wrong attempts the number is blocked for 60 minutes.', '23-09-2026'),
  ('P-13', 'Module 2', 'Is the Experian consent checkbox mandatory to submit the OTP?',
@@ -332,6 +336,8 @@ COMPLETED = [
   'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
  ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.',
   'Use the new validation wording given by the owner. The PRD row shows the current live messages; the new wording is tracked as ' + todo('CR-01', 'CR-02', 'CR-03', 'CR-04') + '.', '29-09-2026'),
+ ('P-04', 'Module 2', 'OTP validity / expiry period.',
+  'The OTP is valid for 30 seconds. An OTP submitted later shows “Invalid request id” today; the new wording is tracked as ' + todo('CR-09') + '.', '30-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
