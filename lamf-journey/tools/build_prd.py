@@ -159,7 +159,7 @@ MODULES = [
             Action='User has to click this hyperlink to view the Terms and Conditions. On click, the system shall redirect the user to https://www.shriramcredit.in/terms-and-conditions (opens in a new tab, so the details entered on this screen are kept).'), OK),
         (img('f02-privacy.png', 180), spec(Field_Name='Privacy Policy', Field_Type='Hyperlink',
             Action='User has to click this hyperlink to view the Privacy Policy. On click, the system shall redirect the user to https://www.shriramcredit.in/privacy-policy (opens in a new tab, so the details entered on this screen are kept).'), OK),
-        (img('f02-cta.png', 360), spec(Field_Name='Continue', Field_Type='CTA (Button)',
+        (states(('f02-cta.png', 'Before – disabled (grey) until the checkbox is ticked'), ('f02-cta-enabled.png', 'After – enabled once the checkbox is ticked')), spec(Field_Name='Continue', Field_Type='CTA (Button)',
             Action='On click, the system shall validate all conditions of this screen. If every condition is met, the system shall trigger the OTP to the entered mobile number and navigate the customer to the OTP verification screen. If any condition fails, the customer shall not be allowed to proceed and the respective validation shall be displayed.',
             Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown for the checkbox. Once enabled, validation order: mobile number entered → first digit 6 to 9 → 10 digits.'), OK),
       ],

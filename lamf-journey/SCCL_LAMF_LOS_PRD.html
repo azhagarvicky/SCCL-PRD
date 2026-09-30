@@ -12,7 +12,7 @@
   <a href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>
   <div>
     <h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
-    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 30-09-2026 11:11</p>
+    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 30-09-2026 11:16</p>
   </div>
   <a class="prd-link" href="screens.html">All screens →</a>
 </header>
@@ -31,7 +31,7 @@
 <tr><td class="shot"><img src="prd-assets/f02-consent.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> (Checkbox)</p><p><b>Field Type:</b> Check box</p><p><b>Action:</b> User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled</p></div></td></tr>
 <tr><td class="shot"><img src="prd-assets/f02-tnc.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> T&amp;C</p><p><b>Field Type:</b> Hyperlink</p><p><b>Action:</b> User has to click this hyperlink to view the Terms and Conditions. On click, the system shall redirect the user to https://www.shriramcredit.in/terms-and-conditions (opens in a new tab, so the details entered on this screen are kept).</p></div></td></tr>
 <tr><td class="shot"><img src="prd-assets/f02-privacy.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Privacy Policy</p><p><b>Field Type:</b> Hyperlink</p><p><b>Action:</b> User has to click this hyperlink to view the Privacy Policy. On click, the system shall redirect the user to https://www.shriramcredit.in/privacy-policy (opens in a new tab, so the details entered on this screen are kept).</p></div></td></tr>
-<tr><td class="shot"><img src="prd-assets/f02-cta.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Continue</p><p><b>Field Type:</b> CTA (Button)</p><p><b>Action:</b> On click, the system shall validate all conditions of this screen. If every condition is met, the system shall trigger the OTP to the entered mobile number and navigate the customer to the OTP verification screen. If any condition fails, the customer shall not be allowed to proceed and the respective validation shall be displayed.</p><p><b>Condition:</b> CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown for the checkbox. Once enabled, validation order: mobile number entered → first digit 6 to 9 → 10 digits.</p></div></td></tr>
+<tr><td class="shot"><figure class="state"><img src="prd-assets/f02-cta.png" alt=""><figcaption>Before – disabled (grey) until the checkbox is ticked</figcaption></figure><figure class="state"><img src="prd-assets/f02-cta-enabled.png" alt=""><figcaption>After – enabled once the checkbox is ticked</figcaption></figure></td><td><div class="spec"><p><b>Field Name:</b> Continue</p><p><b>Field Type:</b> CTA (Button)</p><p><b>Action:</b> On click, the system shall validate all conditions of this screen. If every condition is met, the system shall trigger the OTP to the entered mobile number and navigate the customer to the OTP verification screen. If any condition fails, the customer shall not be allowed to proceed and the respective validation shall be displayed.</p><p><b>Condition:</b> CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown for the checkbox. Once enabled, validation order: mobile number entered → first digit 6 to 9 → 10 digits.</p></div></td></tr>
 </tbody></table>
 <h2>Module 2 – OTP Verification (MF linked Mobile Number)</h2>
 <p class="screens">Screen 03) Enter OTP for MF linked Mobile Number Verification</p>
