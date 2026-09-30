@@ -138,12 +138,12 @@ MODULES = [
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='Numeric only',
             Action='User has to enter the MF linked mobile number.',
-            Condition='Only numbers can be entered. Alphabets, spaces and special characters cannot be entered, and no message is shown.',
+            Condition='Only numbers can be entered. Alphabets, spaces and special characters cannot be entered, and no message is shown. ' + todo('CR-04'),
             # Current live LOS behaviour (DISC-095); the new wording is tracked only in Pending Changes
             Validation=[
-              '“*Required” – displayed when user clicks Continue CTA without entering the mobile number',
-              '“*Invalid mobile number” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field',
-              '“Error: Invalid phone number” – displayed when the mobile number starts with 0 to 5 and the user clicks Continue CTA',
+              '“*Required” – displayed when user clicks Continue CTA without entering the mobile number ' + todo('CR-01'),
+              '“*Invalid mobile number” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field ' + todo('CR-02'),
+              '“Error: Invalid phone number” – displayed when the mobile number starts with 0 to 5 and the user clicks Continue CTA ' + todo('CR-03'),
             ]), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
@@ -186,7 +186,8 @@ MODULES = [
                '<b>OTP Verified Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Resend Count:</b> 0–3<br><br>'
                '<b>Wrong Attempt Count:</b> 0–3<br><br>'
-               '<b>Blocked Until:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Blocked Start Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Blocked End Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Experian Consent:</b><ul><li>Yes</li><li>No</li></ul>'),
       'status': WIP,
       'fields': [
@@ -201,7 +202,7 @@ MODULES = [
             Minimum_Character='6 Char', Maximum_Character='6 Char', Value_Type='User inputs',
             Input_Value_format='Numeric only',
             Action='User has to enter the 6 digit OTP received on the MF linked mobile number.',
-            Condition='Only numbers can be entered, up to 6 digits. Alphabets, spaces and special characters cannot be entered, and no message is shown.',
+            Condition='Only numbers can be entered, up to 6 digits. Alphabets, spaces and special characters cannot be entered, and no message is shown. ' + todo('CR-05'),
             # Current live LOS behaviour (DISC-096)
             Validation='“Invalid OTP” – displayed on a wrong OTP (1st, 2nd and 3rd attempt)'), OK),
         (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
