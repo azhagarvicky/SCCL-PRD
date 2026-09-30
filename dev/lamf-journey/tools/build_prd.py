@@ -83,7 +83,7 @@ MODULES = [
       'desc': ('<p>The system shall display the “Enter your MF linked Mobile Number” pop up over the landing page. '
                'While the pop up is open the background page shall remain frozen and shall not scroll; the pop up itself '
                'shall scroll only when its content does not fit the screen (for example when the customer has zoomed in).</p>'),
-      'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': WIP,
       'fields': [
         (img('f02-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
@@ -100,8 +100,7 @@ MODULES = [
             ],
             Note=todo() + ' The validation messages above are the approved wording (P-01, answered). They are not yet in the live LOS journey and have to be implemented.'), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
-            Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled',
-            Validation='“Please accept the T&amp;C and Privacy Policy to continue.” – displayed when the customer clicks Continue CTA without ticking the checkbox'), OK),
+            Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
         (img('f02-tnc.png', 120), spec(Field_Name='T&amp;C', Field_Type='Hyperlink',
             Action='User has to click this hyperlink to view the Terms and Conditions. On click, the system shall display the Terms and Conditions pop up containing a Close (X) icon and an Accept CTA. Content source: https://www.shriramcredit.in/terms-and-conditions',
             Condition='Accept CTA shall close the pop up and tick the consent checkbox. Close (X) icon shall close the pop up without changing the consent.'), OK),
@@ -110,7 +109,7 @@ MODULES = [
             Condition='Same Accept / Close behaviour as the T&amp;C pop up.'), OK),
         (img('f02-cta.png', 360), spec(Field_Name='Continue', Field_Type='CTA (Button)',
             Action='On click, the system shall validate all conditions of this screen. If every condition is met, the system shall trigger the OTP to the entered mobile number and navigate the customer to the OTP verification screen. If any condition fails, the customer shall not be allowed to proceed and the respective validation shall be displayed.',
-            Condition='CTA is disabled (grey) until the consent checkbox is ticked. Validation order: consent → mobile number entered → first digit 6 to 9 → 10 digits.'), OK),
+            Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown for the checkbox. Once enabled, validation order: mobile number entered → first digit 6 to 9 → 10 digits.'), OK),
       ],
     },
   ],

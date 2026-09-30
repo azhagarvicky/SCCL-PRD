@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 29-09-2026 18:33 IST
+**Last Updated:** 30-09-2026 10:29 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -121,6 +121,7 @@
 | DISC-086 | 29-09-2026 | PRD | Status column values | Status column to use YTS (to be started), WIP (in progress) and Completed (done). A row is changed to Completed only on the owner's confirmation | PRD status tags changed: YTS grey, WIP amber, Completed green; legend added at the top of the PRD. Sl. No 1–3 set to WIP (built, awaiting the owner's confirmation to mark Completed); Sl. No 4 (PAN Verification) set to YTS. Rule added to CLAUDE.md | Implemented |
 | DISC-087 | 29-09-2026 | PRD | Data Points Required format | In the Data Points Required column the field name is bold and the value is regular, e.g. **Mobile Number:** 8098122853 – for the entire column | Applied to every row of the column (`data_points()` in `tools/build_prd.py`), so new rows follow it automatically. Values kept as they were (e.g. “10 digit numeric”) | Implemented |
 | DISC-088 | 29-09-2026 | PRD | Sl. No 1 Completed; Sl. No 2 data points; P-01 | (1) Mark Sl. No 1 Completed; once Completed nothing in that row changes unless the owner says so. (2) Sl. No 2 Data Points Required: Mobile Number: 9597001623; Consent Accepted: Yes / No as bullets; Consent Date & Time: DD-MMM-YYYY; HH:MM:SS. (3) P-01: use the validation messages as displayed in the PRD; they are not integrated in the live journey, so mark them as to be implemented – and use this marking wherever it applies | Sl. No 1 set to Completed and frozen (rule added to CLAUDE.md). Sl. No 2 data points updated. P-01 moved to Completed Clarifications; the Mobile Number field's Note now carries a blue “To be implemented” badge (`todo()` in `tools/build_prd.py`) for use wherever something is defined in the PRD but not yet in the live LOS journey. Also fixed a DISC-087 formatting bug that bolded “DD-MMM-YYYY; HH:” in Sl. No 1 and 2 | Implemented |
+| DISC-089 | 30-09-2026 | PRD Sl. No 2 / Screen 02 | Submitted Date & Time; checkbox highlight; no checkbox validation | (1) Data point “Consent Date & Time” renamed “Submitted Date & Time”. (2) Highlight the checkbox line in its screenshot the same way as T&C. (3) Remove the checkbox validation “Please accept the T&C and Privacy Policy to continue.”: the Continue CTA is grey and cannot be clicked until the checkbox is ticked, so no validation can appear | Data point renamed; red box (same colour and 2px width as the T&C crop) drawn around the checkbox line in `prd-assets/f02-consent.png`; checkbox validation removed and the Continue CTA condition reworded (validation order now starts at mobile number). Prototype aligned: the grey Continue CTA no longer shows the consent message when clicked (it does nothing) and is marked aria-disabled | Implemented |
 
 ---
 

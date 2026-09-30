@@ -727,6 +727,7 @@
         cta.classList.toggle('btn-primary', consent.checked);
         cta.classList.toggle('bold', consent.checked);
         cta.classList.toggle('btn-disabled', !consent.checked);
+        cta.setAttribute('aria-disabled', String(!consent.checked));
       };
       consent.addEventListener('change', () => { sync(); if (consent.checked) showErr(err.textContent === MOBILE_ERR.consent ? '' : err.textContent); });
       sync();
@@ -751,7 +752,7 @@
       // Continue: check every rule before moving on
       cta.addEventListener('click', () => {
         const v = input.value;
-        if (!consent.checked) return showErr(MOBILE_ERR.consent);
+        if (!consent.checked) return;   // grey CTA cannot be clicked, so no validation is shown (DISC-089)
         if (!v) return showErr(MOBILE_ERR.empty);
         if (!/^[6-9]/.test(v)) return showErr(MOBILE_ERR.start);
         if (v.length !== 10) return showErr(MOBILE_ERR.length);
