@@ -41,9 +41,27 @@ def pend(*ids):
     return ' '.join(f'<a class="pend-ref" href="#{p}" onclick="{js.format(p=p)}" title="Open pending clarification {p}">'
                     f'Pending · {p}</a>' for p in ids)
 
-def todo(text='To be implemented'):
-    """Blue badge: defined in this PRD but not yet built in the live LOS journey (DISC-088)."""
-    return f'<span class="todo-ref" title="Defined in the PRD, not yet in the live LOS journey">{text}</span>'
+# ---- To be Implemented (DISC-091) ----------------------------------------
+# Items defined in this PRD that are not yet built in the live LOS journey.
+# (ID, Module, Where in the PRD, What has to be implemented, Raised on)
+TO_IMPLEMENT = [
+ ('T-01', 'Module 1', 'Sl. No 2 – Mobile Number field',
+  'Show the four mobile number validation messages exactly as written in this PRD (empty number, less than 10 digits, first digit 0 to 5, non numeric character). Wording approved in P-01.', '30-09-2026'),
+]
+# Moved here only when the owner confirms the item is live in the LOS journey:
+# (ID, Module, Where in the PRD, What was implemented, Implemented on)
+IMPLEMENTED = [
+]
+
+def todo(*ids):
+    """Blue badge “To be implemented · T-01” that jumps to its row in the To be Implemented list;
+    once the item is in IMPLEMENTED it shows as a green “Implemented · T-01” badge (DISC-088, DISC-091)."""
+    done = {i[0] for i in IMPLEMENTED}
+    js = ("var t=document.getElementById('{p}');if(t){{var d=t.closest('details');if(d)d.open=true;"
+          "t.scrollIntoView({{behavior:'smooth',block:'center'}});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}}return false")
+    return ' '.join(f'<a class="{"done-ref" if t in done else "todo-ref"}" href="#{t}" onclick="{js.format(p=t)}" '
+                    f'title="{"Implemented in the live LOS journey" if t in done else "Defined in the PRD, not yet in the live LOS journey"} – open {t}">'
+                    f'{"Implemented" if t in done else "To be implemented"} · {t}</a>' for t in ids)
 
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
@@ -98,7 +116,7 @@ MODULES = [
               '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5',
               '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character',
             ],
-            Note=todo() + ' The validation messages above are the approved wording (P-01, answered). They are not yet in the live LOS journey and have to be implemented.'), OK),
+            Note=todo('T-01') + ' The validation messages above are the approved wording (P-01, answered). They are not yet in the live LOS journey and have to be implemented.'), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
         (img('f02-tnc.png', 120), spec(Field_Name='T&amp;C', Field_Type='Hyperlink',
@@ -210,6 +228,21 @@ PENDING_COLUMNS = [
  ('When answered', 'The answer is written into the PRD and the question moves to Completed Clarifications below'),
 ]
 
+# Column guides for the To be Implemented / Implemented lists (DISC-091)
+TODO_COLUMNS = [
+ ('ID', 'Reference number. Wherever the PRD above carries a blue “To be implemented · T-01” badge, it jumps to its row here'),
+ ('Module', 'Which part of the journey the item belongs to'),
+ ('Where in the PRD', 'The Sl. No and field that defines it'),
+ ('What has to be implemented', 'What the live LOS journey is missing today, and the date it was raised'),
+ ('When done', 'Once the owner confirms it is live, the item moves to Implemented below and its badges turn green'),
+]
+IMPLEMENTED_COLUMNS = [
+ ('ID', 'Reference number (kept when an item moves from To be Implemented)'),
+ ('Module', 'Which part of the journey the item belongs to'),
+ ('Where in the PRD', 'The Sl. No and field that defines it'),
+ ('What was implemented', 'What is now live in the LOS journey, and the date the owner confirmed it'),
+]
+
 # Column guide shown by the (i) next to the Completed Clarifications heading
 COMPLETED_COLUMNS = [
  ('ID', 'Reference number of the question (kept when a pending item is answered)'),
@@ -244,7 +277,7 @@ COMPLETED = [
  ('P-15', 'Module 2', 'Which screen opens after a successful OTP submission?',
   'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
  ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.',
-  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are marked ' + todo() + '.', '29-09-2026'),
+  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are tracked as ' + todo('T-01') + '.', '29-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
@@ -292,6 +325,28 @@ def render():
                '</tr></thead><tbody>')
     for cid, mod, q, a, on in COMPLETED:
         out.append(f'<tr id="{cid}"><td>{cid}</td><td>{mod}</td><td>{q}</td><td>{a}<span class="answered">Answered {on}</span></td></tr>')
+    out.append('</tbody></table></details>')
+
+    # To be Implemented / Implemented – same pattern as the clarification lists (DISC-091)
+    out.append(f'<h2>To be Implemented<span class="count impl">{len(TO_IMPLEMENT)}</span>{info("How to read this list", TODO_COLUMNS)}</h2><table class="int"><thead><tr>'
+               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th style="width:220px">Where in the PRD</th><th>What has to be implemented</th>'
+               '</tr></thead><tbody>')
+    for tid, mod, where, what, on in TO_IMPLEMENT:
+        out.append(f'<tr id="{tid}"><td>{tid}</td><td>{mod}</td><td>{where}</td><td>{what}<span class="raised">Raised {on}</span></td></tr>')
+    if not TO_IMPLEMENT:
+        out.append('<tr><td colspan="4">Nothing pending.</td></tr>')
+    out.append('</tbody></table>')
+    out.append('<details class="done"><summary>'
+               f'<span class="done-title">Implemented<span class="count ok">{len(IMPLEMENTED)}</span></span>'
+               f'{info("How to read this list", IMPLEMENTED_COLUMNS)}'
+               '<span class="chev" aria-hidden="true"></span></summary>'
+               '<table class="int"><thead><tr>'
+               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th style="width:220px">Where in the PRD</th><th>What was implemented</th>'
+               '</tr></thead><tbody>')
+    for tid, mod, where, what, on in IMPLEMENTED:
+        out.append(f'<tr id="{tid}"><td>{tid}</td><td>{mod}</td><td>{where}</td><td>{what}<span class="answered">Implemented {on}</span></td></tr>')
+    if not IMPLEMENTED:
+        out.append('<tr><td colspan="4">None yet.</td></tr>')
     out.append('</tbody></table></details>')
     return '\n'.join(out)
 
