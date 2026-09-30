@@ -35,7 +35,8 @@ GitHub is the only shared memory, so these rules apply to every session, local o
    frozen**: change nothing in it (text, data points, screenshots, or shared formatting that would
    alter it) unless the user explicitly asks for that row to change (DISC-088).
    Anything defined in the PRD but not yet in the live LOS journey gets a `TO_IMPLEMENT` entry (T-01, T-02 …)
-   in `tools/build_prd.py` and a `todo('T-xx')` badge where it is defined. Move it to `IMPLEMENTED` only when
+   in `tools/build_prd.py` and only a `todo('T-xx')` tag where it is defined — the current vs required detail goes in the
+   To be Implemented section, not in the Sl. No row (DISC-093). Move it to `IMPLEMENTED` only when
    the user confirms it is live (DISC-091).
 5. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
    user explicitly says so** ("push to production"). Then production gets everything that is on
