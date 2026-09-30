@@ -70,7 +70,7 @@ TO_IMPLEMENT = [
  ('CR-06', 'Module 2', 'Sl. No 3 – Enter OTP field (wrong OTP, 1st and 2nd back to back attempt)',
   change('“Invalid OTP” on the 1st, 2nd and 3rd back to back wrong attempt',
          '“The OTP you entered is incorrect. Please try again. You have 2 attempts left.” (1st wrong attempt) / “The OTP you entered is incorrect. Please try again. You have 1 attempt left.” (2nd). The 3rd wrong attempt shows the CR-07 message instead'), '30-09-2026'),
- ('CR-07', 'Module 2', 'Sl. No 3 – Submit OTP (3 back to back wrong OTPs)',
+ ('CR-07', 'Module 2', 'Sl. No 3 – Enter OTP field (3 back to back wrong OTPs)',
   change('“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – shown on the next attempt after the 3rd wrong OTP',
          '“You have entered an incorrect OTP 3 times. Please try again after N minute(s).” – shown straight away on the 3rd back to back wrong OTP; N is the time left in the 60 minute block (e.g. a customer returning after 10 minutes sees 50)'), '30-09-2026'),
  ('CR-08', 'Module 2', 'Sl. No 3 – Resend OTP (click after the 3rd back to back resend)',
@@ -214,8 +214,11 @@ MODULES = [
             Input_Value_format='Numeric only',
             Action='User has to enter the 6 digit OTP received on the MF linked mobile number.',
             Condition='Only numbers can be entered, up to 6 digits. Alphabets, spaces and special characters cannot be entered, and no message is shown. ' + todo('CR-05'),
-            # Current live LOS behaviour (DISC-096)
-            Validation='“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt ' + todo('CR-06')), OK),
+            # Current live LOS behaviour (DISC-096, DISC-103)
+            Validation=[
+              '“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt ' + todo('CR-06'),
+              '“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – after 3 back to back wrong OTP attempts in the same pop up the customer is blocked for 60 minutes; displayed on the next attempt ' + todo('CR-07'),
+            ]), OK),
         (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
             Condition='The customer can click Resend OTP 3 times back to back (1st, 2nd and 3rd) in the same pop up. On the next click the customer is blocked from resending for 15 minutes.',
@@ -225,8 +228,7 @@ MODULES = [
             Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
         (img('f03-cta.png', 360), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall validate the entered OTP. If the OTP is correct, the system shall trigger the Experian API with the mobile number to retrieve the credit score and navigate the customer to the PAN Verification screen. If the OTP is wrong, the customer shall not be allowed to proceed and the respective validation shall be displayed.',
-            Condition='CTA is disabled (grey) and cannot be clicked until all 6 OTP digits are entered and the Experian consent checkbox is ticked, so no validation is shown for these. Once enabled, validation order: blocked for wrong attempts → OTP correct. After 3 back to back wrong OTP attempts in the same pop up the customer is blocked for 60 minutes.',
-            Validation='“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – displayed on the next attempt after 3 back to back wrong OTPs ' + todo('CR-07')), OK),
+            Condition='CTA is disabled (grey) and cannot be clicked until all 6 OTP digits are entered and the Experian consent checkbox is ticked, so no validation is shown for these. Once enabled, the wrong OTP and block validations are shown under the Enter OTP field.'), OK),
       ],
     },
     {
