@@ -76,6 +76,9 @@ TO_IMPLEMENT = [
  ('CR-10', 'Module 3', 'Sl. No 4 – Name as per PAN, DOB and PAN Number (field left empty)',
   change('“*Required” for every empty field',
          'A message that names the field: “Please enter your name as per PAN.” / “Please enter your date of birth.” / “Please enter your PAN Number.”'), '30-09-2026'),
+ ('CR-11', 'Module 3', 'Sl. No 4 – PAN Number field (format validation)',
+  change('The PAN format is checked after the PAN is entered, when the user clicks Continue CTA',
+         'The validation is shown while the customer types, for the character that does not fit its position (the character is not entered): “The first 5 characters of the PAN must be letters.” / “The 4th character must be P – only individual PAN is allowed.” / “Characters 6 to 9 of the PAN must be numbers.” / “The last character of the PAN must be a letter.” – wording proposed, to be confirmed with P-17'), '30-09-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -259,7 +262,7 @@ MODULES = [
                    ('CTA', '“Continue”'),
                    ('Validation messages', '<ul><li>“*Required” – any field left empty ' + todo('CR-10') + '</li>'
                     '<li>DOB outside the 18 to 70 years age limit ' + pend('P-17') + '</li>'
-                    '<li>PAN Number not in the ABCDE1234F format ' + pend('P-17') + '</li></ul>'),
+                    '<li>PAN Number not in the ABCDE1234F format ' + pend('P-17') + ' ' + todo('CR-11') + '</li></ul>'),
                ])),
       'data': ('<b>Mobile Number:</b> 9597001623 (carried from Sl. No 2)<br><br>'
                '<b>Name as per PAN:</b> up to 150 characters<br><br>'
@@ -286,10 +289,12 @@ MODULES = [
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
                         'Age less than 18 or more than 70 years – validation displayed when the user clicks Continue CTA ' + pend('P-17')]), OK),
         (img('f04-pan.png'), spec(Field_Name='PAN Number', Field_Type='Text Field',
-            Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs', Input_Value_format='ABCDE1234F – 5 letters, 4 numbers, 1 letter',
-            Action='User has to enter the 10 character PAN.',
+            Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
+            Input_Value_format='ABCDE1234F – characters 1 to 5 letters (the 4th is always P), 6 to 9 numbers, 10th a letter',
+            Action='User has to enter the 10 character PAN. Only an individual PAN is allowed.',
+            Condition='A character that does not fit its position cannot be entered: the 1st character must be a letter, and the 4th must be P (individual PAN). E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered.',
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the PAN Number ' + todo('CR-10'),
-                        'PAN not in the ABCDE1234F format – error displayed when the user clicks Continue CTA ' + pend('P-17')]), OK),
+                        'PAN not in the ABCDE1234F format – error displayed after the PAN is entered, when the user clicks Continue CTA ' + pend('P-17') + ' ' + todo('CR-11')]), OK),
         (img('f04-cta.png'), spec(Field_Name='Continue', Field_Type='CTA (Button)',
             Action='On click, the system shall validate all the fields on this page. If every field is valid, the customer is taken to the next page (LOS to MF Central consent). If any field fails, the customer shall not be allowed to proceed and the respective validation is displayed under that field.',
             Condition='Always enabled.'), OK),
