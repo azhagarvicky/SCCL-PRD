@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 30-09-2026 14:14 IST
+**Last Updated:** 30-09-2026 14:36 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -132,6 +132,7 @@
 | DISC-097 | 30-09-2026 | PRD Sl. No 3 / Screen 03 | No consent validation; Experian consent date not needed | (1) “Please provide the consent to proceed.” will never appear, because Submit OTP is enabled only after the consent is ticked. (2) Data point “Experian Consent Date & Time” is not required | Consent validation removed from the checkbox spec and the Screen Content list; checkbox condition notes that no validation is shown. “Experian Consent Date & Time” removed from Data Points Required. Prototype aligned: the grey Submit OTP CTA does nothing when clicked (no “6-digit” or consent message) | Implemented |
 | DISC-098 | 30-09-2026 | PRD Sl. No 2 & Sl. No 3 | Non numeric input is a condition, not a validation | “No message – a non numeric character simply cannot be entered” belongs under Condition, since the user cannot enter the character; same for the Mobile Number field (owner asked for the Completed Sl. No 2 to be changed too) | Moved from Validation to a new Condition line in both fields: “Only numbers can be entered (up to 6 digits for the OTP). Alphabets, spaces and special characters cannot be entered, and no message is shown.” The same sentence was taken out of each field's Action to avoid saying it twice. Sl. No 2 stays Completed | Implemented |
 | DISC-099 | 30-09-2026 | PRD Sl. No 2 & 3 | Blocked start and end; To be changed tags back in the rows | (1) Sl. No 3 data points: the block needs a start and an end time (DD-MMM-YYYY; HH:MM:SS). (2) The “To be changed” tags are needed in the rows now | “Blocked Until” replaced by “Blocked Start Date & Time” and “Blocked End Date & Time”. Tags restored next to the current behaviour they change: Sl. No 2 – CR-01 (*Required), CR-02 (*Invalid mobile number), CR-03 (Error: Invalid phone number), CR-04 (non numeric Condition); Sl. No 3 – CR-05 (non numeric Condition). Detail stays in Pending Changes. Replaces the DISC-096 “no tags in rows” rule | Implemented |
+| DISC-100 | 30-09-2026 | PRD Sl. No 2 & 3 | Wrong OTP counting; tags in Screen Content | (1) The 1st / 2nd / 3rd wrong OTP attempts count only when back to back: if the customer closes the pop up and then enters a wrong OTP again, it counts as the 1st attempt. (2) Wherever a validation has to change, mark the To be changed tag, with current vs to be changed in the section. (3) Tags were missing in the Screen Content lists | OTP field validation and Submit OTP condition now state that wrong attempts are counted back to back in the same pop up and reset when the pop up is closed (live behaviour). Screen Content lists now carry the tags: Sl. No 2 – CR-01, CR-02, CR-03 and “No message for a non numeric character” CR-04; Sl. No 3 – “No message for a non numeric character” CR-05. Pending Changes already shows current vs to be changed for CR-01…CR-05 | Implemented |
 
 ---
 
@@ -557,7 +558,7 @@
 | PEND-015 | PRD | Sample file of the user's preferred PRD format | 22-09-2026 | Open |
 | PEND-016 | OTP | Prototype currently treats `123456` as the correct OTP — confirm the demo value, or whether a UAT OTP service should be used | 23-09-2026 | Open |
 | PEND-017 | OTP | Resend/wrong-attempt counters and blocks are held in browser storage in the prototype — confirm they will be enforced server-side (per mobile number, not per device) | 23-09-2026 | Open |
-| PEND-018 | OTP | When do the resend and wrong-attempt counters reset — only on block expiry and successful verification (current behaviour), or also on a new session / number change? | 23-09-2026 | Open |
+| PEND-018 | OTP | When do the resend and wrong-attempt counters reset — only on block expiry and successful verification (current behaviour), or also on a new session / number change? | 23-09-2026 | **Partly answered 30-09-2026** – live journey: the wrong-attempt count resets when the OTP pop up is closed (DISC-100); resend counter reset still open |
 | PEND-019 | Experian | Failure behaviour if the Experian credit-score call fails or times out; score thresholds and their effect on offers | 23-09-2026 | Open |
 | PEND-020 | OTP service | Failure behaviour if OTP send/verify API fails | 23-09-2026 | Open |
 | PEND-021 | OTP | OTP validity/expiry period (how long an OTP stays usable) | 23-09-2026 | Open |

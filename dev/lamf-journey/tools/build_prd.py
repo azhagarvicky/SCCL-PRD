@@ -127,7 +127,8 @@ MODULES = [
                    ('Mobile Number field placeholder', '“9876543210”'),
                    ('Consent checkbox text', '“By proceeding, I agree to T&amp;C and Privacy Policy of Shriram Credit.” – T&amp;C and Privacy Policy are hyperlinks'),
                    ('CTA', '“Continue” – grey until the checkbox is ticked, then yellow'),
-                   ('Validation messages', '<ul><li>“*Required”</li><li>“*Invalid mobile number”</li><li>“Error: Invalid phone number”</li></ul>'),
+                   ('Validation messages', '<ul><li>“*Required” ' + todo('CR-01') + '</li><li>“*Invalid mobile number” ' + todo('CR-02') + '</li>'
+                    '<li>“Error: Invalid phone number” ' + todo('CR-03') + '</li><li>No message for a non numeric character ' + todo('CR-04') + '</li></ul>'),
                ])),
       'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': DONE,   # confirmed by the owner – do not change without the owner's instruction
@@ -179,7 +180,8 @@ MODULES = [
                    ('CTA', '“Submit OTP” – grey until all 6 digits are entered and the consent is ticked, then yellow'),
                    ('Validation messages', '<ul><li>“Invalid OTP”</li>'
                     '<li>“Maximum OTP retry limit reached. Please retry again after 60 minute(s).”</li>'
-                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”</li></ul>'),
+                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”</li>'
+                    '<li>No message for a non numeric character ' + todo('CR-05') + '</li></ul>'),
                ])),
       'data': ('<b>OTP Entered:</b> 6 digit numeric<br><br>'
                '<b>OTP Verified:</b><ul><li>Yes</li><li>No</li></ul><br>'
@@ -204,7 +206,7 @@ MODULES = [
             Action='User has to enter the 6 digit OTP received on the MF linked mobile number.',
             Condition='Only numbers can be entered, up to 6 digits. Alphabets, spaces and special characters cannot be entered, and no message is shown. ' + todo('CR-05'),
             # Current live LOS behaviour (DISC-096)
-            Validation='“Invalid OTP” – displayed on a wrong OTP (1st, 2nd and 3rd attempt)'), OK),
+            Validation='“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt'), OK),
         (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
             Condition='The customer can click Resend OTP 3 times (1st, 2nd and 3rd). On the next click the customer is blocked from resending for 15 minutes.',
@@ -214,7 +216,7 @@ MODULES = [
             Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
         (img('f03-cta.png', 360), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall check all the conditions of this screen. If every condition is met, the system shall verify the OTP, trigger the Experian API with the mobile number to retrieve the credit score, and navigate the customer to the PAN Verification screen. If any condition fails, the respective validation shall be displayed and the customer shall not be allowed to proceed.',
-            Condition='Enabled only after all 6 OTP digits are entered and the Experian consent is ticked, so no validation is shown for fewer than 6 digits. After 3 consecutive wrong OTP attempts the customer is blocked for 60 minutes.',
+            Condition='Enabled only after all 6 OTP digits are entered and the Experian consent is ticked, so no validation is shown for fewer than 6 digits. After 3 back to back wrong OTP attempts in the same pop up the customer is blocked for 60 minutes.',
             Validation='“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – displayed on the next attempt after 3 wrong OTPs'), OK),
       ],
     },
