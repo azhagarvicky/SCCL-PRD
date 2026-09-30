@@ -73,6 +73,9 @@ TO_IMPLEMENT = [
  ('CR-09', 'Module 2', 'Sl. No 3 – Enter OTP field (OTP submitted after 30 seconds)',
   change('“Invalid request id”',
          '“Your OTP has expired. Please click Resend OTP to get a new OTP.” – displayed when the customer submits the OTP more than 30 seconds after it was sent'), '30-09-2026'),
+ ('CR-10', 'Module 3', 'Sl. No 4 – Name as per PAN, DOB and PAN Number (field left empty)',
+  change('“*Required” for every empty field',
+         'A message that names the field: “Please enter your name as per PAN.” / “Please enter your date of birth.” / “Please enter your PAN Number.”'), '30-09-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -234,17 +237,63 @@ MODULES = [
             Condition='CTA is disabled (grey) and cannot be clicked until all 6 OTP digits are entered and the Experian consent checkbox is ticked, so no validation is shown for these. Once enabled, the wrong OTP and block validations are shown under the Enter OTP field.'), OK),
       ],
     },
+  ],
+ },
+ {
+  'title': 'Module 3 – PAN Verification',
+  'screens': 'Screen 04) Enter PAN Details',
+  'rows': [
     {
       'sl': '4',
       'shot': img('screen-04.png'),
-      'func': 'On successful mobile number verification the customer lands on the PAN Verification screen',
-      'desc': ('<p>On successful OTP verification the system shall navigate the customer to the PAN Verification screen. '
-               'The mobile number entered by the customer shall be carried forward and displayed as a non editable field. '
-               'The Experian credit information call shall be triggered in the background; the customer shall not be made to '
-               'wait for the response.</p>'
-               '<p><b>Field level requirements for this screen are yet to be confirmed</b> ' + pend('P-06') + '</p>'),
-      'data': 'Mobile Number: carried from Module 1<br>Experian API Triggered: Yes/No<br>Experian Response: ' + pend('P-09'),
-      'status': YTS,
+      'func': 'User entering the Name as per PAN, DOB and PAN Number to verify the PAN',
+      'desc': ('<p>On successful OTP verification the system shall navigate the customer to the PAN Details page. '
+               'The mobile number verified in Sl. No 2 and 3 is carried forward and displayed as a non editable field. '
+               'The Experian credit information call is triggered in the background; the customer is not made to wait for the response.</p>'
+               + screen_content([
+                   ('Header', 'Shriram Credit logo (left) and the logout icon (right)'),
+                   ('Page title', '“PAN Details”'),
+                   ('Sub text', '“Please verify your PAN to get the best loan offers”'),
+                   ('Field labels', '“Mobile Number”, “Name as per PAN”, “DOB”, “PAN Number”'),
+                   ('Placeholders', 'DOB: “DD/MM/YYYY”; PAN Number: “ABCDE 1234 F”'),
+                   ('CTA', '“Continue”'),
+                   ('Validation messages', '<ul><li>“*Required” – any field left empty ' + todo('CR-10') + '</li>'
+                    '<li>DOB outside the 18 to 70 years age limit ' + pend('P-17') + '</li>'
+                    '<li>PAN Number not in the ABCDE1234F format ' + pend('P-17') + '</li></ul>'),
+               ])),
+      'data': ('<b>Mobile Number:</b> 9597001623 (carried from Sl. No 2)<br><br>'
+               '<b>Name as per PAN:</b> up to 150 characters<br><br>'
+               '<b>DOB:</b><br>DD-MMM-YYYY<br><br>'
+               '<b>PAN Number:</b> ABCDE1234F<br><br>'
+               '<b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Experian API Triggered:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Experian Response:</b> ' + pend('P-09')),
+      'status': WIP,
+      'fields': [
+        (img('f04-logout.png'), spec(Field_Name='Logout', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, the customer is logged out and the journey ends.'), OK),
+        (img('f04-mobile.png'), spec(Field_Name='Mobile Number', Field_Type='Display field',
+            Prefilled_Value='Mobile number verified in Sl. No 2 and 3', Action='Display only, not editable'), OK),
+        (img('f04-name.png'), spec(Field_Name='Name as per PAN', Field_Type='Text Field',
+            Minimum_Character='1 Char', Maximum_Character='150 Char', Value_Type='User inputs', Input_Value_format='Alphanumeric',
+            Action='User has to enter the name exactly as printed on the PAN card.',
+            Validation='“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10')), OK),
+        (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)')),
+         spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
+            Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
+            Action='User can type the date of birth, or click the calendar icon and select it from the calendar pop up.',
+            Condition='Dates from 01-Jan-1920 up to today can be entered. The customer’s age (as on today) must be between 18 and 70 years.',
+            Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
+                        'Age less than 18 or more than 70 years – validation displayed when the user clicks Continue CTA ' + pend('P-17')]), OK),
+        (img('f04-pan.png'), spec(Field_Name='PAN Number', Field_Type='Text Field',
+            Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs', Input_Value_format='ABCDE1234F – 5 letters, 4 numbers, 1 letter',
+            Action='User has to enter the 10 character PAN.',
+            Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the PAN Number ' + todo('CR-10'),
+                        'PAN not in the ABCDE1234F format – error displayed when the user clicks Continue CTA ' + pend('P-17')]), OK),
+        (img('f04-cta.png'), spec(Field_Name='Continue', Field_Type='CTA (Button)',
+            Action='On click, the system shall validate all the fields on this page. If every field is valid, the customer is taken to the next page (LOS to MF Central consent). If any field fails, the customer shall not be allowed to proceed and the respective validation is displayed under that field.',
+            Condition='Always enabled.'), OK),
+      ],
     },
   ],
  },
@@ -310,11 +359,11 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-17', 'Module 3', 'PAN Details page: the exact live validation text for a DOB outside the 18 to 70 years age limit and for a PAN Number not in the ABCDE1234F format. Also: where does the customer land after Logout, and is the Name as per PAN matched with the PAN records?'),
  ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
  ('P-05', 'Module 2', 'Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.'),
- ('P-06', 'Module 3', 'PAN Verification screen: field level rules, PAN format validation, name as per PAN matching logic and DOB / age rule.'),
  ('P-07', 'Module 2', 'Experian failure / timeout behaviour and the effect of the score on eligibility and offers.'),
  ('P-08', 'All', 'Where should the header Shriram Credit logo navigate in the live journey (shriramcredit.in, the LAMF landing page, or nowhere)? The prototype sends it to its own review home page.'),
  ('P-09', 'Module 2', 'Experian response (INT-001 Expected Output): what exactly comes back from Experian – only the credit score (e.g. 750), or the score plus the full credit report (existing loans, EMIs, missed payments, recent loan enquiries)? How should a “No record found” response be handled for a customer with no credit history? Depends on the Experian service Shriram Credit has signed up for.'),
@@ -338,6 +387,8 @@ COMPLETED = [
   'Use the new validation wording given by the owner. The PRD row shows the current live messages; the new wording is tracked as ' + todo('CR-01', 'CR-02', 'CR-03', 'CR-04') + '.', '29-09-2026'),
  ('P-04', 'Module 2', 'OTP validity / expiry period.',
   'The OTP is valid for 30 seconds. An OTP submitted later shows “Invalid request id” today; the new wording is tracked as ' + todo('CR-09') + '.', '30-09-2026'),
+ ('P-06', 'Module 3', 'PAN Verification screen: field level rules, PAN format validation, name as per PAN matching logic and DOB / age rule.',
+  'Name as per PAN: alphanumeric, up to 150 characters. DOB: typed (DD/MM/YYYY) or picked from the calendar, 01-Jan-1920 to today, age 18 to 70 years. PAN: ABCDE1234F format. Continue validates every field; an empty field shows “*Required”. Exact error texts and name matching are still open ' + pend('P-17') + '.', '30-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
