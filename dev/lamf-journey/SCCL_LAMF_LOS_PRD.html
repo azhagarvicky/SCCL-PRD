@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SCCL LAMF – LOS Product Requirements Document</title>
-<link rel="stylesheet" href="assets/lamf.css?v=b94f825">
-<link rel="stylesheet" href="assets/prd.css?v=b94f825">
+<link rel="stylesheet" href="assets/lamf.css?v=2f218af">
+<link rel="stylesheet" href="assets/prd.css?v=2f218af">
 </head>
 <body class="prd">
 <header class="prd-head">
   <a href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>
   <div>
     <h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
-    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 30-09-2026 04:57</p>
+    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 30-09-2026 05:04</p>
   </div>
   <a class="prd-link" href="screens.html">All screens →</a>
 </header>
@@ -29,8 +29,8 @@
 <tr><td class="shot"><img src="prd-assets/f02-close.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> (X) Close Icon</p><p><b>Field Type:</b> Icon</p><p><b>Action:</b> After clicking this, navigate user to landing page by closing this pop up</p></div></td></tr>
 <tr><td class="shot"><img src="prd-assets/f02-field.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Mobile Number</p><p><b>Field Type:</b> Text Field</p><p><b>Minimum Character:</b> 10 Char</p><p><b>Maximum Character:</b> 10 Char</p><p><b>Value Type:</b> User inputs</p><p><b>Input Value format:</b> Numeric only</p><p><b>Action:</b> User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable. A first digit of 0 to 5 shall not be accepted.</p><p><b>Validation:</b> <ul><li>“Please enter your MF linked mobile number.” – displayed when user clicks Continue CTA without entering the mobile number</li><li>“Mobile number must be 10 digits.” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field</li><li>“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5</li><li>“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character</li></ul></p><p><b>Note:</b> <span class="todo-ref" title="Defined in the PRD, not yet in the live LOS journey">To be implemented</span> The validation messages above are the approved wording (P-01, answered). They are not yet in the live LOS journey and have to be implemented.</p></div></td></tr>
 <tr><td class="shot"><img src="prd-assets/f02-consent.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> (Checkbox)</p><p><b>Field Type:</b> Check box</p><p><b>Action:</b> User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled</p></div></td></tr>
-<tr><td class="shot"><img src="prd-assets/f02-tnc.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> T&amp;C</p><p><b>Field Type:</b> Hyperlink</p><p><b>Action:</b> User has to click this hyperlink to view the Terms and Conditions. On click, the system shall display the Terms and Conditions pop up containing a Close (X) icon and an Accept CTA. Content source: https://www.shriramcredit.in/terms-and-conditions</p><p><b>Condition:</b> Accept CTA shall close the pop up and tick the consent checkbox. Close (X) icon shall close the pop up without changing the consent.</p></div></td></tr>
-<tr><td class="shot"><img src="prd-assets/f02-privacy.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Privacy Policy</p><p><b>Field Type:</b> Hyperlink</p><p><b>Action:</b> User has to click this hyperlink to view the Privacy Policy. On click, the system shall display the Privacy Policy pop up containing a Close (X) icon and an Accept CTA. Content source: https://www.shriramcredit.in/privacy-policy</p><p><b>Condition:</b> Same Accept / Close behaviour as the T&amp;C pop up.</p></div></td></tr>
+<tr><td class="shot"><img src="prd-assets/f02-tnc.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> T&amp;C</p><p><b>Field Type:</b> Hyperlink</p><p><b>Action:</b> User has to click this hyperlink to view the Terms and Conditions. On click, the system shall redirect the user to https://www.shriramcredit.in/terms-and-conditions (opens in a new tab, so the details entered on this screen are kept).</p></div></td></tr>
+<tr><td class="shot"><img src="prd-assets/f02-privacy.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Privacy Policy</p><p><b>Field Type:</b> Hyperlink</p><p><b>Action:</b> User has to click this hyperlink to view the Privacy Policy. On click, the system shall redirect the user to https://www.shriramcredit.in/privacy-policy (opens in a new tab, so the details entered on this screen are kept).</p></div></td></tr>
 <tr><td class="shot"><img src="prd-assets/f02-cta.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Continue</p><p><b>Field Type:</b> CTA (Button)</p><p><b>Action:</b> On click, the system shall validate all conditions of this screen. If every condition is met, the system shall trigger the OTP to the entered mobile number and navigate the customer to the OTP verification screen. If any condition fails, the customer shall not be allowed to proceed and the respective validation shall be displayed.</p><p><b>Condition:</b> CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown for the checkbox. Once enabled, validation order: mobile number entered → first digit 6 to 9 → 10 digits.</p></div></td></tr>
 </tbody></table>
 <h2>Module 2 – OTP Verification (MF linked Mobile Number)</h2>
@@ -71,6 +71,6 @@
 </tbody></table></details>
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
-<script src="assets/review.js?v=b94f825"></script>
+<script src="assets/review.js?v=2f218af"></script>
 </body>
 </html>

@@ -241,7 +241,7 @@
       <input class="input" id="mobile" placeholder="9876543210" maxlength="10" inputmode="numeric" autocomplete="off">
       <p class="field-err" id="mobile-err"></p>
       <div class="m-foot">
-        <label class="chk"><input type="checkbox" id="consent"><span>By proceeding, I agree to <a data-legal="tnc">T&amp;C</a> and <a data-legal="privacy">Privacy Policy</a> of Shriram Credit.</span></label>
+        <label class="chk"><input type="checkbox" id="consent"><span>By proceeding, I agree to <a href="https://www.shriramcredit.in/terms-and-conditions" target="_blank" rel="noopener">T&amp;C</a> and <a href="https://www.shriramcredit.in/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> of Shriram Credit.</span></label>
         <button class="btn btn-disabled btn-block" data-cta="continue">Continue</button>
       </div>
     </div>`;
@@ -560,75 +560,6 @@
   T.kycRedirect = () => `<main class="kyc-redir">${img('kyc-success.png', '', 'height:72px;mix-blend-mode:multiply')}<h4>KYC successfully completed.</h4><p>Redirecting you back to the process in 1 seconds</p></main>`;
 
   /* ==========================================================
-     LEGAL – T&C / Privacy Policy popup content.
-     Section headings follow shriramcredit.in; the body lines are short
-     plain-language summaries for the prototype. Replace each line with the
-     exact legal wording before this goes anywhere near a customer.
-     ========================================================== */
-  const LEGAL = {
-    tnc: {
-      title: 'Terms and Conditions',
-      source: 'https://www.shriramcredit.in/terms-and-conditions',
-      sections: [
-        ['About SCCL and these Terms', 'Shriram Credit Company Limited (SCCL) is an RBI-regulated NBFC. These terms govern the website, the apps and the loan services offered on them.'],
-        ['Key definitions', 'Defines Borrower, LAMF (Loan Against Mutual Funds), LSP/DLA (lending service providers and digital lending apps) and Applicable Law.'],
-        ['Eligibility', 'You must be an Indian resident, 18 years or above, legally competent and solvent, and own unencumbered mutual fund units to pledge.'],
-        ['The LAMF facility', 'Interest is charged only on the amount drawn. The facility is non-revolving, units are lien-marked, and margin is monitored.'],
-        ['Lending Service Providers and Digital Lending Apps', 'SCCL works with third-party LSPs and digital lending apps for onboarding and servicing. The current list is published on the Partners page.'],
-        ['KYC, execution and consents', 'Covers the consents you give for identity verification, Aadhaar authentication, credit checks, document storage and electronic execution of the loan.'],
-        ['Key Facts Statement, APR and cooling-off period', 'A Key Facts Statement with the APR is shared before execution, and you may exit during the cooling-off period.'],
-        ['Fees, charges, repayment and recovery', 'Charges are as set out in the KFS. Covers order of repayment, penalties on default, and fair recovery practices as per RBI guidelines.'],
-        ['Right of lien and set-off', 'SCCL may adjust amounts you owe against funds of yours held with it.'],
-        ['Your account and security of credentials', 'You are responsible for keeping your login credentials safe. SCCL uses industry-standard protection but is not liable for losses from shared credentials.'],
-        ['Communications and consent', 'You agree to be contacted by call, SMS, email and other channels for servicing and recovery. Marketing messages can be opted out of.'],
-        ['Withdrawal of consent and closure', 'Consents can be withdrawn in app settings or by email. Withdrawal applies going forward and does not cancel existing obligations.'],
-        ['Your obligations and prohibited uses', 'No unlawful use, false information, malware, unauthorised access, scraping or commercial use of the platform.'],
-        ['Intellectual property and licence', 'All platform content belongs to SCCL. You get a limited licence for personal, non-commercial use.'],
-        ['Disclaimers and limitation of liability', 'The platform is provided "as is" without warranties. Liability for indirect losses is limited, except for wilful default or gross negligence.'],
-        ['Indemnity', 'You cover SCCL for losses arising from breach of these terms, fraud, misrepresentation or unauthorised use of your account.'],
-        ['Suspension and termination', 'Access may be suspended or ended for breach, suspected fraud, regulatory orders or insolvency. Repayment obligations continue.'],
-        ['Records as evidence', 'SCCL’s records of transactions are conclusive evidence of activity on the platform, except for obvious error.'],
-        ['Force majeure', 'SCCL is not liable for failures caused by events beyond its reasonable control, such as natural events or system failures.'],
-        ['Grievance redressal', 'Escalation path: customer helpline, then Grievance Officer, then the internal ombudsman, and finally the RBI.'],
-        ['Governing law, jurisdiction and limitation', 'Indian law applies, courts at Chennai have jurisdiction, claims must be raised within one year and on an individual basis.'],
-        ['Amendments and general', 'Terms may be amended by posting an update. These terms are the entire agreement and SCCL may assign its rights.'],
-      ],
-    },
-    privacy: {
-      title: 'Privacy Policy',
-      source: 'https://www.shriramcredit.in/privacy-policy',
-      sections: [
-        ['Introduction', 'Shriram Credit Company Limited is an RBI-registered NBFC. This policy explains how personal information is collected and handled on its website and lending apps.'],
-        ['Acknowledgment and Consent', 'By using the platform you consent to the collection of your data and confirm you are 18 or above and that your details are true.'],
-        ['Definitions', 'Explains terms such as Personal Data, Data Principal and Processing as used in this policy.'],
-        ['Information we collect', 'Four categories: what you provide, what is collected automatically, what comes from third parties, and data handled by vendors for KYC and payments.'],
-        ['Lawful grounds for processing', 'Processing is based on your consent, performance of the contract, regulatory compliance and other lawful purposes.'],
-        ['KYC, execution and device permissions', 'Identity is verified through CKYC and eKYC. One-time device permissions such as camera, location and SMS are taken with your explicit consent.'],
-        ['How we use your information', 'Identity verification, credit assessment, loan servicing, fraud prevention and regulatory compliance, plus analytics.'],
-        ['Sharing and disclosure', 'Shared on a need-to-know basis with partners, service providers, regulators and authorities as permitted by law. Your data is not sold.'],
-        ['Data localisation', 'Personal data is stored on servers in India with safeguards that meet RBI and DPDP requirements.'],
-        ['Retention and erasure', 'Retention runs from one year for transaction data to a minimum of five years for loan data, in line with PMLA and RBI rules.'],
-        ['Your rights as a Data Principal', 'You may access, correct and delete your data, withdraw consent and raise grievances, subject to legal limits.'],
-        ['Cookies', 'Cookies are used to run the platform and for analytics. You can control them in your browser settings.'],
-        ['How we keep your data secure', 'TLS encryption, firewalls, access controls and breach notification as required by DPDP and RBI guidelines.'],
-        ['Grievance redressal and contact', 'Contact details for the Grievance Redressal Officer, with escalation to the RBI Ombudsman and the Data Protection Board of India.'],
-        ['Children', 'The services are not meant for anyone under 18 and their data is not knowingly processed without parental consent.'],
-        ['Changes to this Policy', 'The policy is reviewed annually and may be updated, with material changes notified as required by law.'],
-      ],
-    },
-  };
-
-  T.legalModal = (key) => {
-    const d = LEGAL[key];
-    return `<div class="overlay legal-overlay"><div class="modal m-legal">
-      <div class="lg-head"><h3>${d.title}</h3><button class="close" data-cta="close-legal">${ICON.close}</button></div>
-      <div class="lg-body">${d.sections.map(([h, p]) => `<h4>${h}</h4><p>${p}</p>`).join('')}
-        <p class="lg-src">Summarised for this prototype from ${d.source}</p></div>
-      <div class="lg-foot"><button class="btn btn-primary bold" data-cta="accept-legal">Accept</button></div>
-    </div></div>`;
-  };
-
-  /* ==========================================================
      FLOW – which CTA on which screen opens which screen.
      One line per rule:  'screen name': { 'cta name': 'target screen name' }
      CTA names are the data-cta="..." values in the templates above.
@@ -732,18 +663,7 @@
       consent.addEventListener('change', () => { sync(); if (consent.checked) showErr(err.textContent === MOBILE_ERR.consent ? '' : err.textContent); });
       sync();
 
-      // T&C / Privacy Policy popups
-      const openLegal = (key) => {
-        if (document.querySelector('.legal-overlay')) return;   // one popup at a time
-        document.body.insertAdjacentHTML('beforeend', T.legalModal(key));
-        const ov = document.querySelector('.legal-overlay');
-        const close = () => ov.remove();   // page stays frozen: the mobile-number popup is still open
-        ov.querySelector('[data-cta="close-legal"]').onclick = close;
-        ov.querySelector('[data-cta="accept-legal"]').onclick = () => { consent.checked = true; sync(); showErr(err.textContent === MOBILE_ERR.consent ? '' : err.textContent); close(); };
-        ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
-      };
-      modal.querySelectorAll('[data-legal]').forEach((a) => { a.onclick = () => openLegal(a.dataset.legal); });
-      if (location.hash === '#tnc' || location.hash === '#privacy') openLegal(location.hash.slice(1));
+      // T&C / Privacy Policy open the Shriram Credit pages in a new tab (DISC-090)
 
       // Coming back from the OTP screen via Edit: prefill what the user entered
       const saved = store.get(K.mobile);
@@ -1004,5 +924,5 @@
     devnav();
   }
 
-  window.LAMF = { T, render, renderPRD, withModal, loader, SEL_DEFAULT, SCREENS, FLOW, BEHAVIOUR, LEGAL, OTP_RULES, OTP_ERR, MOBILE_ERR, FUNDS, F, PORTFOLIO, CUSTOMER };
+  window.LAMF = { T, render, renderPRD, withModal, loader, SEL_DEFAULT, SCREENS, FLOW, BEHAVIOUR, OTP_RULES, OTP_ERR, MOBILE_ERR, FUNDS, F, PORTFOLIO, CUSTOMER };
 })();
