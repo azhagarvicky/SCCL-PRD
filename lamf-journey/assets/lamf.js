@@ -597,6 +597,7 @@
   const OTP_RULES = {
     length: 6,
     resendSeconds: 30,        // timer runs 0:30 → 0:01, then Resend OTP is enabled
+    validitySeconds: 30,      // an OTP is valid for 30 seconds after it is sent (P-04)
     maxResend: 3,             // 3 back-to-back resends
     resendBlockMin: 15,       // then blocked for 15 minutes
     maxWrong: 3,              // 3 wrong OTP attempts
@@ -606,6 +607,7 @@
   // Current live LOS messages (PRD Sl. No 3, DISC-106)
   const OTP_ERR = {
     wrong: 'Invalid OTP',
+    expired: 'Invalid request id',   // OTP submitted after 30 seconds (current live wording, CR-09)
     wrongBlocked: (m) => `Maximum OTP retry limit reached. Please retry again after ${m} minute(s).`,
     resendBlocked: (m) => `Error: Maximum OTP resend limit reached. Please retry again after ${m} minute(s).`,
   };
@@ -716,8 +718,10 @@
       // ---- resend timer ----
       let tick = null;
       const stopTick = () => { if (tick) { clearInterval(tick); tick = null; } };
+      let sentAt = Date.now();                     // when the current OTP was sent
       const startTimer = () => {
         stopTick();
+        sentAt = Date.now();
         let left = OTP_RULES.resendSeconds;
         const paint = () => {
           if (left > 0) {
@@ -781,6 +785,7 @@
         if (v.length !== OTP_RULES.length || !consent.checked) return;
         // after 3 back to back wrong OTPs the customer is blocked for 60 minutes; shown on the next attempt
         if (st.wrongUntil > Date.now()) return showErr(OTP_ERR.wrongBlocked(minsLeft(st.wrongUntil)));
+        if (Date.now() - sentAt > OTP_RULES.validitySeconds * 1000) return showErr(OTP_ERR.expired);   // OTP expired
 
         if (v !== OTP_RULES.demoOtp) {               // wrong OTP → "Invalid OTP" (1st, 2nd and 3rd attempt)
           wrong += 1;
