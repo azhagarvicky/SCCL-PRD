@@ -88,3 +88,5 @@ body.prd { background: #F4F5F6; color: #111; }
 }
 
 .prd-body .raised { display: block; margin-top: 6px; font-size: 11.5px; font-weight: 700; color: #175CD3; }   /* DISC-091 */
+.prd-body .chg { margin: 4px 0 2px; padding: 6px 9px; background: #F9FAFB; border-left: 3px solid #84CAFF; border-radius: 4px; }   /* current vs to be changed (DISC-092) */
+.prd-body .chg > div + div { margin-top: 3px; }

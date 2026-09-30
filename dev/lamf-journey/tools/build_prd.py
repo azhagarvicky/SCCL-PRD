@@ -44,9 +44,21 @@ def pend(*ids):
 # ---- To be Implemented (DISC-091) ----------------------------------------
 # Items defined in this PRD that are not yet built in the live LOS journey.
 # (ID, Module, Where in the PRD, What has to be implemented, Raised on)
+def change(now, new):
+    """Current behaviour in the live LOS journey vs what it has to change to (DISC-092)."""
+    return f'<div class="chg"><div><b>Current:</b> {now}</div><div><b>To be changed as:</b> {new}</div></div>'
+
 TO_IMPLEMENT = [
- ('T-01', 'Module 1', 'Sl. No 2 – Mobile Number field',
-  'Show the four mobile number validation messages exactly as written in this PRD (empty number, less than 10 digits, first digit 0 to 5, non numeric character). Wording approved in P-01.', '30-09-2026'),
+ ('T-01', 'Module 1', 'Sl. No 2 – Mobile Number field (Continue CTA with no mobile number)',
+  change('“*Required”', '“Please enter your MF linked mobile number.” – displayed when the user clicks the Continue CTA without entering the mobile number'), '30-09-2026'),
+ ('T-02', 'Module 1', 'Sl. No 2 – Mobile Number field (less than 10 digits)',
+  change('“*Invalid mobile number”', '“Mobile number must be 10 digits.” – displayed when the user clicks the Continue CTA with less than 10 digits, and on exit from the field'), '30-09-2026'),
+ ('T-03', 'Module 1', 'Sl. No 2 – Mobile Number field (first digit 0 to 5)',
+  change('“Error: Invalid phone number” – displayed only when the user clicks the Continue CTA',
+         '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed as soon as the customer attempts a first digit of 0 to 5'), '30-09-2026'),
+ ('T-04', 'Module 1', 'Sl. No 2 – Mobile Number field (non numeric character)',
+  change('No validation – the character simply cannot be entered',
+         'The character still cannot be entered, and “Only numbers are allowed. Letters, spaces and special characters cannot be entered.” is displayed when the customer attempts a non numeric character'), '30-09-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -111,12 +123,12 @@ MODULES = [
             Input_Value_format='Numeric only',
             Action='User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable. A first digit of 0 to 5 shall not be accepted.',
             Validation=[
-              '“Please enter your MF linked mobile number.” – displayed when user clicks Continue CTA without entering the mobile number',
-              '“Mobile number must be 10 digits.” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field',
-              '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5',
-              '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character',
+              'When the user clicks the Continue CTA without entering the mobile number' + change('“*Required”', '“Please enter your MF linked mobile number.”') + todo('T-01'),
+              'When the user clicks the Continue CTA with less than 10 digits, and on exit from the field' + change('“*Invalid mobile number”', '“Mobile number must be 10 digits.”') + todo('T-02'),
+              'When the customer attempts a first digit of 0 to 5' + change('“Error: Invalid phone number” – displayed only when the user clicks the Continue CTA', '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed as soon as the first digit 0 to 5 is attempted') + todo('T-03'),
+              'When the customer attempts a non numeric character' + change('No validation – the character simply cannot be entered', 'The character still cannot be entered, and “Only numbers are allowed. Letters, spaces and special characters cannot be entered.” is displayed') + todo('T-04'),
             ],
-            Note=todo('T-01') + ' The validation messages above are the approved wording (P-01, answered). They are not yet in the live LOS journey and have to be implemented.'), OK),
+            Note='Approved wording (P-01). “Current” is the live LOS journey today; each change is tracked in To be Implemented.'), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
         (img('f02-tnc.png', 120), spec(Field_Name='T&amp;C', Field_Type='Hyperlink',
@@ -277,7 +289,7 @@ COMPLETED = [
  ('P-15', 'Module 2', 'Which screen opens after a successful OTP submission?',
   'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
  ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.',
-  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are tracked as ' + todo('T-01') + '.', '29-09-2026'),
+  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are tracked as ' + todo('T-01', 'T-02', 'T-03', 'T-04') + '.', '29-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
