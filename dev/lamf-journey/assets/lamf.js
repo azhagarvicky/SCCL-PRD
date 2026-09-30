@@ -803,8 +803,8 @@
       cta.addEventListener('click', () => {
         if (isBlocked()) return showBlocked();
         const v = otpValue();
-        if (v.length !== OTP_RULES.length) return showErr(OTP_ERR.incomplete);
-        if (!consent.checked) return showErr(OTP_ERR.consent);
+        // grey CTA (fewer than 6 digits or no consent) cannot be clicked, so no validation is shown (DISC-097)
+        if (v.length !== OTP_RULES.length || !consent.checked) return;
 
         if (v !== OTP_RULES.demoOtp) {               // wrong OTP
           st.wrong += 1; save();
