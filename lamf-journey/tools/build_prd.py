@@ -179,8 +179,7 @@ MODULES = [
                    ('CTA', '“Submit OTP” – grey until all 6 digits are entered and the consent is ticked, then yellow'),
                    ('Validation messages', '<ul><li>“Invalid OTP”</li>'
                     '<li>“Maximum OTP retry limit reached. Please retry again after 60 minute(s).”</li>'
-                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”</li>'
-                    '<li>“Please provide the consent to proceed.”</li></ul>'),
+                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”</li></ul>'),
                ])),
       'data': ('<b>OTP Entered:</b> 6 digit numeric<br><br>'
                '<b>OTP Verified:</b><ul><li>Yes</li><li>No</li></ul><br>'
@@ -188,8 +187,7 @@ MODULES = [
                '<b>Resend Count:</b> 0–3<br><br>'
                '<b>Wrong Attempt Count:</b> 0–3<br><br>'
                '<b>Blocked Until:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
-               '<b>Experian Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
-               '<b>Experian Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+               '<b>Experian Consent:</b><ul><li>Yes</li><li>No</li></ul>'),
       'status': WIP,
       'fields': [
         (img('f03-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
@@ -214,8 +212,7 @@ MODULES = [
             Validation='“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).” – displayed when the customer clicks Resend OTP after the 3rd resend'), OK),
         (img('f03-consent.png', 360), spec(Field_Name='(Checkbox) Experian consent', Field_Type='Check box',
             Action='User has to tick this checkbox to appoint Shriram Credit as the authorised representative to receive the credit information from Experian for the purpose of providing / evaluating loan offers.',
-            Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered.',
-            Validation='“Please provide the consent to proceed.”'), OK),
+            Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
         (img('f03-cta.png', 360), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall check all the conditions of this screen. If every condition is met, the system shall verify the OTP, trigger the Experian API with the mobile number to retrieve the credit score, and navigate the customer to the PAN Verification screen. If any condition fails, the respective validation shall be displayed and the customer shall not be allowed to proceed.',
             Condition='Enabled only after all 6 OTP digits are entered and the Experian consent is ticked, so no validation is shown for fewer than 6 digits. After 3 consecutive wrong OTP attempts the customer is blocked for 60 minutes.',
