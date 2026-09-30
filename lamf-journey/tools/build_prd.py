@@ -137,13 +137,13 @@ MODULES = [
         (img('f02-field.png', 360), spec(Field_Name='Mobile Number', Field_Type='Text Field',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='Numeric only',
-            Action='User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable.',
+            Action='User has to enter the MF linked mobile number.',
+            Condition='Only numbers can be entered. Alphabets, spaces and special characters cannot be entered, and no message is shown.',
             # Current live LOS behaviour (DISC-095); the new wording is tracked only in Pending Changes
             Validation=[
               '“*Required” – displayed when user clicks Continue CTA without entering the mobile number',
               '“*Invalid mobile number” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field',
               '“Error: Invalid phone number” – displayed when the mobile number starts with 0 to 5 and the user clicks Continue CTA',
-              'No message – a non numeric character simply cannot be entered',
             ]), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
@@ -200,12 +200,10 @@ MODULES = [
         (img('f03-otp.png', 360), spec(Field_Name='Enter OTP', Field_Type='6 single character boxes',
             Minimum_Character='6 Char', Maximum_Character='6 Char', Value_Type='User inputs',
             Input_Value_format='Numeric only',
-            Action='User has to enter the 6 digit OTP received on the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable and the customer shall not be able to enter more than 6 characters.',
+            Action='User has to enter the 6 digit OTP received on the MF linked mobile number.',
+            Condition='Only numbers can be entered, up to 6 digits. Alphabets, spaces and special characters cannot be entered, and no message is shown.',
             # Current live LOS behaviour (DISC-096)
-            Validation=[
-              'No message – a non numeric character simply cannot be entered',
-              '“Invalid OTP” – displayed on a wrong OTP (1st, 2nd and 3rd attempt)',
-            ]), OK),
+            Validation='“Invalid OTP” – displayed on a wrong OTP (1st, 2nd and 3rd attempt)'), OK),
         (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
             Condition='The customer can click Resend OTP 3 times (1st, 2nd and 3rd). On the next click the customer is blocked from resending for 15 minutes.',
