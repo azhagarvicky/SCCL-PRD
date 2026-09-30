@@ -22,6 +22,11 @@ def spec(**kw):
             rows.append(f'<p><b>{label}:</b> {v}</p>')
     return '<div class="spec">' + ''.join(rows) + '</div>'
 
+def screen_content(items):
+    """“Screen Content” block: every text shown on the screen, in one place (DISC-094)."""
+    rows = ''.join(f'<li><b>{k}:</b> {v}</li>' for k, v in items)
+    return f'<div class="spec"><p><b>Screen Content:</b></p><ul class="content-list">{rows}</ul></div>'
+
 def data_points(html_):
     """Data Points Required: field name in bold, value in regular weight (DISC-087),
     e.g. <b>Mobile Number:</b> 10 digit numeric. Lines already starting in bold are kept."""
@@ -41,7 +46,7 @@ def pend(*ids):
     return ' '.join(f'<a class="pend-ref" href="#{p}" onclick="{js.format(p=p)}" title="Open pending clarification {p}">'
                     f'Pending · {p}</a>' for p in ids)
 
-# ---- To be Implemented (DISC-091) ----------------------------------------
+# ---- Pending Changes / Completed Changes (DISC-091, renamed DISC-094) ----------
 # Items defined in this PRD that are not yet built in the live LOS journey.
 # (ID, Module, Where in the PRD, What has to be implemented, Raised on)
 def change(now, new):
@@ -49,14 +54,14 @@ def change(now, new):
     return f'<div class="chg"><div><b>Current:</b> {now}</div><div><b>To be changed as:</b> {new}</div></div>'
 
 TO_IMPLEMENT = [
- ('T-01', 'Module 1', 'Sl. No 2 – Mobile Number field (Continue CTA with no mobile number)',
+ ('CR-01', 'Module 1', 'Sl. No 2 – Mobile Number field (Continue CTA with no mobile number)',
   change('“*Required”', '“Please enter your MF linked mobile number.” – displayed when the user clicks the Continue CTA without entering the mobile number'), '30-09-2026'),
- ('T-02', 'Module 1', 'Sl. No 2 – Mobile Number field (less than 10 digits)',
+ ('CR-02', 'Module 1', 'Sl. No 2 – Mobile Number field (less than 10 digits)',
   change('“*Invalid mobile number”', '“Mobile number must be 10 digits.” – displayed when the user clicks the Continue CTA with less than 10 digits, and on exit from the field'), '30-09-2026'),
- ('T-03', 'Module 1', 'Sl. No 2 – Mobile Number field (first digit 0 to 5)',
+ ('CR-03', 'Module 1', 'Sl. No 2 – Mobile Number field (first digit 0 to 5)',
   change('“Error: Invalid phone number” – displayed only when the user clicks the Continue CTA',
          '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed as soon as the customer attempts a first digit of 0 to 5'), '30-09-2026'),
- ('T-04', 'Module 1', 'Sl. No 2 – Mobile Number field (non numeric character)',
+ ('CR-04', 'Module 1', 'Sl. No 2 – Mobile Number field (non numeric character)',
   change('No validation – the character simply cannot be entered',
          'The character still cannot be entered, and “Only numbers are allowed. Letters, spaces and special characters cannot be entered.” is displayed when the customer attempts a non numeric character'), '30-09-2026'),
 ]
@@ -66,14 +71,14 @@ IMPLEMENTED = [
 ]
 
 def todo(*ids):
-    """Blue badge “To be implemented · T-01” that jumps to its row in the To be Implemented list;
-    once the item is in IMPLEMENTED it shows as a green “Implemented · T-01” badge (DISC-088, DISC-091)."""
+    """Blue tag “To be changed · CR-01” that jumps to its row in the Pending Changes list;
+    once the item is in IMPLEMENTED it shows as a green “Changed · CR-01” tag (DISC-088, DISC-091, DISC-094)."""
     done = {i[0] for i in IMPLEMENTED}
     js = ("var t=document.getElementById('{p}');if(t){{var d=t.closest('details');if(d)d.open=true;"
           "t.scrollIntoView({{behavior:'smooth',block:'center'}});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}}return false")
     return ' '.join(f'<a class="{"done-ref" if t in done else "todo-ref"}" href="#{t}" onclick="{js.format(p=t)}" '
-                    f'title="{"Implemented in the live LOS journey" if t in done else "Defined in the PRD, not yet in the live LOS journey"} – open {t}">'
-                    f'{"Implemented" if t in done else "To be implemented"} · {t}</a>' for t in ids)
+                    f'title="{"Changed in the live LOS journey" if t in done else "Defined in the PRD, not yet changed in the live LOS journey"} – open {t}">'
+                    f'{"Changed" if t in done else "To be changed"} · {t}</a>' for t in ids)
 
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
@@ -112,7 +117,17 @@ MODULES = [
       'func': 'User entering the MF linked Mobile Number for the mobile number verification',
       'desc': ('<p>The system shall display the “Enter your MF linked Mobile Number” pop up over the landing page. '
                'While the pop up is open the background page shall remain frozen and shall not scroll; the pop up itself '
-               'shall scroll only when its content does not fit the screen (for example when the customer has zoomed in).</p>'),
+               'shall scroll only when its content does not fit the screen (for example when the customer has zoomed in).</p>'
+               + screen_content([
+                   ('Pop up title', '“Enter your MF linked Mobile Number”'),
+                   ('Close icon', '(X) at the top right'),
+                   ('Mobile Number field placeholder', '“9876543210”'),
+                   ('Consent checkbox text', '“By proceeding, I agree to T&amp;C and Privacy Policy of Shriram Credit.” – T&amp;C and Privacy Policy are hyperlinks'),
+                   ('CTA', '“Continue” – grey until the checkbox is ticked, then yellow'),
+                   ('Validation messages', '<ul><li>“Please enter your MF linked mobile number.”</li><li>“Mobile number must be 10 digits.”</li>'
+                    '<li>“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.”</li>'
+                    '<li>“Only numbers are allowed. Letters, spaces and special characters cannot be entered.”</li></ul>'),
+               ])),
       'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': WIP,
       'fields': [
@@ -123,10 +138,10 @@ MODULES = [
             Input_Value_format='Numeric only',
             Action='User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable. A first digit of 0 to 5 shall not be accepted.',
             Validation=[
-              '“Please enter your MF linked mobile number.” – displayed when user clicks Continue CTA without entering the mobile number ' + todo('T-01'),
-              '“Mobile number must be 10 digits.” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field ' + todo('T-02'),
-              '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5 ' + todo('T-03'),
-              '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character ' + todo('T-04'),
+              '“Please enter your MF linked mobile number.” – displayed when user clicks Continue CTA without entering the mobile number ' + todo('CR-01'),
+              '“Mobile number must be 10 digits.” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field ' + todo('CR-02'),
+              '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5 ' + todo('CR-03'),
+              '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character ' + todo('CR-04'),
             ]), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
@@ -239,19 +254,19 @@ PENDING_COLUMNS = [
  ('When answered', 'The answer is written into the PRD and the question moves to Completed Clarifications below'),
 ]
 
-# Column guides for the To be Implemented / Implemented lists (DISC-091)
+# Column guides for the Pending Changes / Completed Changes lists (DISC-091, DISC-094)
 TODO_COLUMNS = [
- ('ID', 'Reference number. Wherever the PRD above carries a blue “To be implemented · T-01” badge, it jumps to its row here'),
+ ('ID', 'Change reference (CR). Wherever the PRD above carries a blue “To be changed · CR-01” tag, it jumps to its row here'),
  ('Module', 'Which part of the journey the item belongs to'),
  ('Where in the PRD', 'The Sl. No and field that defines it'),
- ('What has to be implemented', 'What the live LOS journey is missing today, and the date it was raised'),
- ('When done', 'Once the owner confirms it is live, the item moves to Implemented below and its badges turn green'),
+ ('What has to change', 'How the live LOS journey behaves today and what it has to change to, with the date it was raised'),
+ ('When done', 'Once the owner confirms the change is live, it moves to Completed Changes below and its tags turn green'),
 ]
 IMPLEMENTED_COLUMNS = [
- ('ID', 'Reference number (kept when an item moves from To be Implemented)'),
+ ('ID', 'Change reference (kept when it moves from Pending Changes)'),
  ('Module', 'Which part of the journey the item belongs to'),
  ('Where in the PRD', 'The Sl. No and field that defines it'),
- ('What was implemented', 'What is now live in the LOS journey, and the date the owner confirmed it'),
+ ('What was changed', 'What is now live in the LOS journey, and the date the owner confirmed it'),
 ]
 
 # Column guide shown by the (i) next to the Completed Clarifications heading
@@ -288,7 +303,7 @@ COMPLETED = [
  ('P-15', 'Module 2', 'Which screen opens after a successful OTP submission?',
   'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
  ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.',
-  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are tracked as ' + todo('T-01', 'T-02', 'T-03', 'T-04') + '.', '29-09-2026'),
+  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are tracked as ' + todo('CR-01', 'CR-02', 'CR-03', 'CR-04') + '.', '29-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
@@ -338,9 +353,9 @@ def render():
         out.append(f'<tr id="{cid}"><td>{cid}</td><td>{mod}</td><td>{q}</td><td>{a}<span class="answered">Answered {on}</span></td></tr>')
     out.append('</tbody></table></details>')
 
-    # To be Implemented / Implemented – same pattern as the clarification lists (DISC-091)
-    out.append(f'<h2>To be Implemented<span class="count impl">{len(TO_IMPLEMENT)}</span>{info("How to read this list", TODO_COLUMNS)}</h2><table class="int"><thead><tr>'
-               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th style="width:220px">Where in the PRD</th><th>What has to be implemented</th>'
+    # Pending Changes / Completed Changes – same pattern as the clarification lists (DISC-091)
+    out.append(f'<h2>Pending Changes<span class="count impl">{len(TO_IMPLEMENT)}</span>{info("How to read this list", TODO_COLUMNS)}</h2><table class="int"><thead><tr>'
+               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th style="width:220px">Where in the PRD</th><th>What has to change</th>'
                '</tr></thead><tbody>')
     for tid, mod, where, what, on in TO_IMPLEMENT:
         out.append(f'<tr id="{tid}"><td>{tid}</td><td>{mod}</td><td>{where}</td><td>{what}<span class="raised">Raised {on}</span></td></tr>')
@@ -348,14 +363,14 @@ def render():
         out.append('<tr><td colspan="4">Nothing pending.</td></tr>')
     out.append('</tbody></table>')
     out.append('<details class="done"><summary>'
-               f'<span class="done-title">Implemented<span class="count ok">{len(IMPLEMENTED)}</span></span>'
+               f'<span class="done-title">Completed Changes<span class="count ok">{len(IMPLEMENTED)}</span></span>'
                f'{info("How to read this list", IMPLEMENTED_COLUMNS)}'
                '<span class="chev" aria-hidden="true"></span></summary>'
                '<table class="int"><thead><tr>'
-               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th style="width:220px">Where in the PRD</th><th>What was implemented</th>'
+               '<th style="width:70px">ID</th><th style="width:110px">Module</th><th style="width:220px">Where in the PRD</th><th>What was changed</th>'
                '</tr></thead><tbody>')
     for tid, mod, where, what, on in IMPLEMENTED:
-        out.append(f'<tr id="{tid}"><td>{tid}</td><td>{mod}</td><td>{where}</td><td>{what}<span class="answered">Implemented {on}</span></td></tr>')
+        out.append(f'<tr id="{tid}"><td>{tid}</td><td>{mod}</td><td>{where}</td><td>{what}<span class="answered">Changed {on}</span></td></tr>')
     if not IMPLEMENTED:
         out.append('<tr><td colspan="4">None yet.</td></tr>')
     out.append('</tbody></table></details>')
