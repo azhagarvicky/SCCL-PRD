@@ -124,9 +124,7 @@ MODULES = [
                    ('Mobile Number field placeholder', '“9876543210”'),
                    ('Consent checkbox text', '“By proceeding, I agree to T&amp;C and Privacy Policy of Shriram Credit.” – T&amp;C and Privacy Policy are hyperlinks'),
                    ('CTA', '“Continue” – grey until the checkbox is ticked, then yellow'),
-                   ('Validation messages', '<ul><li>“Please enter your MF linked mobile number.”</li><li>“Mobile number must be 10 digits.”</li>'
-                    '<li>“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.”</li>'
-                    '<li>“Only numbers are allowed. Letters, spaces and special characters cannot be entered.”</li></ul>'),
+                   ('Validation messages', '<ul><li>“*Required”</li><li>“*Invalid mobile number”</li><li>“Error: Invalid phone number”</li></ul>'),
                ])),
       'data': '<b>Mobile Number:</b> 9597001623<br><br><b>Consent Accepted:</b><ul><li>Yes</li><li>No</li></ul><br><b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
       'status': WIP,
@@ -136,12 +134,13 @@ MODULES = [
         (img('f02-field.png', 360), spec(Field_Name='Mobile Number', Field_Type='Text Field',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='Numeric only',
-            Action='User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable. A first digit of 0 to 5 shall not be accepted.',
+            Action='User has to enter the MF linked mobile number. Alphabets, spaces and special characters shall not be enterable.',
+            # Current live LOS behaviour (DISC-095); the new wording is tracked only in Pending Changes
             Validation=[
-              '“Please enter your MF linked mobile number.” – displayed when user clicks Continue CTA without entering the mobile number ' + todo('CR-01'),
-              '“Mobile number must be 10 digits.” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field ' + todo('CR-02'),
-              '“Mobile number cannot start with 0, 1, 2, 3, 4 or 5. Please enter a valid mobile number.” – displayed when the customer attempts a first digit of 0 to 5 ' + todo('CR-03'),
-              '“Only numbers are allowed. Letters, spaces and special characters cannot be entered.” – displayed when the customer attempts a non numeric character ' + todo('CR-04'),
+              '“*Required” – displayed when user clicks Continue CTA without entering the mobile number ' + todo('CR-01'),
+              '“*Invalid mobile number” – displayed when user clicks Continue CTA with less than 10 digits, and on exit from the field ' + todo('CR-02'),
+              '“Error: Invalid phone number” – displayed when the mobile number starts with 0 to 5 and the user clicks Continue CTA ' + todo('CR-03'),
+              'No message – a non numeric character simply cannot be entered ' + todo('CR-04'),
             ]), OK),
         (img('f02-consent.png', 360), spec(Field_Name='(Checkbox)', Field_Type='Check box',
             Action='User has to click the Checkbox. Once this checkbox is clicked then only the Continue CTA has to be enabled'), OK),
@@ -303,7 +302,7 @@ COMPLETED = [
  ('P-15', 'Module 2', 'Which screen opens after a successful OTP submission?',
   'Enter PAN Details (screen 04), after the Experian call is triggered.', '23-09-2026'),
  ('P-01', 'Module 1', 'Validation message wording: the shared sample PRD carries “*Required”, “*Invalid mobile number” and “Error: Invalid phone number”. The messages currently built follow the wording confirmed in discussion on 22-09-2026. Confirm which set is approved.',
-  'Use the validation messages as written in this PRD (Sl. No 2, Mobile Number field). They are not yet in the live LOS journey, so they are tracked as ' + todo('CR-01', 'CR-02', 'CR-03', 'CR-04') + '.', '29-09-2026'),
+  'Use the new validation wording given by the owner. The PRD row shows the current live messages; the new wording is tracked as ' + todo('CR-01', 'CR-02', 'CR-03', 'CR-04') + '.', '29-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
