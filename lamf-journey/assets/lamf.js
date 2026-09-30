@@ -603,13 +603,11 @@
     wrongBlockMin: 60,        // then blocked for 60 minutes
     demoOtp: '123456',        // prototype only – no OTP service is called
   };
+  // Current live LOS messages (PRD Sl. No 3, DISC-106)
   const OTP_ERR = {
-    chars: 'Only numbers are allowed. Letters, spaces and special characters cannot be entered.',
-    incomplete: 'Please enter the 6-digit OTP.',
-    consent: 'Please provide the consent to proceed.',
-    wrong: (left) => `The OTP you entered is incorrect. Please try again. ${left} attempt${left === 1 ? '' : 's'} remaining.`,
-    resendBlocked: (m) => `You have used all ${OTP_RULES.maxResend} OTP resend attempts. Please try again after ${m} minute${m === 1 ? '' : 's'}.`,
-    wrongBlocked: (m) => `You have entered an incorrect OTP ${OTP_RULES.maxWrong} times. Please try again after ${m} minute${m === 1 ? '' : 's'}.`,
+    wrong: 'Invalid OTP',
+    wrongBlocked: (m) => `Maximum OTP retry limit reached. Please retry again after ${m} minute(s).`,
+    resendBlocked: (m) => `Error: Maximum OTP resend limit reached. Please retry again after ${m} minute(s).`,
   };
 
   const MOBILE_ERR = {
@@ -694,50 +692,30 @@
       const mobile = store.get(K.mobile) || CUSTOMER.mobile;
       document.getElementById('otp-mobile').textContent = maskMobile(mobile);
 
+      // Blocks are kept against the mobile number (they survive closing the pop up).
+      // The wrong-attempt and resend counts are back to back in this pop up only: closing it starts again at 1 (DISC-100).
       const key = `${K.otp}.${mobile}`;
-      let st = store.get(key, { resend: 0, wrong: 0, blockedUntil: 0, reason: '' });
+      let st = store.get(key, {});
+      st = { wrongUntil: st.wrongUntil || 0, resendUntil: st.resendUntil || 0 };
       const save = () => store.set(key, st);
-      const minsLeft = () => Math.max(1, Math.ceil((st.blockedUntil - Date.now()) / 60000));
-      const isBlocked = () => st.blockedUntil > Date.now();
+      let wrong = 0, resends = 0;
+      const minsLeft = (until) => Math.max(1, Math.ceil((until - Date.now()) / 60000));   // N = time left in the block
 
       const showErr = (msg) => { err.textContent = msg || ''; boxes.forEach((b) => b.classList.toggle('has-err', !!msg)); };
       const otpValue = () => boxes.map((b) => b.value).join('');
 
       // Submit is enabled only when 6 digits are entered AND the consent is ticked
       const sync = () => {
-        const ok = otpValue().length === OTP_RULES.length && consent.checked && !isBlocked();
+        const ok = otpValue().length === OTP_RULES.length && consent.checked;
         cta.classList.toggle('btn-primary', ok);
         cta.classList.toggle('bold', ok);
         cta.classList.toggle('btn-disabled', !ok);
+        cta.setAttribute('aria-disabled', String(!ok));
       };
 
-      // ---- resend timer / blocked state ----
+      // ---- resend timer ----
       let tick = null;
       const stopTick = () => { if (tick) { clearInterval(tick); tick = null; } };
-      const startTick = (fn, ms) => { tick = setInterval(fn, ms); TIMERS.push(tick); };
-
-      const setEnabled = (on) => {
-        boxes.forEach((b) => { b.disabled = !on; });
-        consent.disabled = !on;
-        modal.classList.toggle('is-blocked', !on);
-      };
-
-      const showBlocked = () => {
-        stopTick();
-        setEnabled(false);
-        resendSlot.innerHTML = '<span class="mut">Resend OTP</span>';
-        const paint = () => {
-          if (!isBlocked()) {                       // block time is over → fresh start
-            st = { resend: 0, wrong: 0, blockedUntil: 0, reason: '' }; save();
-            stopTick(); setEnabled(true); showErr(''); startTimer(); sync(); return;
-          }
-          showErr(st.reason === 'wrong' ? OTP_ERR.wrongBlocked(minsLeft()) : OTP_ERR.resendBlocked(minsLeft()));
-        };
-        paint();
-        startTick(paint, 1000);                     // remaining minutes stay correct over time
-        sync();
-      };
-
       const startTimer = () => {
         stopTick();
         let left = OTP_RULES.resendSeconds;
@@ -752,33 +730,32 @@
           }
         };
         paint();
-        startTick(paint, 1000);
+        tick = setInterval(paint, 1000); TIMERS.push(tick);
       };
 
+      // Resend OTP can be clicked 3 times back to back; the next click blocks resending for 15 minutes
       const onResend = () => {
-        st.resend += 1; save();
-        boxes.forEach((b) => { b.value = ''; });
-        sync();
-        if (st.resend >= OTP_RULES.maxResend) {     // 3rd resend used → block
-          st.blockedUntil = Date.now() + OTP_RULES.resendBlockMin * 60000;
-          st.reason = 'resend'; save();
-          showBlocked();
-          return;
+        if (st.resendUntil > Date.now()) return showErr(OTP_ERR.resendBlocked(minsLeft(st.resendUntil)));
+        if (resends >= OTP_RULES.maxResend) {
+          st.resendUntil = Date.now() + OTP_RULES.resendBlockMin * 60000; save();
+          resends = 0;
+          return showErr(OTP_ERR.resendBlocked(minsLeft(st.resendUntil)));
         }
-        showErr('');
+        resends += 1;
+        boxes.forEach((b) => { b.value = ''; });
+        showErr(''); sync();
         startTimer();                                // OTP sent again, timer restarts
       };
 
-      // ---- OTP boxes: numeric only, one digit each, max 6 ----
+      // ---- OTP boxes: numeric only, one digit each, max 6; other characters simply cannot be entered (no message) ----
       boxes.forEach((box, idx) => {
         box.addEventListener('keydown', (e) => {
           if (e.key === 'Backspace' && !box.value && boxes[idx - 1]) { boxes[idx - 1].focus(); return; }
           if (e.key.length > 1 || e.ctrlKey || e.metaKey) return;
-          if (!/[0-9]/.test(e.key)) { e.preventDefault(); showErr(OTP_ERR.chars); }
+          if (!/[0-9]/.test(e.key)) e.preventDefault();
         });
         box.addEventListener('input', () => {
-          const before = box.value;
-          const digits = before.replace(/\D/g, '');
+          const digits = box.value.replace(/\D/g, '');
           if (digits.length > 1) {                   // pasted OTP → spread across the boxes
             digits.slice(0, OTP_RULES.length - idx).split('').forEach((d, k) => { if (boxes[idx + k]) boxes[idx + k].value = d; });
             const last = Math.min(idx + digits.length, OTP_RULES.length) - 1;
@@ -787,13 +764,11 @@
             box.value = digits;
             if (digits && boxes[idx + 1]) boxes[idx + 1].focus();
           }
-          if (digits !== before) showErr(OTP_ERR.chars);
-          else if (err.textContent === OTP_ERR.incomplete && otpValue().length === OTP_RULES.length) showErr('');
           sync();
         });
       });
 
-      consent.addEventListener('change', () => { if (err.textContent === OTP_ERR.consent) showErr(''); sync(); });
+      consent.addEventListener('change', sync);
 
       // Close icon → landing page. Edit → back to the mobile number screen (prefilled).
       modal.querySelector('.close').onclick = () => go('01) LAMF Landing Page');
@@ -801,35 +776,34 @@
 
       // ---- Submit OTP ----
       cta.addEventListener('click', () => {
-        if (isBlocked()) return showBlocked();
         const v = otpValue();
         // grey CTA (fewer than 6 digits or no consent) cannot be clicked, so no validation is shown (DISC-097)
         if (v.length !== OTP_RULES.length || !consent.checked) return;
+        // after 3 back to back wrong OTPs the customer is blocked for 60 minutes; shown on the next attempt
+        if (st.wrongUntil > Date.now()) return showErr(OTP_ERR.wrongBlocked(minsLeft(st.wrongUntil)));
 
-        if (v !== OTP_RULES.demoOtp) {               // wrong OTP
-          st.wrong += 1; save();
-          if (st.wrong >= OTP_RULES.maxWrong) {
-            st.blockedUntil = Date.now() + OTP_RULES.wrongBlockMin * 60000;
-            st.reason = 'wrong'; save();
-            showBlocked();
-            return;
+        if (v !== OTP_RULES.demoOtp) {               // wrong OTP → "Invalid OTP" (1st, 2nd and 3rd attempt)
+          wrong += 1;
+          if (wrong >= OTP_RULES.maxWrong) {
+            st.wrongUntil = Date.now() + OTP_RULES.wrongBlockMin * 60000; save();
+            wrong = 0;
           }
           boxes.forEach((b) => { b.value = ''; });
           boxes[0].focus();
           sync();
-          return showErr(OTP_ERR.wrong(OTP_RULES.maxWrong - st.wrong));
+          return showErr(OTP_ERR.wrong);
         }
 
         // All conditions met: mobile verified, consent given.
         // Experian credit-score API would be called here with the mobile number (INT-001);
         // the customer continues to PAN verification without waiting for the score.
-        st = { resend: 0, wrong: 0, blockedUntil: 0, reason: '' }; save();
+        st = { wrongUntil: 0, resendUntil: 0 }; save();
         showErr('');
         go('04) Enter PAN Details');
       });
 
       // initial state
-      if (isBlocked()) showBlocked(); else startTimer();
+      startTimer();
       sync();
     },
   };
