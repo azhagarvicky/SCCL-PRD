@@ -67,6 +67,15 @@ TO_IMPLEMENT = [
  ('CR-05', 'Module 2', 'Sl. No 3 – Enter OTP field (non numeric character)',
   change('No validation – the character simply cannot be entered',
          'The character still cannot be entered, and “Only numbers are allowed. Letters, spaces and special characters cannot be entered.” is displayed when the customer attempts a non numeric character'), '30-09-2026'),
+ ('CR-06', 'Module 2', 'Sl. No 3 – Enter OTP field (wrong OTP, 1st to 3rd back to back attempt)',
+  change('“Invalid OTP”',
+         '“The OTP you entered is incorrect. Please try again. You have 2 attempts left.” (1st wrong attempt) / “… You have 1 attempt left.” (2nd) / “The OTP you entered is incorrect. You have no attempts left.” (3rd)'), '30-09-2026'),
+ ('CR-07', 'Module 2', 'Sl. No 3 – Submit OTP (attempt after 3 wrong OTPs)',
+  change('“Maximum OTP retry limit reached. Please retry again after 60 minute(s).”',
+         '“You have entered an incorrect OTP 3 times. Please try again after N minute(s).” – N is the time left in the 60 minute block (e.g. a customer returning after 10 minutes sees 50)'), '30-09-2026'),
+ ('CR-08', 'Module 2', 'Sl. No 3 – Resend OTP (click after the 3rd resend)',
+  change('“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”',
+         '“You have used all 3 OTP resends. Please try again after N minute(s).” – N is the time left in the 15 minute block; no “Error:” prefix'), '30-09-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -178,9 +187,9 @@ MODULES = [
                    ('Resend line', '“Didn’t Receive OTP?” with the countdown timer (0:30 to 0:01), then the “Resend OTP” link'),
                    ('Experian consent checkbox text', '“I hereby consent to appoint Shriram Credit as my authorised representative to receive my credit information from Experian for the purpose of providing/ evaluating loan offers.”'),
                    ('CTA', '“Submit OTP” – grey until all 6 digits are entered and the consent is ticked, then yellow'),
-                   ('Validation messages', '<ul><li>“Invalid OTP”</li>'
-                    '<li>“Maximum OTP retry limit reached. Please retry again after 60 minute(s).”</li>'
-                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).”</li>'
+                   ('Validation messages', '<ul><li>“Invalid OTP” ' + todo('CR-06') + '</li>'
+                    '<li>“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” ' + todo('CR-07') + '</li>'
+                    '<li>“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).” ' + todo('CR-08') + '</li>'
                     '<li>No message for a non numeric character ' + todo('CR-05') + '</li></ul>'),
                ])),
       'data': ('<b>OTP Entered:</b> 6 digit numeric<br><br>'
@@ -206,18 +215,18 @@ MODULES = [
             Action='User has to enter the 6 digit OTP received on the MF linked mobile number.',
             Condition='Only numbers can be entered, up to 6 digits. Alphabets, spaces and special characters cannot be entered, and no message is shown. ' + todo('CR-05'),
             # Current live LOS behaviour (DISC-096)
-            Validation='“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt'), OK),
+            Validation='“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt ' + todo('CR-06')), OK),
         (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
             Condition='The customer can click Resend OTP 3 times (1st, 2nd and 3rd). On the next click the customer is blocked from resending for 15 minutes.',
-            Validation='“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).” – displayed when the customer clicks Resend OTP after the 3rd resend'), OK),
+            Validation='“Error: Maximum OTP resend limit reached. Please retry again after 15 minute(s).” – displayed when the customer clicks Resend OTP after the 3rd resend ' + todo('CR-08')), OK),
         (img('f03-consent.png', 360), spec(Field_Name='(Checkbox) Experian consent', Field_Type='Check box',
             Action='User has to tick this checkbox to appoint Shriram Credit as the authorised representative to receive the credit information from Experian for the purpose of providing / evaluating loan offers.',
             Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
         (img('f03-cta.png', 360), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall check all the conditions of this screen. If every condition is met, the system shall verify the OTP, trigger the Experian API with the mobile number to retrieve the credit score, and navigate the customer to the PAN Verification screen. If any condition fails, the respective validation shall be displayed and the customer shall not be allowed to proceed.',
             Condition='Enabled only after all 6 OTP digits are entered and the Experian consent is ticked, so no validation is shown for fewer than 6 digits. After 3 back to back wrong OTP attempts in the same pop up the customer is blocked for 60 minutes.',
-            Validation='“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – displayed on the next attempt after 3 wrong OTPs'), OK),
+            Validation='“Maximum OTP retry limit reached. Please retry again after 60 minute(s).” – displayed on the next attempt after 3 wrong OTPs ' + todo('CR-07')), OK),
       ],
     },
     {
