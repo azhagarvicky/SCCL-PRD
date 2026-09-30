@@ -198,7 +198,7 @@ MODULES = [
                '<b>Blocked Start Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Blocked End Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Experian Consent:</b><ul><li>Yes</li><li>No</li></ul>'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner – do not change without the owner's instruction
       'fields': [
         (img('f03-close.png', 160), spec(Field_Name='(X) Close Icon', Field_Type='Icon',
             Action='After clicking this, close the pop up and navigate the user to the landing page'), OK),
@@ -224,7 +224,7 @@ MODULES = [
         (img('f03-consent.png', 360), spec(Field_Name='(Checkbox) Experian consent', Field_Type='Check box',
             Action='User has to tick this checkbox to appoint Shriram Credit as the authorised representative to receive the credit information from Experian for the purpose of providing / evaluating loan offers.',
             Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
-        (img('f03-cta.png', 360), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
+        (states(('f03-cta.png', 'Before – disabled (grey) until all 6 digits are entered'), ('f03-cta-enabled.png', 'After – enabled once all 6 digits are entered')), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall validate the entered OTP. If the OTP is correct, the system shall trigger the Experian API with the mobile number to retrieve the credit score and navigate the customer to the PAN Verification screen. If the OTP is wrong, the customer shall not be allowed to proceed and the respective validation shall be displayed.',
             Condition='CTA is disabled (grey) and cannot be clicked until all 6 OTP digits are entered and the Experian consent checkbox is ticked, so no validation is shown for these. Once enabled, the wrong OTP and block validations are shown under the Enter OTP field.'), OK),
       ],
@@ -305,6 +305,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
  ('P-04', 'Module 2', 'OTP validity / expiry period.'),
