@@ -575,18 +575,6 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
 .input.has-err, .input.has-err:focus { border-color: var(--red); }
 
 /* ---------- T&C / Privacy Policy popup ---------- */
-.legal-overlay { z-index: 70; }
-.m-legal { width: 720px; max-height: 78vh; display: flex; flex-direction: column; border-radius: 16px; }
-.lg-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 26px 16px; border-bottom: 1px solid var(--line); }
-.lg-head h3 { font-size: 20px; font-weight: 700; }
-.lg-head .close { position: static; width: 22px; height: 22px; }
-.lg-body { overflow: auto; padding: 18px 26px 22px; }
-.lg-body h4 { font-size: 15px; font-weight: 700; margin: 16px 0 5px; }
-.lg-body h4:first-child { margin-top: 0; }
-.lg-body p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
-.lg-src { margin-top: 22px; font-size: 11.5px; color: var(--muted); font-style: italic; }
-.lg-foot { border-top: 1px solid var(--line); padding: 14px 26px; display: flex; justify-content: flex-end; }
-.lg-foot .btn { width: 148px; height: 42px; }
 
 /* ---------- OTP screen states ---------- */
 .otp input.has-err { border-color: var(--red); }

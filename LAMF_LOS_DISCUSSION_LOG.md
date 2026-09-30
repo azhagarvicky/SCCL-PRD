@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 30-09-2026 10:29 IST
+**Last Updated:** 30-09-2026 10:34 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -122,6 +122,7 @@
 | DISC-087 | 29-09-2026 | PRD | Data Points Required format | In the Data Points Required column the field name is bold and the value is regular, e.g. **Mobile Number:** 8098122853 – for the entire column | Applied to every row of the column (`data_points()` in `tools/build_prd.py`), so new rows follow it automatically. Values kept as they were (e.g. “10 digit numeric”) | Implemented |
 | DISC-088 | 29-09-2026 | PRD | Sl. No 1 Completed; Sl. No 2 data points; P-01 | (1) Mark Sl. No 1 Completed; once Completed nothing in that row changes unless the owner says so. (2) Sl. No 2 Data Points Required: Mobile Number: 9597001623; Consent Accepted: Yes / No as bullets; Consent Date & Time: DD-MMM-YYYY; HH:MM:SS. (3) P-01: use the validation messages as displayed in the PRD; they are not integrated in the live journey, so mark them as to be implemented – and use this marking wherever it applies | Sl. No 1 set to Completed and frozen (rule added to CLAUDE.md). Sl. No 2 data points updated. P-01 moved to Completed Clarifications; the Mobile Number field's Note now carries a blue “To be implemented” badge (`todo()` in `tools/build_prd.py`) for use wherever something is defined in the PRD but not yet in the live LOS journey. Also fixed a DISC-087 formatting bug that bolded “DD-MMM-YYYY; HH:” in Sl. No 1 and 2 | Implemented |
 | DISC-089 | 30-09-2026 | PRD Sl. No 2 / Screen 02 | Submitted Date & Time; checkbox highlight; no checkbox validation | (1) Data point “Consent Date & Time” renamed “Submitted Date & Time”. (2) Highlight the checkbox line in its screenshot the same way as T&C. (3) Remove the checkbox validation “Please accept the T&C and Privacy Policy to continue.”: the Continue CTA is grey and cannot be clicked until the checkbox is ticked, so no validation can appear | Data point renamed; red box (same colour and 2px width as the T&C crop) drawn around the checkbox line in `prd-assets/f02-consent.png`; checkbox validation removed and the Continue CTA condition reworded (validation order now starts at mobile number). Prototype aligned: the grey Continue CTA no longer shows the consent message when clicked (it does nothing) and is marked aria-disabled | Implemented |
+| DISC-090 | 30-09-2026 | PRD Sl. No 2 / Screen 02 | Checkbox highlight; T&C and Privacy Policy links | (1) Highlight only the consent checkbox in the screenshot, not the whole line. (2) T&C and Privacy Policy hyperlinks must redirect the user to the mentioned links instead of opening a pop up | Screenshot box now surrounds the checkbox only. T&C → https://www.shriramcredit.in/terms-and-conditions and Privacy Policy → https://www.shriramcredit.in/privacy-policy, opened in a new tab so the number and consent already entered are kept; the pop ups (and their Accept / Close behaviour) removed from the prototype and the PRD. Supersedes DISC-009 (CHG-003) | Implemented |
 
 ---
 
@@ -522,6 +523,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | CHG-001 | 27-09-2026 | Review comments | Comments tool on the dev site only; production without it (DISC-026) | Comments tool on dev and production alike | User: dev and production should not differ; production is to be an exact copy of dev | Implemented |
 | CHG-002 | 27-09-2026 | Release process | Every change released to dev and production together (DISC-027, first version) | Patches to dev only; production updated only on the user's "push to production", as an exact copy of dev | User corrected the earlier instruction the same day | Confirmed |
+| CHG-003 | 30-09-2026 | Mobile Number Verification | T&C / Privacy Policy links open a pop up with Close and Accept (DISC-009) | Links redirect to the Shriram Credit T&C and Privacy Policy pages in a new tab; no pop up | User instruction | Implemented |
 
 ---
 
@@ -532,8 +534,8 @@
 | PEND-001 | Landing page | Should header/footer navigation links do anything in the prototype? | 22-09-2026 | **Partly answered 27-09-2026** – phone number and Contact Us defined (DISC-023); About Us, Product & Services, Investors, Learning Lounge, Careers and footer links still open |
 | PEND-002 | Mobile Verification | Any backend check on the mobile number at this step (existing customer, duplicate/ongoing application, blacklist)? | 22-09-2026 | Open |
 | PEND-003 | Mobile Verification | Does Continue call an OTP-send API, and what is the failure behaviour? | 22-09-2026 | Open |
-| PEND-004 | Mobile Verification | Should Accept in the T&C/Privacy popup tick the consent checkbox, or only close the popup? | 22-09-2026 | Open |
-| PEND-005 | Mobile Verification | Should the T&C/Privacy popups carry the full verbatim legal text instead of the summary? | 22-09-2026 | Open |
+| PEND-004 | Mobile Verification | Should Accept in the T&C/Privacy popup tick the consent checkbox, or only close the popup? | 22-09-2026 | **Closed 30-09-2026** – no pop up any more; the links open the live Shriram Credit pages (DISC-090) |
+| PEND-005 | Mobile Verification | Should the T&C/Privacy popups carry the full verbatim legal text instead of the summary? | 22-09-2026 | **Closed 30-09-2026** – no pop up any more; the links open the live Shriram Credit pages (DISC-090) |
 | PEND-006 | OTP | OTP length, resend timer duration and number of resends allowed | 22-09-2026 | **Answered 23-09-2026** – 6 digits, 30-second timer, 3 resends (DISC-013). Validity period still open → PEND-021 |
 | PEND-007 | OTP | Wrong OTP handling — message, maximum attempts, lockout | 22-09-2026 | **Answered 23-09-2026** – validation shown; 3 wrong attempts → 60-minute block (DISC-013) |
 | PEND-008 | OTP | Is the Experian consent checkbox mandatory to submit? | 22-09-2026 | **Answered 23-09-2026** – mandatory; Submit enabled only with consent + 6 digits (DISC-013) |
