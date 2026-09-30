@@ -833,8 +833,24 @@
       });
       document.getElementById('pan-dob-cal').onclick = () => { try { picker.showPicker(); } catch (e) { picker.focus(); picker.click(); } };
       picker.addEventListener('change', () => { if (!picker.value) return; const [y, m, d] = picker.value.split('-'); dob.value = `${d}/${m}/${y}`; err(dob, ''); });
-      // PAN: capitals, letters and numbers only; the format is checked on Continue
-      pan.addEventListener('input', () => { pan.value = pan.value.toUpperCase().replace(/[^A-Z0-9 ]/g, ''); err(pan, ''); });
+      // PAN (DISC-111): each character must fit its position – 1–5 letters with the 4th always P (individual PAN only),
+      // 6–9 numbers, 10th a letter. A character that does not fit is not entered and the reason is shown straight away
+      // (CR-11, proposed wording). Shown as ABCDE 1234 F.
+      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : 'The 4th character must be P – only individual PAN is allowed.')
+        : i < 5 ? (/[A-Z]/.test(c) ? '' : 'The first 5 characters of the PAN must be letters.')
+        : i < 9 ? (/[0-9]/.test(c) ? '' : 'Characters 6 to 9 of the PAN must be numbers.')
+        : (/[A-Z]/.test(c) ? '' : 'The last character of the PAN must be a letter.');
+      pan.addEventListener('input', () => {
+        let kept = '', msg = '';
+        for (const c of pan.value.toUpperCase().replace(/\s/g, '')) {
+          if (kept.length >= 10) break;
+          const why = PAN_RULE(kept.length, c);
+          if (why) { msg = why; continue; }
+          kept += c;
+        }
+        pan.value = kept.length > 9 ? `${kept.slice(0, 5)} ${kept.slice(5, 9)} ${kept.slice(9)}` : kept.length > 5 ? `${kept.slice(0, 5)} ${kept.slice(5)}` : kept;
+        err(pan, msg);
+      });
 
       const parseDob = (v) => {
         const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v); if (!m) return null;
@@ -853,7 +869,7 @@
         else if (age(d) < 18 || age(d) > 70) fail(dob, 'Your age must be between 18 and 70 years.');
         const p = pan.value.replace(/\s/g, '');
         if (!p) fail(pan, '*Required');
-        else if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter a valid PAN Number (e.g. ABCDE1234F).');
+        else if (!/^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter a valid PAN Number (e.g. ABCDE1234F).');
         if (!ok) return;
         store.set(K.mobile + '.pan', { name: name.value.trim(), dob: dob.value, pan: p });
         go('05) LOS to MF Central Redirection consent page');
