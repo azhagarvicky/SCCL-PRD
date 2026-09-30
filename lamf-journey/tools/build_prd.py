@@ -89,6 +89,10 @@ def todo(*ids):
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
 
+def states(*pairs):
+    """Several screenshots of one element, each with a caption (e.g. before / after) (DISC-105)."""
+    return ''.join(f'<figure class="state">{img(src)}<figcaption>{cap}</figcaption></figure>' for src, cap in pairs)
+
 # Row status (DISC-086): YTS = yet to start, WIP = in progress, DONE = Completed.
 # A row is moved to Completed only on the owner's explicit confirmation.
 YTS = 'YTS'
@@ -213,7 +217,7 @@ MODULES = [
               '“Invalid OTP” – displayed on each wrong OTP, for the 1st, 2nd and 3rd back to back wrong attempt. Wrong attempts are counted only while the pop up stays open: if the customer closes the pop up and then enters a wrong OTP again, it is counted as the 1st attempt ' + todo('CR-06'),
               '“Maximum OTP retry limit reached. Please retry again after N minute(s).” – after 3 back to back wrong OTP attempts in the same pop up the customer is blocked for 60 minutes; displayed on the next attempt. N is the time left in the 60 minute block (e.g. a customer returning after 10 minutes sees 50)',
             ]), OK),
-        (img('f03-resend.png', 360), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
+        (states(('f03-resend.png', 'Before – timer running, Resend OTP disabled'), ('f03-resend-enabled.png', 'After – timer ends, Resend OTP enabled')), spec(Field_Name='Resend OTP', Field_Type='Timer with hyperlink CTA',
             Action='The timer shall start at 0:30 and run down to 0:01. At 0 the Resend OTP CTA shall be enabled. On click, the OTP shall be sent again and the timer shall restart.',
             Condition='The customer can click Resend OTP 3 times back to back (1st, 2nd and 3rd) in the same pop up. On the next click the customer is blocked from resending for 15 minutes.',
             Validation='“Error: Maximum OTP resend limit reached. Please retry again after N minute(s).” – displayed when the customer clicks Resend OTP after the 3rd back to back resend. N is the time left in the 15 minute block (e.g. a customer returning after 10 minutes sees 5)'), OK),
