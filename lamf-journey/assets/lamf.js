@@ -127,7 +127,7 @@
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
         <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="contact" href="https://www.shriramcredit.in/contact-us">Contact Us</a></div>
       </header>`;
-    const right = type === 'logout' ? `<span style="width:22px;height:22px;display:block">${ICON.logout}</span>`
+    const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
       : `<span>${ICON.gauge}</span><span>${ICON.user}</span>`;
     return `<header class="hdr">${logoLink(img('shriram-logo.png'))}<div class="hdr-icons">${right}</div></header>`;
   };
@@ -266,9 +266,9 @@
     <main class="pan-bg"><div class="card pan-card">
       <h3>PAN Details</h3><p class="sub">Please verify your PAN to get the best loan offers</p>
       <label class="field-lbl">Mobile Number</label><input class="input readonly" value="${store.get(K.mobile) || CUSTOMER.mobile}" readonly>
-      <label class="field-lbl">Name as per PAN</label><input class="input">
-      <label class="field-lbl">DOB</label><div class="dob"><input class="input" placeholder="DD/MM/YYYY"><span>${ICON.calendar}</span></div>
-      <label class="field-lbl">PAN Number</label><input class="input" placeholder="ABCDE 1234 F" maxlength="12">
+      <label class="field-lbl">Name as per PAN</label><input class="input" id="pan-name" maxlength="150" autocomplete="off"><p class="field-err" id="pan-name-err"></p>
+      <label class="field-lbl">DOB</label><div class="dob"><input class="input" id="pan-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" autocomplete="off"><span id="pan-dob-cal" title="Select date" style="cursor:pointer">${ICON.calendar}</span><input type="date" id="pan-dob-picker" tabindex="-1" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0"></div><p class="field-err" id="pan-dob-err"></p>
+      <label class="field-lbl">PAN Number</label><input class="input" id="pan-no" placeholder="ABCDE 1234 F" maxlength="12" autocomplete="off"><p class="field-err" id="pan-no-err"></p>
       <button class="btn btn-primary bold btn-block" data-cta="continue">Continue</button>
     </div></main>`;
 
@@ -811,6 +811,54 @@
       startTimer();
       sync();
     },
+
+    '04) Enter PAN Details': () => {
+      // Current live behaviour (PRD Sl. No 4, DISC-110). Messages other than “*Required” are prototype wording until the
+      // live wording is confirmed (P-17).
+      const name = document.getElementById('pan-name'), dob = document.getElementById('pan-dob'), pan = document.getElementById('pan-no');
+      const picker = document.getElementById('pan-dob-picker');
+      const err = (el, msg) => { document.getElementById(el.id + '-err').textContent = msg || ''; el.classList.toggle('has-err', !!msg); };
+      const pad = (n) => String(n).padStart(2, '0');
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const iso = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      picker.min = '1920-01-01'; picker.max = iso(today);
+
+      // Name as per PAN: alphanumeric (and spaces), up to 150 characters
+      name.addEventListener('input', () => { name.value = name.value.replace(/[^A-Za-z0-9 ]/g, '').slice(0, 150); err(name, ''); });
+      // DOB: numbers only, typed as DD/MM/YYYY (slashes added automatically) or picked from the calendar icon
+      dob.addEventListener('input', () => {
+        const d = dob.value.replace(/\D/g, '').slice(0, 8);
+        dob.value = d.length > 4 ? `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}` : d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
+        err(dob, '');
+      });
+      document.getElementById('pan-dob-cal').onclick = () => { try { picker.showPicker(); } catch (e) { picker.focus(); picker.click(); } };
+      picker.addEventListener('change', () => { if (!picker.value) return; const [y, m, d] = picker.value.split('-'); dob.value = `${d}/${m}/${y}`; err(dob, ''); });
+      // PAN: capitals, letters and numbers only; the format is checked on Continue
+      pan.addEventListener('input', () => { pan.value = pan.value.toUpperCase().replace(/[^A-Z0-9 ]/g, ''); err(pan, ''); });
+
+      const parseDob = (v) => {
+        const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v); if (!m) return null;
+        const d = new Date(+m[3], +m[2] - 1, +m[1]);
+        return d.getDate() === +m[1] && d.getMonth() === +m[2] - 1 ? d : null;
+      };
+      const age = (d) => { let a = today.getFullYear() - d.getFullYear(); if (today < new Date(today.getFullYear(), d.getMonth(), d.getDate())) a -= 1; return a; };
+
+      document.querySelector('[data-cta="continue"]').addEventListener('click', () => {
+        let ok = true;
+        const fail = (el, msg) => { err(el, msg); ok = false; };
+        if (!name.value.trim()) fail(name, '*Required');
+        const d = parseDob(dob.value);
+        if (!dob.value) fail(dob, '*Required');
+        else if (!d || d < new Date(1920, 0, 1) || d > today) fail(dob, 'Please enter a valid date of birth.');
+        else if (age(d) < 18 || age(d) > 70) fail(dob, 'Your age must be between 18 and 70 years.');
+        const p = pan.value.replace(/\s/g, '');
+        if (!p) fail(pan, '*Required');
+        else if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter a valid PAN Number (e.g. ABCDE1234F).');
+        if (!ok) return;
+        store.set(K.mobile + '.pan', { name: name.value.trim(), dob: dob.value, pan: p });
+        go('05) LOS to MF Central Redirection consent page');
+      });
+    },
   };
 
   function wireBehaviour() {
@@ -886,6 +934,7 @@
     if (opts.scroll) requestAnimationFrame(() => window.scrollTo(0, opts.scroll === 'bottom' ? document.body.scrollHeight : opts.scroll));
     wireFlow();
     wireBehaviour();
+    document.querySelectorAll('[data-logout]').forEach((a) => { a.onclick = () => go('01) LAMF Landing Page'); });   // logout ends the journey
     if (opts.scrollTo) requestAnimationFrame(() => { const t = document.querySelector(opts.scrollTo); if (t) window.scrollTo(0, t.getBoundingClientRect().top + scrollY - (opts.offset || 0)); });
     // Popup open → freeze the page behind it (only the popup scrolls)
     const hasPopup = !!document.querySelector('.overlay');
