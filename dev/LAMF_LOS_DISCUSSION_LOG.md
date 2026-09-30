@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 30-09-2026 16:17 IST
+**Last Updated:** 30-09-2026 16:29 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -136,6 +136,7 @@
 | DISC-101 | 30-09-2026 | PRD Sl. No 3 | Proposed wording for the OTP validations | Owner asked for the Sl. No 3 validations to also have “to be changed” wording, with a proposed perfect message for each | Added as change requests with tags in the field specs and Screen Content: CR-06 “Invalid OTP” → “The OTP you entered is incorrect. Please try again. You have 2 attempts left.” / “… 1 attempt left.” / “The OTP you entered is incorrect. You have no attempts left.”; CR-07 retry-limit message → “You have entered an incorrect OTP 3 times. Please try again after N minute(s).” (N = time left); CR-08 resend-limit message → “You have used all 3 OTP resends. Please try again after N minute(s).” (N = time left, no “Error:” prefix). Wording proposed by Claude – awaiting the owner's confirmation | Proposed |
 | DISC-102 | 30-09-2026 | PRD Sl. No 3 | Resend back to back; CR-06 overlap; Submit OTP spec | (1) Resend OTP also counts back to back. (2) Owner suspected a duplication around CR-06. (3) Write the Submit OTP CTA the way the Continue CTA on the mobile number page is written | (1) Resend condition and validation now say “3 times back to back … in the same pop up”. (2) CR-06 and CR-08 are different (wrong OTP vs resend), but CR-06's 3rd-attempt message overlapped CR-07's block message; CR-06 now covers the 1st and 2nd wrong attempts only, and CR-07 is shown straight away on the 3rd back to back wrong OTP. (3) Submit OTP rewritten like Continue: Action (validate OTP → Experian call → PAN Verification, or show the validation), Condition (grey and not clickable until 6 digits + consent, validation order, 60 minute block) and the block validation with CR-07 | Implemented |
 | DISC-103 | 30-09-2026 | PRD Sl. No 3 | Block message belongs to the OTP field | CR-06 was tagged in the Enter OTP field but CR-07 in the Submit OTP CTA; both come from wrong OTP entries, so both belong in the OTP field | The 60 minute block rule and its message (CR-07) moved from Submit OTP to the Enter OTP field's Validation, next to “Invalid OTP” (CR-06). Submit OTP now only states when it is enabled and points to the OTP field for the validations; CR-07 in Pending Changes now refers to the Enter OTP field | Implemented |
+| DISC-104 | 30-09-2026 | PRD Sl. No 3 | CR-07 / CR-08 dropped; remaining time in current messages | CR-07 and CR-08 are not required. The existing (current) rows must mention that the minutes in the block messages are the time left in the 60 / 15 minute block (e.g. a customer returning after 10 minutes sees 50) | CR-07 and CR-08 removed from Pending Changes and their tags removed. Enter OTP and Resend OTP validations and the Screen Content now read “… Please retry again after N minute(s).” with N = time left (60 minute block: returning after 10 minutes sees 50; 15 minute block: sees 5). CR-06 keeps the 1st / 2nd / 3rd wording and notes that the next-attempt block message stays as today | Implemented |
 
 ---
 
