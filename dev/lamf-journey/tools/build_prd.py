@@ -82,6 +82,9 @@ TO_IMPLEMENT = [
  ('CR-12', 'Module 3', 'Sl. No 4 – DOB field (typed date before 01-Jan-1920 or after today)',
   change('“*Invalid date” next to the DOB label',
          '“Please enter a valid date of birth between 01-Jan-1920 and today.” – wording proposed'), '01-10-2026'),
+ ('CR-13', 'Module 3', 'Sl. No 4 – Name as per PAN (name verification failure, name match below 60%)',
+  change('Live message to be confirmed ' + pend('P-17'),
+         'A positive message that guides the customer, shown next to the Name as per PAN label: “Please enter your name exactly as it appears on your PAN card.” – wording proposed. The match percentage (60%) is never shown to the customer (DISC-117)'), '01-10-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -111,6 +114,7 @@ YTS = 'YTS'
 WIP = 'WIP'
 DONE = 'Completed'
 OK = WIP   # field-level status inside a row (not displayed)
+RED = ' When an error is shown for this field, its border turns red.'
 TAG = {YTS: 'yts', WIP: 'wip', DONE: 'ok'}
 
 # ---- PRD content ----------------------------------------------------------
@@ -268,7 +272,8 @@ MODULES = [
                     '<li>“*Invalid date” – DOB typed before 01-Jan-1920 or after today ' + todo('CR-12') + '</li>'
                     '<li>PAN Number not complete / not in the ABCDE1234F format ' + pend('P-17') + '</li>'
                     '<li>PAN character that does not fit its position – “1st character must be a letter” … “10th character must be a letter” (one message per position) ' + todo('CR-11') + '</li>'
-                    '<li>PAN verification failures – name match below 60%, DOB not matching, PAN not available ' + pend('P-17') + '</li></ul>'),
+                    '<li>Name verification failure (next to Name as per PAN) ' + pend('P-17') + ' ' + todo('CR-13') + '</li>'
+                    '<li>DOB verification failure – DOB not matching; PAN Number not available ' + pend('P-17') + '</li></ul>'),
                ])),
       'data': ('<b>Mobile Number:</b> 9597001623 (carried from Sl. No 2)<br><br>'
                '<b>Name as per PAN:</b> up to 150 characters<br><br>'
@@ -286,23 +291,23 @@ MODULES = [
         (img('f04-name.png'), spec(Field_Name='Name as per PAN', Field_Type='Text Field',
             Minimum_Character='1 Char', Maximum_Character='150 Char', Value_Type='User inputs', Input_Value_format='Alphanumeric',
             Action='User has to enter the name exactly as printed on the PAN card.',
-            Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).',
+            Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10'),
-                        'Name match with the PAN records below 60% – name verification failure shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
+                        'Name match with the PAN records below 60% – name verification failure shown next to the Name as per PAN label when the user clicks Continue CTA; the percentage is not shown to the customer ' + pend('P-17') + ' ' + todo('CR-13')]), OK),
         (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
          spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
             Action='User can type the date of birth, or click the calendar icon and select it from the calendar pop up.',
-            Condition='The calendar allows dates from 01-Jan-1920 up to today. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. year 1010 or 9090) is not accepted. The customer’s age (as on today) must be between 18 and 70 years.',
+            Condition='The calendar allows dates from 01-Jan-1920 up to today. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. year 1010 or 9090) is not accepted. The customer’s age (as on today) must be between 18 and 70 years.'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
                         '“*Invalid date” – displayed next to the DOB label when the typed date is before 01-Jan-1920 or after today ' + todo('CR-12'),
                         'Age less than 18 or more than 70 years – validation displayed when the user clicks Continue CTA ' + pend('P-17'),
                         'DOB not matching the DOB fetched from the PAN records – DOB verification failure shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
-        (states(('f04-pan.png', 'Before – empty'), ('f04-pan-filled.png', 'After – PAN shown with spaces: ABCDE 1234 F')), spec(Field_Name='PAN Number', Field_Type='Text Field',
+        (states(('f04-pan.png', 'Before – empty'), ('f04-pan-filled.png', 'After – PAN shown with spaces: ABCDE 1234 F'), ('f04-pan-error.png', 'Error – field border turns red')), spec(Field_Name='PAN Number', Field_Type='Text Field',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='ABCDE1234F – characters 1 to 5 letters (the 4th is always P), 6 to 9 numbers, 10th a letter',
             Action='User has to enter the 10 character PAN. Only an individual PAN is allowed.',
-            Condition='The PAN is shown with spaces as ABCDE 1234 F (e.g. CBOPA 8195 B). A character that does not fit its position cannot be entered, and a message for that position is shown at once next to the PAN Number label:<ul><li>“1st character must be a letter”</li><li>“2nd character must be a letter”</li><li>“3rd character must be a letter”</li><li>“4th character must be a letter”</li><li>“5th character must be a letter”</li><li>“6th character must be a number”</li><li>“7th character must be a number”</li><li>“8th character must be a number”</li><li>“9th character must be a letter”</li><li>“10th character must be a letter”</li></ul>E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered. ' + todo('CR-11'),
+            Condition='The PAN is shown with spaces as ABCDE 1234 F (e.g. CBOPA 8195 B). A character that does not fit its position cannot be entered, and a message for that position is shown at once next to the PAN Number label:<ul><li>“1st character must be a letter”</li><li>“2nd character must be a letter”</li><li>“3rd character must be a letter”</li><li>“4th character must be a letter”</li><li>“5th character must be a letter”</li><li>“6th character must be a number”</li><li>“7th character must be a number”</li><li>“8th character must be a number”</li><li>“9th character must be a letter”</li><li>“10th character must be a letter”</li></ul>E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered. ' + todo('CR-11') + RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the PAN Number ' + todo('CR-10'),
                         'PAN not complete / not in the ABCDE1234F format – error displayed when the user clicks Continue CTA ' + pend('P-17'),
                         'PAN Number not available in the PAN records – error shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
