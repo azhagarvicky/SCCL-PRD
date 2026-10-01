@@ -267,7 +267,8 @@ MODULES = [
                     '<li>DOB outside the 18 to 70 years age limit ' + pend('P-17') + '</li>'
                     '<li>“*Invalid date” – DOB typed before 01-Jan-1920 or after today ' + todo('CR-12') + '</li>'
                     '<li>PAN Number not complete / not in the ABCDE1234F format ' + pend('P-17') + '</li>'
-                    '<li>No message when a PAN character does not fit its position (e.g. 4th not P) ' + todo('CR-11') + '</li></ul>'),
+                    '<li>No message when a PAN character does not fit its position (e.g. 4th not P) ' + todo('CR-11') + '</li>'
+                    '<li>PAN verification failures – name match below 60%, DOB not matching, PAN not available ' + pend('P-17') + '</li></ul>'),
                ])),
       'data': ('<b>Mobile Number:</b> 9597001623 (carried from Sl. No 2)<br><br>'
                '<b>Name as per PAN:</b> up to 150 characters<br><br>'
@@ -286,7 +287,8 @@ MODULES = [
             Minimum_Character='1 Char', Maximum_Character='150 Char', Value_Type='User inputs', Input_Value_format='Alphanumeric',
             Action='User has to enter the name exactly as printed on the PAN card.',
             Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).',
-            Validation='“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10')), OK),
+            Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10'),
+                        'Name match with the PAN records below 60% – name verification failure shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
         (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
          spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
@@ -294,16 +296,18 @@ MODULES = [
             Condition='The calendar allows dates from 01-Jan-1920 up to today. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. year 1010 or 9090) is not accepted. The customer’s age (as on today) must be between 18 and 70 years.',
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
                         '“*Invalid date” – displayed next to the DOB label when the typed date is before 01-Jan-1920 or after today ' + todo('CR-12'),
-                        'Age less than 18 or more than 70 years – validation displayed when the user clicks Continue CTA ' + pend('P-17')]), OK),
+                        'Age less than 18 or more than 70 years – validation displayed when the user clicks Continue CTA ' + pend('P-17'),
+                        'DOB not matching the DOB fetched from the PAN records – DOB verification failure shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
         (states(('f04-pan.png', 'Before – empty'), ('f04-pan-filled.png', 'After – PAN shown with spaces: ABCDE 1234 F')), spec(Field_Name='PAN Number', Field_Type='Text Field',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='ABCDE1234F – characters 1 to 5 letters (the 4th is always P), 6 to 9 numbers, 10th a letter',
             Action='User has to enter the 10 character PAN. Only an individual PAN is allowed.',
             Condition='The PAN is shown with spaces as ABCDE 1234 F (e.g. CBOPA 8195 B). A character that does not fit its position cannot be entered and no message is shown: characters 1 to 5 must be letters (e.g. the 1st and 3rd) with the 4th always P, 6 to 9 numbers, the 10th a letter. E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered. ' + todo('CR-11'),
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the PAN Number ' + todo('CR-10'),
-                        'PAN not complete / not in the ABCDE1234F format – error displayed when the user clicks Continue CTA ' + pend('P-17')]), OK),
+                        'PAN not complete / not in the ABCDE1234F format – error displayed when the user clicks Continue CTA ' + pend('P-17'),
+                        'PAN Number not available in the PAN records – error shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
         (img('f04-cta.png'), spec(Field_Name='Continue', Field_Type='CTA (Button)',
-            Action='On click, the system shall validate all the fields on this page. If every field is valid, the customer is taken to the next page (LOS to MF Central consent). If any field fails, the customer shall not be allowed to proceed and the respective validation is displayed under that field.',
+            Action='On click, the system shall validate all the fields on this page and then verify the PAN details: (1) Name as per PAN – the name must match the name in the PAN records by 60% or more; (2) DOB – must match the DOB fetched from the PAN records; (3) PAN Number – must be available in the PAN records. If everything passes, the customer is taken to the next page (LOS to MF Central consent). If any check fails, the customer shall not be allowed to proceed and the respective error is displayed for that field.',
             Condition='Always enabled.'), OK),
       ],
     },
@@ -371,7 +375,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-17', 'Module 3', 'PAN Details page: the exact live validation text for a DOB outside the 18 to 70 years age limit and for a PAN Number not in the ABCDE1234F format. Also: where does the customer land after Logout, and is the Name as per PAN matched with the PAN records?'),
+ ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a DOB outside the 18 to 70 years age limit, (b) a PAN Number not in the ABCDE1234F format, and (c) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?'),
  ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
@@ -400,7 +404,7 @@ COMPLETED = [
  ('P-04', 'Module 2', 'OTP validity / expiry period.',
   'The OTP is valid for 30 seconds. An OTP submitted later shows “Invalid request id” today; the new wording is tracked as ' + todo('CR-09') + '.', '30-09-2026'),
  ('P-06', 'Module 3', 'PAN Verification screen: field level rules, PAN format validation, name as per PAN matching logic and DOB / age rule.',
-  'Name as per PAN: alphanumeric, up to 150 characters. DOB: typed (DD/MM/YYYY) or picked from the calendar, 01-Jan-1920 to today, age 18 to 70 years. PAN: ABCDE1234F format. Continue validates every field; an empty field shows “*Required”. Exact error texts and name matching are still open ' + pend('P-17') + '.', '30-09-2026'),
+  'Name as per PAN: alphanumeric, up to 150 characters. DOB: typed (DD/MM/YYYY) or picked from the calendar, 01-Jan-1920 to today, age 18 to 70 years. PAN: ABCDE1234F format. Continue validates every field; an empty field shows “*Required”. Name match threshold: 60% (answered later). Exact error texts are still open ' + pend('P-17') + '.', '30-09-2026'),
 ]
 
 # ---- render ---------------------------------------------------------------
