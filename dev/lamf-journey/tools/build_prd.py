@@ -76,20 +76,9 @@ TO_IMPLEMENT = [
  ('CR-10', 'Module 3', 'Sl. No 4 – Name as per PAN, DOB and PAN Number (field left empty)',
   change('“*Required” for every empty field',
          'A message that names the field: “Please enter your name as per PAN.” / “Please enter your date of birth as per PAN.” / “Please enter your PAN Number.”'), '30-09-2026'),
- ('CR-11', 'Module 3', 'Sl. No 4 – PAN Number field (character that does not fit its position)',
-  change('The character is not entered and no message is shown',
-         'The character is still not entered, and a message for that exact position is shown at once, next to the PAN Number label:'
-         '<ul><li>1st: “The 1st character must be a letter (A–Z).”</li>'
-         '<li>2nd: “The 2nd character must be a letter (A–Z).”</li>'
-         '<li>3rd: “The 3rd character must be a letter (A–Z).”</li>'
-         '<li>4th: “The 4th character must be (P) – only individual PAN is allowed.” (owner’s wording)</li>'
-         '<li>5th: “The 5th character must be a letter (A–Z).”</li>'
-         '<li>6th: “The 6th character must be a number (0–9).”</li>'
-         '<li>7th: “The 7th character must be a number (0–9).”</li>'
-         '<li>8th: “The 8th character must be a number (0–9).”</li>'
-         '<li>9th: “The 9th character must be a number (0–9).”</li>'
-         '<li>10th: “The 10th character must be a letter (A–Z).”</li></ul>'
-         'Wording for positions other than the 4th is proposed (DISC-115)'), '01-10-2026'),
+ ('CR-11', 'Module 3', 'Sl. No 4 – PAN Number field (message for a character that does not fit its position)',
+  change('Message shown next to the PAN Number label as the PAN is typed:<ul><li>“1st character must be a letter”</li><li>“2nd character must be a letter”</li><li>“3rd character must be a letter”</li><li>“4th character must be a letter”</li><li>“5th character must be a letter”</li><li>“6th character must be a number”</li><li>“7th character must be a number”</li><li>“8th character must be a number”</li><li>“9th character must be a letter”</li><li>“10th character must be a letter”</li></ul>',
+         'Message for each position:<ul><li>“1st character must be a letter (A–Z).”</li><li>“2nd character must be a letter (A–Z).”</li><li>“3rd character must be a letter (A–Z).”</li><li>“4th character must be a (P) – only individual’s PAN is allowed.”</li><li>“5th character must be a letter (A–Z).”</li><li>“6th character must be a number (0–9).”</li><li>“7th character must be a number (0–9).”</li><li>“8th character must be a number (0–9).”</li><li>“9th character must be a number (0–9).”</li><li>“10th character must be a letter (A–Z).”</li></ul>'), '01-10-2026'),
  ('CR-12', 'Module 3', 'Sl. No 4 – DOB field (typed date before 01-Jan-1920 or after today)',
   change('“*Invalid date” next to the DOB label',
          '“Please enter a valid date of birth between 01-Jan-1920 and today.” – wording proposed'), '01-10-2026'),
@@ -278,7 +267,7 @@ MODULES = [
                     '<li>DOB outside the 18 to 70 years age limit ' + pend('P-17') + '</li>'
                     '<li>“*Invalid date” – DOB typed before 01-Jan-1920 or after today ' + todo('CR-12') + '</li>'
                     '<li>PAN Number not complete / not in the ABCDE1234F format ' + pend('P-17') + '</li>'
-                    '<li>No message when a PAN character does not fit its position (e.g. 4th not P) ' + todo('CR-11') + '</li>'
+                    '<li>PAN character that does not fit its position – “1st character must be a letter” … “10th character must be a letter” (one message per position) ' + todo('CR-11') + '</li>'
                     '<li>PAN verification failures – name match below 60%, DOB not matching, PAN not available ' + pend('P-17') + '</li></ul>'),
                ])),
       'data': ('<b>Mobile Number:</b> 9597001623 (carried from Sl. No 2)<br><br>'
@@ -313,7 +302,7 @@ MODULES = [
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='ABCDE1234F – characters 1 to 5 letters (the 4th is always P), 6 to 9 numbers, 10th a letter',
             Action='User has to enter the 10 character PAN. Only an individual PAN is allowed.',
-            Condition='The PAN is shown with spaces as ABCDE 1234 F (e.g. CBOPA 8195 B). A character that does not fit its position cannot be entered and no message is shown. Rule for each position: <ul><li>1st – letter (A–Z)</li><li>2nd – letter (A–Z)</li><li>3rd – letter (A–Z)</li><li>4th – P only (individual PAN)</li><li>5th – letter (A–Z)</li><li>6th – number (0–9)</li><li>7th – number (0–9)</li><li>8th – number (0–9)</li><li>9th – number (0–9)</li><li>10th – letter (A–Z)</li></ul>E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered. ' + todo('CR-11'),
+            Condition='The PAN is shown with spaces as ABCDE 1234 F (e.g. CBOPA 8195 B). A character that does not fit its position cannot be entered, and a message for that position is shown at once next to the PAN Number label:<ul><li>“1st character must be a letter”</li><li>“2nd character must be a letter”</li><li>“3rd character must be a letter”</li><li>“4th character must be a letter”</li><li>“5th character must be a letter”</li><li>“6th character must be a number”</li><li>“7th character must be a number”</li><li>“8th character must be a number”</li><li>“9th character must be a letter”</li><li>“10th character must be a letter”</li></ul>E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered. ' + todo('CR-11'),
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the PAN Number ' + todo('CR-10'),
                         'PAN not complete / not in the ABCDE1234F format – error displayed when the user clicks Continue CTA ' + pend('P-17'),
                         'PAN Number not available in the PAN records – error shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
