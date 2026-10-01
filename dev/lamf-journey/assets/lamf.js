@@ -269,7 +269,6 @@
       <label class="field-lbl">Name as per PAN <span class="lbl-err" id="pan-name-err"></span></label><input class="input" id="pan-name" maxlength="150" autocomplete="off">
       <label class="field-lbl">DOB <span class="lbl-err" id="pan-dob-err"></span></label><div class="dob"><input class="input" id="pan-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" autocomplete="off"><span id="pan-dob-cal" title="Select date" style="cursor:pointer">${ICON.calendar}</span><input type="date" id="pan-dob-picker" tabindex="-1" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0"></div>
       <label class="field-lbl">PAN Number <span class="lbl-err" id="pan-no-err"></span></label><input class="input" id="pan-no" placeholder="ABCDE 1234 F" maxlength="12" autocomplete="off">
-      <p class="field-err pan-verify-err" id="pan-verify-err"></p>
       <button class="btn btn-primary bold btn-block" data-cta="continue">Continue</button>
     </div></main>`;
 
@@ -862,6 +861,7 @@
 
       document.querySelector('[data-cta="continue"]').addEventListener('click', () => {
         let ok = true;
+        [name, dob, pan].forEach((el) => err(el, ''));   // fresh check each time
         const fail = (el, msg) => { err(el, msg); ok = false; };
         if (!name.value.trim()) fail(name, '*Required');
         const d = parseDob(dob.value);
@@ -878,11 +878,13 @@
 
       // Prototype only (DISC-112): stands in for the PAN verification service, so both outcomes can be tried.
       // Not part of the live journey and not in the PRD.
+      // Verification outcomes (DISC-114): each failure is shown next to the field it is about.
+      // Prototype wording until the live messages are confirmed (P-17).
       const PAN_FAIL = {
-        1: 'The details entered do not match the PAN records. Please check your Name as per PAN, DOB and PAN Number.',
-        2: 'We are unable to verify your PAN at the moment. Please try again later.',
+        name: [name, 'Name does not match the PAN records.'],      // name match below 60%
+        dob: [dob, 'DOB does not match the PAN records.'],          // DOB differs from the fetched PAN details
+        pan: [pan, 'PAN Number not found.'],                         // PAN does not exist
       };
-      const panErr = document.getElementById('pan-verify-err');
       const panMock = () => {
         document.body.insertAdjacentHTML('beforeend', `<div class="overlay pan-mock-ov"><div class="modal pan-mock">
           <button class="close" data-x title="Close">${ICON.close}</button>
@@ -891,8 +893,9 @@
           <p>Choose the result of the PAN check to see how the journey continues.</p>
           <div class="pan-mock-btns">
             <button class="btn btn-primary bold" data-r="ok">Success</button>
-            <button class="btn btn-outline" data-r="1">Failure 1 – details do not match</button>
-            <button class="btn btn-outline" data-r="2">Failure 2 – service not available</button>
+            <button class="btn btn-outline" data-r="name">Failure 1 – Name match below 60%</button>
+            <button class="btn btn-outline" data-r="dob">Failure 2 – DOB does not match</button>
+            <button class="btn btn-outline" data-r="pan">Failure 3 – PAN Number not found</button>
           </div></div></div>`);
         const ov = document.querySelector('.pan-mock-ov');
         document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');
@@ -900,11 +903,11 @@
         ov.querySelector('[data-x]').onclick = close;
         ov.querySelectorAll('[data-r]').forEach((bt) => { bt.onclick = () => {
           close();
-          if (bt.dataset.r === 'ok') { panErr.textContent = ''; go('05) LOS to MF Central Redirection consent page'); return; }
-          panErr.textContent = PAN_FAIL[bt.dataset.r];
+          if (bt.dataset.r === 'ok') { go('05) LOS to MF Central Redirection consent page'); return; }
+          const [el, msg] = PAN_FAIL[bt.dataset.r];
+          err(el, msg); el.focus();
         }; });
       };
-      [name, dob, pan].forEach((el) => el.addEventListener('input', () => { panErr.textContent = ''; }));
     },
   };
 
