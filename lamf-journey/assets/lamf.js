@@ -881,7 +881,7 @@
       // Verification outcomes (DISC-114): each failure is shown next to the field it is about.
       // Prototype wording until the live messages are confirmed (P-17).
       const PAN_FAIL = {
-        name: [name, 'Name does not match the PAN records.'],      // name match below 60%
+        name: [name, 'Please enter your name exactly as it appears on your PAN card.'],   // name match below 60% – positive wording, % never shown (CR-13)
         dob: [dob, 'DOB does not match the PAN records.'],          // DOB differs from the fetched PAN details
         pan: [pan, 'PAN Number not found.'],                         // PAN does not exist
       };
@@ -893,7 +893,7 @@
           <p>Choose the result of the PAN check to see how the journey continues.</p>
           <div class="pan-mock-btns">
             <button class="btn btn-primary bold" data-r="ok">Success</button>
-            <button class="btn btn-outline" data-r="name">Failure 1 – Name match below 60%</button>
+            <button class="btn btn-outline" data-r="name">Failure 1 – Name does not match</button>
             <button class="btn btn-outline" data-r="dob">Failure 2 – DOB does not match</button>
             <button class="btn btn-outline" data-r="pan">Failure 3 – PAN Number not found</button>
           </div></div></div>`);
