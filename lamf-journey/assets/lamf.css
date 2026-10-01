@@ -617,3 +617,12 @@ body.page-screens { padding: 40px 76px; }
   body.page-screens { padding: 24px 16px; }
   .page-screens ol { columns: 1; }
 }
+
+/* ---------- 04 PAN – mock verification pop up, prototype only (DISC-112) ---------- */
+.pan-mock { width: 440px; padding: 30px 30px 28px; text-align: center; }
+.pan-mock h3 { font-size: 20px; font-weight: 700; margin: 10px 0 8px; }
+.pan-mock p { font-size: 13.5px; color: var(--ink-2); }
+.pan-mock .sim-tag { display: inline-block; font-size: 11px; font-weight: 700; background: #FFF4CC; border: 1px solid #F1D56B; border-radius: 10px; padding: 2px 9px; }
+.pan-mock-btns { display: grid; gap: 10px; margin-top: 22px; }
+.pan-mock-btns .btn { height: 41px; font-size: 14.5px; width: 100%; }
+.pan-card .pan-verify-err { margin: 14px 0 -12px; min-height: 0; }
