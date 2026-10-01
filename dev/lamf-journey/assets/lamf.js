@@ -269,6 +269,7 @@
       <label class="field-lbl">Name as per PAN</label><input class="input" id="pan-name" maxlength="150" autocomplete="off"><p class="field-err" id="pan-name-err"></p>
       <label class="field-lbl">DOB</label><div class="dob"><input class="input" id="pan-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" autocomplete="off"><span id="pan-dob-cal" title="Select date" style="cursor:pointer">${ICON.calendar}</span><input type="date" id="pan-dob-picker" tabindex="-1" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0"></div><p class="field-err" id="pan-dob-err"></p>
       <label class="field-lbl">PAN Number</label><input class="input" id="pan-no" placeholder="ABCDE 1234 F" maxlength="12" autocomplete="off"><p class="field-err" id="pan-no-err"></p>
+      <p class="field-err pan-verify-err" id="pan-verify-err"></p>
       <button class="btn btn-primary bold btn-block" data-cta="continue">Continue</button>
     </div></main>`;
 
@@ -824,7 +825,7 @@
       picker.min = '1920-01-01'; picker.max = iso(today);
 
       // Name as per PAN: alphanumeric (and spaces), up to 150 characters
-      name.addEventListener('input', () => { name.value = name.value.replace(/[^A-Za-z0-9 ]/g, '').slice(0, 150); err(name, ''); });
+      name.addEventListener('input', () => { name.value = name.value.toUpperCase().replace(/[^A-Z0-9 ]/g, '').slice(0, 150); err(name, ''); });   // captured in capitals
       // DOB: numbers only, typed as DD/MM/YYYY (slashes added automatically) or picked from the calendar icon
       dob.addEventListener('input', () => {
         const d = dob.value.replace(/\D/g, '').slice(0, 8);
@@ -872,8 +873,38 @@
         else if (!/^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter a valid PAN Number (e.g. ABCDE1234F).');
         if (!ok) return;
         store.set(K.mobile + '.pan', { name: name.value.trim(), dob: dob.value, pan: p });
-        go('05) LOS to MF Central Redirection consent page');
+        panMock();
       });
+
+      // Prototype only (DISC-112): stands in for the PAN verification service, so both outcomes can be tried.
+      // Not part of the live journey and not in the PRD.
+      const PAN_FAIL = {
+        1: 'The details entered do not match the PAN records. Please check your Name as per PAN, DOB and PAN Number.',
+        2: 'We are unable to verify your PAN at the moment. Please try again later.',
+      };
+      const panErr = document.getElementById('pan-verify-err');
+      const panMock = () => {
+        document.body.insertAdjacentHTML('beforeend', `<div class="overlay pan-mock-ov"><div class="modal pan-mock">
+          <button class="close" data-x title="Close">${ICON.close}</button>
+          <span class="sim-tag">Prototype only</span>
+          <h3>Mock PAN Verification</h3>
+          <p>Choose the result of the PAN check to see how the journey continues.</p>
+          <div class="pan-mock-btns">
+            <button class="btn btn-primary bold" data-r="ok">Success</button>
+            <button class="btn btn-outline" data-r="1">Failure 1 – details do not match</button>
+            <button class="btn btn-outline" data-r="2">Failure 2 – service not available</button>
+          </div></div></div>`);
+        const ov = document.querySelector('.pan-mock-ov');
+        document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');
+        const close = () => { ov.remove(); document.body.classList.remove('modal-open'); document.documentElement.classList.remove('modal-open'); };
+        ov.querySelector('[data-x]').onclick = close;
+        ov.querySelectorAll('[data-r]').forEach((bt) => { bt.onclick = () => {
+          close();
+          if (bt.dataset.r === 'ok') { panErr.textContent = ''; go('05) LOS to MF Central Redirection consent page'); return; }
+          panErr.textContent = PAN_FAIL[bt.dataset.r];
+        }; });
+      };
+      [name, dob, pan].forEach((el) => el.addEventListener('input', () => { panErr.textContent = ''; }));
     },
   };
 
