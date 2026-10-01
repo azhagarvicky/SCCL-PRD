@@ -266,9 +266,9 @@
     <main class="pan-bg"><div class="card pan-card">
       <h3>PAN Details</h3><p class="sub">Please verify your PAN to get the best loan offers</p>
       <label class="field-lbl">Mobile Number</label><input class="input readonly" value="${store.get(K.mobile) || CUSTOMER.mobile}" readonly>
-      <label class="field-lbl">Name as per PAN</label><input class="input" id="pan-name" maxlength="150" autocomplete="off"><p class="field-err" id="pan-name-err"></p>
-      <label class="field-lbl">DOB</label><div class="dob"><input class="input" id="pan-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" autocomplete="off"><span id="pan-dob-cal" title="Select date" style="cursor:pointer">${ICON.calendar}</span><input type="date" id="pan-dob-picker" tabindex="-1" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0"></div><p class="field-err" id="pan-dob-err"></p>
-      <label class="field-lbl">PAN Number</label><input class="input" id="pan-no" placeholder="ABCDE 1234 F" maxlength="12" autocomplete="off"><p class="field-err" id="pan-no-err"></p>
+      <label class="field-lbl">Name as per PAN <span class="lbl-err" id="pan-name-err"></span></label><input class="input" id="pan-name" maxlength="150" autocomplete="off">
+      <label class="field-lbl">DOB <span class="lbl-err" id="pan-dob-err"></span></label><div class="dob"><input class="input" id="pan-dob" placeholder="DD/MM/YYYY" maxlength="10" inputmode="numeric" autocomplete="off"><span id="pan-dob-cal" title="Select date" style="cursor:pointer">${ICON.calendar}</span><input type="date" id="pan-dob-picker" tabindex="-1" aria-hidden="true" style="position:absolute;right:0;bottom:0;width:1px;height:1px;opacity:0;border:0;padding:0"></div>
+      <label class="field-lbl">PAN Number <span class="lbl-err" id="pan-no-err"></span></label><input class="input" id="pan-no" placeholder="ABCDE 1234 F" maxlength="12" autocomplete="off">
       <p class="field-err pan-verify-err" id="pan-verify-err"></p>
       <button class="btn btn-primary bold btn-block" data-cta="continue">Continue</button>
     </div></main>`;
@@ -837,7 +837,7 @@
       // PAN (DISC-111): each character must fit its position – 1–5 letters with the 4th always P (individual PAN only),
       // 6–9 numbers, 10th a letter. A character that does not fit is not entered and the reason is shown straight away
       // (CR-11, proposed wording). Shown as ABCDE 1234 F.
-      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : 'The 4th character must be P – only individual PAN is allowed.')
+      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : 'The 4th character must be (P) – only individual PAN is allowed.')
         : i < 5 ? (/[A-Z]/.test(c) ? '' : 'The first 5 characters of the PAN must be letters.')
         : i < 9 ? (/[0-9]/.test(c) ? '' : 'Characters 6 to 9 of the PAN must be numbers.')
         : (/[A-Z]/.test(c) ? '' : 'The last character of the PAN must be a letter.');
@@ -866,7 +866,7 @@
         if (!name.value.trim()) fail(name, '*Required');
         const d = parseDob(dob.value);
         if (!dob.value) fail(dob, '*Required');
-        else if (!d || d < new Date(1920, 0, 1) || d > today) fail(dob, 'Please enter a valid date of birth.');
+        else if (!d || d < new Date(1920, 0, 1) || d > today) fail(dob, '*Invalid date');   // live wording (CR-12)
         else if (age(d) < 18 || age(d) > 70) fail(dob, 'Your age must be between 18 and 70 years.');
         const p = pan.value.replace(/\s/g, '');
         if (!p) fail(pan, '*Required');
