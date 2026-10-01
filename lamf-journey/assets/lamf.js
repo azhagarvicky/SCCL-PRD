@@ -834,13 +834,12 @@
       document.getElementById('pan-dob-cal').onclick = () => { try { picker.showPicker(); } catch (e) { picker.focus(); picker.click(); } };
       picker.addEventListener('change', () => { if (!picker.value) return; const [y, m, d] = picker.value.split('-'); dob.value = `${d}/${m}/${y}`; err(dob, ''); });
       // PAN (DISC-111): each character must fit its position – 1–5 letters with the 4th always P (individual PAN only),
-      // 6–9 numbers, 10th a letter. A character that does not fit is not entered and the reason is shown straight away
-      // (CR-11, proposed wording). Shown as ABCDE 1234 F.
-      // One message per position (CR-11, DISC-115)
+      // 6–9 numbers, 10th a letter. A character that does not fit is not entered and the message for that position is
+      // shown straight away – CR-11 wording (DISC-116). Shown as ABCDE 1234 F.
       const ORD = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
-      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : 'The 4th character must be (P) – only individual PAN is allowed.')
-        : i >= 5 && i < 9 ? (/[0-9]/.test(c) ? '' : `The ${ORD[i]} character must be a number (0–9).`)
-        : (/[A-Z]/.test(c) ? '' : `The ${ORD[i]} character must be a letter (A–Z).`);
+      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : '4th character must be a (P) – only individual’s PAN is allowed.')
+        : i >= 5 && i < 9 ? (/[0-9]/.test(c) ? '' : `${ORD[i]} character must be a number (0–9).`)
+        : (/[A-Z]/.test(c) ? '' : `${ORD[i]} character must be a letter (A–Z).`);
       pan.addEventListener('input', () => {
         let kept = '', msg = '';
         for (const c of pan.value.toUpperCase().replace(/\s/g, '')) {
