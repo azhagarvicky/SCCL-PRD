@@ -585,7 +585,7 @@
      ========================================================== */
   /* Small storage helper – keeps the entered mobile number and the OTP
      attempt/block state so they survive navigation and page refresh. */
-  const K = { mobile: 'lamf.mobile', otp: 'lamf.otp' };
+  const K = { mobile: 'lamf.mobile', otp: 'lamf.otp', returning: 'lamf.returning' };
   const store = {
     get(k, d = null) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* private mode */ } },
@@ -678,8 +678,30 @@
         if (v.length !== 10) return showErr(MOBILE_ERR.length);
         showErr('');
         store.set(K.mobile, v);                                   // carried to the OTP screen
-        go('03) Enter OTP for MF linked Mobile Number Verification');
+        customerMock();
       });
+
+      // Prototype only (DISC-129): stands in for the LOS check of whether this mobile number has already
+      // verified an OTP before, so both Enter OTP variants can be tried. Not part of the PRD.
+      const customerMock = () => {
+        document.body.insertAdjacentHTML('beforeend', `<div class="overlay pan-mock-ov"><div class="modal pan-mock">
+          <button class="close" data-x title="Close">${ICON.close}</button>
+          <span class="sim-tag">Prototype only</span>
+          <h3>Mock Customer Check</h3>
+          <p>Choose the customer type to see the matching Enter OTP pop up.</p>
+          <div class="pan-mock-btns">
+            <button class="btn btn-primary bold" data-r="new">New customer – first OTP verification</button>
+            <button class="btn btn-outline" data-r="returning">Existing customer – OTP already verified</button>
+          </div></div></div>`);
+        const ov = document.querySelector('.pan-mock-ov');
+        const close = () => ov.remove();
+        ov.querySelector('[data-x]').onclick = close;
+        ov.querySelectorAll('[data-r]').forEach((bt) => { bt.onclick = () => {
+          store.set(K.returning, bt.dataset.r === 'returning');
+          close();
+          go('03) Enter OTP for MF linked Mobile Number Verification');
+        }; });
+      };
     },
 
     /* ---- 03 Enter OTP for MF linked Mobile Number Verification ---- */
@@ -688,6 +710,8 @@
       const boxes = [...modal.querySelectorAll('.otp input')];
       const err = document.getElementById('otp-err');
       const consent = document.getElementById('experian-consent');
+      // A customer who has already verified the OTP before does not see the Experian consent checkbox (DISC-129)
+      if (store.get(K.returning)) { consent.checked = true; consent.closest('label').style.display = 'none'; }
       const cta = modal.querySelector('[data-cta="submit-otp"]');
       const resendSlot = document.getElementById('resend');
 
