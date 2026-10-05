@@ -90,9 +90,6 @@ TO_IMPLEMENT = [
  ('CR-13', 'Module 3', 'Sl. No 4 – Name as per PAN (name verification failure, name match below 60%)',
   change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
          'Shown on this PAN Details page, next to the Name as per PAN label, only when the name check fails: “Please enter your name exactly as on your PAN card.” The match percentage (60%) is never shown to the customer (DISC-117, DISC-125)'), '01-10-2026'),
- ('CR-14', 'Module 3', 'Sl. No 4 – Name as per PAN (characters allowed)',
-  change('Alphanumeric – numbers, spaces and special characters can be entered (e.g. “11111111” is accepted)',
-         'Alphabets (A–Z) and space only (e.g. AZHAGAR SAMY). Numbers and special characters cannot be entered – the key press is ignored and no message is shown. What is typed is still captured in CAPITAL letters (DISC-118, DISC-120)'), '05-10-2026'),
  ('CR-15', 'Module 3', 'Sl. No 4 – DOB (DOB does not match the PAN records)',
   change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
          'Shown on this PAN Details page, next to the DOB label, only when the DOB check fails: “Please enter your date of birth exactly as on your PAN card.”'), '05-10-2026'),
@@ -106,6 +103,8 @@ TO_IMPLEMENT = [
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
 IMPLEMENTED = [
+ ('CR-14', 'Module 3', 'Sl. No 4 – Name as per PAN (characters allowed)',
+  'Alphabets (A–Z) and space only. Numbers and special characters cannot be entered; what is typed is captured in CAPITAL letters. Confirmed live by the owner (DISC-128)', '05-10-2026'),
 ]
 
 def todo(*ids):
@@ -308,9 +307,9 @@ MODULES = [
         (img('f04-mobile.png'), spec(Field_Name='Mobile Number', Field_Type='Display field',
             Prefilled_Value='Mobile number verified in Sl. No 2 and 3', Action='Display only, not editable'), OK),
         (img('f04-name.png'), spec(Field_Name='Name as per PAN', Field_Type='Text Field',
-            Minimum_Character='1 Char', Maximum_Character='150 Char', Value_Type='User inputs', Input_Value_format='Alphanumeric – numbers, spaces and special characters can be entered ' + todo('CR-14'),
+            Minimum_Character='1 Char', Maximum_Character='150 Char', Value_Type='User inputs', Input_Value_format='Alphabets (A–Z) and space only ' + todo('CR-14'),
             Action='User has to enter the name exactly as printed on the PAN card.',
-            Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
+            Condition='Numbers and special characters cannot be entered. Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10'),
                         'Name match with the PAN records below 60% – “PAN verification failed” is displayed when the user clicks Continue CTA ' + todo('CR-13')]), OK),
         (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
