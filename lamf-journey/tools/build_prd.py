@@ -86,7 +86,7 @@ TO_IMPLEMENT = [
          'Message for each position:<ul><li>“1st character must be a letter (A–Z).”</li><li>“2nd character must be a letter (A–Z).”</li><li>“3rd character must be a letter (A–Z).”</li><li>“4th character must be a (P) – only individual’s PAN is allowed.”</li><li>“5th character must be a letter (A–Z).”</li><li>“6th character must be a number (0–9).”</li><li>“7th character must be a number (0–9).”</li><li>“8th character must be a number (0–9).”</li><li>“9th character must be a number (0–9).”</li><li>“10th character must be a letter (A–Z).”</li></ul>'), '01-10-2026'),
  ('CR-12', 'Module 3', 'Sl. No 4 – DOB field (typed date before 01-Jan-1920 or after today)',
   change('“*Invalid date” next to the DOB label',
-         '“Please enter a valid date of birth between 01-Jan-1920 and today.” – wording proposed'), '01-10-2026'),
+         '“Please enter your valid date of birth as per PAN.” (owner’s wording, DISC-123)'), '01-10-2026'),
  ('CR-13', 'Module 3', 'Sl. No 4 – Name as per PAN (name verification failure, name match below 60%)',
   change('Live message to be confirmed ' + pend('P-17'),
          'A positive message that guides the customer, shown next to the Name as per PAN label: “Please enter your name exactly as it appears on your PAN card.” – wording proposed. The match percentage (60%) is never shown to the customer (DISC-117)'), '01-10-2026'),
