@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 17:11 IST
+**Last Updated:** 05-10-2026 17:35 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -168,6 +168,7 @@
 | DISC-133 | 05-10-2026 | PRD – numbered lists | Alignment | The numbered verification list in Sl. No 4 Continue had its numbers cut off at the left edge | prd.css: numbered lists in table cells get the same left indent as bullet lists, so the numbers sit inside the cell and wrapped lines align with the text | Implemented |
 | DISC-134 | 05-10-2026 | PRD Sl. No 4 – DOB (CR-12) | Invalid date wording | Update CR-12 to “Please enter your date of birth exactly as on your PAN card.” | CR-12 “To be changed as” updated (replaces DISC-123 wording). Same text as CR-15 (DOB mismatch). Row and prototype keep the live “*Invalid date” until CR-12 is live | Implemented |
 | DISC-135 | 05-10-2026 | PRD Sl. No 4 – PAN Number (CR-11) | 4th character message | Use “4th character must be a letter (A–Z).” instead of “4th character must be a (P) – only individual’s PAN is allowed.” (owner wrote “4rd”, taken as 4th) | CR-11 4th-position message updated; all ten messages now follow the same pattern. Prototype shows the new message; the 4th character still accepts only P (individual PAN, DISC-111) – to confirm | Implemented |
+| DISC-136 | 05-10-2026 | PRD Sl. No 4 – PAN Number (CR-11) | Current vs to-be confirmed | Owner restated both lists: current (live) “1st–5th … must be a letter”, “6th–8th … must be a number”, “9th and 10th … must be a letter”; to be: letters (A–Z) for 1st–5th and 10th, numbers (0–9) for 6th–9th | Checked: CR-11 current and to-be lists already match the owner’s text word for word; no change needed. Confirms the 9th as “number (0–9)” (open point from DISC-116) | Confirmed |
 
 ---
 
