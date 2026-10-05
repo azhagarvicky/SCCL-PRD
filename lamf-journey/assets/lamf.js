@@ -824,12 +824,12 @@
       picker.min = '1920-01-01'; picker.max = iso(today);
 
       // Name as per PAN: alphanumeric (and spaces), up to 150 characters
-      name.addEventListener('input', () => { name.value = name.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 150); err(name, ''); });   // alphabets only, captured in capitals (CR-14)
+      name.addEventListener('input', () => { name.value = name.value.toUpperCase().replace(/[^A-Z ]/g, '').slice(0, 150); err(name, ''); });   // alphabets and space only, captured in capitals (CR-14)
       // DOB: numbers only, typed as DD/MM/YYYY (slashes added automatically) or picked from the calendar icon
       dob.addEventListener('input', () => {
         const d = dob.value.replace(/\D/g, '').slice(0, 8);
         dob.value = d.length > 4 ? `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}` : d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d;
-        err(dob, '');
+        err(dob, d.length === 8 && !dobInRange(dob.value) ? '*Invalid date' : '');   // red as soon as a full date outside 01-Jan-1920 – today is typed (DISC-119)
       });
       document.getElementById('pan-dob-cal').onclick = () => { try { picker.showPicker(); } catch (e) { picker.focus(); picker.click(); } };
       picker.addEventListener('change', () => { if (!picker.value) return; const [y, m, d] = picker.value.split('-'); dob.value = `${d}/${m}/${y}`; err(dob, ''); });
@@ -857,7 +857,7 @@
         const d = new Date(+m[3], +m[2] - 1, +m[1]);
         return d.getDate() === +m[1] && d.getMonth() === +m[2] - 1 ? d : null;
       };
-      const age = (d) => { let a = today.getFullYear() - d.getFullYear(); if (today < new Date(today.getFullYear(), d.getMonth(), d.getDate())) a -= 1; return a; };
+      const dobInRange = (v) => { const x = parseDob(v); return !!x && x >= new Date(1920, 0, 1) && x <= today; };
 
       document.querySelector('[data-cta="continue"]').addEventListener('click', () => {
         let ok = true;
@@ -867,7 +867,7 @@
         const d = parseDob(dob.value);
         if (!dob.value) fail(dob, '*Required');
         else if (!d || d < new Date(1920, 0, 1) || d > today) fail(dob, '*Invalid date');   // live wording (CR-12)
-        else if (age(d) < 18 || age(d) > 70) fail(dob, 'Your age must be between 18 and 70 years.');
+        // The 18–70 age limit is not checked here – it is validated on the Curated Offers page (DISC-119)
         const p = pan.value.replace(/\s/g, '');
         if (!p) fail(pan, '*Required');
         else if (!/^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter a valid PAN Number (e.g. ABCDE1234F).');
@@ -910,6 +910,23 @@
       };
     },
   };
+
+  // Curated Offers (DISC-119): the 18–70 age limit is validated here, from the DOB entered on the PAN page.
+  // Outside the limit the offer cannot be started. Message wording proposed (P-18).
+  const AGE_MIN = 18, AGE_MAX = 70;
+  const curatedAgeCheck = () => {
+    const v = (store.get(K.mobile + '.pan') || {}).dob;
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v || ''); if (!m) return;
+    const t = new Date(), b = new Date(+m[3], +m[2] - 1, +m[1]);
+    let a = t.getFullYear() - b.getFullYear(); if (t < new Date(t.getFullYear(), b.getMonth(), b.getDate())) a -= 1;
+    if (a >= AGE_MIN && a <= AGE_MAX) return;
+    const offer = document.querySelector('.curated .offer'); if (!offer) return;
+    offer.insertAdjacentHTML('beforebegin', `<div class="age-err" role="alert">This loan is available for applicants aged ${AGE_MIN} to ${AGE_MAX} years.</div>`);
+    offer.querySelectorAll('[data-cta="start-application"], [data-cta="continue"]').forEach((b) => {
+      const c = b.cloneNode(true); c.classList.remove('is-live'); c.classList.add('is-off'); c.setAttribute('aria-disabled', 'true'); b.replaceWith(c);
+    });
+  };
+  ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = curatedAgeCheck; });
 
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
