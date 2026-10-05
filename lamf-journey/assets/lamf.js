@@ -861,7 +861,7 @@
       // 6–9 numbers, 10th a letter. A character that does not fit is not entered and the message for that position is
       // shown straight away – CR-11 wording (DISC-116). Shown as ABCDE 1234 F.
       const ORD = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'];
-      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : '4th character must be a (P) – only individual’s PAN is allowed.')
+      const PAN_RULE = (i, c) => i === 3 ? (c === 'P' ? '' : '4th character must be a letter (A–Z).')   // only P is accepted (individual PAN); message per DISC-135
         : i >= 5 && i < 9 ? (/[0-9]/.test(c) ? '' : `${ORD[i]} character must be a number (0–9).`)
         : (/[A-Z]/.test(c) ? '' : `${ORD[i]} character must be a letter (A–Z).`);
       pan.addEventListener('input', () => {
