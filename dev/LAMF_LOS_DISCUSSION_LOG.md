@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 10:53 IST
+**Last Updated:** 05-10-2026 12:55 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -157,6 +157,7 @@
 | DISC-122 | 05-10-2026 | PRD Sl. No 4 – PAN Details | Drop off section | Below Screen Content add a Drop off section: if the customer drops off on this page before the PAN verification is completed, then on logging in again, after OTP verification success the customer lands on this page | New drop_off() block in build_prd.py, shown below Screen Content in Sl. No 4 (When / On return). Prototype already lands on PAN Details after OTP success | Implemented |
 | DISC-123 | 05-10-2026 | PRD Sl. No 4 – DOB (CR-12) | Invalid date wording | Replace the proposed “Please enter a valid date of birth between 01-Jan-1920 and today.” with a customer-friendly message: “Please enter your valid date of birth as per PAN.” | CR-12 “To be changed as” updated to the owner’s wording. Row and prototype keep the live “*Invalid date” until CR-12 is live | Implemented |
 | DISC-124 | 05-10-2026 | PRD Sl. No 4 – DOB | Remove the two DOB crops | The “Typing a date before 01-Jan-1920 (05/01/1900)” and “field border turns red (07/10/1900)” images are not required | Both images removed from the DOB row (f04-dob-typed.png, f04-dob-error.png deleted); the red-border rule stays in the DOB Condition text | Implemented |
+| DISC-125 | 05-10-2026 | PRD Sl. No 4 – PAN Details (P-17) | Answers to P-17 | (1) Field-named messages as in CR-10; (2) create a sample name-not-matched message like “Please enter your name as per PAN”; (3) same for DOB not matched; (4) Logout lands on the Landing page because it is the exit page | Messages: PAN fewer than 10 characters “Please enter your valid PAN Number.” (CR-16); name mismatch “Please enter your name exactly as per PAN.” (CR-13 reworded); DOB mismatch “Please enter your date of birth exactly as per PAN.” (CR-15); PAN not available “Please check and enter your correct PAN Number.” (CR-17) – samples. Logout action updated to the Landing page. P-17 moved to Completed Clarifications; PEND-028 closed. Prototype messages updated to match | Implemented |
 
 ---
 
@@ -592,7 +593,7 @@
 | PEND-025 | OTP service | Which vendor provides the OTP send/verify service (INT-002)? Verify-failure behaviour is tracked with PEND-020 (PRD P-10) | 24-09-2026 | Open |
 | PEND-026 | Review comments | Sheet created by Claude and moved into the owner's folder. Owner to deploy the Apps Script web app (tools/comments-apps-script.gs) from the sheet and give Claude the web-app URL | 27-09-2026 | **Answered 27-09-2026** – web app deployed and connected |
 | PEND-027 | OTP / Experian | The UAT screenshots shared on 30-09-2026 show the Enter OTP pop up without the Experian consent checkbox (Submit OTP enabled with 6 digits only), while Sl. No 3 treats the checkbox as mandatory. Is the checkbox part of the live journey? (PRD P-16) | 30-09-2026 | Open |
-| PEND-028 | PAN Details | Live wording of the DOB age (18–70), PAN format and PAN verification failure messages (name match below 60%, DOB mismatch, PAN not available); where the customer lands after Logout (PRD P-17). Name matching answered: 60% threshold (DISC-114) | 30-09-2026 | Open |
+| PEND-028 | PAN Details | Live wording of the DOB age (18–70), PAN format and PAN verification failure messages (name match below 60%, DOB mismatch, PAN not available); where the customer lands after Logout (PRD P-17). Name matching answered: 60% threshold (DISC-114) | 30-09-2026 | Closed (DISC-125) |
 | PEND-027 | Apply for New Loan (Existing Customer) | Which screen follows a correct OTP for an existing customer? Screenshot awaited | 28-09-2026 | **Answered 28-09-2026** – `04) Your Loans Page` (DISC-033) |
 | PEND-028 | Apply for New Loan (Existing Customer) | Should screens 01–03 of the existing-customer journey differ from the new-customer journey in any way (landing page text, headings, entry point such as a customer login/portal, check that the mobile number belongs to an existing customer)? Currently identical | 28-09-2026 | Open |
 | PEND-029 | Apply for New Loan – PAN type popup | Next page after Existing PAN + consent + Continue (screenshot awaited) | 28-09-2026 | **Answered 28-09-2026** – MF Central redirection popup, then MF Central mock and the fetch / analyse loaders (DISC-036) |
