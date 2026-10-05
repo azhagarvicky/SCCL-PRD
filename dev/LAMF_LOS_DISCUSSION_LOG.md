@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 15:49 IST
+**Last Updated:** 05-10-2026 15:56 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -165,6 +165,7 @@
 | DISC-130 | 05-10-2026 | PRD Sl. No 4 – Continue (PAN verification) | Order of the checks; why age is on Curated Offers | On Continue: (1) entered PAN must be available – 100% match, else PAN error; (2) if passed, entered DOB must match the fetched PAN DOB 100%, else DOB error; (3) if passed, name match – error if below 60%. The 18–70 age check is shown only on Curated Offers so customers beyond the limit are not blocked at PAN verification and can be tracked | Continue action lists the three checks in order (each only when the previous passes, PAN and DOB 100% match); DOB Condition and P-18 give the tracking reason. Prototype mock buttons reordered PAN → DOB → name | Implemented |
 | DISC-131 | 05-10-2026 | Prototype screen 04 – Mock PAN Verification | Numbered failures | Mock options need failure numbers (1, 2, 3); each shows its error on the PAN Details page | Buttons: Success / “Failure 1 – Re-enter PAN Number as on PAN card” / “Failure 2 – Re-enter date of birth as on PAN card” / “Failure 3 – Re-enter name as on PAN card” (check order, DISC-130); each shows its message next to the field on this page. Prototype only, not in the PRD | Implemented |
 | DISC-132 | 05-10-2026 | Prototype screen 04 – Mock PAN Verification; PRD Sl. No 4 | Mock labels; mock vs PRD | Mock options: Success / Failure 1 – PAN Number mis-matching / Failure 2 – PAN DOB mis-matching / Failure 3 – PAN Name mis-matching. The mock exists only so stakeholders can see how each error is shown on the PAN Details page; the PRD describes the normal flow and the error scenarios, never the mock | Mock buttons relabelled; intro text “For review only: choose a result to see how it is shown on the PAN Details page.” PRD unchanged – it already holds the verification order and the three error scenarios without the mock | Implemented |
+| DISC-133 | 05-10-2026 | PRD – numbered lists | Alignment | The numbered verification list in Sl. No 4 Continue had its numbers cut off at the left edge | prd.css: numbered lists in table cells get the same left indent as bullet lists, so the numbers sit inside the cell and wrapped lines align with the text | Implemented |
 
 ---
 
