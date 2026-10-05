@@ -627,3 +627,7 @@ body.page-screens { padding: 40px 76px; }
 .pan-mock-btns .btn { height: 41px; font-size: 14.5px; width: 100%; }
 .pan-card .lbl-err { color: var(--red); font-size: 12.5px; font-weight: 500; margin-left: 4px; }   /* message next to the label, as in UAT (DISC-113) */
 .pan-card .input { margin-bottom: 2px; }
+
+/* Curated Offers – age outside 18–70 (DISC-119) */
+.age-err { color: var(--red); background: #FDECEA; border: 1px solid var(--red); border-radius: 10px; padding: 10px 14px; font-size: 13.5px; margin: 0 0 14px; }
+.offer .is-off { background: #E6E6E6 !important; color: #8A8A8A !important; cursor: not-allowed; }

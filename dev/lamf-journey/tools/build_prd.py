@@ -87,7 +87,7 @@ TO_IMPLEMENT = [
          'A positive message that guides the customer, shown next to the Name as per PAN label: “Please enter your name exactly as it appears on your PAN card.” – wording proposed. The match percentage (60%) is never shown to the customer (DISC-117)'), '01-10-2026'),
  ('CR-14', 'Module 3', 'Sl. No 4 – Name as per PAN (characters allowed)',
   change('Alphanumeric – numbers, spaces and special characters can be entered (e.g. “11111111” is accepted)',
-         'Alphabets only (A–Z). Numbers, spaces and special characters cannot be entered – the key press is ignored and no message is shown. What is typed is still captured in CAPITAL letters (DISC-118)'), '05-10-2026'),
+         'Alphabets (A–Z) and space only (e.g. AZHAGAR SAMY). Numbers and special characters cannot be entered – the key press is ignored and no message is shown. What is typed is still captured in CAPITAL letters (DISC-118, DISC-120)'), '05-10-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -271,7 +271,6 @@ MODULES = [
                    ('Placeholders', 'DOB: “DD/MM/YYYY”; PAN Number: “ABCDE 1234 F”'),
                    ('CTA', '“Continue”'),
                    ('Validation messages', '<ul><li>“*Required” – any field left empty ' + todo('CR-10') + '</li>'
-                    '<li>DOB outside the 18 to 70 years age limit ' + pend('P-17') + '</li>'
                     '<li>“*Invalid date” – DOB typed before 01-Jan-1920 or after today ' + todo('CR-12') + '</li>'
                     '<li>PAN Number not complete / not in the ABCDE1234F format ' + pend('P-17') + '</li>'
                     '<li>PAN character that does not fit its position – “1st character must be a letter” … “10th character must be a letter” (one message per position) ' + todo('CR-11') + '</li>'
@@ -297,14 +296,13 @@ MODULES = [
             Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10'),
                         'Name match with the PAN records below 60% – name verification failure shown next to the Name as per PAN label when the user clicks Continue CTA; the percentage is not shown to the customer ' + pend('P-17') + ' ' + todo('CR-13')]), OK),
-        (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
+        (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-typed.png', 'Typing a date before 01-Jan-1920 (e.g. 05/01/1900)'), ('f04-dob-error.png', 'Date outside 01-Jan-1920 to today entered – field border turns red'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
          spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
             Action='User can type the date of birth, or click the calendar icon and select it from the calendar pop up.',
-            Condition='The calendar allows dates from 01-Jan-1920 up to today. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. year 1010 or 9090) is not accepted. The customer’s age (as on today) must be between 18 and 70 years.'+RED,
+            Condition='The calendar allows dates from 01-Jan-1920 up to today only; a date outside this range cannot be selected. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. 05/01/1900, year 1010 or 9090) is not accepted and the field border turns red. The age limit (18 to 70 years) is not checked on this page – it is validated on the Curated Offers page.'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
                         '“*Invalid date” – displayed next to the DOB label when the typed date is before 01-Jan-1920 or after today ' + todo('CR-12'),
-                        'Age less than 18 or more than 70 years – validation displayed when the user clicks Continue CTA ' + pend('P-17'),
                         'DOB not matching the DOB fetched from the PAN records – DOB verification failure shown when the user clicks Continue CTA ' + pend('P-17')]), OK),
         (states(('f04-pan.png', 'Before – empty'), ('f04-pan-filled.png', 'After – PAN shown with spaces: ABCDE 1234 F'), ('f04-pan-error.png', 'Error – field border turns red')), spec(Field_Name='PAN Number', Field_Type='Text Field',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
@@ -383,7 +381,8 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a DOB outside the 18 to 70 years age limit, (b) a PAN Number not in the ABCDE1234F format, and (c) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?'),
+ ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details. Confirm the live message and what the customer can do (prototype: “This loan is available for applicants aged 18 to 70 years.” above the offer, Start Application disabled).'),
+ ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a PAN Number not in the ABCDE1234F format, and (b) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?'),
  ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),

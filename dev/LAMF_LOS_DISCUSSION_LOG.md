@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 10:09 IST
+**Last Updated:** 05-10-2026 10:15 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -151,6 +151,8 @@
 | DISC-116 | 01-10-2026 | PRD Sl. No 4 / Screen 04 – PAN Number | Live PAN position messages and required wording | Live today: “1st … 5th character must be a letter”, “6th … 8th character must be a number”, “9th character must be a letter”, “10th character must be a letter”. To be changed as: “Nth character must be a letter (A–Z).” for 1st–3rd, 5th, 10th; “4th character must be a (P) – only individual’s PAN is allowed.”; “Nth character must be a number (0–9).” for 6th–9th | PRD row Condition and Screen Content now show the live messages (replacing “no message is shown”); CR-11 current vs to-be lists set to the owner’s texts. 9th taken as “must be a number (0–9)” (owner wrote “letter (0–9)”) – to confirm. Prototype shows the to-be wording | Implemented |
 | DISC-117 | 01-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN; all fields | Positive name-failure message; red border on error | Name verification failure must be shown next to the Name field in a positive, guiding tone (not a negative message) and must not show the 60% to the customer. Any field with a field-level error must have a red border (owner’s UAT crop of the PAN field) | CR-13 added: “Please enter your name exactly as it appears on your PAN card.” (proposed). Name / DOB / PAN Conditions state the red border on error; PAN Before/After gets the owner’s red-border crop (f04-pan-error.png). Prototype: mock Failure 1 shows the positive message, mock button no longer mentions 60%; red border on error was already in place for every field | Implemented |
 | DISC-118 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN | Alphabets only | Owner’s UAT crop shows “11111111” accepted in Name as per PAN. The customer must not be able to enter numbers, spaces or special characters – alphabets only | CR-14 added (current: alphanumeric; to be: A–Z only, other keys ignored, still captured in capitals). Row Input format tagged CR-14 and shows Before / After with the owner’s crop (f04-name-numeric.png). Prototype now accepts letters only | Implemented |
+| DISC-119 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – DOB; Screen 12 – Curated Offers | DOB range vs age limit | Owner’s UAT crops: 05/01/1900 typed, then 07/10/1900 with a red border. The DOB field turns red when the date is outside 01-Jan-1920 to today; the calendar cannot select dates outside this range. The 18–70 age limit is not a PAN-page validation – it is shown on the Curated Offers page | PRD DOB Condition updated (red border, calendar range, age checked on Curated Offers); age validation removed from the DOB row and Screen Content; crops f04-dob-typed / f04-dob-error added; P-17 no longer covers age; P-18 added for the Curated Offers age message. Prototype: DOB shows “*Invalid date” and red border as soon as a full out-of-range date is typed; no age check on Continue; Curated Offers shows “This loan is available for applicants aged 18 to 70 years.” (proposed) and disables Start Application when the age is outside 18–70 | Implemented |
+| DISC-120 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN | Space allowed in name | Space is acceptable in the Name field (only numbers and special characters are blocked) | CR-14 updated to alphabets and space; prototype accepts spaces again (e.g. AZHAGAR SAMY) | Implemented |
 
 ---
 
@@ -624,6 +626,7 @@
 | PEND-061 | Apply for New Loan – Other details | Qualification and Source of Income were not in the shared dropdown list: keep the current values (Qualification: Below High School … Others; Source of Income: Salary, Business Income, Rental Income, Investments, Agriculture, Others), or share the lists / remove the fields? | 29-09-2026 | Open |
 | PEND-062 | Apply for New Loan – Aadhaar display | The prototype shows the full Aadhaar number on the ETB page (DISC-082). UIDAI / Aadhaar Act rules normally allow only masked Aadhaar (last 4 digits) to be displayed – confirm with compliance which display the live system should use | 29-09-2026 | Open |
 | PEND-063 | Apply for New Loan – unfinished application | While an application is In Progress, what should “Apply for New Loan” do: start a new one (current prototype – the unfinished one is replaced), ask “Resume or start new?”, or be blocked? Should an unfinished application expire after some days? | 29-09-2026 | Open |
+| PEND-064 | Curated Offers | Live message and behaviour when the customer’s age (from the PAN-page DOB) is outside 18–70 years (PRD P-18, DISC-119) | 05-10-2026 | Open |
 
 ---
 
