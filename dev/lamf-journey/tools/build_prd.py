@@ -27,6 +27,11 @@ def screen_content(items):
     rows = ''.join(f'<li><b>{k}:</b> {v}</li>' for k, v in items)
     return f'<div class="spec"><p><b>Screen Content:</b></p><ul class="content-list">{rows}</ul></div>'
 
+def drop_off(items):
+    """“Drop off” block, below Screen Content: what happens when the customer leaves this page and comes back (DISC-122)."""
+    rows = ''.join(f'<li><b>{k}:</b> {v}</li>' for k, v in items)
+    return f'<div class="spec"><p><b>Drop off:</b></p><ul class="content-list">{rows}</ul></div>'
+
 def data_points(html_):
     """Data Points Required: field name in bold, value in regular weight (DISC-087),
     e.g. <b>Mobile Number:</b> 10 digit numeric. Lines already starting in bold are kept."""
@@ -276,6 +281,10 @@ MODULES = [
                     '<li>PAN character that does not fit its position – “1st character must be a letter” … “10th character must be a letter” (one message per position) ' + todo('CR-11') + '</li>'
                     '<li>Name verification failure (next to Name as per PAN) ' + pend('P-17') + ' ' + todo('CR-13') + '</li>'
                     '<li>DOB verification failure – DOB not matching; PAN Number not available ' + pend('P-17') + '</li></ul>'),
+               ])
+               + drop_off([
+                   ('When', 'The customer leaves the journey on this page before the PAN verification is completed (e.g. closes the browser or tab, or logs out)'),
+                   ('On return', 'When the customer comes back and logs in again with the mobile number (Sl. No 2) and OTP (Sl. No 3), on OTP verification success the customer lands on this PAN Details page'),
                ])),
       'data': ('<b>Mobile Number:</b> 9597001623 (carried from Sl. No 2)<br><br>'
                '<b>Name as per PAN:</b> up to 150 characters<br><br>'
