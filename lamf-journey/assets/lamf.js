@@ -881,9 +881,9 @@
       // Verification outcomes (DISC-114): each failure is shown next to the field it is about.
       // Prototype wording until the live messages are confirmed (P-17).
       const PAN_FAIL = {
-        name: [name, 'Please enter your name exactly as per PAN.'],   // name match below 60% – positive wording, % never shown (CR-13)
-        dob: [dob, 'Please enter your date of birth exactly as per PAN.'],   // DOB differs from the fetched PAN details (CR-15)
-        pan: [pan, 'Please check and enter your correct PAN Number.'],      // PAN does not exist (CR-17)
+        name: [name, 'Please enter your name exactly as on your PAN card.'],   // name match below 60% – positive wording, % never shown (CR-13)
+        dob: [dob, 'Please enter your date of birth exactly as on your PAN card.'],   // DOB differs from the fetched PAN details (CR-15)
+        pan: [pan, 'Please enter your PAN Number exactly as on your PAN card.'],      // PAN does not exist (CR-17)
       };
       const panMock = () => {
         document.body.insertAdjacentHTML('beforeend', `<div class="overlay pan-mock-ov"><div class="modal pan-mock">
@@ -893,9 +893,9 @@
           <p>Choose the result of the PAN check to see how the journey continues.</p>
           <div class="pan-mock-btns">
             <button class="btn btn-primary bold" data-r="ok">Success</button>
-            <button class="btn btn-outline" data-r="name">Failure 1 – Name does not match</button>
-            <button class="btn btn-outline" data-r="dob">Failure 2 – DOB does not match</button>
-            <button class="btn btn-outline" data-r="pan">Failure 3 – PAN Number not found</button>
+            <button class="btn btn-outline" data-r="name">Re-enter name as on PAN card</button>
+            <button class="btn btn-outline" data-r="dob">Re-enter date of birth as on PAN card</button>
+            <button class="btn btn-outline" data-r="pan">Re-enter PAN Number as on PAN card</button>
           </div></div></div>`);
         const ov = document.querySelector('.pan-mock-ov');
         document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');

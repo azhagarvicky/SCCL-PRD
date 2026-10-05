@@ -89,19 +89,19 @@ TO_IMPLEMENT = [
          '“Please enter your valid date of birth as per PAN.” (owner’s wording, DISC-123)'), '01-10-2026'),
  ('CR-13', 'Module 3', 'Sl. No 4 – Name as per PAN (name verification failure, name match below 60%)',
   change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
-         'Shown on this PAN Details page, next to the Name as per PAN label, only when the name check fails: “Please enter your name exactly as per PAN.” The match percentage (60%) is never shown to the customer (DISC-117, DISC-125)'), '01-10-2026'),
+         'Shown on this PAN Details page, next to the Name as per PAN label, only when the name check fails: “Please enter your name exactly as on your PAN card.” The match percentage (60%) is never shown to the customer (DISC-117, DISC-125)'), '01-10-2026'),
  ('CR-14', 'Module 3', 'Sl. No 4 – Name as per PAN (characters allowed)',
   change('Alphanumeric – numbers, spaces and special characters can be entered (e.g. “11111111” is accepted)',
          'Alphabets (A–Z) and space only (e.g. AZHAGAR SAMY). Numbers and special characters cannot be entered – the key press is ignored and no message is shown. What is typed is still captured in CAPITAL letters (DISC-118, DISC-120)'), '05-10-2026'),
  ('CR-15', 'Module 3', 'Sl. No 4 – DOB (DOB does not match the PAN records)',
   change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
-         'Shown on this PAN Details page, next to the DOB label, only when the DOB check fails: “Please enter your date of birth exactly as per PAN.”'), '05-10-2026'),
+         'Shown on this PAN Details page, next to the DOB label, only when the DOB check fails: “Please enter your date of birth exactly as on your PAN card.”'), '05-10-2026'),
  ('CR-16', 'Module 3', 'Sl. No 4 – PAN Number (fewer than 10 characters entered)',
   change('Live message not captured – the owner set the required wording (DISC-125)',
          'Message next to the PAN Number label when Continue is clicked: “Please enter your valid PAN Number.”'), '05-10-2026'),
  ('CR-17', 'Module 3', 'Sl. No 4 – PAN Number (PAN not available in the PAN records)',
   change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
-         'Shown on this PAN Details page, next to the PAN Number label, only when the PAN is not available: “Please check and enter your correct PAN Number.”'), '05-10-2026'),
+         'Shown on this PAN Details page, next to the PAN Number label, only when the PAN is not available: “Please enter your PAN Number exactly as on your PAN card.”'), '05-10-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -413,7 +413,7 @@ PENDING = [
 # P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
 COMPLETED = [
  ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a PAN Number not in the ABCDE1234F format, and (b) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?',
-  'Live: one common message “PAN verification failed” for every verification failure (DISC-126). The owner set the required messages (DISC-125): empty fields – CR-10; PAN with fewer than 10 characters – “Please enter your valid PAN Number.” (CR-16); name match below 60% – “Please enter your name exactly as per PAN.” (CR-13); DOB not matching – “Please enter your date of birth exactly as per PAN.” (CR-15); PAN not available – “Please check and enter your correct PAN Number.” (CR-17). Logout lands on the Landing page (exit page).', '05-10-2026'),
+  'Live: one common message “PAN verification failed” for every verification failure (DISC-126). The owner set the required messages (DISC-125): empty fields – CR-10; PAN with fewer than 10 characters – “Please enter your valid PAN Number.” (CR-16); name match below 60% – “Please enter your name exactly as on your PAN card.” (CR-13); DOB not matching – “Please enter your date of birth exactly as on your PAN card.” (CR-15); PAN not available – “Please enter your PAN Number exactly as on your PAN card.” (CR-17). Logout lands on the Landing page (exit page).', '05-10-2026'),
  ('P-11', 'Module 2', 'OTP length, resend timer duration and number of resends allowed.',
   '6 digit OTP; 30 second resend timer; 3 resends allowed, after which the number is blocked for 15 minutes. OTP validity: 30 seconds (see P-04).', '23-09-2026'),
  ('P-12', 'Module 2', 'Wrong OTP handling – message, maximum attempts and lockout.',
