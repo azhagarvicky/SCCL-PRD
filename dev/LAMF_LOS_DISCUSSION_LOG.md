@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 12:55 IST
+**Last Updated:** 05-10-2026 13:40 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -158,6 +158,7 @@
 | DISC-123 | 05-10-2026 | PRD Sl. No 4 – DOB (CR-12) | Invalid date wording | Replace the proposed “Please enter a valid date of birth between 01-Jan-1920 and today.” with a customer-friendly message: “Please enter your valid date of birth as per PAN.” | CR-12 “To be changed as” updated to the owner’s wording. Row and prototype keep the live “*Invalid date” until CR-12 is live | Implemented |
 | DISC-124 | 05-10-2026 | PRD Sl. No 4 – DOB | Remove the two DOB crops | The “Typing a date before 01-Jan-1920 (05/01/1900)” and “field border turns red (07/10/1900)” images are not required | Both images removed from the DOB row (f04-dob-typed.png, f04-dob-error.png deleted); the red-border rule stays in the DOB Condition text | Implemented |
 | DISC-125 | 05-10-2026 | PRD Sl. No 4 – PAN Details (P-17) | Answers to P-17 | (1) Field-named messages as in CR-10; (2) create a sample name-not-matched message like “Please enter your name as per PAN”; (3) same for DOB not matched; (4) Logout lands on the Landing page because it is the exit page | Messages: PAN fewer than 10 characters “Please enter your valid PAN Number.” (CR-16); name mismatch “Please enter your name exactly as per PAN.” (CR-13 reworded); DOB mismatch “Please enter your date of birth exactly as per PAN.” (CR-15); PAN not available “Please check and enter your correct PAN Number.” (CR-17) – samples. Logout action updated to the Landing page. P-17 moved to Completed Clarifications; PEND-028 closed. Prototype messages updated to match | Implemented |
+| DISC-126 | 05-10-2026 | PRD Sl. No 4 – PAN verification failures | Live “PAN verification failed” | Live today: any verification failure (name match below 60%, DOB mismatch, PAN not available) shows one common message “PAN verification failed”. To be changed: a clear message on this page saying which one failed – name, DOB or PAN Number | Row field validations, Continue action and Screen Content now describe the live common message, tagged CR-13 / CR-15 / CR-17; those CRs’ “Current” is “PAN verification failed” and “To be changed as” is the field-specific message shown on this page next to the failing field. P-17 answer updated. Prototype already shows the field-specific messages | Implemented |
 
 ---
 
