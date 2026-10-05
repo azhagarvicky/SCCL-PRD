@@ -290,7 +290,7 @@ MODULES = [
             Action='On click, the customer is logged out and the journey ends.'), OK),
         (img('f04-mobile.png'), spec(Field_Name='Mobile Number', Field_Type='Display field',
             Prefilled_Value='Mobile number verified in Sl. No 2 and 3', Action='Display only, not editable'), OK),
-        (states(('f04-name.png', 'Before – empty'), ('f04-name-numeric.png', 'After – numbers can be entered today (e.g. 11111111)')), spec(Field_Name='Name as per PAN', Field_Type='Text Field',
+        (img('f04-name.png'), spec(Field_Name='Name as per PAN', Field_Type='Text Field',
             Minimum_Character='1 Char', Maximum_Character='150 Char', Value_Type='User inputs', Input_Value_format='Alphanumeric – numbers, spaces and special characters can be entered ' + todo('CR-14'),
             Action='User has to enter the name exactly as printed on the PAN card.',
             Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
