@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 10:15 IST
+**Last Updated:** 05-10-2026 10:33 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -153,6 +153,7 @@
 | DISC-118 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN | Alphabets only | Owner’s UAT crop shows “11111111” accepted in Name as per PAN. The customer must not be able to enter numbers, spaces or special characters – alphabets only | CR-14 added (current: alphanumeric; to be: A–Z only, other keys ignored, still captured in capitals). Row Input format tagged CR-14 and shows Before / After with the owner’s crop (f04-name-numeric.png). Prototype now accepts letters only | Implemented |
 | DISC-119 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – DOB; Screen 12 – Curated Offers | DOB range vs age limit | Owner’s UAT crops: 05/01/1900 typed, then 07/10/1900 with a red border. The DOB field turns red when the date is outside 01-Jan-1920 to today; the calendar cannot select dates outside this range. The 18–70 age limit is not a PAN-page validation – it is shown on the Curated Offers page | PRD DOB Condition updated (red border, calendar range, age checked on Curated Offers); age validation removed from the DOB row and Screen Content; crops f04-dob-typed / f04-dob-error added; P-17 no longer covers age; P-18 added for the Curated Offers age message. Prototype: DOB shows “*Invalid date” and red border as soon as a full out-of-range date is typed; no age check on Continue; Curated Offers shows “This loan is available for applicants aged 18 to 70 years.” (proposed) and disables Start Application when the age is outside 18–70 | Implemented |
 | DISC-120 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN | Space allowed in name | Space is acceptable in the Name field (only numbers and special characters are blocked) | CR-14 updated to alphabets and space; prototype accepts spaces again (e.g. AZHAGAR SAMY) | Implemented |
+| DISC-121 | 05-10-2026 | PRD Sl. No 4 – Name as per PAN | Remove “numbers can be entered” image | The “After – numbers can be entered today (e.g. 11111111)” image is not wanted in the row | Image removed; the row shows only the field image again (f04-name-numeric.png deleted). CR-14 in Pending Changes still records the change. Rule: a defect screenshot shared to explain a change request is not added to the row as a Before / After image | Implemented |
 
 ---
 
