@@ -305,7 +305,7 @@ MODULES = [
             Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10'),
                         'Name match with the PAN records below 60% – name verification failure shown next to the Name as per PAN label when the user clicks Continue CTA; the percentage is not shown to the customer ' + pend('P-17') + ' ' + todo('CR-13')]), OK),
-        (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-typed.png', 'Typing a date before 01-Jan-1920 (e.g. 05/01/1900)'), ('f04-dob-error.png', 'Date outside 01-Jan-1920 to today entered – field border turns red'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
+        (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
          spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
             Action='User can type the date of birth, or click the calendar icon and select it from the calendar pop up.',

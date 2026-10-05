@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 10:50 IST
+**Last Updated:** 05-10-2026 10:53 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -156,6 +156,7 @@
 | DISC-121 | 05-10-2026 | PRD Sl. No 4 – Name as per PAN | Remove “numbers can be entered” image | The “After – numbers can be entered today (e.g. 11111111)” image is not wanted in the row | Image removed; the row shows only the field image again (f04-name-numeric.png deleted). CR-14 in Pending Changes still records the change. Rule: a defect screenshot shared to explain a change request is not added to the row as a Before / After image | Implemented |
 | DISC-122 | 05-10-2026 | PRD Sl. No 4 – PAN Details | Drop off section | Below Screen Content add a Drop off section: if the customer drops off on this page before the PAN verification is completed, then on logging in again, after OTP verification success the customer lands on this page | New drop_off() block in build_prd.py, shown below Screen Content in Sl. No 4 (When / On return). Prototype already lands on PAN Details after OTP success | Implemented |
 | DISC-123 | 05-10-2026 | PRD Sl. No 4 – DOB (CR-12) | Invalid date wording | Replace the proposed “Please enter a valid date of birth between 01-Jan-1920 and today.” with a customer-friendly message: “Please enter your valid date of birth as per PAN.” | CR-12 “To be changed as” updated to the owner’s wording. Row and prototype keep the live “*Invalid date” until CR-12 is live | Implemented |
+| DISC-124 | 05-10-2026 | PRD Sl. No 4 – DOB | Remove the two DOB crops | The “Typing a date before 01-Jan-1920 (05/01/1900)” and “field border turns red (07/10/1900)” images are not required | Both images removed from the DOB row (f04-dob-typed.png, f04-dob-error.png deleted); the red-border rule stays in the DOB Condition text | Implemented |
 
 ---
 
