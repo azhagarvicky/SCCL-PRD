@@ -316,7 +316,7 @@ MODULES = [
          spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
             Action='User can type the date of birth, or click the calendar icon and select it from the calendar pop up.',
-            Condition='The calendar allows dates from 01-Jan-1920 up to today only; a date outside this range cannot be selected. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. 05/01/1900, year 1010 or 9090) is not accepted and the field border turns red. The age limit (18 to 70 years) is not checked on this page – it is validated on the Curated Offers page.'+RED,
+            Condition='The calendar allows dates from 01-Jan-1920 up to today only; a date outside this range cannot be selected. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. 05/01/1900, year 1010 or 9090) is not accepted and the field border turns red. The age limit (18 to 70 years) is not checked on this page – it is validated on the Curated Offers page, so customers outside the limit are not blocked here and can be tracked (how many come in beyond the limit).'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
                         '“*Invalid date” – displayed next to the DOB label when the typed date is before 01-Jan-1920 or after today ' + todo('CR-12'),
                         'DOB not matching the DOB fetched from the PAN records – “PAN verification failed” is displayed when the user clicks Continue CTA ' + todo('CR-15')]), OK),
@@ -329,7 +329,7 @@ MODULES = [
                         'PAN Number with fewer than 10 characters – error displayed next to the PAN Number label when the user clicks Continue CTA ' + todo('CR-16'),
                         'PAN Number not available in the PAN records – “PAN verification failed” is displayed when the user clicks Continue CTA ' + todo('CR-17')]), OK),
         (img('f04-cta.png'), spec(Field_Name='Continue', Field_Type='CTA (Button)',
-            Action='On click, the system shall validate all the fields on this page and then verify the PAN details: (1) Name as per PAN – the name must match the name in the PAN records by 60% or more; (2) DOB – must match the DOB fetched from the PAN records; (3) PAN Number – must be available in the PAN records. If everything passes, the customer is taken to the next page (LOS to MF Central consent). If any check fails, the customer is not allowed to proceed and “PAN verification failed” is displayed. ' + todo('CR-13', 'CR-15', 'CR-17'),
+            Action='On click, the system shall validate all the fields on this page and then verify the PAN details in this order, each check running only when the previous one passes:<ol><li>PAN Number – must be available in the PAN records (100% match);</li><li>DOB – must match the DOB fetched from the PAN records (100% match);</li><li>Name as per PAN – must match the name in the PAN records by 60% or more.</li></ol>The customer’s age (18 to 70 years) is not checked here – see DOB. If everything passes, the customer is taken to the next page (LOS to MF Central consent). If any check fails, the customer is not allowed to proceed and “PAN verification failed” is displayed. ' + todo('CR-13', 'CR-15', 'CR-17'),
             Condition='Always enabled.'), OK),
       ],
     },
@@ -397,7 +397,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details. Confirm the live message and what the customer can do (prototype: “This loan is available for applicants aged 18 to 70 years.” above the offer, Start Application disabled).'),
+ ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Confirm the live message and what the customer can do (prototype: “This loan is available for applicants aged 18 to 70 years.” above the offer, Start Application disabled).'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
  ('P-05', 'Module 2', 'Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.'),
