@@ -86,7 +86,7 @@ TO_IMPLEMENT = [
          'Message for each position:<ul><li>“1st character must be a letter (A–Z).”</li><li>“2nd character must be a letter (A–Z).”</li><li>“3rd character must be a letter (A–Z).”</li><li>“4th character must be a (P) – only individual’s PAN is allowed.”</li><li>“5th character must be a letter (A–Z).”</li><li>“6th character must be a number (0–9).”</li><li>“7th character must be a number (0–9).”</li><li>“8th character must be a number (0–9).”</li><li>“9th character must be a number (0–9).”</li><li>“10th character must be a letter (A–Z).”</li></ul>'), '01-10-2026'),
  ('CR-12', 'Module 3', 'Sl. No 4 – DOB field (typed date before 01-Jan-1920 or after today)',
   change('“*Invalid date” next to the DOB label',
-         '“Please enter your valid date of birth as per PAN.” (owner’s wording, DISC-123)'), '01-10-2026'),
+         '“Please enter your date of birth exactly as on your PAN card.” (owner’s wording, DISC-134)'), '01-10-2026'),
  ('CR-13', 'Module 3', 'Sl. No 4 – Name as per PAN (name verification failure, name match below 60%)',
   change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
          'Shown on this PAN Details page, next to the Name as per PAN label, only when the name check fails: “Please enter your name exactly as on your PAN card.” The match percentage (60%) is never shown to the customer (DISC-117, DISC-125)'), '01-10-2026'),

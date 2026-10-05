@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 15:56 IST
+**Last Updated:** 05-10-2026 16:00 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -166,6 +166,7 @@
 | DISC-131 | 05-10-2026 | Prototype screen 04 – Mock PAN Verification | Numbered failures | Mock options need failure numbers (1, 2, 3); each shows its error on the PAN Details page | Buttons: Success / “Failure 1 – Re-enter PAN Number as on PAN card” / “Failure 2 – Re-enter date of birth as on PAN card” / “Failure 3 – Re-enter name as on PAN card” (check order, DISC-130); each shows its message next to the field on this page. Prototype only, not in the PRD | Implemented |
 | DISC-132 | 05-10-2026 | Prototype screen 04 – Mock PAN Verification; PRD Sl. No 4 | Mock labels; mock vs PRD | Mock options: Success / Failure 1 – PAN Number mis-matching / Failure 2 – PAN DOB mis-matching / Failure 3 – PAN Name mis-matching. The mock exists only so stakeholders can see how each error is shown on the PAN Details page; the PRD describes the normal flow and the error scenarios, never the mock | Mock buttons relabelled; intro text “For review only: choose a result to see how it is shown on the PAN Details page.” PRD unchanged – it already holds the verification order and the three error scenarios without the mock | Implemented |
 | DISC-133 | 05-10-2026 | PRD – numbered lists | Alignment | The numbered verification list in Sl. No 4 Continue had its numbers cut off at the left edge | prd.css: numbered lists in table cells get the same left indent as bullet lists, so the numbers sit inside the cell and wrapped lines align with the text | Implemented |
+| DISC-134 | 05-10-2026 | PRD Sl. No 4 – DOB (CR-12) | Invalid date wording | Update CR-12 to “Please enter your date of birth exactly as on your PAN card.” | CR-12 “To be changed as” updated (replaces DISC-123 wording). Same text as CR-15 (DOB mismatch). Row and prototype keep the live “*Invalid date” until CR-12 is live | Implemented |
 
 ---
 
