@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 01-10-2026 13:10 IST
+**Last Updated:** 05-10-2026 10:09 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -150,6 +150,7 @@
 | DISC-115 | 01-10-2026 | PRD Sl. No 4 / Screen 04 – PAN Number | Per-character PAN messages | Not grouped messages such as “Characters 6 to 9 of the PAN must be numbers”; each character needs its own validation message | CR-11 now lists one message per position (1st–10th): letters “The Nth character must be a letter (A–Z).”, numbers “The Nth character must be a number (0–9).”, 4th keeps the owner’s wording; wording other than the 4th proposed. Row Condition lists the rule for each position. Prototype shows the per-position message as the PAN is typed | Implemented |
 | DISC-116 | 01-10-2026 | PRD Sl. No 4 / Screen 04 – PAN Number | Live PAN position messages and required wording | Live today: “1st … 5th character must be a letter”, “6th … 8th character must be a number”, “9th character must be a letter”, “10th character must be a letter”. To be changed as: “Nth character must be a letter (A–Z).” for 1st–3rd, 5th, 10th; “4th character must be a (P) – only individual’s PAN is allowed.”; “Nth character must be a number (0–9).” for 6th–9th | PRD row Condition and Screen Content now show the live messages (replacing “no message is shown”); CR-11 current vs to-be lists set to the owner’s texts. 9th taken as “must be a number (0–9)” (owner wrote “letter (0–9)”) – to confirm. Prototype shows the to-be wording | Implemented |
 | DISC-117 | 01-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN; all fields | Positive name-failure message; red border on error | Name verification failure must be shown next to the Name field in a positive, guiding tone (not a negative message) and must not show the 60% to the customer. Any field with a field-level error must have a red border (owner’s UAT crop of the PAN field) | CR-13 added: “Please enter your name exactly as it appears on your PAN card.” (proposed). Name / DOB / PAN Conditions state the red border on error; PAN Before/After gets the owner’s red-border crop (f04-pan-error.png). Prototype: mock Failure 1 shows the positive message, mock button no longer mentions 60%; red border on error was already in place for every field | Implemented |
+| DISC-118 | 05-10-2026 | PRD Sl. No 4 / Screen 04 – Name as per PAN | Alphabets only | Owner’s UAT crop shows “11111111” accepted in Name as per PAN. The customer must not be able to enter numbers, spaces or special characters – alphabets only | CR-14 added (current: alphanumeric; to be: A–Z only, other keys ignored, still captured in capitals). Row Input format tagged CR-14 and shows Before / After with the owner’s crop (f04-name-numeric.png). Prototype now accepts letters only | Implemented |
 
 ---
 

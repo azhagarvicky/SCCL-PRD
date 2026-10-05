@@ -824,7 +824,7 @@
       picker.min = '1920-01-01'; picker.max = iso(today);
 
       // Name as per PAN: alphanumeric (and spaces), up to 150 characters
-      name.addEventListener('input', () => { name.value = name.value.toUpperCase().replace(/[^A-Z0-9 ]/g, '').slice(0, 150); err(name, ''); });   // captured in capitals
+      name.addEventListener('input', () => { name.value = name.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 150); err(name, ''); });   // alphabets only, captured in capitals (CR-14)
       // DOB: numbers only, typed as DD/MM/YYYY (slashes added automatically) or picked from the calendar icon
       dob.addEventListener('input', () => {
         const d = dob.value.replace(/\D/g, '').slice(0, 8);
