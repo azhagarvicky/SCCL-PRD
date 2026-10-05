@@ -870,7 +870,7 @@
         // The 18–70 age limit is not checked here – it is validated on the Curated Offers page (DISC-119)
         const p = pan.value.replace(/\s/g, '');
         if (!p) fail(pan, '*Required');
-        else if (!/^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter a valid PAN Number (e.g. ABCDE1234F).');
+        else if (!/^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(p)) fail(pan, 'Please enter your valid PAN Number.')   // CR-16;
         if (!ok) return;
         store.set(K.mobile + '.pan', { name: name.value.trim(), dob: dob.value, pan: p });
         panMock();
@@ -881,9 +881,9 @@
       // Verification outcomes (DISC-114): each failure is shown next to the field it is about.
       // Prototype wording until the live messages are confirmed (P-17).
       const PAN_FAIL = {
-        name: [name, 'Please enter your name exactly as it appears on your PAN card.'],   // name match below 60% – positive wording, % never shown (CR-13)
-        dob: [dob, 'DOB does not match the PAN records.'],          // DOB differs from the fetched PAN details
-        pan: [pan, 'PAN Number not found.'],                         // PAN does not exist
+        name: [name, 'Please enter your name exactly as per PAN.'],   // name match below 60% – positive wording, % never shown (CR-13)
+        dob: [dob, 'Please enter your date of birth exactly as per PAN.'],   // DOB differs from the fetched PAN details (CR-15)
+        pan: [pan, 'Please check and enter your correct PAN Number.'],      // PAN does not exist (CR-17)
       };
       const panMock = () => {
         document.body.insertAdjacentHTML('beforeend', `<div class="overlay pan-mock-ov"><div class="modal pan-mock">
