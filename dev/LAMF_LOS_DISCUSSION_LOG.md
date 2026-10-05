@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 13:49 IST
+**Last Updated:** 05-10-2026 14:42 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -162,6 +162,7 @@
 | DISC-127 | 05-10-2026 | Sl. No 4 – PAN verification failure messages; prototype mock | Uniform, positive wording | The three failure options (“Failure 1 – Name does not match”, “Failure 2 – DOB does not match”, “Failure 3 – PAN Number not found”) and their messages must be uniform and positive | Messages (CR-13 / CR-15 / CR-17): “Please enter your name exactly as on your PAN card.” / “Please enter your date of birth exactly as on your PAN card.” / “Please enter your PAN Number exactly as on your PAN card.” Mock buttons: “Re-enter name as on PAN card” / “Re-enter date of birth as on PAN card” / “Re-enter PAN Number as on PAN card” | Implemented |
 | DISC-128 | 05-10-2026 | PRD Sl. No 4 – Name as per PAN | CR-14 live | Live: the customer cannot enter numbers or special characters in Name as per PAN; remove the “Alphanumeric – numbers, spaces and special characters can be entered” text | CR-14 moved to Completed Changes (Implemented); row Input format now “Alphabets (A–Z) and space only” (green Changed · CR-14 tag) and Condition states numbers and special characters cannot be entered | Implemented |
 | DISC-129 | 05-10-2026 | PRD Sl. No 3 / Screen 03 – Enter OTP | Consent checkbox for returning customers | Owner’s UAT screenshot: if the customer has already verified the OTP, the Enter OTP pop up is shown without the Experian consent checkbox. In the journey add a mock pop up before the OTP page (new or existing customer); in the PRD update only the process | PRD Sl. No 3 (owner asked for this change in the Completed row): checkbox Condition, Submit OTP Condition and Screen Content now say the checkbox shows only on the first OTP verification. P-16 answered and moved to Completed Clarifications. Prototype: “Mock Customer Check” pop up (New customer / Existing customer – OTP already verified) after Continue on screen 02; for an existing customer the OTP pop up has no checkbox and Submit OTP enables on 6 digits. Mock not in the PRD | Implemented |
+| DISC-130 | 05-10-2026 | PRD Sl. No 4 – Continue (PAN verification) | Order of the checks; why age is on Curated Offers | On Continue: (1) entered PAN must be available – 100% match, else PAN error; (2) if passed, entered DOB must match the fetched PAN DOB 100%, else DOB error; (3) if passed, name match – error if below 60%. The 18–70 age check is shown only on Curated Offers so customers beyond the limit are not blocked at PAN verification and can be tracked | Continue action lists the three checks in order (each only when the previous passes, PAN and DOB 100% match); DOB Condition and P-18 give the tracking reason. Prototype mock buttons reordered PAN → DOB → name | Implemented |
 
 ---
 

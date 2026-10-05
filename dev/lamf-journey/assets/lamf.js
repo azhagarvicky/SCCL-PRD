@@ -914,12 +914,12 @@
           <button class="close" data-x title="Close">${ICON.close}</button>
           <span class="sim-tag">Prototype only</span>
           <h3>Mock PAN Verification</h3>
-          <p>Choose the result of the PAN check to see how the journey continues.</p>
+          <p>Checks run in order: PAN Number, then DOB, then name. Choose the result to see how the journey continues.</p>
           <div class="pan-mock-btns">
             <button class="btn btn-primary bold" data-r="ok">Success</button>
-            <button class="btn btn-outline" data-r="name">Re-enter name as on PAN card</button>
-            <button class="btn btn-outline" data-r="dob">Re-enter date of birth as on PAN card</button>
             <button class="btn btn-outline" data-r="pan">Re-enter PAN Number as on PAN card</button>
+            <button class="btn btn-outline" data-r="dob">Re-enter date of birth as on PAN card</button>
+            <button class="btn btn-outline" data-r="name">Re-enter name as on PAN card</button>
           </div></div></div>`);
         const ov = document.querySelector('.pan-mock-ov');
         document.body.classList.add('modal-open'); document.documentElement.classList.add('modal-open');
