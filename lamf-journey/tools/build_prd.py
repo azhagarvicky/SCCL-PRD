@@ -215,8 +215,8 @@ MODULES = [
                    ('Sent message', '“A 6-digit OTP has been sent by Shriram Credit to” followed by the masked mobile number and the “Edit” link'),
                    ('OTP boxes', '6 single digit boxes'),
                    ('Resend line', '“Didn’t Receive OTP?” with the countdown timer (0:30 to 0:01), then the “Resend OTP” link'),
-                   ('Experian consent checkbox text', '“I hereby consent to appoint Shriram Credit as my authorised representative to receive my credit information from Experian for the purpose of providing/ evaluating loan offers.”'),
-                   ('CTA', '“Submit OTP” – grey until all 6 digits are entered and the consent is ticked, then yellow'),
+                   ('Experian consent checkbox text (first OTP verification only)', '“I hereby consent to appoint Shriram Credit as my authorised representative to receive my credit information from Experian for the purpose of providing/ evaluating loan offers.”'),
+                   ('CTA', '“Submit OTP” – grey until all 6 digits are entered and the consent is ticked (when the checkbox is displayed), then yellow'),
                    ('Validation messages', '<ul><li>“Invalid OTP” ' + todo('CR-06') + '</li>'
                     '<li>“Maximum OTP retry limit reached. Please retry again after N minute(s).” – N is the time left in the 60 minute block</li>'
                     '<li>“Error: Maximum OTP resend limit reached. Please retry again after N minute(s).” – N is the time left in the 15 minute block</li>'
@@ -257,10 +257,10 @@ MODULES = [
             Validation='“Error: Maximum OTP resend limit reached. Please retry again after N minute(s).” – displayed when the customer clicks Resend OTP after the 3rd back to back resend. N is the time left in the 15 minute block (e.g. a customer returning after 10 minutes sees 5)'), OK),
         (states(('f03-consent.png', 'Before – unticked (default)'), ('f03-consent-ticked.png', 'After – ticked')), spec(Field_Name='(Checkbox) Experian consent', Field_Type='Check box',
             Action='User has to tick this checkbox to appoint Shriram Credit as the authorised representative to receive the credit information from Experian for the purpose of providing / evaluating loan offers.',
-            Condition='Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
+            Condition='Displayed only when the customer verifies the OTP for the first time. For a customer who has already verified the OTP earlier, the checkbox is not displayed. When displayed, Submit OTP CTA shall be enabled only when this checkbox is ticked and all 6 OTP digits are entered, so no validation is shown for the checkbox.'), OK),
         (states(('f03-cta.png', 'Before – disabled (grey) until all 6 digits are entered'), ('f03-cta-enabled.png', 'After – enabled once all 6 digits are entered')), spec(Field_Name='Submit OTP', Field_Type='CTA (Button)',
             Action='On click, the system shall validate the entered OTP. If the OTP is correct, the system shall trigger the Experian API with the mobile number to retrieve the credit score and navigate the customer to the PAN Verification screen. If the OTP is wrong, the customer shall not be allowed to proceed and the respective validation shall be displayed.',
-            Condition='CTA is disabled (grey) and cannot be clicked until all 6 OTP digits are entered and the Experian consent checkbox is ticked, so no validation is shown for these. Once enabled, the wrong OTP and block validations are shown under the Enter OTP field.'), OK),
+            Condition='CTA is disabled (grey) and cannot be clicked until all 6 OTP digits are entered and the Experian consent checkbox is ticked (for a customer who has already verified the OTP earlier, the checkbox is not displayed and only the 6 digits are needed), so no validation is shown for these. Once enabled, the wrong OTP and block validations are shown under the Enter OTP field.'), OK),
       ],
     },
   ],
@@ -398,7 +398,6 @@ COMPLETED_COLUMNS = [
 
 PENDING = [
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details. Confirm the live message and what the customer can do (prototype: “This loan is available for applicants aged 18 to 70 years.” above the offer, Start Application disabled).'),
- ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
  ('P-05', 'Module 2', 'Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.'),
@@ -411,6 +410,8 @@ PENDING = [
 # Answered clarifications: (ID, Module, Question, Answer, Answered on).
 # P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
 COMPLETED = [
+ ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.',
+  'The checkbox is displayed only when the customer verifies the OTP for the first time. A customer who has already verified the OTP earlier sees the Enter OTP pop up without the checkbox, and Submit OTP is enabled once all 6 digits are entered (DISC-129).', '05-10-2026'),
  ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a PAN Number not in the ABCDE1234F format, and (b) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?',
   'Live: one common message “PAN verification failed” for every verification failure (DISC-126). The owner set the required messages (DISC-125): empty fields – CR-10; PAN with fewer than 10 characters – “Please enter your valid PAN Number.” (CR-16); name match below 60% – “Please enter your name exactly as on your PAN card.” (CR-13); DOB not matching – “Please enter your date of birth exactly as on your PAN card.” (CR-15); PAN not available – “Please enter your PAN Number exactly as on your PAN card.” (CR-17). Logout lands on the Landing page (exit page).', '05-10-2026'),
  ('P-11', 'Module 2', 'OTP length, resend timer duration and number of resends allowed.',

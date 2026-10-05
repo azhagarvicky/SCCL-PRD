@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 05-10-2026 13:46 IST
+**Last Updated:** 05-10-2026 13:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -161,6 +161,7 @@
 | DISC-126 | 05-10-2026 | PRD Sl. No 4 – PAN verification failures | Live “PAN verification failed” | Live today: any verification failure (name match below 60%, DOB mismatch, PAN not available) shows one common message “PAN verification failed”. To be changed: a clear message on this page saying which one failed – name, DOB or PAN Number | Row field validations, Continue action and Screen Content now describe the live common message, tagged CR-13 / CR-15 / CR-17; those CRs’ “Current” is “PAN verification failed” and “To be changed as” is the field-specific message shown on this page next to the failing field. P-17 answer updated. Prototype already shows the field-specific messages | Implemented |
 | DISC-127 | 05-10-2026 | Sl. No 4 – PAN verification failure messages; prototype mock | Uniform, positive wording | The three failure options (“Failure 1 – Name does not match”, “Failure 2 – DOB does not match”, “Failure 3 – PAN Number not found”) and their messages must be uniform and positive | Messages (CR-13 / CR-15 / CR-17): “Please enter your name exactly as on your PAN card.” / “Please enter your date of birth exactly as on your PAN card.” / “Please enter your PAN Number exactly as on your PAN card.” Mock buttons: “Re-enter name as on PAN card” / “Re-enter date of birth as on PAN card” / “Re-enter PAN Number as on PAN card” | Implemented |
 | DISC-128 | 05-10-2026 | PRD Sl. No 4 – Name as per PAN | CR-14 live | Live: the customer cannot enter numbers or special characters in Name as per PAN; remove the “Alphanumeric – numbers, spaces and special characters can be entered” text | CR-14 moved to Completed Changes (Implemented); row Input format now “Alphabets (A–Z) and space only” (green Changed · CR-14 tag) and Condition states numbers and special characters cannot be entered | Implemented |
+| DISC-129 | 05-10-2026 | PRD Sl. No 3 / Screen 03 – Enter OTP | Consent checkbox for returning customers | Owner’s UAT screenshot: if the customer has already verified the OTP, the Enter OTP pop up is shown without the Experian consent checkbox. In the journey add a mock pop up before the OTP page (new or existing customer); in the PRD update only the process | PRD Sl. No 3 (owner asked for this change in the Completed row): checkbox Condition, Submit OTP Condition and Screen Content now say the checkbox shows only on the first OTP verification. P-16 answered and moved to Completed Clarifications. Prototype: “Mock Customer Check” pop up (New customer / Existing customer – OTP already verified) after Continue on screen 02; for an existing customer the OTP pop up has no checkbox and Submit OTP enables on 6 digits. Mock not in the PRD | Implemented |
 
 ---
 
