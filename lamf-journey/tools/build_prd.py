@@ -88,20 +88,20 @@ TO_IMPLEMENT = [
   change('“*Invalid date” next to the DOB label',
          '“Please enter your valid date of birth as per PAN.” (owner’s wording, DISC-123)'), '01-10-2026'),
  ('CR-13', 'Module 3', 'Sl. No 4 – Name as per PAN (name verification failure, name match below 60%)',
-  change('Live message not captured – the owner set the required wording (DISC-125)',
-         'Positive message next to the Name as per PAN label: “Please enter your name exactly as per PAN.” The match percentage (60%) is never shown to the customer (DISC-117, DISC-125)'), '01-10-2026'),
+  change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
+         'Shown on this PAN Details page, next to the Name as per PAN label, only when the name check fails: “Please enter your name exactly as per PAN.” The match percentage (60%) is never shown to the customer (DISC-117, DISC-125)'), '01-10-2026'),
  ('CR-14', 'Module 3', 'Sl. No 4 – Name as per PAN (characters allowed)',
   change('Alphanumeric – numbers, spaces and special characters can be entered (e.g. “11111111” is accepted)',
          'Alphabets (A–Z) and space only (e.g. AZHAGAR SAMY). Numbers and special characters cannot be entered – the key press is ignored and no message is shown. What is typed is still captured in CAPITAL letters (DISC-118, DISC-120)'), '05-10-2026'),
  ('CR-15', 'Module 3', 'Sl. No 4 – DOB (DOB does not match the PAN records)',
-  change('Live message not captured – the owner set the required wording (DISC-125)',
-         'Positive message next to the DOB label: “Please enter your date of birth exactly as per PAN.”'), '05-10-2026'),
+  change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
+         'Shown on this PAN Details page, next to the DOB label, only when the DOB check fails: “Please enter your date of birth exactly as per PAN.”'), '05-10-2026'),
  ('CR-16', 'Module 3', 'Sl. No 4 – PAN Number (fewer than 10 characters entered)',
   change('Live message not captured – the owner set the required wording (DISC-125)',
          'Message next to the PAN Number label when Continue is clicked: “Please enter your valid PAN Number.”'), '05-10-2026'),
  ('CR-17', 'Module 3', 'Sl. No 4 – PAN Number (PAN not available in the PAN records)',
-  change('Live message not captured – the owner set the required wording (DISC-125)',
-         'Message next to the PAN Number label: “Please check and enter your correct PAN Number.”'), '05-10-2026'),
+  change('One common message “PAN verification failed” for every verification failure – it does not say whether the name, DOB or PAN Number failed (DISC-126)',
+         'Shown on this PAN Details page, next to the PAN Number label, only when the PAN is not available: “Please check and enter your correct PAN Number.”'), '05-10-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -288,9 +288,7 @@ MODULES = [
                     '<li>“*Invalid date” – DOB typed before 01-Jan-1920 or after today ' + todo('CR-12') + '</li>'
                     '<li>PAN Number with fewer than 10 characters ' + todo('CR-16') + '</li>'
                     '<li>PAN character that does not fit its position – “1st character must be a letter” … “10th character must be a letter” (one message per position) ' + todo('CR-11') + '</li>'
-                    '<li>Name verification failure (next to Name as per PAN) ' + todo('CR-13') + '</li>'
-                    '<li>DOB verification failure – DOB not matching the PAN records ' + todo('CR-15') + '</li>'
-                    '<li>PAN Number not available in the PAN records ' + todo('CR-17') + '</li></ul>'),
+                    '<li>“PAN verification failed” – name match below 60%, DOB not matching the PAN records, or PAN Number not available ' + todo('CR-13', 'CR-15', 'CR-17') + '</li></ul>'),
                ])
                + drop_off([
                    ('When', 'The customer leaves the journey on this page before the PAN verification is completed (e.g. closes the browser or tab, or logs out)'),
@@ -314,7 +312,7 @@ MODULES = [
             Action='User has to enter the name exactly as printed on the PAN card.',
             Condition='Whatever the user types is captured in CAPITAL letters (e.g. “azhagar samy” is captured as “AZHAGAR SAMY”).'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the name ' + todo('CR-10'),
-                        'Name match with the PAN records below 60% – name verification failure shown next to the Name as per PAN label when the user clicks Continue CTA; the percentage is not shown to the customer ' + todo('CR-13')]), OK),
+                        'Name match with the PAN records below 60% – “PAN verification failed” is displayed when the user clicks Continue CTA ' + todo('CR-13')]), OK),
         (states(('f04-dob.png', 'Before – type the date, or click the calendar icon'), ('f04-dob-calendar.png', 'After – calendar opened from the icon (date selected)'), ('f04-dob-invalid.png', 'Typed date outside 01-Jan-1920 to today – “*Invalid date” next to the DOB label')),
          spec(Field_Name='DOB', Field_Type='Text Field with calendar icon',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs or selects', Input_Value_format='Numeric, DD/MM/YYYY',
@@ -322,7 +320,7 @@ MODULES = [
             Condition='The calendar allows dates from 01-Jan-1920 up to today only; a date outside this range cannot be selected. Any date can be typed; a typed date before 01-Jan-1920 or after today (e.g. 05/01/1900, year 1010 or 9090) is not accepted and the field border turns red. The age limit (18 to 70 years) is not checked on this page – it is validated on the Curated Offers page.'+RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the DOB ' + todo('CR-10'),
                         '“*Invalid date” – displayed next to the DOB label when the typed date is before 01-Jan-1920 or after today ' + todo('CR-12'),
-                        'DOB not matching the DOB fetched from the PAN records – DOB verification failure shown next to the DOB label when the user clicks Continue CTA ' + todo('CR-15')]), OK),
+                        'DOB not matching the DOB fetched from the PAN records – “PAN verification failed” is displayed when the user clicks Continue CTA ' + todo('CR-15')]), OK),
         (states(('f04-pan.png', 'Before – empty'), ('f04-pan-filled.png', 'After – PAN shown with spaces: ABCDE 1234 F'), ('f04-pan-error.png', 'Error – field border turns red')), spec(Field_Name='PAN Number', Field_Type='Text Field',
             Minimum_Character='10 Char', Maximum_Character='10 Char', Value_Type='User inputs',
             Input_Value_format='ABCDE1234F – characters 1 to 5 letters (the 4th is always P), 6 to 9 numbers, 10th a letter',
@@ -330,9 +328,9 @@ MODULES = [
             Condition='The PAN is shown with spaces as ABCDE 1234 F (e.g. CBOPA 8195 B). A character that does not fit its position cannot be entered, and a message for that position is shown at once next to the PAN Number label:<ul><li>“1st character must be a letter”</li><li>“2nd character must be a letter”</li><li>“3rd character must be a letter”</li><li>“4th character must be a letter”</li><li>“5th character must be a letter”</li><li>“6th character must be a number”</li><li>“7th character must be a number”</li><li>“8th character must be a number”</li><li>“9th character must be a letter”</li><li>“10th character must be a letter”</li></ul>E.g. CBOPA8195B can be entered; in CBOCA8195B the “C” in the 4th place cannot be entered. ' + todo('CR-11') + RED,
             Validation=['“*Required” – displayed when the user clicks Continue CTA without entering the PAN Number ' + todo('CR-10'),
                         'PAN Number with fewer than 10 characters – error displayed next to the PAN Number label when the user clicks Continue CTA ' + todo('CR-16'),
-                        'PAN Number not available in the PAN records – error shown next to the PAN Number label when the user clicks Continue CTA ' + todo('CR-17')]), OK),
+                        'PAN Number not available in the PAN records – “PAN verification failed” is displayed when the user clicks Continue CTA ' + todo('CR-17')]), OK),
         (img('f04-cta.png'), spec(Field_Name='Continue', Field_Type='CTA (Button)',
-            Action='On click, the system shall validate all the fields on this page and then verify the PAN details: (1) Name as per PAN – the name must match the name in the PAN records by 60% or more; (2) DOB – must match the DOB fetched from the PAN records; (3) PAN Number – must be available in the PAN records. If everything passes, the customer is taken to the next page (LOS to MF Central consent). If any check fails, the customer shall not be allowed to proceed and the respective error is displayed for that field.',
+            Action='On click, the system shall validate all the fields on this page and then verify the PAN details: (1) Name as per PAN – the name must match the name in the PAN records by 60% or more; (2) DOB – must match the DOB fetched from the PAN records; (3) PAN Number – must be available in the PAN records. If everything passes, the customer is taken to the next page (LOS to MF Central consent). If any check fails, the customer is not allowed to proceed and “PAN verification failed” is displayed. ' + todo('CR-13', 'CR-15', 'CR-17'),
             Condition='Always enabled.'), OK),
       ],
     },
@@ -415,7 +413,7 @@ PENDING = [
 # P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
 COMPLETED = [
  ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a PAN Number not in the ABCDE1234F format, and (b) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?',
-  'No live wording captured; the owner set the required messages (DISC-125): empty fields – CR-10; PAN with fewer than 10 characters – “Please enter your valid PAN Number.” (CR-16); name match below 60% – “Please enter your name exactly as per PAN.” (CR-13); DOB not matching – “Please enter your date of birth exactly as per PAN.” (CR-15); PAN not available – “Please check and enter your correct PAN Number.” (CR-17). Logout lands on the Landing page (exit page).', '05-10-2026'),
+  'Live: one common message “PAN verification failed” for every verification failure (DISC-126). The owner set the required messages (DISC-125): empty fields – CR-10; PAN with fewer than 10 characters – “Please enter your valid PAN Number.” (CR-16); name match below 60% – “Please enter your name exactly as per PAN.” (CR-13); DOB not matching – “Please enter your date of birth exactly as per PAN.” (CR-15); PAN not available – “Please check and enter your correct PAN Number.” (CR-17). Logout lands on the Landing page (exit page).', '05-10-2026'),
  ('P-11', 'Module 2', 'OTP length, resend timer duration and number of resends allowed.',
   '6 digit OTP; 30 second resend timer; 3 resends allowed, after which the number is blocked for 15 minutes. OTP validity: 30 seconds (see P-04).', '23-09-2026'),
  ('P-12', 'Module 2', 'Wrong OTP handling – message, maximum attempts and lockout.',
