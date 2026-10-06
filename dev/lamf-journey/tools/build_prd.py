@@ -338,6 +338,46 @@ MODULES = [
     },
   ],
  },
+ {
+  'title': 'Module 4 – Mutual Fund Portfolio Fetch (MF Central)',
+  'screens': 'Screen 05) LOS to MF Central Redirection consent page',
+  'rows': [
+    {
+      'sl': '5',
+      'shot': '<p>UAT screenshot to be shared ' + pend('P-19') + '</p>',
+      'func': 'User giving consent to fetch the mutual fund portfolio from MF Central and clicking “Check Credit Limit”',
+      'desc': ('<p>On successful PAN verification (Sl. No 4) the system shall navigate the customer to the Credit Limit Against Mutual Fund page. '
+               'The PAN Number verified in Sl. No 4 is carried forward and displayed as a non editable field. '
+               'The customer gives consent to fetch the mutual fund portfolio from MF Central, which is used to determine the eligible credit limit and loan offers. '
+               'Draft from the prototype screen – to be checked against the live UAT journey ' + pend('P-19') + '</p>'
+               + screen_content([
+                   ('Header', 'Shriram Credit logo (left) and the icons on the right ' + pend('P-19')),
+                   ('Left panel', '“Interest rates starting from 10.5% p.a.*”, “Get a Loan up to 75% of your eligible Mutual Fund portfolio”, “Interest-only EMI payments”, “Disbursal in 2 hours post application”'),
+                   ('How it works', '“Apply for loan within mins.” with 9 steps: 01 Check your eligibility, credit limit, and interest rates. 02 Select mutual fund units to pledge. 03 Complete your KYC verification. 04 Pledge your selected mutual fund units. 05 Your loan amount is approved, Sanction Letter with Key Fact Statement (KFS) is issued. 06 e-Sign the loan agreement. 07 Your loan account is ready to use. 08 Withdraw funds as needed. 09 Repay the loan at your convenience and regain complete control of your mutual fund holdings.'),
+                   ('Card title', '“Credit Limit Against Mutual Fund”'),
+                   ('Sub text', '“Mutual fund will be fetched from MF Central to determine the eligible credit limit and best loan offers”'),
+                   ('Field label', '“PAN Number”'),
+                   ('Consent checkbox text', '“I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.”'),
+                   ('CTA', '“Check Credit Limit” – grey until the consent is ticked, then yellow'),
+               ])),
+      'data': ('<b>PAN Number:</b> ABCDE1234F (carried from Sl. No 4)<br><br>'
+               '<b>MF Central Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        ('', spec(Field_Name='PAN Number', Field_Type='Display field',
+            Prefilled_Value='PAN Number verified in Sl. No 4, shown as ABCDE 1234 F', Action='Display only, not editable'), OK),
+        ('', spec(Field_Name='(Checkbox) MF Central consent', Field_Type='Check box',
+            Action='User has to tick this checkbox to authorize Shriram Credit to fetch the mutual fund portfolio holdings from MF Central to assess the eligibility and credit limit.',
+            Condition='Unticked by default. Check Credit Limit CTA is enabled only when this checkbox is ticked, so no validation is shown for the checkbox.'), OK),
+        ('', spec(Field_Name='Check Credit Limit', Field_Type='CTA (Button)',
+            Action='On click, the system shall redirect the customer to MF Central to fetch the mutual fund portfolio (next: MF Central redirection) ' + pend('P-19'),
+            Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked.'), OK),
+      ],
+    },
+  ],
+ },
 ]
 
 # Column guide shown by the (i) next to the Integration Requirements heading
@@ -400,6 +440,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-19', 'Module 4', 'Sl. No 5 – LOS to MF Central consent page: the row is drafted from the prototype screen. Please share the UAT screenshots of this page (before and after ticking the consent) and confirm: (a) the header icons on the right (logout, or other icons); (b) the exact consent text and whether it is unticked by default; (c) when Check Credit Limit is enabled; (d) what happens on click – MF Central redirection pop up / page; (e) any validation messages on this page.'),
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),

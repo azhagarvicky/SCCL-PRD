@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 06-10-2026 15:48 IST
+**Last Updated:** 06-10-2026 15:51 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -172,6 +172,7 @@
 | DISC-137 | 06-10-2026 | PRD Sl. No 4 – PAN Number | 4th character P only (to be changed) | Live accepts any letter in the 4th place. It must be blocked in the PAN Number field itself, with “The 4th character must be (P) – only individual PAN is allowed.” – mark as to be changed | CR-18 added (current: any letter in 4th place; to be: only P, message above). CR-11 4th-position to-be message points to CR-18. Row now describes live (Input format, Action, example CBOCA8195B accepted) with CR-18 tags. Prototype blocks non-P with the CR-18 message | Implemented |
 | DISC-138 | 06-10-2026 | PRD Sl. No 4 – PAN Verification | Mark Completed | Owner: mark the PAN verification page as completed | Sl. No 4 status set to Completed; the row is now frozen (DISC-088) – changes only on the owner’s explicit request | Implemented |
 | DISC-139 | 06-10-2026 | Curated Offers – age 18 to 70 (from the PAN-page DOB) | Age message | The age error is “Applicant must be between 18 to 70 years of age.” and is displayed on the Curated Offers page only, not on PAN verification. Owner will say exactly where on the Curated Offers page | P-18 updated with the message (still open for the position and whether Start Application is blocked). Prototype Curated Offers shows the new message (placed above the offer for now). Sl. No 4 (Completed) unchanged – it already says age is not checked on PAN Details | Implemented |
+| DISC-140 | 06-10-2026 | PRD Sl. No 5 / Screen 05 – LOS to MF Central consent | Start the page after PAN verification success | Owner: start the next page after the PAN verification success | New Module 4 – Mutual Fund Portfolio Fetch (MF Central) with Sl. No 5 (WIP), drafted from the prototype screen: description, Screen Content, Data Points, fields PAN Number / MF Central consent checkbox / Check Credit Limit. P-19 asks for the UAT screenshots and the live behaviour. Prototype: PAN carried from screen 04, Check Credit Limit grey until the consent is ticked, then opens screen 06 | Implemented |
 
 ---
 
