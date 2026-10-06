@@ -575,18 +575,6 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
 .input.has-err, .input.has-err:focus { border-color: var(--red); }
 
 /* ---------- T&C / Privacy Policy popup ---------- */
-.legal-overlay { z-index: 70; }
-.m-legal { width: 720px; max-height: 78vh; display: flex; flex-direction: column; border-radius: 16px; }
-.lg-head { display: flex; align-items: center; justify-content: space-between; padding: 22px 26px 16px; border-bottom: 1px solid var(--line); }
-.lg-head h3 { font-size: 20px; font-weight: 700; }
-.lg-head .close { position: static; width: 22px; height: 22px; }
-.lg-body { overflow: auto; padding: 18px 26px 22px; }
-.lg-body h4 { font-size: 15px; font-weight: 700; margin: 16px 0 5px; }
-.lg-body h4:first-child { margin-top: 0; }
-.lg-body p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
-.lg-src { margin-top: 22px; font-size: 11.5px; color: var(--muted); font-style: italic; }
-.lg-foot { border-top: 1px solid var(--line); padding: 14px 26px; display: flex; justify-content: flex-end; }
-.lg-foot .btn { width: 148px; height: 42px; }
 
 /* ---------- OTP screen states ---------- */
 .otp input.has-err { border-color: var(--red); }
@@ -629,3 +617,17 @@ body.page-screens { padding: 40px 76px; }
   body.page-screens { padding: 24px 16px; }
   .page-screens ol { columns: 1; }
 }
+
+/* ---------- 04 PAN – mock verification pop up, prototype only (DISC-112) ---------- */
+.pan-mock { width: 440px; padding: 30px 30px 28px; text-align: center; }
+.pan-mock h3 { font-size: 20px; font-weight: 700; margin: 10px 0 8px; }
+.pan-mock p { font-size: 13.5px; color: var(--ink-2); }
+.pan-mock .sim-tag { display: inline-block; font-size: 11px; font-weight: 700; background: #FFF4CC; border: 1px solid #F1D56B; border-radius: 10px; padding: 2px 9px; }
+.pan-mock-btns { display: grid; gap: 10px; margin-top: 22px; }
+.pan-mock-btns .btn { height: 41px; font-size: 14.5px; width: 100%; }
+.pan-card .lbl-err { color: var(--red); font-size: 12.5px; font-weight: 500; margin-left: 4px; }   /* message next to the label, as in UAT (DISC-113) */
+.pan-card .input { margin-bottom: 2px; }
+
+/* Curated Offers – age outside 18–70 (DISC-119) */
+.age-err { color: var(--red); background: #FDECEA; border: 1px solid var(--red); border-radius: 10px; padding: 10px 14px; font-size: 13.5px; margin: 0 0 14px; }
+.offer .is-off { background: #E6E6E6 !important; color: #8A8A8A !important; cursor: not-allowed; }

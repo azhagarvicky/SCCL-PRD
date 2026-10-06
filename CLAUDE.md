@@ -30,7 +30,25 @@ GitHub is the only shared memory, so these rules apply to every session, local o
 3. Commit and **push to `dev` straight away** (`git push origin HEAD:dev`). Unpushed work is
    invisible on the other devices. Every push to `dev` auto-deploys to
    https://azhagarvicky.github.io/SCCL-PRD/dev/
-4. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
+4. PRD Status column: **YTS** (yet to start), **WIP** (in progress), **Completed** (done). Never set a
+   row to Completed yourself — only when the user confirms that row (DISC-086). A **Completed row is
+   frozen**: change nothing in it (text, data points, screenshots, or shared formatting that would
+   alter it) unless the user explicitly asks for that row to change (DISC-088).
+   The Sl. No rows describe the **current live LOS journey** only; upcoming behaviour is never written
+   into a row (DISC-095). Anything the live LOS journey has to change is a change request: add it to
+   `TO_IMPLEMENT` (CR-01, CR-02 …) in `tools/build_prd.py` — shown as **Pending Changes**. Put a `todo('CR-xx')`
+   tag in the Sl. No row next to the current behaviour it changes — in the field spec **and** in the Screen
+   Content list (DISC-100) — (tag only — the current vs required detail
+   stays in the Pending Changes section) (DISC-099, replaces DISC-096). Move it to `IMPLEMENTED` (**Completed Changes**) only when the user
+   confirms it is live (DISC-091), and at the same time update the row to the new behaviour.
+   Each Sl. No description ends with a **Screen Content** list (`screen_content()`) of every text shown on
+   that screen (DISC-094).
+   For every element that changes state (checkbox, CTA enabled / disabled, link or timer), show **Before / After**
+   screenshots in the row with `states()` — crop from the user's UAT screenshots when shared, otherwise derive
+   from the existing crop — and record the live behaviour. Add a “To be changed” change request only when the
+   user says the behaviour has to change. When the user confirms a flow, update both the PRD and the prototype
+   journey (DISC-108).
+5. Promote `dev` → `main` (production, https://azhagarvicky.github.io/SCCL-PRD/) **only when the
    user explicitly says so** ("push to production"). Then production gets everything that is on
    `dev`, unchanged, so both sites are identical (DISC-027).
 
