@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 06-10-2026 11:23 IST
+**Last Updated:** 06-10-2026 15:45 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -170,6 +170,7 @@
 | DISC-135 | 05-10-2026 | PRD Sl. No 4 – PAN Number (CR-11) | 4th character message | Use “4th character must be a letter (A–Z).” instead of “4th character must be a (P) – only individual’s PAN is allowed.” (owner wrote “4rd”, taken as 4th) | CR-11 4th-position message updated; all ten messages now follow the same pattern. Prototype shows the new message; the 4th character still accepts only P (individual PAN, DISC-111) – to confirm | Implemented |
 | DISC-136 | 05-10-2026 | PRD Sl. No 4 – PAN Number (CR-11) | Current vs to-be confirmed | Owner restated both lists: current (live) “1st–5th … must be a letter”, “6th–8th … must be a number”, “9th and 10th … must be a letter”; to be: letters (A–Z) for 1st–5th and 10th, numbers (0–9) for 6th–9th | Checked: CR-11 current and to-be lists already match the owner’s text word for word; no change needed. Confirms the 9th as “number (0–9)” (open point from DISC-116) | Confirmed |
 | DISC-137 | 06-10-2026 | PRD Sl. No 4 – PAN Number | 4th character P only (to be changed) | Live accepts any letter in the 4th place. It must be blocked in the PAN Number field itself, with “The 4th character must be (P) – only individual PAN is allowed.” – mark as to be changed | CR-18 added (current: any letter in 4th place; to be: only P, message above). CR-11 4th-position to-be message points to CR-18. Row now describes live (Input format, Action, example CBOCA8195B accepted) with CR-18 tags. Prototype blocks non-P with the CR-18 message | Implemented |
+| DISC-138 | 06-10-2026 | PRD Sl. No 4 – PAN Verification | Mark Completed | Owner: mark the PAN verification page as completed | Sl. No 4 status set to Completed; the row is now frozen (DISC-088) – changes only on the owner’s explicit request | Implemented |
 
 ---
 
