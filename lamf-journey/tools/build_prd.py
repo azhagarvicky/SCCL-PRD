@@ -303,7 +303,7 @@ MODULES = [
                '<b>Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Experian API Triggered:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Experian Response:</b> ' + pend('P-09')),
-      'status': DONE,
+      'status': DONE,   # confirmed by the owner – do not change without the owner's instruction
       'fields': [
         (img('f04-logout.png'), spec(Field_Name='Logout', Field_Type='Icon (top navigation, right corner)',
             Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1), as it is the exit page.'), OK),
