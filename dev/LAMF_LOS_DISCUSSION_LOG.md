@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 06-10-2026 15:45 IST
+**Last Updated:** 06-10-2026 15:46 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -717,6 +717,7 @@
 | IMP-063 | `kycBehaviour`: existing mode forces `{aadhaar:'done', photo:'done'}`; review screens 15.1–16.2 run in New PAN mode; `kycRow` 'doneOpen' shows a tick; `PAN_DETAILS.aadhaar` (masked) + `ETB_RO.personal` Aadhaar Number; build_pages 14 static state all complete. Checked in the browser: existing PAN all complete → 17, New PAN still asks Aadhaar / Photo / Bank, the 4 review screens show their states, no page errors | 29-09-2026 |
 | IMP-064 | `lamfec.resume` {screen, at} saved in `wireBehaviour` for `RESUME_AT` screens (only once an application has started and until the E-Mandate is done); cleared on submit and on a new application. `customerLoans` adds the In Progress card; `T.loanResume` panel; `yourLoansBehaviour(defaultId, reviewResume)`; review screen 04.4 (45 screens). Checked in the browser: fresh customer – no card; ETB → 12 → 13 → 14 → OTP → Your loans shows both cards with In Progress selected → Resume → 14; pledge stage updates; after E-Mandate the card is Submitted and resume cleared; 04.4 and 390px layout fine; no page errors | 29-09-2026 |
 | IMP-065 | `RESUME_DEMO_MOBILE` + `seedResumeDemo()` called on OTP success for 6666666666; `yourLoansBehaviour` shows the resume card only for that number (or review 04.4); CSS `.rsm-kv > div > span` so the ₹ span is not a block. Checked in the browser: 9597001623 – no cards (also after a drop-off); 6666666666 – both cards, panel ₹ on one line, Resume → 14 with all steps complete; no page errors | 29-09-2026 |
+| IMP-066 | Production release 06-10-2026 15:46 IST on the user's "push to production": `main` fast-forwarded to `dev`, so production now has everything on dev – PRD Sl. No 2–4 (Sl. No 4 Completed), Pending Changes CR-01 to CR-18 and Completed Changes (CR-14), Pending / Completed Clarifications, the prototype screens 02–04 behaviour (OTP rules, customer-type and PAN verification mocks, PAN field rules, red borders), the Curated Offers age check and the existing-customer prototype. Production and dev are identical | 06-10-2026 |
 
 ---
 
