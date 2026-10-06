@@ -952,6 +952,22 @@
   };
   ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = curatedAgeCheck; });
 
+  // Screen 05 (DISC-140): PAN carried from screen 04; Check Credit Limit is enabled only when the MF Central consent is ticked.
+  BEHAVIOUR['05) LOS to MF Central Redirection consent page'] = () => {
+    const card = document.querySelector('.cl-card'); if (!card) return;
+    const panIn = card.querySelector('input.readonly');
+    const saved = (store.get(K.mobile + '.pan') || {}).pan;
+    if (saved && saved.length === 10) panIn.value = `${saved.slice(0, 5)} ${saved.slice(5, 9)} ${saved.slice(9)}`;
+    const chk = card.querySelector('input[type="checkbox"]');
+    const cta = card.querySelector('[data-cta="check-credit-limit"]');
+    const sync = () => {
+      cta.classList.toggle('btn-primary', chk.checked); cta.classList.toggle('bold', chk.checked);
+      cta.classList.toggle('btn-disabled', !chk.checked); cta.setAttribute('aria-disabled', String(!chk.checked));
+    };
+    chk.addEventListener('change', sync); sync();
+    cta.addEventListener('click', () => { if (chk.checked) go('06) LOS to MF Central Redirection loading page'); });   // grey CTA does nothing
+  };
+
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
     if (fn) fn();
