@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SCCL LAMF – LOS Product Requirements Document</title>
-<link rel="stylesheet" href="assets/lamf.css?v=68bcc7b">
-<link rel="stylesheet" href="assets/prd.css?v=68bcc7b">
+<link rel="stylesheet" href="assets/lamf.css?v=216f4e2">
+<link rel="stylesheet" href="assets/prd.css?v=216f4e2">
 </head>
 <body class="prd">
 <header class="prd-head">
   <a href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>
   <div>
     <h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
-    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 06-10-2026 10:15</p>
+    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 06-10-2026 10:18</p>
   </div>
   <a class="prd-link" href="screens.html">All screens →</a>
 </header>
@@ -61,7 +61,7 @@
 <tr><td>INT-002</td><td>OTP Service Provider <a class="pend-ref" href="#P-10" onclick="var t=document.getElementById('P-10');if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}return false" title="Open pending clarification P-10">Pending · P-10</a></td><td>Send and verify the 6 digit OTP for the MF linked mobile number</td><td>Continue CTA on Module 1; Resend OTP CTA on Module 2</td><td>Mobile number</td><td>OTP sent / verification result</td><td>Customer proceeds to PAN Verification</td><td><a class="pend-ref" href="#P-02" onclick="var t=document.getElementById('P-02');if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}return false" title="Open pending clarification P-02">Pending · P-02</a> <a class="pend-ref" href="#P-10" onclick="var t=document.getElementById('P-10');if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}return false" title="Open pending clarification P-10">Pending · P-10</a></td></tr>
 </tbody></table>
 <h2>Pending Clarifications<span class="count wip">8</span><span class="info" tabindex="0" aria-label="How to read this list" onclick="event.preventDefault()">i<span class="info-pop" role="tooltip"><b>How to read this list</b><table><tr><th>ID</th><td>Reference number. Anything not yet decided elsewhere in the PRD carries an amber “Pending · P-09” badge that jumps to its row here</td></tr><tr><th>Module</th><td>Which part of the journey the question is about (“All” means the whole journey)</td></tr><tr><th>Clarification Required</th><td>The question that must be answered before that requirement is final. Until then the related item stays TBD and must not be built on assumptions</td></tr><tr><th>When answered</th><td>The answer is written into the PRD and the question moves to Completed Clarifications below</td></tr></table></span></span></h2><table class="int"><thead><tr><th style="width:70px">ID</th><th style="width:110px">Module</th><th>Clarification Required</th></tr></thead><tbody>
-<tr id="P-18"><td>P-18</td><td>Module 4</td><td>Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Confirm the live message and what the customer can do (prototype: “This loan is available for applicants aged 18 to 70 years.” above the offer, Start Application disabled).</td></tr>
+<tr id="P-18"><td>P-18</td><td>Module 4</td><td>Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.</td></tr>
 <tr id="P-02"><td>P-02</td><td>Module 1</td><td>Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?</td></tr>
 <tr id="P-03"><td>P-03</td><td>Module 1</td><td>Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?</td></tr>
 <tr id="P-05"><td>P-05</td><td>Module 2</td><td>Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.</td></tr>
@@ -104,6 +104,6 @@
 </tbody></table></details>
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
-<script src="assets/review.js?v=68bcc7b"></script>
+<script src="assets/review.js?v=216f4e2"></script>
 </body>
 </html>

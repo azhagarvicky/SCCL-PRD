@@ -936,7 +936,7 @@
   };
 
   // Curated Offers (DISC-119): the 18–70 age limit is validated here, from the DOB entered on the PAN page.
-  // Outside the limit the offer cannot be started. Message wording proposed (P-18).
+  // Outside the limit the offer cannot be started. Message confirmed (DISC-139); exact position on the page to be confirmed (P-18).
   const AGE_MIN = 18, AGE_MAX = 70;
   const curatedAgeCheck = () => {
     const v = (store.get(K.mobile + '.pan') || {}).dob;
@@ -945,7 +945,7 @@
     let a = t.getFullYear() - b.getFullYear(); if (t < new Date(t.getFullYear(), b.getMonth(), b.getDate())) a -= 1;
     if (a >= AGE_MIN && a <= AGE_MAX) return;
     const offer = document.querySelector('.curated .offer'); if (!offer) return;
-    offer.insertAdjacentHTML('beforebegin', `<div class="age-err" role="alert">This loan is available for applicants aged ${AGE_MIN} to ${AGE_MAX} years.</div>`);
+    offer.insertAdjacentHTML('beforebegin', `<div class="age-err" role="alert">Applicant must be between ${AGE_MIN} to ${AGE_MAX} years of age.</div>`);
     offer.querySelectorAll('[data-cta="start-application"], [data-cta="continue"]').forEach((b) => {
       const c = b.cloneNode(true); c.classList.remove('is-live'); c.classList.add('is-off'); c.setAttribute('aria-disabled', 'true'); b.replaceWith(c);
     });
