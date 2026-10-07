@@ -399,14 +399,14 @@ MODULES = [
   ],
  },
  {
-  'title': 'Top Navigation (all pages from Sl. No 5)',
-  'screens': 'Shown at the top of every page from Screen 05) LOS to MF Central Redirection consent page onwards',
+  'title': 'Top Navigation',
+  'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every page from Screen 05) LOS to MF Central Redirection consent page onwards – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
   'rows': [
     {
       'sl': '6',
       'shot': img('f06-topnav.png'),
       'func': 'Top navigation shown on every page after PAN verification',
-      'desc': ('<p>The top navigation is shown at the top of every page from Sl. No 5 onwards and stays fixed when the page is scrolled. '
+      'desc': ('<p>The top navigation is shown at the top of every page from Sl. No 5 onwards and stays fixed when the page is scrolled (the PAN Details page has its own top navigation – see Sl. No 6.3). '
                'It gives the customer access to the credit score fetched from Experian and to the profile (with Logout) from any page.</p>'
                + screen_content([
                    ('Left', 'Shriram Credit logo'),
@@ -473,6 +473,27 @@ MODULES = [
             Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1).'), OK),
         ('', spec(Field_Name='(X) Close icon', Field_Type='Icon',
             Action='On click, the profile pop up is closed and the customer stays on the same page.'), OK),
+      ],
+    },
+    {
+      'sl': '6.3',
+      'shot': img('f06-topnav-pan.png'),
+      'func': 'Top navigation on the PAN Details page – logo and Logout',
+      'desc': ('<p>On the PAN Details page (Sl. No 4) only, the top navigation shows the Shriram Credit logo and the Logout icon. '
+               'The Logout icon is shown directly in the top navigation (not inside the Profiles pop up). '
+               'The Credit Score and Profile icons are not shown on this page; from Sl. No 5 onwards Logout is available inside the Profiles pop up (Sl. No 6.2).</p>'
+               + screen_content([
+                   ('Left', 'Shriram Credit logo'),
+                   ('Right', 'Logout icon'),
+               ])),
+      'data': 'No data captured from this navigation',
+      'status': WIP,
+      'fields': [
+        (icon('f06-logo.png'), spec(Field_Name='Shriram Credit logo', Field_Type='Image (top navigation, left corner)',
+            Action='Display only.'), OK),
+        (icon('f06-logout-icon.png'), spec(Field_Name='Logout', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1).',
+            Condition='Shown only on the PAN Details page (Sl. No 4).'), OK),
       ],
     },
   ],
