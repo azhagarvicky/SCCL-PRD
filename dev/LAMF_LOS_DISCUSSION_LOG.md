@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 07-10-2026 15:19 IST
+**Last Updated:** 07-10-2026 15:20 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -181,6 +181,7 @@
 | DISC-146 | 07-10-2026 | PRD – Top Navigation | One row for the top navigation, sub rows per icon | Create one row for the top navigation (X) listing what it contains, and a separate row for each icon (X.1, X.2) | New section “Top Navigation (all pages from Sl. No 5)”: Sl. No 6 Top navigation (logo, Credit Score icon, Profile icon), 6.1 Credit score pop up, 6.2 Profile pop up (moved from 5.1 / 5.2). Sl. No 5 header line points to Sl. No 6 | Implemented |
 | DISC-147 | 07-10-2026 | PRD – Top Navigation (Sl. No 6.3) | PAN Details page top navigation | The PAN verification page also has a top navigation, with only the logo and the Logout CTA; Logout is shown directly, not under the profile. This comes only on the PAN verification page | Sl. No 6.3 added (owner’s UAT crop): logo and Logout icon, Logout → Landing page, shown only on PAN Details. Section renamed “Top Navigation”, screens line covers both variants; row 6 points to 6.3. Sl. No 4 (Completed) unchanged | Implemented |
 | DISC-148 | 07-10-2026 | PRD Sl. No 6.2 – Logout | Logout CTA crop | Crop the Logout CTA from the profile pop up screenshot and show it in 6.2 | f06-logout-cta.png cropped from the owner’s UAT profile pop up and shown next to the Logout field in 6.2 | Implemented |
+| DISC-149 | 07-10-2026 | PRD Sl. No 6.1 / 6.2 | Crops for the remaining fields | Owner agreed to crops for Raise an issue and the close icons | f06-raise-issue.png (6.1 Raise an issue), f06-close-credit.png (6.1 close) and f06-close-profile.png (6.2 close) cropped from the owner’s UAT pop up screenshots | Implemented |
 
 ---
 
