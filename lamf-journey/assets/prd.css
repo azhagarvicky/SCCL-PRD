@@ -96,4 +96,4 @@ body.prd { background: #F4F5F6; color: #111; }
 .prd-body td.shot figure.state:last-child { margin-bottom: 0; }
 .prd-body td.shot figcaption { margin-top: 5px; font-size: 11.5px; color: #555; }
 
-.prd-body td.shot img.icon { width: auto; max-width: 64px; border: 0; }   /* icon crops at natural size (DISC-145) */
+.prd-body td.shot img.icon { width: auto; max-width: 100px; border: 0; }   /* icon crops at natural size (DISC-145) */

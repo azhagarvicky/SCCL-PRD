@@ -469,7 +469,7 @@ MODULES = [
       'fields': [
         (icon('f05-profile-icon.png'), spec(Field_Name='Profile icon', Field_Type='Icon (top navigation, right corner)',
             Action='On click, the system shall open the Profiles pop up.'), OK),
-        ('', spec(Field_Name='Logout', Field_Type='CTA',
+        (icon('f06-logout-cta.png'), spec(Field_Name='Logout', Field_Type='CTA',
             Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1).'), OK),
         ('', spec(Field_Name='(X) Close icon', Field_Type='Icon',
             Action='On click, the profile pop up is closed and the customer stays on the same page.'), OK),
