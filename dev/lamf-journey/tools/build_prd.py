@@ -123,6 +123,9 @@ def todo(*ids):
 def img(src, w=None):   # w kept for call-site readability; sizing is handled by the stylesheet
     return f'<img src="prd-assets/{src}" alt="">'
 
+def icon(src):   # small icons are shown at their own size, not stretched to the column width
+    return f'<img class="icon" src="prd-assets/{src}" alt="">'
+
 def states(*pairs):
     """Several screenshots of one element, each with a caption (e.g. before / after) (DISC-105)."""
     return ''.join(f'<figure class="state">{img(src)}<figcaption>{cap}</figcaption></figure>' for src, cap in pairs)
@@ -350,9 +353,9 @@ MODULES = [
                'The PAN Number verified in Sl. No 4 is carried forward and displayed as a non editable field. '
                'The customer gives consent to fetch the mutual fund portfolio from MF Central and clicks Check Credit Limit; the customer is then redirected to MF Central, where the portfolio for the entered PAN and mobile number is fetched to determine the eligible credit limit and the loan offers. '
                'The left side of the page shows the loan highlights and the “How it works” steps (display only). '
-               'From the top navigation the customer can view the credit score fetched from Experian and the profile.</p>'
+               'The Credit Score and Profile icons in the top navigation are described in Sl. No 5.1 and 5.2.</p>'
                + screen_content([
-                   ('Header', 'Shriram Credit logo (left); Credit Score icon and Profile icon (right)'),
+                   ('Header', 'Shriram Credit logo (left); Credit Score icon and Profile icon (right) – see Sl. No 5.1 and 5.2'),
                    ('Left panel', '“Interest rates starting from 10.5% p.a.*”; “Get a Loan up to 75% of your eligible Mutual Fund portfolio”; “Interest-only EMI payments”; “Disbursal in 2 hours post application”'),
                    ('How it works', '“How it works” – “Apply for loan within mins.” with 9 steps:<ol>'
                     '<li>Check your eligibility, credit limit, and interest rates.</li>'
@@ -369,8 +372,6 @@ MODULES = [
                    ('Field label', '“PAN Number”'),
                    ('Consent checkbox text', '“I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.”'),
                    ('CTA', '“Check Credit Limit” – grey until the consent is ticked, then yellow'),
-                   ('Credit score pop up', '“Your credit score as of DD MMM YYYY” (e.g. 07 Oct 2026); the score (e.g. 790) on a 300 – 900 meter with its category (e.g. “Very Good”); table “Category” / “Score Range”: Excellent 826 - 900, Very Good 776 - 825, Good 701 - 775, Average 601 - 700, Needs Help 300 - 600; “Issue with your Credit Score? Raise an issue”; “Powered by experian”; close icon'),
-                   ('Profile pop up', '“Profiles”; initial letter of the name, the name as per PAN (e.g. AZHAGARSAMY SUBBURAJ) and the PAN Number (e.g. CBOPA8195B) with a tick; “Logout”; close icon'),
                    ('Validation messages', 'None on this page – the CTA stays grey until the consent is ticked'),
                ])
                + drop_off([
@@ -380,31 +381,9 @@ MODULES = [
       'data': ('<b>PAN Number:</b> ABCDE1234F (carried from Sl. No 4)<br><br>'
                '<b>MF Central Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
-               '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
-               '<b>Credit Score Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
-               '<b>Credit Score Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
-               '<b>Profile Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
-               '<b>Profile Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+               '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
       'status': WIP,
       'fields': [
-        (states(('f05-credit-icon.png', 'Credit Score icon'), ('f05-credit-report.png', 'After click – credit score pop up')),
-         spec(Field_Name='Credit Score icon', Field_Type='Icon (top navigation, right corner)',
-            Action='On click, the system shall open the credit score pop up over the page, showing the credit score fetched from Experian (Sl. No 3):<ul>'
-                   '<li>“Your credit score as of DD MMM YYYY” – the date the score was fetched (e.g. 07 Oct 2026)</li>'
-                   '<li>The score on a 300 – 900 meter (e.g. 790) with its category below it (e.g. “Very Good”)</li>'
-                   '<li>The category is decided by the score range: Excellent 826 – 900, Very Good 776 – 825, Good 701 – 775, Average 601 – 700, Needs Help 300 – 600</li>'
-                   '<li>“Powered by experian”</li></ul>'), OK),
-        ('', spec(Field_Name='Raise an issue', Field_Type='Hyperlink (credit score pop up)',
-            Action='Shown as “Issue with your Credit Score? Raise an issue”. On click, the system shall open https://www.experian.com/help/dispute-credit/ in a new tab; the pop up stays open on this page.'), OK),
-        ('', spec(Field_Name='(X) Close icon – credit score pop up', Field_Type='Icon',
-            Action='On click, the credit score pop up is closed and the customer stays on this page'), OK),
-        (states(('f05-profile-icon.png', 'Profile icon'), ('f05-profile.png', 'After click – profile pop up')),
-         spec(Field_Name='Profile icon', Field_Type='Icon (top navigation, right corner)',
-            Action='On click, the system shall open the Profiles pop up showing the name fetched from the PAN records (with its initial letter) and the PAN Number, and the Logout CTA.'), OK),
-        ('', spec(Field_Name='Logout', Field_Type='CTA (profile pop up)',
-            Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1).'), OK),
-        ('', spec(Field_Name='(X) Close icon – profile pop up', Field_Type='Icon',
-            Action='On click, the profile pop up is closed and the customer stays on this page'), OK),
         (img('f05-pan.png'), spec(Field_Name='PAN Number', Field_Type='Display field',
             Prefilled_Value='PAN Number verified in Sl. No 4, shown with spaces as ABCDE 1234 F', Action='Display only, not editable'), OK),
         (states(('f05-consent.png', 'Before – unticked (default)'), ('f05-consent-ticked.png', 'After – ticked')),
@@ -415,6 +394,58 @@ MODULES = [
          spec(Field_Name='Check Credit Limit', Field_Type='CTA (Button)',
             Action='On click, the system shall record the MF Central consent and redirect the customer to MF Central to fetch the mutual fund portfolio for the entered PAN Number and mobile number.',
             Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown.'), OK),
+      ],
+    },
+    {
+      'sl': '5.1',
+      'shot': img('f05-credit-report.png'),
+      'func': 'User clicking the Credit Score icon in the top navigation to view the credit score',
+      'desc': ('<p>The Credit Score icon is shown in the top navigation (right corner) of every page from Sl. No 5 onwards. '
+               'On click, the system shall open the credit score pop up over the current page, showing the credit score fetched from Experian (Sl. No 3). '
+               'The customer stays on the same page; closing the pop up returns to it.</p>'
+               + screen_content([
+                   ('Title', '“Your credit score as of DD MMM YYYY” – the date the score was fetched (e.g. 07 Oct 2026)'),
+                   ('Score meter', 'The score on a 300 – 900 meter (e.g. 790), with its category below it (e.g. “Very Good”); “300” and “900” at the ends'),
+                   ('Category table', '“Category” / “Score Range”: Excellent 826 - 900; Very Good 776 - 825; Good 701 - 775; Average 601 - 700; Needs Help 300 - 600'),
+                   ('Issue line', '“Issue with your Credit Score? Raise an issue”'),
+                   ('Footer', '“Powered by experian”'),
+                   ('Close icon', '(X) at the top right'),
+               ])),
+      'data': ('<b>Credit Score Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Credit Score Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (icon('f05-credit-icon.png'), spec(Field_Name='Credit Score icon', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, the system shall open the credit score pop up.',
+            Condition='The category is decided by the score range: Excellent 826 – 900, Very Good 776 – 825, Good 701 – 775, Average 601 – 700, Needs Help 300 – 600.'), OK),
+        ('', spec(Field_Name='Raise an issue', Field_Type='Hyperlink',
+            Action='Shown as “Issue with your Credit Score? Raise an issue”. On click, the system shall open https://www.experian.com/help/dispute-credit/ in a new tab; the pop up stays open.'), OK),
+        ('', spec(Field_Name='(X) Close icon', Field_Type='Icon',
+            Action='On click, the credit score pop up is closed and the customer stays on the same page.'), OK),
+      ],
+    },
+    {
+      'sl': '5.2',
+      'shot': img('f05-profile.png'),
+      'func': 'User clicking the Profile icon in the top navigation to view the profile or log out',
+      'desc': ('<p>The Profile icon is shown in the top navigation (right corner) of every page from Sl. No 5 onwards. '
+               'On click, the system shall open the Profiles pop up over the current page, showing the name fetched from the PAN records and the PAN Number, with the Logout CTA.</p>'
+               + screen_content([
+                   ('Title', '“Profiles”'),
+                   ('Profile card', 'Initial letter of the name, the name as per PAN (e.g. AZHAGARSAMY SUBBURAJ) and the PAN Number (e.g. CBOPA8195B), with a tick'),
+                   ('CTA', '“Logout” with the logout icon'),
+                   ('Close icon', '(X) at the top right'),
+               ])),
+      'data': ('<b>Profile Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Profile Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (icon('f05-profile-icon.png'), spec(Field_Name='Profile icon', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, the system shall open the Profiles pop up.'), OK),
+        ('', spec(Field_Name='Logout', Field_Type='CTA',
+            Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1).'), OK),
+        ('', spec(Field_Name='(X) Close icon', Field_Type='Icon',
+            Action='On click, the profile pop up is closed and the customer stays on the same page.'), OK),
       ],
     },
   ],

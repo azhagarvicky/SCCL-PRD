@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 07-10-2026 11:38 IST
+**Last Updated:** 07-10-2026 11:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -177,6 +177,7 @@
 | DISC-142 | 07-10-2026 | PRD Sl. No 5 / Screen 05 – LOS to MF Central consent; header pop ups | UAT screenshots and behaviour | Owner shared UAT screenshots: consent before / after, credit score pop up, profile pop up. Consent → Check Credit Limit enabled → redirect to MF Central to fetch the portfolio for the PAN and mobile number. Drop off: lands on this page after login. Credit Score icon → “Your credit score as of <fetched date>”, score from Experian with category by range; “Raise an issue” → https://www.experian.com/help/dispute-credit/; close closes. Profile icon → Profiles pop up with the name fetched from PAN, PAN Number and Logout (→ Landing page). Only the name, PAN Number and Logout are part of the profile pop up | Sl. No 5 screenshot and crops replaced with UAT crops (profile crop shows only the name, PAN and Logout); fields added: Credit Score icon (+ pop up), Raise an issue, close, Profile icon (+ pop up), Logout, close; Screen Content lists both pop ups; CTA action = redirect to MF Central for the PAN and mobile number; P-19 answered and moved to Completed. Prototype: header icons open the credit score pop up (score 790, today’s date, bands, Raise an issue link, close) and the profile pop up (name and PAN from screen 04, Logout → Landing page) on every screen with these icons | Implemented |
 | DISC-143 | 07-10-2026 | PRD Sl. No 5 – screenshot | Full page screenshot | Owner shared the full page UAT screenshot of the LOS to MF Central consent page | screen-05.png replaced with the owner’s full page screenshot | Implemented |
 | DISC-144 | 07-10-2026 | PRD Sl. No 5 – Raise an issue; data points | New tab; capture pop up views | Raise an issue opens the Experian page in a new tab. Viewing the credit score pop up and the profile pop up must be captured | Raise an issue action: opens in a new tab. Data Points added: Credit Score Viewed (Yes / No) and Date & Time; Profile Viewed (Yes / No) and Date & Time. Prototype link already opens in a new tab | Implemented |
+| DISC-145 | 07-10-2026 | PRD Sl. No 5.1 / 5.2 – top navigation pop ups | Separate rows | The credit score pop up and the profile pop up must be separate rows (X.1, X.2) because these icons are in the top navigation of every page | Sl. No 5.1 Credit score pop up and 5.2 Profile pop up added (WIP), each with screenshot, description, Screen Content, data points (viewed Yes / No, date & time) and fields; removed from Sl. No 5, whose header line now points to 5.1 / 5.2 | Implemented |
 
 ---
 
