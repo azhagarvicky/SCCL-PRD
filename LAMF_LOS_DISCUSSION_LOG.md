@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 06-10-2026 15:51 IST
+**Last Updated:** 07-10-2026 10:05 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -173,6 +173,7 @@
 | DISC-138 | 06-10-2026 | PRD Sl. No 4 – PAN Verification | Mark Completed | Owner: mark the PAN verification page as completed | Sl. No 4 status set to Completed; the row is now frozen (DISC-088) – changes only on the owner’s explicit request | Implemented |
 | DISC-139 | 06-10-2026 | Curated Offers – age 18 to 70 (from the PAN-page DOB) | Age message | The age error is “Applicant must be between 18 to 70 years of age.” and is displayed on the Curated Offers page only, not on PAN verification. Owner will say exactly where on the Curated Offers page | P-18 updated with the message (still open for the position and whether Start Application is blocked). Prototype Curated Offers shows the new message (placed above the offer for now). Sl. No 4 (Completed) unchanged – it already says age is not checked on PAN Details | Implemented |
 | DISC-140 | 06-10-2026 | PRD Sl. No 5 / Screen 05 – LOS to MF Central consent | Start the page after PAN verification success | Owner: start the next page after the PAN verification success | New Module 4 – Mutual Fund Portfolio Fetch (MF Central) with Sl. No 5 (WIP), drafted from the prototype screen: description, Screen Content, Data Points, fields PAN Number / MF Central consent checkbox / Check Credit Limit. P-19 asks for the UAT screenshots and the live behaviour. Prototype: PAN carried from screen 04, Check Credit Limit grey until the consent is ticked, then opens screen 06 | Implemented |
+| DISC-141 | 07-10-2026 | PRD Sl. No 5 / Screen 05 – LOS to MF Central consent | Full row from the prototype page | Owner: write Sl. No 5 in the previous format from the prototype page (content, drop off, data column, each field, where the CTA goes); owner will correct | Sl. No 5 rewritten (WIP): screenshot and field crops from the prototype render (screen-05, f05-header, f05-pan, f05-consent / ticked, f05-cta / enabled); description; Screen Content (header, left panel, 9 How it works steps, card text, consent text, CTA, no validation); Drop off (lands here after OTP on return, PAN prefilled); Data Points; fields Dashboard / Profile icons, PAN Number, MF Central consent checkbox (Before / After), Check Credit Limit (Before / After, opens Screen 06 MF Central redirection pop up, then MF Central). P-19 reduced to UAT screenshots and the header icon actions | Implemented |
 
 ---
 
