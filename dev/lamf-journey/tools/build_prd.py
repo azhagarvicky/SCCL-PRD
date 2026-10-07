@@ -353,9 +353,9 @@ MODULES = [
                'The PAN Number verified in Sl. No 4 is carried forward and displayed as a non editable field. '
                'The customer gives consent to fetch the mutual fund portfolio from MF Central and clicks Check Credit Limit; the customer is then redirected to MF Central, where the portfolio for the entered PAN and mobile number is fetched to determine the eligible credit limit and the loan offers. '
                'The left side of the page shows the loan highlights and the “How it works” steps (display only). '
-               'The Credit Score and Profile icons in the top navigation are described in Sl. No 5.1 and 5.2.</p>'
+               'The top navigation (Credit Score and Profile icons) is described in Sl. No 6.</p>'
                + screen_content([
-                   ('Header', 'Shriram Credit logo (left); Credit Score icon and Profile icon (right) – see Sl. No 5.1 and 5.2'),
+                   ('Header', 'Top navigation – Shriram Credit logo (left); Credit Score icon and Profile icon (right) – see Sl. No 6'),
                    ('Left panel', '“Interest rates starting from 10.5% p.a.*”; “Get a Loan up to 75% of your eligible Mutual Fund portfolio”; “Interest-only EMI payments”; “Disbursal in 2 hours post application”'),
                    ('How it works', '“How it works” – “Apply for loan within mins.” with 9 steps:<ol>'
                     '<li>Check your eligibility, credit limit, and interest rates.</li>'
@@ -396,11 +396,38 @@ MODULES = [
             Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown.'), OK),
       ],
     },
+  ],
+ },
+ {
+  'title': 'Top Navigation (all pages from Sl. No 5)',
+  'screens': 'Shown at the top of every page from Screen 05) LOS to MF Central Redirection consent page onwards',
+  'rows': [
     {
-      'sl': '5.1',
+      'sl': '6',
+      'shot': img('f06-topnav.png'),
+      'func': 'Top navigation shown on every page after PAN verification',
+      'desc': ('<p>The top navigation is shown at the top of every page from Sl. No 5 onwards and stays fixed when the page is scrolled. '
+               'It gives the customer access to the credit score fetched from Experian and to the profile (with Logout) from any page.</p>'
+               + screen_content([
+                   ('Left', 'Shriram Credit logo'),
+                   ('Right', 'Credit Score icon (Sl. No 6.1) and Profile icon (Sl. No 6.2)'),
+               ])),
+      'data': 'Captured in Sl. No 6.1 and 6.2',
+      'status': WIP,
+      'fields': [
+        (icon('f06-logo.png'), spec(Field_Name='Shriram Credit logo', Field_Type='Image (top navigation, left corner)',
+            Action='Display only.'), OK),
+        (icon('f05-credit-icon.png'), spec(Field_Name='Credit Score icon', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, opens the credit score pop up – see Sl. No 6.1.'), OK),
+        (icon('f05-profile-icon.png'), spec(Field_Name='Profile icon', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, opens the Profiles pop up – see Sl. No 6.2.'), OK),
+      ],
+    },
+    {
+      'sl': '6.1',
       'shot': img('f05-credit-report.png'),
       'func': 'User clicking the Credit Score icon in the top navigation to view the credit score',
-      'desc': ('<p>The Credit Score icon is shown in the top navigation (right corner) of every page from Sl. No 5 onwards. '
+      'desc': ('<p>The Credit Score icon is part of the top navigation (Sl. No 6). '
                'On click, the system shall open the credit score pop up over the current page, showing the credit score fetched from Experian (Sl. No 3). '
                'The customer stays on the same page; closing the pop up returns to it.</p>'
                + screen_content([
@@ -425,10 +452,10 @@ MODULES = [
       ],
     },
     {
-      'sl': '5.2',
+      'sl': '6.2',
       'shot': img('f05-profile.png'),
       'func': 'User clicking the Profile icon in the top navigation to view the profile or log out',
-      'desc': ('<p>The Profile icon is shown in the top navigation (right corner) of every page from Sl. No 5 onwards. '
+      'desc': ('<p>The Profile icon is part of the top navigation (Sl. No 6). '
                'On click, the system shall open the Profiles pop up over the current page, showing the name fetched from the PAN records and the PAN Number, with the Logout CTA.</p>'
                + screen_content([
                    ('Title', '“Profiles”'),

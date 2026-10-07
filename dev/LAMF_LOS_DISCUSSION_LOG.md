@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 07-10-2026 11:49 IST
+**Last Updated:** 07-10-2026 14:35 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -178,6 +178,7 @@
 | DISC-143 | 07-10-2026 | PRD Sl. No 5 – screenshot | Full page screenshot | Owner shared the full page UAT screenshot of the LOS to MF Central consent page | screen-05.png replaced with the owner’s full page screenshot | Implemented |
 | DISC-144 | 07-10-2026 | PRD Sl. No 5 – Raise an issue; data points | New tab; capture pop up views | Raise an issue opens the Experian page in a new tab. Viewing the credit score pop up and the profile pop up must be captured | Raise an issue action: opens in a new tab. Data Points added: Credit Score Viewed (Yes / No) and Date & Time; Profile Viewed (Yes / No) and Date & Time. Prototype link already opens in a new tab | Implemented |
 | DISC-145 | 07-10-2026 | PRD Sl. No 5.1 / 5.2 – top navigation pop ups | Separate rows | The credit score pop up and the profile pop up must be separate rows (X.1, X.2) because these icons are in the top navigation of every page | Sl. No 5.1 Credit score pop up and 5.2 Profile pop up added (WIP), each with screenshot, description, Screen Content, data points (viewed Yes / No, date & time) and fields; removed from Sl. No 5, whose header line now points to 5.1 / 5.2 | Implemented |
+| DISC-146 | 07-10-2026 | PRD – Top Navigation | One row for the top navigation, sub rows per icon | Create one row for the top navigation (X) listing what it contains, and a separate row for each icon (X.1, X.2) | New section “Top Navigation (all pages from Sl. No 5)”: Sl. No 6 Top navigation (logo, Credit Score icon, Profile icon), 6.1 Credit score pop up, 6.2 Profile pop up (moved from 5.1 / 5.2). Sl. No 5 header line points to Sl. No 6 | Implemented |
 
 ---
 
