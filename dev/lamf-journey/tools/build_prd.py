@@ -380,7 +380,11 @@ MODULES = [
       'data': ('<b>PAN Number:</b> ABCDE1234F (carried from Sl. No 4)<br><br>'
                '<b>MF Central Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
-               '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+               '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Credit Score Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Credit Score Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Profile Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Profile Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
       'status': WIP,
       'fields': [
         (states(('f05-credit-icon.png', 'Credit Score icon'), ('f05-credit-report.png', 'After click – credit score pop up')),
@@ -391,7 +395,7 @@ MODULES = [
                    '<li>The category is decided by the score range: Excellent 826 – 900, Very Good 776 – 825, Good 701 – 775, Average 601 – 700, Needs Help 300 – 600</li>'
                    '<li>“Powered by experian”</li></ul>'), OK),
         ('', spec(Field_Name='Raise an issue', Field_Type='Hyperlink (credit score pop up)',
-            Action='Shown as “Issue with your Credit Score? Raise an issue”. On click, the system shall redirect the customer to https://www.experian.com/help/dispute-credit/'), OK),
+            Action='Shown as “Issue with your Credit Score? Raise an issue”. On click, the system shall open https://www.experian.com/help/dispute-credit/ in a new tab; the pop up stays open on this page.'), OK),
         ('', spec(Field_Name='(X) Close icon – credit score pop up', Field_Type='Icon',
             Action='On click, the credit score pop up is closed and the customer stays on this page'), OK),
         (states(('f05-profile-icon.png', 'Profile icon'), ('f05-profile.png', 'After click – profile pop up')),
