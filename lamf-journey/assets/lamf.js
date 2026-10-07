@@ -128,7 +128,7 @@
         <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="contact" href="https://www.shriramcredit.in/contact-us">Contact Us</a></div>
       </header>`;
     const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
-      : `<span>${ICON.gauge}</span><span>${ICON.user}</span>`;
+      : `<a data-credit title="Credit score" style="cursor:pointer">${ICON.gauge}</a><a data-profile title="Profile" style="cursor:pointer">${ICON.user}</a>`;
     return `<header class="hdr">${logoLink(img('shriram-logo.png'))}<div class="hdr-icons">${right}</div></header>`;
   };
 
@@ -968,6 +968,40 @@
     cta.addEventListener('click', () => { if (chk.checked) go('06) LOS to MF Central Redirection loading page'); });   // grey CTA does nothing
   };
 
+  // Header pop ups (DISC-142): Credit Score icon → credit score from Experian; Profile icon → name as per PAN, PAN, Logout.
+  const CREDIT = { score: 790 };   // prototype value – the live score comes from Experian (INT-001)
+  const BANDS = [['Excellent', 826, 900, '#1E8E3E'], ['Very Good', 776, 825, '#34C759'], ['Good', 701, 775, '#FFC107'], ['Average', 601, 700, '#FF8C1A'], ['Needs Help', 300, 600, '#E02424']];
+  const openPopup = (html) => {
+    document.body.insertAdjacentHTML('beforeend', `<div class="overlay hdr-pop-ov"><div class="modal hdr-pop">${closeBtn}${html}</div></div>`);
+    const ov = document.querySelector('.hdr-pop-ov');
+    const close = () => ov.remove();
+    ov.querySelector('.close').onclick = close;
+    ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
+    return ov;
+  };
+  const creditPopup = () => {
+    const sc = CREDIT.score, band = BANDS.find(([, lo, hi]) => sc >= lo && sc <= hi);
+    const d = new Date(), date = `${String(d.getDate()).padStart(2, '0')} ${d.toLocaleString('en-GB', { month: 'short' })} ${d.getFullYear()}`;
+    const ang = Math.PI * (1 - (sc - 300) / 600), nx = 100 + 70 * Math.cos(ang), ny = 100 - 70 * Math.sin(ang);
+    const arc = (lo, hi, col) => { const a1 = Math.PI * (1 - (lo - 300) / 600), a2 = Math.PI * (1 - (hi - 300) / 600);
+      return `<path d="M${100 + 80 * Math.cos(a1)} ${100 - 80 * Math.sin(a1)} A80 80 0 0 1 ${100 + 80 * Math.cos(a2)} ${100 - 80 * Math.sin(a2)}" stroke="${col}" stroke-width="18" fill="none"/>`; };
+    openPopup(`<h3 class="cs-t">Your credit score as of ${date}</h3>
+      <div class="cs-body"><div class="cs-meter"><svg viewBox="0 0 200 120">${BANDS.slice().reverse().map(([, lo, hi, c]) => arc(lo, hi, c)).join('')}
+        <circle cx="${nx}" cy="${ny}" r="6" fill="#111"/></svg>
+        <div class="cs-score"><b>${sc}</b><span style="color:${band[3]}">${band[0]}</span></div><span class="cs-min">300</span><span class="cs-max">900</span></div>
+        <table class="cs-tab"><tr><th>Category</th><th>Score Range</th></tr>${BANDS.map(([n, lo, hi, c]) => `<tr><td><i style="background:${c}"></i>${n}</td><td><b>${lo} - ${hi}</b></td></tr>`).join('')}</table></div>
+      <p class="cs-issue">Issue with your Credit Score? <a href="https://www.experian.com/help/dispute-credit/" target="_blank" rel="noopener">Raise an issue</a></p>
+      <p class="cs-pow">Powered by <b>experian</b></p>`);
+  };
+  const profilePopup = () => {
+    const pan = store.get(K.mobile + '.pan') || {};
+    const name = (pan.name || 'AZHAGARSAMY SUBBURAJ').toUpperCase(), no = pan.pan || CUSTOMER.pan.replace(/\s/g, '');
+    const ov = openPopup(`<h3 class="pf-t">Profiles</h3>
+      <div class="pf-card"><span class="pf-i">${name[0]}</span><div><b>${name}</b><span>${no}</span></div><span class="pf-tick">✓</span></div>
+      <a class="pf-out" data-pf-out>${ICON.logout}<span>Logout</span></a>`);
+    ov.querySelector('[data-pf-out]').onclick = () => go('01) LAMF Landing Page');
+  };
+
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
     if (fn) fn();
@@ -1042,6 +1076,8 @@
     wireFlow();
     wireBehaviour();
     document.querySelectorAll('[data-logout]').forEach((a) => { a.onclick = () => go('01) LAMF Landing Page'); });   // logout ends the journey
+    document.querySelectorAll('[data-credit]').forEach((a) => { a.onclick = creditPopup; });
+    document.querySelectorAll('[data-profile]').forEach((a) => { a.onclick = profilePopup; });
     if (opts.scrollTo) requestAnimationFrame(() => { const t = document.querySelector(opts.scrollTo); if (t) window.scrollTo(0, t.getBoundingClientRect().top + scrollY - (opts.offset || 0)); });
     // Popup open → freeze the page behind it (only the popup scrolls)
     const hasPopup = !!document.querySelector('.overlay');

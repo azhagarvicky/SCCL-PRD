@@ -631,3 +631,31 @@ body.page-screens { padding: 40px 76px; }
 /* Curated Offers – age outside 18–70 (DISC-119) */
 .age-err { color: var(--red); background: #FDECEA; border: 1px solid var(--red); border-radius: 10px; padding: 10px 14px; font-size: 13.5px; margin: 0 0 14px; }
 .offer .is-off { background: #E6E6E6 !important; color: #8A8A8A !important; cursor: not-allowed; }
+
+/* Header pop ups – credit score and profile (DISC-142) */
+.hdr-icons a { display: inline-flex; width: 22px; height: 22px; }
+.hdr-pop { width: 575px; max-width: 100%; padding: 44px 44px 30px; }
+.hdr-pop h3 { font-size: 17px; margin-bottom: 24px; }
+.cs-body { display: flex; gap: 28px; align-items: center; }
+.cs-meter { position: relative; width: 210px; flex: 0 0 210px; }
+.cs-meter svg { width: 100%; display: block; }
+.cs-score { position: absolute; left: 0; right: 0; top: 58%; text-align: center; }
+.cs-score b { display: block; font-size: 34px; line-height: 1; }
+.cs-score span { font-size: 13px; }
+.cs-min, .cs-max { position: absolute; bottom: 0; font-size: 13px; color: #777; }
+.cs-min { left: 0; } .cs-max { right: 0; }
+.cs-tab { flex: 1; background: #F6F6F6; border-radius: 10px; padding: 12px 18px; border-collapse: separate; font-size: 13px; }
+.cs-tab th { text-align: left; font-weight: 500; padding: 4px 6px 8px; }
+.cs-tab td { padding: 6px; }
+.cs-tab i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: -1px; }
+.cs-issue { background: #F6F6F6; border-radius: 8px; padding: 9px 14px; font-size: 12px; margin-top: 26px; }
+.cs-issue a { color: #888; text-decoration: underline; margin-left: 4px; }
+.cs-pow { text-align: center; font-size: 12px; margin-top: 22px; }
+.cs-pow b { color: #3E1E88; }
+.pf-card { display: flex; gap: 12px; align-items: flex-start; border: 1px solid #E6E6E6; border-radius: 8px; padding: 12px 14px; }
+.pf-card div { flex: 1; } .pf-card b { display: block; font-weight: 500; margin-bottom: 6px; } .pf-card div span { font-size: 13px; }
+.pf-i { width: 22px; height: 22px; border-radius: 50%; background: #EEE; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; }
+.pf-tick { width: 18px; height: 18px; border-radius: 50%; background: var(--yellow); color: #fff; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+.pf-out { display: inline-flex; gap: 6px; align-items: center; margin-top: 38px; color: var(--yellow); font-weight: 700; cursor: pointer; }
+.pf-out svg { width: 20px; height: 20px; }
+@media (max-width: 600px) { .cs-body { flex-direction: column; } }

@@ -348,10 +348,11 @@ MODULES = [
       'func': 'User giving consent to fetch the mutual fund portfolio from MF Central and clicking the “Check Credit Limit” CTA',
       'desc': ('<p>On successful PAN verification (Sl. No 4) the system shall navigate the customer to the Credit Limit Against Mutual Fund page. '
                'The PAN Number verified in Sl. No 4 is carried forward and displayed as a non editable field. '
-               'The customer gives consent to fetch the mutual fund portfolio holdings from MF Central; the holdings are used to determine the eligible credit limit and the loan offers. '
-               'The left side of the page shows the loan highlights and the “How it works” steps (display only).</p>'
+               'The customer gives consent to fetch the mutual fund portfolio from MF Central and clicks Check Credit Limit; the customer is then redirected to MF Central, where the portfolio for the entered PAN and mobile number is fetched to determine the eligible credit limit and the loan offers. '
+               'The left side of the page shows the loan highlights and the “How it works” steps (display only). '
+               'From the top navigation the customer can view the credit score fetched from Experian and the profile.</p>'
                + screen_content([
-                   ('Header', 'Shriram Credit logo (left); Dashboard icon and Profile icon (right)'),
+                   ('Header', 'Shriram Credit logo (left); Credit Score icon and Profile icon (right)'),
                    ('Left panel', '“Interest rates starting from 10.5% p.a.*”; “Get a Loan up to 75% of your eligible Mutual Fund portfolio”; “Interest-only EMI payments”; “Disbursal in 2 hours post application”'),
                    ('How it works', '“How it works” – “Apply for loan within mins.” with 9 steps:<ol>'
                     '<li>Check your eligibility, credit limit, and interest rates.</li>'
@@ -368,11 +369,13 @@ MODULES = [
                    ('Field label', '“PAN Number”'),
                    ('Consent checkbox text', '“I authorize Shriram Credit to fetch my mutual fund portfolio holdings from MF Central to assess my eligibility and credit limit for a Loan Against Mutual Funds.”'),
                    ('CTA', '“Check Credit Limit” – grey until the consent is ticked, then yellow'),
+                   ('Credit score pop up', '“Your credit score as of DD MMM YYYY” (e.g. 07 Oct 2026); the score (e.g. 790) on a 300 – 900 meter with its category (e.g. “Very Good”); table “Category” / “Score Range”: Excellent 826 - 900, Very Good 776 - 825, Good 701 - 775, Average 601 - 700, Needs Help 300 - 600; “Issue with your Credit Score? Raise an issue”; “Powered by experian”; close icon'),
+                   ('Profile pop up', '“Profiles”; initial letter of the name, the name as per PAN (e.g. AZHAGARSAMY SUBBURAJ) and the PAN Number (e.g. CBOPA8195B) with a tick; “Logout”; close icon'),
                    ('Validation messages', 'None on this page – the CTA stays grey until the consent is ticked'),
                ])
                + drop_off([
                    ('When', 'The customer leaves the journey on this page before clicking Check Credit Limit (e.g. closes the browser or tab)'),
-                   ('On return', 'When the customer comes back and logs in again with the mobile number (Sl. No 2) and OTP (Sl. No 3), on OTP verification success the customer lands on this page. The PAN is already verified, so PAN Details (Sl. No 4) is not shown again and the PAN Number is displayed prefilled'),
+                   ('On return', 'When the customer comes back and logs in again with the mobile number (Sl. No 2) and OTP (Sl. No 3), on OTP verification success the customer lands on this page, with the PAN Number prefilled'),
                ])),
       'data': ('<b>PAN Number:</b> ABCDE1234F (carried from Sl. No 4)<br><br>'
                '<b>MF Central Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
@@ -380,18 +383,34 @@ MODULES = [
                '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
       'status': WIP,
       'fields': [
-        (img('f05-header.png'), spec(Field_Name='Dashboard and Profile icons', Field_Type='Icons (top navigation, right corner)',
-            Action='Shown in the top navigation of this page. What each icon opens is to be confirmed ' + pend('P-19')), OK),
+        (states(('f05-credit-icon.png', 'Credit Score icon'), ('f05-credit-report.png', 'After click – credit score pop up')),
+         spec(Field_Name='Credit Score icon', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, the system shall open the credit score pop up over the page, showing the credit score fetched from Experian (Sl. No 3):<ul>'
+                   '<li>“Your credit score as of DD MMM YYYY” – the date the score was fetched (e.g. 07 Oct 2026)</li>'
+                   '<li>The score on a 300 – 900 meter (e.g. 790) with its category below it (e.g. “Very Good”)</li>'
+                   '<li>The category is decided by the score range: Excellent 826 – 900, Very Good 776 – 825, Good 701 – 775, Average 601 – 700, Needs Help 300 – 600</li>'
+                   '<li>“Powered by experian”</li></ul>'), OK),
+        ('', spec(Field_Name='Raise an issue', Field_Type='Hyperlink (credit score pop up)',
+            Action='Shown as “Issue with your Credit Score? Raise an issue”. On click, the system shall redirect the customer to https://www.experian.com/help/dispute-credit/'), OK),
+        ('', spec(Field_Name='(X) Close icon – credit score pop up', Field_Type='Icon',
+            Action='On click, the credit score pop up is closed and the customer stays on this page'), OK),
+        (states(('f05-profile-icon.png', 'Profile icon'), ('f05-profile.png', 'After click – profile pop up')),
+         spec(Field_Name='Profile icon', Field_Type='Icon (top navigation, right corner)',
+            Action='On click, the system shall open the Profiles pop up showing the name fetched from the PAN records (with its initial letter) and the PAN Number, and the Logout CTA.'), OK),
+        ('', spec(Field_Name='Logout', Field_Type='CTA (profile pop up)',
+            Action='On click, the customer is logged out and lands on the Landing page (Sl. No 1).'), OK),
+        ('', spec(Field_Name='(X) Close icon – profile pop up', Field_Type='Icon',
+            Action='On click, the profile pop up is closed and the customer stays on this page'), OK),
         (img('f05-pan.png'), spec(Field_Name='PAN Number', Field_Type='Display field',
             Prefilled_Value='PAN Number verified in Sl. No 4, shown with spaces as ABCDE 1234 F', Action='Display only, not editable'), OK),
         (states(('f05-consent.png', 'Before – unticked (default)'), ('f05-consent-ticked.png', 'After – ticked')),
          spec(Field_Name='(Checkbox) MF Central consent', Field_Type='Check box',
             Action='User has to tick this checkbox to authorize Shriram Credit to fetch the mutual fund portfolio holdings from MF Central to assess the eligibility and credit limit for a Loan Against Mutual Funds.',
-            Condition='Unticked by default. The customer can tick and untick it. Check Credit Limit CTA is enabled only when this checkbox is ticked, so no validation is shown for the checkbox.'), OK),
+            Condition='Unticked by default. Check Credit Limit CTA is enabled only when this checkbox is ticked, so no validation is shown for the checkbox.'), OK),
         (states(('f05-cta.png', 'Before – disabled (grey) until the consent is ticked'), ('f05-cta-enabled.png', 'After – enabled once the consent is ticked')),
          spec(Field_Name='Check Credit Limit', Field_Type='CTA (Button)',
-            Action='On click, the system shall record the MF Central consent and open the MF Central redirection pop up (Screen 06) – “Redirecting to MF Central in 3 seconds”, with the steps the customer has to do on MF Central (enter the 6-digit OTP received from MF Central, select all the AMCs and continue). After 3 seconds the customer is redirected to MF Central to fetch the mutual fund portfolio.',
-            Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown. If the consent is unticked again, the CTA turns grey again.'), OK),
+            Action='On click, the system shall record the MF Central consent and redirect the customer to MF Central to fetch the mutual fund portfolio for the entered PAN Number and mobile number.',
+            Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown.'), OK),
       ],
     },
   ],
@@ -458,7 +477,6 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-19', 'Module 4', 'Sl. No 5 – LOS to MF Central consent page: the row is written from the prototype screen. Please share the UAT screenshots so the screenshot and field crops can be replaced, and confirm what the Dashboard and Profile icons (top right) do on this page.'),
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
@@ -472,6 +490,8 @@ PENDING = [
 # Answered clarifications: (ID, Module, Question, Answer, Answered on).
 # P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
 COMPLETED = [
+ ('P-19', 'Module 4', 'Sl. No 5 – LOS to MF Central consent page: the row is written from the prototype screen. Please share the UAT screenshots so the screenshot and field crops can be replaced, and confirm what the Dashboard and Profile icons (top right) do on this page.',
+  'UAT screenshots shared (DISC-142). Credit Score icon opens the credit score pop up (score from Experian, fetched date, category, Raise an issue link to Experian, close); Profile icon opens the Profiles pop up (name as per PAN, PAN Number, Logout to the Landing page, close).', '07-10-2026'),
  ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.',
   'The checkbox is displayed only when the customer verifies the OTP for the first time. A customer who has already verified the OTP earlier sees the Enter OTP pop up without the checkbox, and Submit OTP is enabled once all 6 digits are entered (DISC-129).', '05-10-2026'),
  ('P-17', 'Module 3', 'PAN Details page: the exact live text for (a) a PAN Number not in the ABCDE1234F format, and (b) the PAN verification failures – name match below 60%, DOB not matching the PAN records, PAN not available. Also: where does the customer land after Logout?',
