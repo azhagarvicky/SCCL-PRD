@@ -433,7 +433,7 @@ MODULES = [
                + screen_content([
                    ('Title', '“Your credit score as of DD MMM YYYY” – the date the score was fetched (e.g. 07 Oct 2026)'),
                    ('Score meter', 'The score on a 300 – 900 meter (e.g. 790), with its category below it (e.g. “Very Good”); “300” and “900” at the ends'),
-                   ('Category table', '“Category” / “Score Range”: Excellent 826 - 900; Very Good 776 - 825; Good 701 - 775; Average 601 - 700; Needs Help 300 - 600'),
+                   ('Category table', '<table class="mini"><tr><th>Category</th><th>Score Range</th></tr><tr><td><i style="background:#1E8E3E"></i>Excellent</td><td><b>826 - 900</b></td></tr><tr><td><i style="background:#34C759"></i>Very Good</td><td><b>776 - 825</b></td></tr><tr><td><i style="background:#FFC107"></i>Good</td><td><b>701 - 775</b></td></tr><tr><td><i style="background:#FF8C1A"></i>Average</td><td><b>601 - 700</b></td></tr><tr><td><i style="background:#E02424"></i>Needs Help</td><td><b>300 - 600</b></td></tr></table>'),
                    ('Issue line', '“Issue with your Credit Score? Raise an issue”'),
                    ('Footer', '“Powered by experian”'),
                    ('Close icon', '(X) at the top right'),
