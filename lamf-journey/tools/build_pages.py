@@ -157,7 +157,12 @@ CLOUD = """<!doctype html>
 <script>
   function route() {
     var name = decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (name === 'PRD' && window.PRD_HTML) { LAMF.renderPRD(window.PRD_HTML); return; }
+    if (name.split('/')[0] === 'PRD' && window.PRD_HTML) {
+      LAMF.renderPRD(window.PRD_HTML);
+      var row = name.split('/')[1], t = row && document.getElementById(row);   // #PRD/sl-5 opens that row (DISC-153)
+      if (t) setTimeout(function () { t.scrollIntoView({ block: 'start' }); t.classList.add('flash'); }, 60);
+      return;
+    }
     var fn = window.SCREEN_RENDER[name];
     if (fn) { fn(); return; }
     if (name === 'SCREENS') { LAMF.render(window.SCREENS_HTML, { bodyClass: 'page-screens' }); return; }

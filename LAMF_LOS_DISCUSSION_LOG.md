@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 08-10-2026 12:23 IST
+**Last Updated:** 08-10-2026 13:00 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -185,6 +185,7 @@
 | DISC-150 | 08-10-2026 | PRD Sl. No 6.1 – Screen Content | Category table as a table | Show the credit score Category / Score Range as a table, like the pop up, instead of one line of text | Screen Content “Category table” is now a small table (Category with coloured dot, Score Range) – Excellent 826 - 900, Very Good 776 - 825, Good 701 - 775, Average 601 - 700, Needs Help 300 - 600 | Implemented |
 | DISC-151 | 08-10-2026 | PRD Sl. No 6.1 – credit score pop up | Score below 300 / no score | Owner does not know what happens when the score is below 300 or there is no score; asked to check | Experian scores are 300 – 900, so below 300 does not occur; the open case is no score (no credit history, no record found, Experian failure). Cannot be tested from here – P-20 added with what to check on UAT / with the tech team; 6.1 Credit Score icon Condition tagged P-20 | Open |
 | DISC-152 | 08-10-2026 | PRD Sl. No 6.1 – Credit Score icon | Remove the score-range Condition | The Condition listing the score ranges under the Credit Score icon is not needed | Condition removed (the ranges stay in the Screen Content category table); the P-20 note moved to the 6.1 description | Implemented |
+| DISC-153 | 08-10-2026 | Prototype (all screens) → PRD | Go to PRD button | Every journey page needs a “Go to PRD” CTA next to the screen navigator so stakeholders can open the matching PRD section / row | Yellow “Go to PRD ↗” added to the screen navigator bar on every page; opens the PRD in a new tab at that screen’s row (tr id sl-N), scrolled below the sticky header and highlighted. Screens without a PRD row yet open the PRD at the top. Cloud copy: #PRD/sl-N route. Mapping kept in PRD_ROW in assets/lamf.js – add a screen there when its PRD row is written | Implemented |
 
 ---
 

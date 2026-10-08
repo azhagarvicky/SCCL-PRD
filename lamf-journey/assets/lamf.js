@@ -1040,8 +1040,16 @@
   }
 
   /* ---------------- Dev navigator ---------------- */
+  // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5' };
+  const prdHref = (screen) => {
+    const row = PRD_ROW[(String(screen).match(/^(\d+)\)/) || [])[1]];
+    if (SPA()) return '#PRD' + (row ? '/sl-' + row : '');
+    return 'SCCL_LAMF_LOS_PRD.html' + (row ? '#sl-' + row : '');
+  };
+
   function devnav() {
-    const cur = decodeURIComponent(location.pathname.split('/').pop()).replace(/\.html$/, '');
+    const cur = SPA() ? decodeURIComponent(location.hash.replace(/^#/, '')) : decodeURIComponent(location.pathname.split('/').pop()).replace(/\.html$/, '');
     const k = SCREENS.indexOf(cur);
     const el = document.createElement('div');
     el.id = 'devnav';
@@ -1051,6 +1059,7 @@
         ${k > 0 ? `<a href="${href(SCREENS[k - 1])}" title="Previous screen">‹ Prev</a>` : ''}
         <button class="cur" title="All screens">☰ ${k >= 0 ? SCREENS[k] : 'Screens'}</button>
         ${k >= 0 && k < SCREENS.length - 1 ? `<a href="${href(SCREENS[k + 1])}" title="Next screen">Next ›</a>` : ''}
+        <a class="to-prd" href="${prdHref(cur)}" target="_blank" rel="noopener" title="Open this screen's row in the PRD">Go to PRD ↗</a>
       </div>`;
     el.querySelector('.cur').onclick = () => el.classList.toggle('open');
     document.body.appendChild(el);

@@ -103,3 +103,6 @@ body.prd { background: #F4F5F6; color: #111; }
 .prd-body td table.mini th, .prd-body td table.mini td { border: 1px solid #E2E4E7; padding: 4px 12px; text-align: left; background: #fff; }
 .prd-body td table.mini th { background: #F6F6F6; font-weight: 700; }
 .prd-body td table.mini i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; }
+
+/* rows opened from the journey's Go to PRD button stop below the sticky header (DISC-153) */
+.prd-body tr[id^="sl-"] { scroll-margin-top: 110px; }
