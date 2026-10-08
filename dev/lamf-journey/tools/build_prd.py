@@ -429,7 +429,7 @@ MODULES = [
       'func': 'User clicking the Credit Score icon in the top navigation to view the credit score',
       'desc': ('<p>The Credit Score icon is part of the top navigation (Sl. No 6). '
                'On click, the system shall open the credit score pop up over the current page, showing the credit score fetched from Experian (Sl. No 3). '
-               'The customer stays on the same page; closing the pop up returns to it.</p>'
+               'The customer stays on the same page; closing the pop up returns to it. What the pop up shows when Experian returns no score (no credit history / no record found / Experian call failed) is to be confirmed ' + pend('P-20') + '</p>'
                + screen_content([
                    ('Title', '“Your credit score as of DD MMM YYYY” – the date the score was fetched (e.g. 07 Oct 2026)'),
                    ('Score meter', 'The score on a 300 – 900 meter (e.g. 790), with its category below it (e.g. “Very Good”); “300” and “900” at the ends'),
@@ -443,8 +443,7 @@ MODULES = [
       'status': WIP,
       'fields': [
         (icon('f05-credit-icon.png'), spec(Field_Name='Credit Score icon', Field_Type='Icon (top navigation, right corner)',
-            Action='On click, the system shall open the credit score pop up.',
-            Condition='The category is decided by the score range: Excellent 826 – 900, Very Good 776 – 825, Good 701 – 775, Average 601 – 700, Needs Help 300 – 600. What the pop up shows when Experian returns no score (no credit history / no record found / Experian call failed) is to be confirmed ' + pend('P-20')), OK),
+            Action='On click, the system shall open the credit score pop up.'), OK),
         (img('f06-raise-issue.png'), spec(Field_Name='Raise an issue', Field_Type='Hyperlink',
             Action='Shown as “Issue with your Credit Score? Raise an issue”. On click, the system shall open https://www.experian.com/help/dispute-credit/ in a new tab; the pop up stays open.'), OK),
         (icon('f06-close-credit.png'), spec(Field_Name='(X) Close icon', Field_Type='Icon',
