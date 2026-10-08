@@ -659,3 +659,7 @@ body.page-screens { padding: 40px 76px; }
 .pf-out { display: inline-flex; gap: 6px; align-items: center; margin-top: 38px; color: var(--yellow); font-weight: 700; cursor: pointer; }
 .pf-out svg { width: 20px; height: 20px; }
 @media (max-width: 600px) { .cs-body { flex-direction: column; } }
+
+/* Go to PRD button in the screen navigator (DISC-153) */
+#devnav .bar a.to-prd { background: #FFCB08; color: #1d1d1f; font-weight: 700; margin-left: 4px; }
+#devnav .bar a.to-prd:hover { background: #ffd84a; }

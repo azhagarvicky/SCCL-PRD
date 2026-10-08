@@ -611,7 +611,7 @@ def render():
         for r in m['rows']:
             fields = r.get('fields', [])
             span = f' rowspan="{len(fields) + 1}"' if fields else ''
-            out.append(f'<tr><td{span} class="sl">{r["sl"]}</td><td class="shot">{r["shot"]}</td>'
+            out.append(f'<tr id="sl-{r["sl"]}"><td{span} class="sl">{r["sl"]}</td><td class="shot">{r["shot"]}</td>'
                        f'<td{span}>{r["func"]}</td><td>{r["desc"]}</td>'
                        f'<td{span} class="dp">{data_points(r["data"])}</td><td{span}><span class="tag {TAG[r["status"]]}">{r["status"]}</span></td></tr>')
             for shot, desc, st in fields:
@@ -694,6 +694,14 @@ HTML = f"""<!doctype html>
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
 <script src="assets/review.js"></script>
+<script>
+  // Opened from the journey's "Go to PRD" button (#sl-5 etc.): bring that row into view and highlight it (DISC-153)
+  (function () {{
+    var t = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (!t) return;
+    setTimeout(function () {{ t.scrollIntoView({{ block: 'start' }}); t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash'); }}, 60);
+  }})();
+</script>
 </body>
 </html>
 """
