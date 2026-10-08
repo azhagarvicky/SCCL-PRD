@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 07-10-2026 15:20 IST
+**Last Updated:** 08-10-2026 10:39 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -182,6 +182,7 @@
 | DISC-147 | 07-10-2026 | PRD – Top Navigation (Sl. No 6.3) | PAN Details page top navigation | The PAN verification page also has a top navigation, with only the logo and the Logout CTA; Logout is shown directly, not under the profile. This comes only on the PAN verification page | Sl. No 6.3 added (owner’s UAT crop): logo and Logout icon, Logout → Landing page, shown only on PAN Details. Section renamed “Top Navigation”, screens line covers both variants; row 6 points to 6.3. Sl. No 4 (Completed) unchanged | Implemented |
 | DISC-148 | 07-10-2026 | PRD Sl. No 6.2 – Logout | Logout CTA crop | Crop the Logout CTA from the profile pop up screenshot and show it in 6.2 | f06-logout-cta.png cropped from the owner’s UAT profile pop up and shown next to the Logout field in 6.2 | Implemented |
 | DISC-149 | 07-10-2026 | PRD Sl. No 6.1 / 6.2 | Crops for the remaining fields | Owner agreed to crops for Raise an issue and the close icons | f06-raise-issue.png (6.1 Raise an issue), f06-close-credit.png (6.1 close) and f06-close-profile.png (6.2 close) cropped from the owner’s UAT pop up screenshots | Implemented |
+| DISC-150 | 08-10-2026 | PRD Sl. No 6.1 – Screen Content | Category table as a table | Show the credit score Category / Score Range as a table, like the pop up, instead of one line of text | Screen Content “Category table” is now a small table (Category with coloured dot, Score Range) – Excellent 826 - 900, Very Good 776 - 825, Good 701 - 775, Average 601 - 700, Needs Help 300 - 600 | Implemented |
 
 ---
 
