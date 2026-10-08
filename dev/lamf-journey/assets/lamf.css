@@ -663,3 +663,10 @@ body.page-screens { padding: 40px 76px; }
 /* Go to PRD button in the screen navigator (DISC-153) */
 #devnav .bar a.to-prd { background: #FFCB08; color: #1d1d1f; font-weight: 700; margin-left: 4px; }
 #devnav .bar a.to-prd:hover { background: #ffd84a; }
+
+/* Screen 06 – cancel confirmation (DISC-154) */
+.mfc-cancel { width: 486px; max-width: 100%; padding: 44px 48px 40px; text-align: center; }
+.mfc-cancel p { font-size: 17px; font-weight: 500; line-height: 1.35; margin-bottom: 28px; }
+.mfc-cancel-btns { display: flex; gap: 14px; justify-content: center; }
+.mfc-cancel-btns button { flex: 1; height: 42px; border-radius: 6px; }
+.mfc-cancel-btns .no { background: none; color: var(--yellow); font-weight: 700; }

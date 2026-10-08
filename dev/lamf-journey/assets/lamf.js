@@ -300,7 +300,7 @@
   T.mfcModal = () => `
     <div class="modal m-mfc">${closeBtn}
       ${img('mfcentral-logo.png', 'mfc-logo')}
-      <p class="redir">Redirecting to MF Central in 3 seconds</p>
+      <p class="redir">Redirecting to MF Central in <span id="mfc-sec">5</span> seconds</p>
       <div class="prog"><span></span></div>
       <h4>Here’s what you need to do</h4>
       <div class="todo"><span>1</span><p>Enter the 6-digit OTP received from MF Central on your mobile number.</p></div>
@@ -1002,6 +1002,31 @@
     ov.querySelector('[data-pf-out]').onclick = () => go('01) LAMF Landing Page');
   };
 
+  // Screen 06 (DISC-154): countdown 5 → 1, then MF Central. Close asks to confirm: Yes → back to screen 05, No → restart at 5.
+  BEHAVIOUR['06) LOS to MF Central Redirection loading page'] = () => {
+    const box = document.querySelector('.m-mfc'); if (!box) return;
+    const sec = document.getElementById('mfc-sec'), bar = box.querySelector('.prog span');
+    bar.style.animation = 'none'; bar.style.transition = 'width 1s linear';
+    let n = 5, tick = null;
+    const paint = () => { sec.textContent = n; bar.style.width = `${((5 - n) / 5) * 100}%`; };
+    const stop = () => { clearInterval(tick); tick = null; };
+    const start = () => {
+      stop(); n = 5; bar.style.transition = 'none'; paint(); void bar.offsetWidth; bar.style.transition = 'width 1s linear';
+      tick = setInterval(() => { n -= 1; if (n <= 0) { stop(); bar.style.width = '100%'; go('07) MF Central Mock Page'); return; } paint(); }, 1000);
+      TIMERS.push(tick);
+    };
+    box.querySelector('.close').onclick = () => {
+      stop();
+      document.body.insertAdjacentHTML('beforeend', `<div class="overlay mfc-cancel-ov"><div class="modal mfc-cancel">
+        <p>Are you sure you want to cancel your mutual fund portfolio fetch?</p>
+        <div class="mfc-cancel-btns"><button class="no" data-no>No, don’t</button><button class="btn btn-primary bold" data-yes>Yes, cancel</button></div></div></div>`);
+      const ov = document.querySelector('.mfc-cancel-ov');
+      ov.querySelector('[data-no]').onclick = () => { ov.remove(); start(); };
+      ov.querySelector('[data-yes]').onclick = () => { ov.remove(); go('05) LOS to MF Central Redirection consent page'); };
+    };
+    start();
+  };
+
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
     if (fn) fn();
@@ -1041,7 +1066,7 @@
 
   /* ---------------- Dev navigator ---------------- */
   // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
-  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5' };
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7' };
   const prdHref = (screen) => {
     const row = PRD_ROW[(String(screen).match(/^(\d+)\)/) || [])[1]];
     if (SPA()) return '#PRD' + (row ? '/sl-' + row : '');

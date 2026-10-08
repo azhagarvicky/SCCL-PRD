@@ -343,7 +343,7 @@ MODULES = [
  },
  {
   'title': 'Module 4 – Mutual Fund Portfolio Fetch (MF Central)',
-  'screens': 'Screen 05) LOS to MF Central Redirection consent page',
+  'screens': 'Screen 05) LOS to MF Central Redirection consent page · Screen 06) LOS to MF Central Redirection loading page',
   'rows': [
     {
       'sl': '5',
@@ -392,8 +392,44 @@ MODULES = [
             Condition='Unticked by default. Check Credit Limit CTA is enabled only when this checkbox is ticked, so no validation is shown for the checkbox.'), OK),
         (states(('f05-cta.png', 'Before – disabled (grey) until the consent is ticked'), ('f05-cta-enabled.png', 'After – enabled once the consent is ticked')),
          spec(Field_Name='Check Credit Limit', Field_Type='CTA (Button)',
-            Action='On click, the system shall record the MF Central consent and redirect the customer to MF Central to fetch the mutual fund portfolio for the entered PAN Number and mobile number.',
+            Action='On click, the system shall record the MF Central consent and open the MF Central redirection pop up (Sl. No 7); after the 5 second countdown the customer is redirected to MF Central to fetch the mutual fund portfolio for the entered PAN Number and mobile number.',
             Condition='CTA is disabled (grey) and cannot be clicked until the consent checkbox is ticked, so no validation is shown.'), OK),
+      ],
+    },
+    {
+      'sl': '7',
+      'shot': img('f07-redirect.png'),
+      'func': 'MF Central redirection pop up after clicking “Check Credit Limit” – countdown, then redirect to MF Central',
+      'desc': ('<p>On clicking Check Credit Limit (Sl. No 5) the system shall open the MF Central redirection pop up over the page. '
+               'The pop up counts down from 5 seconds to 1 second (“Redirecting to MF Central in 5 seconds” … “1 seconds”) while the progress bar fills; '
+               'when the countdown ends the customer is redirected to the MF Central page to fetch the mutual fund portfolio. '
+               'If the customer clicks the close icon, a confirmation pop up asks whether to cancel the portfolio fetch.</p>'
+               + screen_content([
+                   ('Logo', 'MF Central logo'),
+                   ('Countdown', '“Redirecting to MF Central in N seconds” – N counts down 5, 4, 3, 2, 1; a yellow progress bar fills as it counts'),
+                   ('Heading', '“Here’s what you need to do”'),
+                   ('Steps', '<ol><li>Enter the 6-digit OTP received from MF Central on your mobile number.</li><li>Select all the AMCs and continue</li></ol>'),
+                   ('Note', '“Note You’ll return to the process automatically after completing this step.”'),
+                   ('Close icon', '(X) at the top right'),
+                   ('Cancel confirmation pop up', '“Are you sure you want to cancel your mutual fund portfolio fetch?” with “No, don’t” and “Yes, cancel”'),
+               ])),
+      'data': ('<b>Redirection Pop up Shown Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Cancel Clicked:</b><ul><li>Yes, cancel</li><li>No, don’t</li></ul><br>'
+               '<b>Cancel Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Redirected to MF Central Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        ('', spec(Field_Name='Redirection countdown', Field_Type='Timer with progress bar',
+            Action='Starts at 5 seconds and counts down to 1 second; when it ends the customer is redirected to the MF Central page automatically.',
+            Condition='The countdown stops while the cancel confirmation pop up is open.'), OK),
+        (icon('f07-close.png'), spec(Field_Name='(X) Close icon', Field_Type='Icon',
+            Action='On click, the system shall open the cancel confirmation pop up.'), OK),
+        (img('f07-cancel.png'), spec(Field_Name='Cancel confirmation pop up', Field_Type='Pop up',
+            Action='Shows “Are you sure you want to cancel your mutual fund portfolio fetch?” with two CTAs: “No, don’t” and “Yes, cancel”.'), OK),
+        (img('f07-no.png'), spec(Field_Name='No, don’t', Field_Type='CTA (text button)',
+            Action='On click, the confirmation pop up closes and the redirection pop up continues, with the countdown starting again from 5 seconds.'), OK),
+        (img('f07-yes.png'), spec(Field_Name='Yes, cancel', Field_Type='CTA (Button)',
+            Action='On click, both pop ups close, the portfolio fetch is cancelled and the customer is back on the LOS to MF Central consent page (Sl. No 5).'), OK),
       ],
     },
   ],
