@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 08-10-2026 10:39 IST
+**Last Updated:** 08-10-2026 12:17 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -183,6 +183,7 @@
 | DISC-148 | 07-10-2026 | PRD Sl. No 6.2 – Logout | Logout CTA crop | Crop the Logout CTA from the profile pop up screenshot and show it in 6.2 | f06-logout-cta.png cropped from the owner’s UAT profile pop up and shown next to the Logout field in 6.2 | Implemented |
 | DISC-149 | 07-10-2026 | PRD Sl. No 6.1 / 6.2 | Crops for the remaining fields | Owner agreed to crops for Raise an issue and the close icons | f06-raise-issue.png (6.1 Raise an issue), f06-close-credit.png (6.1 close) and f06-close-profile.png (6.2 close) cropped from the owner’s UAT pop up screenshots | Implemented |
 | DISC-150 | 08-10-2026 | PRD Sl. No 6.1 – Screen Content | Category table as a table | Show the credit score Category / Score Range as a table, like the pop up, instead of one line of text | Screen Content “Category table” is now a small table (Category with coloured dot, Score Range) – Excellent 826 - 900, Very Good 776 - 825, Good 701 - 775, Average 601 - 700, Needs Help 300 - 600 | Implemented |
+| DISC-151 | 08-10-2026 | PRD Sl. No 6.1 – credit score pop up | Score below 300 / no score | Owner does not know what happens when the score is below 300 or there is no score; asked to check | Experian scores are 300 – 900, so below 300 does not occur; the open case is no score (no credit history, no record found, Experian failure). Cannot be tested from here – P-20 added with what to check on UAT / with the tech team; 6.1 Credit Score icon Condition tagged P-20 | Open |
 
 ---
 
@@ -657,6 +658,7 @@
 | PEND-062 | Apply for New Loan – Aadhaar display | The prototype shows the full Aadhaar number on the ETB page (DISC-082). UIDAI / Aadhaar Act rules normally allow only masked Aadhaar (last 4 digits) to be displayed – confirm with compliance which display the live system should use | 29-09-2026 | Open |
 | PEND-063 | Apply for New Loan – unfinished application | While an application is In Progress, what should “Apply for New Loan” do: start a new one (current prototype – the unfinished one is replaced), ask “Resume or start new?”, or be blocked? Should an unfinished application expire after some days? | 29-09-2026 | Open |
 | PEND-064 | Curated Offers | Live message and behaviour when the customer’s age (from the PAN-page DOB) is outside 18–70 years (PRD P-18, DISC-119) | 05-10-2026 | Open |
+| PEND-065 | Top Navigation – credit score pop up | What the pop up shows when Experian returns no score (new to credit, no record, call failure) (PRD P-20, DISC-151) | 08-10-2026 | Open |
 
 ---
 
