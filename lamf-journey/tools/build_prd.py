@@ -419,7 +419,7 @@ MODULES = [
                '<b>Redirected to MF Central Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
       'status': WIP,
       'fields': [
-        ('', spec(Field_Name='Redirection countdown', Field_Type='Timer with progress bar',
+        (img('f07-countdown.png'), spec(Field_Name='Redirection countdown', Field_Type='Timer with progress bar',
             Action='Starts at 5 seconds and counts down to 1 second; when it ends the customer is redirected to the MF Central page automatically.',
             Condition='The countdown stops while the cancel confirmation pop up is open.'), OK),
         (icon('f07-close.png'), spec(Field_Name='(X) Close icon', Field_Type='Icon',
