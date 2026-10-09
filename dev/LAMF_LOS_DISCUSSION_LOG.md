@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 09-10-2026 11:32 IST
+**Last Updated:** 09-10-2026 11:51 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -190,6 +190,7 @@
 | DISC-155 | 08-10-2026 | PRD Sl. No 7 – Redirection countdown | Countdown crop | The Redirection countdown field needs its cropped image | f07-countdown.png (countdown text and progress bar) cropped from the owner’s UAT screenshot and shown with the field | Implemented |
 | DISC-156 | 09-10-2026 | Prototype – every OTP screen | Demo OTP 000000 | The live journey uses the real OTP; in the prototype the correct OTP is 000000 everywhere an OTP is asked, with the hint “Please use OTP 000000 to proceed” | Main journey (lamf-journey): demo OTP changed from 123456 to 000000; hint added under the OTP on screen 03 (mobile OTP), 07 (MF Central mock), 16.3 (email OTP) and 16.5.3 (Aadhaar OTP). 07, 16.3 and 16.5.3 now accept only 000000 (others show “Invalid OTP”) and continue to 08, 16.4 and 16.5.4. The existing-customer prototype already used 000000. Prototype only – not in the PRD | Implemented |
 | DISC-157 | 09-10-2026 | PRD Module 5 / Screens 06.1 and 07 – Mutual Fund Portfolio Fetching | PAN and mobile not linked; MF Central mock | After the redirection countdown: if MF Central has no data for the mobile number and PAN, a separate page shows “The identifier below isn’t linked to the PAN you entered” (masked mobile, Refresh); if data is available, the MF Central (mock) page with OTP. Journey: mock scenario with data available / not available; MF Central mock OTP 000000. PRD: new section Mutual Fund Portfolio Fetching | PRD: Module 5 – Mutual Fund Portfolio Fetching with Sl. No 8 MF Central page (OTP, Submit) and Sl. No 9 not linked page (message, mobile, Refresh), UAT crops; Sl. No 7 description updated; P-21 (Refresh action, MF Central wrong OTP). Prototype: after the countdown a “Mock MF Central Data Check” pop up (Data available → 07, Data not available → new screen 06.1); 06.1 Refresh restarts the redirection (06); Go to PRD maps 06.1 → Sl. No 9 and 07 → Sl. No 8 | Implemented |
+| DISC-158 | 09-10-2026 | Prototype screens 07 / 07.1 / 07.2 | Rename and reorder | “07) MF Central Mock Page” becomes “07.2) MF Central Mock Page”; the no-data page becomes “07.1) PAN and Mobile Number Combination No Data Available”; between 06 and 07.1 a prototype mock page with Data available / Data not available | New screen “07) MF Central Data Check Mock” (consent page with the mock pop up) reached when the 06 countdown ends; Data available → 07.2, Data not available → 07.1. Old 06.1 / 07 pages removed. Go to PRD: 07 → Sl. No 7, 07.1 → Sl. No 9, 07.2 → Sl. No 8. PRD Module 5 screens line renamed | Implemented |
 
 ---
 

@@ -14,8 +14,9 @@
     '04) Enter PAN Details',
     '05) LOS to MF Central Redirection consent page',
     '06) LOS to MF Central Redirection loading page',
-    '06.1) PAN and Mobile Number not linked page',
-    '07) MF Central Mock Page',
+    '07) MF Central Data Check Mock',
+    '07.1) PAN and Mobile Number Combination No Data Available',
+    '07.2) MF Central Mock Page',
     '08) MF Central to LOS Redirecting Page',
     '09) MF Central to LOS Fetching Mutual Fund Portfolio Page',
     '10) MF Central to LOS Analysing Mutual Fund Portfolio Page',
@@ -310,7 +311,18 @@
       <div class="note"><b>Note</b> You’ll return to the process automatically after completing this step.</div>
     </div>`;
 
-  /* 06.1 PAN and mobile number not linked (DISC-157) */
+  /* 07 Prototype only (DISC-157, DISC-158): stands in for MF Central's check of the PAN and mobile number combination */
+  T.dataMockModal = () => `
+    <div class="modal pan-mock">
+      <span class="sim-tag">Prototype only</span>
+      <h3>Mock MF Central Data Check</h3>
+      <p>For review only: choose whether MF Central has data for this PAN and mobile number.</p>
+      <div class="pan-mock-btns">
+        <button class="btn btn-primary bold" data-r="yes">Data available</button>
+        <button class="btn btn-outline" data-r="no">Data not available</button>
+      </div></div>`;
+
+  /* 07.1 PAN and mobile number combination – no data available (DISC-157) */
   T.notLinked = () => `
     ${header('app')}
     <main><div class="card nl-card">
@@ -1030,20 +1042,8 @@
     const stop = () => { clearInterval(tick); tick = null; };
     const start = () => {
       stop(); n = 5; bar.style.transition = 'none'; paint(); void bar.offsetWidth; bar.style.transition = 'width 1s linear';
-      tick = setInterval(() => { n -= 1; if (n <= 0) { stop(); bar.style.width = '100%'; dataMock(); return; } paint(); }, 1000);
+      tick = setInterval(() => { n -= 1; if (n <= 0) { stop(); bar.style.width = '100%'; go('07) MF Central Data Check Mock'); return; } paint(); }, 1000);
       TIMERS.push(tick);
-    };
-    // Prototype only (DISC-157): stands in for MF Central's check of the PAN and mobile number combination.
-    const dataMock = () => {
-      document.body.insertAdjacentHTML('beforeend', `<div class="overlay pan-mock-ov"><div class="modal pan-mock">
-        <span class="sim-tag">Prototype only</span>
-        <h3>Mock MF Central Data Check</h3>
-        <p>For review only: choose whether MF Central has data for this PAN and mobile number.</p>
-        <div class="pan-mock-btns">
-          <button class="btn btn-primary bold" data-r="yes">Data available</button>
-          <button class="btn btn-outline" data-r="no">Data not available</button>
-        </div></div></div>`);
-      document.querySelectorAll('.pan-mock-ov [data-r]').forEach((bt) => { bt.onclick = () => go(bt.dataset.r === 'yes' ? '07) MF Central Mock Page' : '06.1) PAN and Mobile Number not linked page'); });
     };
     box.querySelector('.close').onclick = () => {
       stop();
@@ -1072,11 +1072,14 @@
   };
   const boxesOf = (sel) => () => [...document.querySelectorAll(sel + ' .otp input')];
   const joined = (sel) => () => boxesOf(sel)().map((i) => i.value).join('');
-  BEHAVIOUR['07) MF Central Mock Page'] = demoOtpScreen(joined('.mock-card'), boxesOf('.mock-card'), '.mock-card [data-cta="submit"]', '08) MF Central to LOS Redirecting Page');
+  BEHAVIOUR['07.2) MF Central Mock Page'] = demoOtpScreen(joined('.mock-card'), boxesOf('.mock-card'), '.mock-card [data-cta="submit"]', '08) MF Central to LOS Redirecting Page');
   BEHAVIOUR['16.3) KYC Verification Page Email verification popup'] = demoOtpScreen(joined('.m-eotp'), boxesOf('.m-eotp'), '.m-eotp [data-cta="submit-otp"]', '16.4) KYC Verification Page email verification completed');
   BEHAVIOUR['16.5.3) KYC Verification Page Aadhar verification Enter aadhar OTP'] = demoOtpScreen(() => (document.querySelector('.dl-in') || {}).value || '', () => [...document.querySelectorAll('.dl-in')], '[data-cta="submit"]', '16.5.4) KYC Verification Page Aadhar verification Enter PIN');
 
-  BEHAVIOUR['06.1) PAN and Mobile Number not linked page'] = () => {
+  BEHAVIOUR['07) MF Central Data Check Mock'] = () => {
+    document.querySelectorAll('.pan-mock [data-r]').forEach((bt) => { bt.onclick = () => go(bt.dataset.r === 'yes' ? '07.2) MF Central Mock Page' : '07.1) PAN and Mobile Number Combination No Data Available'); });
+  };
+  BEHAVIOUR['07.1) PAN and Mobile Number Combination No Data Available'] = () => {
     const m = store.get(K.mobile);
     if (m && m.length === 10) document.getElementById('nl-mobile').textContent = `+91${m[0]}XXXX${m.slice(6)}`;
     document.querySelector('[data-cta="refresh"]').onclick = () => go('06) LOS to MF Central Redirection loading page');   // retry the MF Central fetch (P-21)
@@ -1121,7 +1124,7 @@
 
   /* ---------------- Dev navigator ---------------- */
   // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
-  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '06.1': '9', '07': '8' };
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '9', '07.2': '8' };
   const prdHref = (screen) => {
     const row = PRD_ROW[(String(screen).match(/^([\d.]+)\)/) || [])[1]];
     if (SPA()) return '#PRD' + (row ? '/sl-' + row : '');
