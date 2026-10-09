@@ -583,6 +583,68 @@ MODULES = [
   ],
  },
  {
+  'title': 'Module 6 – Mutual Fund Portfolio Processing',
+  'screens': 'Screen 08) MF Central to LOS Redirecting Page · 09) Fetching Mutual Fund Portfolio · 10) Analysing Mutual Fund Portfolio · 11) Generating Loan Offers',
+  'rows': [
+    {
+      'sl': '13',
+      'shot': img('screen-13.png'),
+      'func': 'Customer returns from MF Central to the LOS – Redirecting to Dashboard',
+      'desc': ('<p>After MF Central redirects the customer back (Sl. No 11), the LOS shows the Redirecting to Dashboard screen. '
+               'No action is needed from the customer; the Fetching Mutual Fund Portfolio screen opens automatically (Sl. No 14).</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Message', '“Redirecting to Dashboard...”'),
+               ])),
+      'data': '<b>Returned to LOS Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+    },
+    {
+      'sl': '14',
+      'shot': img('screen-14.png'),
+      'func': 'LOS fetching the mutual fund portfolio received from MF Central',
+      'desc': ('<p>The LOS shows a loader pop up over the Credit Limit Against Mutual Fund page while it fetches the mutual fund portfolio shared by MF Central. No action is needed from the customer; the next screen opens automatically (Sl. No 15).</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Loader', 'Animated placeholder cards'),
+                   ('Title', '“Fetching your mutual fund portfolio..”'),
+                   ('Sub text', '“This might take a min, thanks for your patience”'),
+               ])),
+      'data': ('<b>Portfolio Received in LOS Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Portfolio Fetch Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
+      'status': WIP,
+    },
+    {
+      'sl': '15',
+      'shot': img('screen-15.png'),
+      'func': 'LOS analysing the mutual fund portfolio',
+      'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it analyses the portfolio – eligible and non eligible funds and their values. No action is needed from the customer; the next screen opens automatically (Sl. No 16).</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Loader', 'Animated placeholder cards'),
+                   ('Title', '“Analyzing your mutual fund portfolio..”'),
+                   ('Sub text', '“This might take a min, thanks for your patience”'),
+               ])),
+      'data': '<b>Portfolio Analysis Completed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+    },
+    {
+      'sl': '16',
+      'shot': img('screen-16.png'),
+      'func': 'LOS generating the best loan offers',
+      'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it generates the loan offers from the analysed portfolio. No action is needed from the customer; the next screen opens automatically (the Curated Offers page).</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Loader', 'Animated placeholder cards'),
+                   ('Title', '“Generating best loan offers for you”'),
+                   ('Sub text', '“This might take a min, thanks for your patience”'),
+               ])),
+      'data': '<b>Loan Offers Generated Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+    },
+  ],
+ },
+ {
   'title': 'Top Navigation',
   'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every page from Screen 05) LOS to MF Central Redirection consent page onwards – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
   'rows': [

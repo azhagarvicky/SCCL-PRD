@@ -1146,6 +1146,13 @@
     const t = setInterval(() => { n -= 1; el.textContent = Math.max(n, 0); if (n <= 0) { clearInterval(t); go('08) MF Central to LOS Redirecting Page'); } }, 1000); TIMERS.push(t);
   };
 
+  // MF Central → LOS processing screens advance on their own (DISC-162): 08 for 1.5 s, then 09, 10, 11 for 3 s each, then Curated Offers.
+  [['08) MF Central to LOS Redirecting Page', '09) MF Central to LOS Fetching Mutual Fund Portfolio Page', 1500],
+   ['09) MF Central to LOS Fetching Mutual Fund Portfolio Page', '10) MF Central to LOS Analysing Mutual Fund Portfolio Page', 3000],
+   ['10) MF Central to LOS Analysing Mutual Fund Portfolio Page', '11) MF Central to LOS Generating Loan Page', 3000],
+   ['11) MF Central to LOS Generating Loan Page', '12) Curated Offers Page', 3000]]
+    .forEach(([from, to, ms]) => { BEHAVIOUR[from] = () => { TIMERS.push(setTimeout(() => go(to), ms)); }; });
+
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
     if (fn) fn();
@@ -1185,7 +1192,7 @@
 
   /* ---------------- Dev navigator ---------------- */
   // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
-  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '12', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11' };
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '12', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11', '08': '13', '09': '14', '10': '15', '11': '16' };
   const prdHref = (screen) => {
     const row = PRD_ROW[(String(screen).match(/^([\d.]+)\)/) || [])[1]];
     if (SPA()) return '#PRD' + (row ? '/sl-' + row : '');
