@@ -252,6 +252,7 @@
       <h3>Enter OTP</h3>
       <p class="sent">A 6-digit OTP has been sent by Shriram Credit to<br><span id="otp-mobile">${CUSTOMER.mobileMasked}</span> <a class="edit" data-cta="edit-mobile"><span style="width:12px;height:12px;display:inline-block">${ICON.pencilSolid}</span> Edit</a></p>
       <div class="otp">${'<input maxlength="1" inputmode="numeric" autocomplete="off">'.repeat(6)}</div>
+      <p class="otp-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
       <p class="resend">Didn’t Receive OTP? <span id="resend"></span></p>
       <p class="field-err" id="otp-err"></p>
       <div class="m-foot">
@@ -314,6 +315,8 @@
     <main><div class="card mock-card">
       <h2>Mock MFCentral Page</h2><h4>Enter Otp</h4>
       <div class="otp" style="justify-content:center">${'<input maxlength="1" inputmode="numeric">'.repeat(6)}</div>
+      <p class="otp-hint" style="margin:12px auto 0">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="demo-otp-err" style="text-align:center"></p>
       <button class="btn btn-disabled btn-block" data-cta="submit">Submit</button>
     </div></main>`;
 
@@ -496,6 +499,8 @@
       <h3>Enter OTP</h3>
       <p class="sent">A 6-digit OTP has been sent to your registered email address<br><b>${CUSTOMER.email}</b></p>
       <div class="otp big">${'<input maxlength="1" inputmode="numeric">'.repeat(6)}</div>
+      <p class="otp-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="demo-otp-err"></p>
       <p class="resend">Didn’t receive OTP? <b>0:29</b> <span class="mut">Resend OTP</span></p>
       <button class="btn btn-disabled btn-block" data-cta="submit-otp">Submit OTP</button>
     </div>`;
@@ -537,7 +542,9 @@
       <h3>Verify Aadhaar OTP</h3>
       <div class="dl-ok">DigiLocker has sent you an OTP to your registered mobile (xxxxxx1623)</div>
       <p class="dl-b">Please enter OTP to complete verification</p>
-      <input class="dl-in">
+      <input class="dl-in" maxlength="6" inputmode="numeric">
+      <p class="otp-hint">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+      <p class="field-err" id="demo-otp-err"></p>
       <p class="dlm3">Didn't receive OTP? Wait few minutes for the OTP to arrive. Do not refresh or close!</p>
       <button class="dl-btn" data-cta="submit">Submit</button>
       <p class="dl-c">Didn’t get the OTP? <span>Resend OTP</span></p>`;
@@ -602,7 +609,7 @@
     resendBlockMin: 15,       // then blocked for 15 minutes
     maxWrong: 3,              // 3 wrong OTP attempts
     wrongBlockMin: 60,        // then blocked for 60 minutes
-    demoOtp: '123456',        // prototype only – no OTP service is called
+    demoOtp: '000000',        // prototype only – the live journey uses the real OTP; here only 000000 is accepted (DISC-156)
   };
   // Current live LOS messages (PRD Sl. No 3, DISC-106)
   const OTP_ERR = {
@@ -1026,6 +1033,25 @@
     };
     start();
   };
+
+  // Other OTP screens (DISC-156): enabled once 6 digits are entered; only the demo OTP 000000 is accepted.
+  const demoOtpScreen = (getValue, inputs, ctaSel, next) => () => {
+    const cta = document.querySelector(ctaSel); if (!cta) return;
+    const err = document.getElementById('demo-otp-err');
+    const sync = () => { const ok = getValue().length === 6; cta.classList.toggle('btn-primary', ok); cta.classList.toggle('bold', ok); cta.classList.toggle('btn-disabled', !ok); };
+    inputs().forEach((i) => i.addEventListener('input', () => { i.value = i.value.replace(/\D/g, ''); if (err) err.textContent = ''; sync(); }));
+    cta.addEventListener('click', () => {
+      if (getValue().length !== 6) return;
+      if (getValue() !== OTP_RULES.demoOtp) { if (err) err.textContent = OTP_ERR.wrong; return; }
+      go(next);
+    });
+    sync();
+  };
+  const boxesOf = (sel) => () => [...document.querySelectorAll(sel + ' .otp input')];
+  const joined = (sel) => () => boxesOf(sel)().map((i) => i.value).join('');
+  BEHAVIOUR['07) MF Central Mock Page'] = demoOtpScreen(joined('.mock-card'), boxesOf('.mock-card'), '.mock-card [data-cta="submit"]', '08) MF Central to LOS Redirecting Page');
+  BEHAVIOUR['16.3) KYC Verification Page Email verification popup'] = demoOtpScreen(joined('.m-eotp'), boxesOf('.m-eotp'), '.m-eotp [data-cta="submit-otp"]', '16.4) KYC Verification Page email verification completed');
+  BEHAVIOUR['16.5.3) KYC Verification Page Aadhar verification Enter aadhar OTP'] = demoOtpScreen(() => (document.querySelector('.dl-in') || {}).value || '', () => [...document.querySelectorAll('.dl-in')], '[data-cta="submit"]', '16.5.4) KYC Verification Page Aadhar verification Enter PIN');
 
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];

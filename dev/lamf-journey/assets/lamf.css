@@ -670,3 +670,7 @@ body.page-screens { padding: 40px 76px; }
 .mfc-cancel-btns { display: flex; gap: 14px; justify-content: center; }
 .mfc-cancel-btns button { flex: 1; height: 42px; border-radius: 6px; }
 .mfc-cancel-btns .no { background: none; color: var(--yellow); font-weight: 700; }
+
+/* Prototype-only OTP hint (DISC-156) */
+.otp-hint { display: block; width: fit-content; margin: 10px 0 0; padding: 5px 10px; border-radius: 6px; background: var(--yellow-soft); border: 1px solid var(--yellow); font-size: 12.5px; color: var(--ink); }
+.otp-hint b { letter-spacing: 1px; }
