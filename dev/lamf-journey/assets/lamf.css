@@ -674,3 +674,14 @@ body.page-screens { padding: 40px 76px; }
 /* Prototype-only OTP hint (DISC-156) */
 .otp-hint { display: block; width: fit-content; margin: 10px 0 0; padding: 5px 10px; border-radius: 6px; background: var(--yellow-soft); border: 1px solid var(--yellow); font-size: 12.5px; color: var(--ink); }
 .otp-hint b { letter-spacing: 1px; }
+
+/* 06.1 PAN and mobile number not linked (DISC-157) */
+.nl-card { width: 420px; max-width: 100%; margin: 22px auto 0; border-radius: 20px; padding: 22px 22px 22px; text-align: center; }
+.nl-art { width: 170px; display: block; margin: 0 auto 18px; }
+.nl-t { font-size: 14px; margin-bottom: 14px; }
+.nl-row { display: flex; align-items: center; gap: 12px; border: 1px solid #E6E6E6; border-radius: 22px; padding: 10px 12px; text-align: left; }
+.nl-row b { flex: 1; font-weight: 500; font-size: 13.5px; }
+.nl-ph { width: 28px; height: 28px; border-radius: 50%; background: var(--yellow-soft); color: var(--yellow); display: inline-flex; align-items: center; justify-content: center; }
+.nl-ph svg { width: 14px; height: 14px; }
+.nl-ref { display: inline-flex; gap: 5px; align-items: center; background: var(--yellow-soft); color: var(--yellow); font-weight: 700; font-size: 11.5px; padding: 4px 10px; border-radius: 12px; cursor: pointer; }
+.nl-ref svg { width: 12px; height: 12px; }

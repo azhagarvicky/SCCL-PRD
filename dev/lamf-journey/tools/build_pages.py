@@ -12,6 +12,7 @@ PAGES = {
  "04) Enter PAN Details": "LAMF.render(LAMF.T.pan())",
  "05) LOS to MF Central Redirection consent page": "LAMF.render(LAMF.T.consent())",
  "06) LOS to MF Central Redirection loading page": "LAMF.render(LAMF.withModal(LAMF.T.consent(), LAMF.T.mfcModal()))",
+ "06.1) PAN and Mobile Number not linked page": "LAMF.render(LAMF.T.notLinked())",
  "07) MF Central Mock Page": "LAMF.render(LAMF.T.mfMock())",
  "08) MF Central to LOS Redirecting Page": "LAMF.render(LAMF.T.redirecting())",
  "09) MF Central to LOS Fetching Mutual Fund Portfolio Page": "LAMF.render(LAMF.withModal(LAMF.T.consent(), LAMF.loader('Fetching your mutual fund portfolio..', 1)))",
