@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 08-10-2026 18:43 IST
+**Last Updated:** 09-10-2026 11:15 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -188,6 +188,7 @@
 | DISC-153 | 08-10-2026 | Prototype (all screens) → PRD | Go to PRD button | Every journey page needs a “Go to PRD” CTA next to the screen navigator so stakeholders can open the matching PRD section / row | Yellow “Go to PRD ↗” added to the screen navigator bar on every page; opens the PRD in a new tab at that screen’s row (tr id sl-N), scrolled below the sticky header and highlighted. Screens without a PRD row yet open the PRD at the top. Cloud copy: #PRD/sl-N route. Mapping kept in PRD_ROW in assets/lamf.js – add a screen there when its PRD row is written | Implemented |
 | DISC-154 | 08-10-2026 | PRD Sl. No 7 / Screen 06 – MF Central redirection pop up | Countdown and cancel | After Check Credit Limit the redirection pop up shows “Redirecting to MF Central in N seconds”, N from 5 to 1, then MF Central. Close icon → “Are you sure you want to cancel your mutual fund portfolio fetch?” – Yes, cancel closes the pop up and returns to the consent page; No, don’t continues the redirection starting again at 5 seconds | Sl. No 7 added in Module 4 (WIP) with UAT crops (pop up, close, confirmation, No / Yes CTAs), Screen Content, data points (pop up shown, cancel choice and time, redirected time) and fields; Sl. No 5 CTA action points to Sl. No 7. Prototype screen 06: real 5 → 1 countdown with progress bar, then screen 07; close opens the confirmation (No → restart at 5, Yes → screen 05). Go to PRD on screen 06 opens Sl. No 7 | Implemented |
 | DISC-155 | 08-10-2026 | PRD Sl. No 7 – Redirection countdown | Countdown crop | The Redirection countdown field needs its cropped image | f07-countdown.png (countdown text and progress bar) cropped from the owner’s UAT screenshot and shown with the field | Implemented |
+| DISC-156 | 09-10-2026 | Prototype – every OTP screen | Demo OTP 000000 | The live journey uses the real OTP; in the prototype the correct OTP is 000000 everywhere an OTP is asked, with the hint “Please use OTP 000000 to proceed” | Main journey (lamf-journey): demo OTP changed from 123456 to 000000; hint added under the OTP on screen 03 (mobile OTP), 07 (MF Central mock), 16.3 (email OTP) and 16.5.3 (Aadhaar OTP). 07, 16.3 and 16.5.3 now accept only 000000 (others show “Invalid OTP”) and continue to 08, 16.4 and 16.5.4. The existing-customer prototype already used 000000. Prototype only – not in the PRD | Implemented |
 
 ---
 
