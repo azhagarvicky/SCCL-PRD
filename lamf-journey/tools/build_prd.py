@@ -402,7 +402,7 @@ MODULES = [
       'func': 'MF Central redirection pop up after clicking “Check Credit Limit” – countdown, then redirect to MF Central',
       'desc': ('<p>On clicking Check Credit Limit (Sl. No 5) the system shall open the MF Central redirection pop up over the page. '
                'The pop up counts down from 5 seconds to 1 second (“Redirecting to MF Central in 5 seconds” … “1 seconds”) while the progress bar fills; '
-               'when the countdown ends, MF Central checks the PAN and mobile number combination: if data is available the customer is redirected to the MF Central page (Sl. No 8), otherwise the “isn’t linked to the PAN” page is shown (Sl. No 9). '
+               'when the countdown ends, MF Central checks the PAN and mobile number combination: if data is available the customer is redirected to MF Central (Sl. No 8), otherwise the “isn’t linked to the PAN” page is shown (Sl. No 12). '
                'If the customer clicks the close icon, a confirmation pop up asks whether to cancel the portfolio fetch.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
@@ -436,37 +436,110 @@ MODULES = [
  },
  {
   'title': 'Module 5 – Mutual Fund Portfolio Fetching',
-  'screens': 'Screen 07.2) MF Central Mock Page (data available) · Screen 07.1) PAN and Mobile Number Combination No Data Available (no data available)',
+  'screens': 'MF Central pages: Screen 07.2) OTP · 07.3) Select AMCs · 07.4) Portfolio Fetching · 07.5) Portfolio Discovery Complete · Screen 07.1) PAN and Mobile Number Combination No Data Available',
   'rows': [
     {
       'sl': '8',
       'shot': img('screen-08.png'),
-      'func': 'User entering the OTP received from MF Central to fetch the mutual fund portfolio (PAN and mobile number linked)',
-      'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has data for the PAN and mobile number combination, the customer is taken to the MF Central page. '
-               'MF Central sends a 6-digit OTP to the mobile number; the customer enters it and clicks Submit to allow the mutual fund portfolio to be fetched. '
-               'In UAT this page is a mock MF Central page.</p>'
+      'func': 'User entering the 6-digit OTP received from MF Central and clicking “Authenticate with OTP”',
+      'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has data for the PAN and mobile number combination, the customer is taken to the MF Central page (outside the LOS). '
+               'MF Central sends a 6-digit OTP to the mobile number; the customer enters it and clicks Authenticate with OTP to authorise sharing of the mutual fund portfolio for Loan Against Mutual Funds.</p>'
                + screen_content([
-                   ('Header', 'Top navigation – see Sl. No 6'),
-                   ('Title', '“Mock MFCentral Page” (UAT)'),
-                   ('Sub title', '“Enter Otp”'),
-                   ('OTP boxes', '6 single digit boxes'),
-                   ('CTA', '“Submit” – grey until all 6 digits are entered, then yellow'),
+                   ('Logo', 'MF Central logo'),
+                   ('Usecase card', '“Usecase: Loan Against Mutual Funds”; “By authenticating, you authorize requesting platform registered with SEBI/RBI to securely access your mutual fund portfolio data from MF Central for Loan Against Mutual Funds”'),
+                   ('OTP label', '“Enter your 6-digit OTP”'),
+                   ('OTP boxes', '6 boxes; the digits are masked as dots'),
+                   ('CTA', '“Authenticate with OTP” – light until all 6 digits are entered, then dark'),
+                   ('Security card', '“Secure Authentication for Portfolio Access”: We do not store your OTP or sensitive credentials; Data is end to end encrypted and securely shared only on authentication of OTP by Investor; Access is limited to Personal Finance Management only; Consent artifact is valid for one time data sharing; MF Central follows an every time consent model for sharing the data'),
                ])),
-      'data': ('<b>MF Central OTP Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+      'data': ('<b>MF Central OTP Authenticated Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>MF Central OTP Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
       'status': WIP,
       'fields': [
-        (img('f08-otp.png'), spec(Field_Name='Enter Otp', Field_Type='OTP field (6 boxes)',
-            Minimum_Character='6 Char', Maximum_Character='6 Char', Input_Value_format='Numeric',
+        (img('f08-usecase.png'), spec(Field_Name='Usecase card', Field_Type='Display',
+            Action='Shows the use case (Loan Against Mutual Funds) and the authorisation text – display only.'), OK),
+        (states(('f08-otp.png', 'Before – empty'), ('f08-otp-filled.png', 'After – 6 digits entered, shown as dots')),
+         spec(Field_Name='Enter your 6-digit OTP', Field_Type='OTP field (6 boxes)',
+            Minimum_Character='6 Char', Maximum_Character='6 Char', Input_Value_format='Numeric, masked',
             Action='User has to enter the 6-digit OTP received from MF Central on the mobile number.',
-            Validation='Wrong OTP message and attempt limit on the MF Central page to be confirmed ' + pend('P-21')), OK),
-        (img('f08-submit.png'), spec(Field_Name='Submit', Field_Type='CTA (Button)',
-            Action='On click with the correct OTP, MF Central shares the mutual fund portfolio and the customer is returned to the LOS (MF Central to LOS redirecting page).',
-            Condition='Disabled (grey) until all 6 digits are entered.'), OK),
+            Validation='Wrong OTP message and attempt limit to be confirmed ' + pend('P-21')), OK),
+        (states(('f08-auth.png', 'Before – light, until 6 digits are entered'), ('f08-auth-enabled.png', 'After – enabled once 6 digits are entered')),
+         spec(Field_Name='Authenticate with OTP', Field_Type='CTA (Button)',
+            Action='On click with the correct OTP, the customer moves to Select AMCs (Sl. No 9).',
+            Condition='Enabled only when all 6 digits are entered.'), OK),
       ],
     },
     {
       'sl': '9',
+      'shot': img('screen-10.png'),
+      'func': 'User selecting the AMCs whose mutual funds are to be fetched and clicking “Continue to Portfolio Import”',
+      'desc': ('<p>MF Central lists every AMC in which the customer holds mutual funds, with the market value of the holding. '
+               'The customer selects the AMCs to share; only the funds of the selected AMCs are fetched – funds of AMCs that are not selected are not fetched.</p>'
+               + screen_content([
+                   ('Logo', 'MF Central logo'),
+                   ('Usecase', '“Usecase: Loan Against Mutual Funds”'),
+                   ('Title', '“Select AMCs for Loan Assessment”'),
+                   ('Select all', '“Select All AMCs” checkbox'),
+                   ('AMC list', 'One row per AMC: checkbox, AMC logo, AMC name (e.g. DSP Mutual Fund, HDFC Mutual Fund, PPFAS Mutual Fund, Shriram Mutual Fund) and “MARKET VALUE” (e.g. ₹20,008.48)'),
+                   ('CTA', '“Continue to Portfolio Import” – grey until at least one AMC is selected'),
+               ])),
+      'data': ('<b>AMCs Listed:</b> names and market values shown<br><br>'
+               '<b>AMCs Selected:</b> names of the selected AMCs<br><br>'
+               '<b>Continue Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (states(('f10-selectall.png', 'Before – unticked'), ('f10-selectall-ticked.png', 'After – ticked')),
+         spec(Field_Name='Select All AMCs', Field_Type='Check box',
+            Action='Ticking selects every AMC in the list; unticking clears them all.',
+            Condition='Ticked automatically when every AMC is selected one by one; unticked when any AMC is unselected.'), OK),
+        (states(('f10-amc.png', 'Before – not selected'), ('f10-amc-ticked.png', 'After – selected (row highlighted)')),
+         spec(Field_Name='AMC row', Field_Type='Check box with AMC logo, name and market value',
+            Action='User ticks each AMC whose funds are to be fetched.',
+            Condition='Only the selected AMCs’ funds are fetched; unselected AMCs’ funds are not fetched.'), OK),
+        (states(('f10-cta.png', 'Before – disabled (grey) until an AMC is selected'), ('f10-cta-enabled.png', 'After – enabled')),
+         spec(Field_Name='Continue to Portfolio Import', Field_Type='CTA (Button)',
+            Action='On click, MF Central starts fetching the portfolio of the selected AMCs (Sl. No 10).',
+            Condition='Disabled until at least one AMC is selected.'), OK),
+      ],
+    },
+    {
+      'sl': '10',
+      'shot': '<p>UAT screenshot to be shared ' + pend('P-22') + '</p>',
+      'func': 'MF Central fetching the mutual fund portfolio of the selected AMCs',
+      'desc': ('<p>After Continue to Portfolio Import, MF Central shows the Mutual Fund Portfolio Fetching screen while the portfolio of the selected AMCs is fetched. '
+               'No action is needed from the customer; when the fetch is complete the Portfolio Discovery Complete screen is shown (Sl. No 11). '
+               'Screen content to be confirmed from the UAT screenshot ' + pend('P-22') + '</p>'),
+      'data': ('<b>Portfolio Fetch Started Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Portfolio Fetch Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
+      'status': WIP,
+    },
+    {
+      'sl': '11',
+      'shot': img('screen-11.png'),
+      'func': 'Portfolio Discovery Complete – MF Central confirms the fetch and redirects the customer back to the LOS',
+      'desc': ('<p>When the portfolio is fetched, MF Central shows the Portfolio Discovery Complete screen and redirects the customer back to the LOS within 3 seconds '
+               '(“Redirecting in 3s” counting down to 0s), to the MF Central to LOS Redirecting page (Screen 08).</p>'
+               + screen_content([
+                   ('Logo', 'MF Central logo'),
+                   ('Icon', 'Green tick'),
+                   ('Title', '“Portfolio Discovery Complete!”'),
+                   ('Message', '“Your mutual fund portfolio has been successfully fetched and will now be sent to the Requested Platform.”'),
+                   ('Status', '“Data fetched successfully” – “All portfolio information secured”'),
+                   ('Redirect', '“Redirecting in Ns” with an arrow – N counts down from 3 to 0'),
+                   ('Footer', '“256-bit encryption” · “ISO 27001 compliant”'),
+               ])),
+      'data': ('<b>Portfolio Fetch Completed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Redirected to LOS Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f12-status.png'), spec(Field_Name='Data fetched successfully', Field_Type='Status banner',
+            Action='Confirms the portfolio was fetched – display only.'), OK),
+        (img('f12-redirect.png'), spec(Field_Name='Redirecting in Ns', Field_Type='Timer',
+            Action='Counts down from 3 seconds to 0; then the customer is redirected to the LOS (MF Central to LOS Redirecting page).'), OK),
+      ],
+    },
+    {
+      'sl': '12',
       'shot': img('screen-09.png'),
       'func': 'PAN and mobile number not linked – MF Central has no data for the combination',
       'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has no data for the PAN and mobile number combination, the customer is not taken to MF Central; '
@@ -655,7 +728,8 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-21', 'Module 5', 'Mutual Fund Portfolio Fetching: (a) Sl. No 9 – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here; (b) Sl. No 8 – the wrong OTP message and the number of attempts allowed on the MF Central page.'),
+ ('P-22', 'Module 5', 'Sl. No 10 – Mutual Fund Portfolio Fetching screen on MF Central: please share the UAT screenshot so the screen content can be written, and confirm what is shown if the fetch fails.'),
+ ('P-21', 'Module 5', 'Mutual Fund Portfolio Fetching: (a) Sl. No 12 – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here; (b) Sl. No 8 – the wrong OTP message and the number of attempts allowed on the MF Central OTP page.'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
