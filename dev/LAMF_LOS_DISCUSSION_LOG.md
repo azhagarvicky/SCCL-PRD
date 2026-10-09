@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 09-10-2026 13:49 IST
+**Last Updated:** 09-10-2026 13:57 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -194,6 +194,7 @@
 | DISC-159 | 09-10-2026 | PRD Module 5 / Screens 07.2 – 07.5 – MF Central | MF Central process | MF Central steps: (1) enter the OTP received from MF Central; (2) select the AMCs listed (only selected AMCs’ funds are fetched); (3) Mutual Fund Portfolio Fetching screen; (4) Portfolio Discovery Complete, redirecting within 3 seconds to LOS screen 08 | PRD Module 5 rewritten with UAT crops: Sl. No 8 MF Central OTP (Authenticate with OTP, before / after), 9 Select AMCs (Select All, AMC rows, Continue to Portfolio Import, before / after), 10 Portfolio Fetching (screenshot pending – P-22), 11 Portfolio Discovery Complete (3 s redirect), 12 No data available (was 9). Prototype: 07.2 renamed MF Central OTP Page (MF Central layout, OTP 000000), new 07.3 Select AMCs, 07.4 Portfolio Fetching, 07.5 Portfolio Discovery Complete (3 → 0 then screen 08); Go to PRD mapped | Implemented |
 | DISC-160 | 09-10-2026 | PRD Sl. No 10 / Screen 07.4 – MF Central Fetching Your Portfolio | Screenshot shared | Owner shared the UAT screenshot of the MF Central fetching screen (lamf-sdk.mfcentral.com/lamf-processing) | Sl. No 10 written from the screenshot: screen crop, Screen Content (title, sub text, two progress steps, Processing portfolio data, footer), fields Progress steps and Processing portfolio data. P-22 narrowed to the failure / timeout case. Prototype 07.4 rebuilt to match (icon, progress bars filling, then 07.5) | Implemented |
 | DISC-161 | 09-10-2026 | PRD Module 5 – MF Central pages | Ownership of the MF Central pages | The LOS has no access to the MF Central pages: LOS redirects to MF Central and MF Central redirects back to LOS after its process. Any functional issue on those pages is raised to MF Central by mail | Module 5 screens line and Sl. No 8 – 11 descriptions state the pages are owned by MF Central and issues are raised to MF Central by mail; wrong OTP and fetch failure handling noted as MF Central’s. P-22 (and P-21 b) answered and moved to Completed; P-21 kept only for Refresh on the LOS no-data page (Sl. No 12) | Implemented |
+| DISC-162 | 09-10-2026 | PRD Module 6 / Screens 08 – 11 – back in the LOS | Automatic processing screens | After 08 Redirecting to Dashboard the journey moves on by itself to Fetching, Analysing and Generating (screens already built). Prototype: about 3 seconds each, Redirecting to Dashboard 1.5 seconds. PRD: list each screen, no seconds | Prototype: 08 → (1.5 s) 09 → (3 s) 10 → (3 s) 11 → (3 s) 12 Curated Offers, automatically. PRD: Module 6 – Mutual Fund Portfolio Processing with Sl. No 13 Redirecting to Dashboard (owner’s UAT screenshot), 14 Fetching, 15 Analysing, 16 Generating (prototype screenshots), each with Screen Content and data points, no timings. Go to PRD: 08 → 13, 09 → 14, 10 → 15, 11 → 16 | Implemented |
 
 ---
 
