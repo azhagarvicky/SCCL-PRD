@@ -504,14 +504,29 @@ MODULES = [
     },
     {
       'sl': '10',
-      'shot': '<p>UAT screenshot to be shared ' + pend('P-22') + '</p>',
+      'shot': img('screen-10-fetch.png'),
       'func': 'MF Central fetching the mutual fund portfolio of the selected AMCs',
-      'desc': ('<p>After Continue to Portfolio Import, MF Central shows the Mutual Fund Portfolio Fetching screen while the portfolio of the selected AMCs is fetched. '
-               'No action is needed from the customer; when the fetch is complete the Portfolio Discovery Complete screen is shown (Sl. No 11). '
-               'Screen content to be confirmed from the UAT screenshot ' + pend('P-22') + '</p>'),
+      'desc': ('<p>After Continue to Portfolio Import, MF Central shows the Fetching Your Portfolio screen while it connects and fetches the portfolio of the selected AMCs. '
+               'No action is needed from the customer; when the fetch is complete the Portfolio Discovery Complete screen is shown (Sl. No 11).</p>'
+               + screen_content([
+                   ('Logo', 'MF Central logo'),
+                   ('Icon', 'Portfolio icon with an arrow'),
+                   ('Title', '“Fetching Your Portfolio...”'),
+                   ('Sub text', '“Connecting to MF Central and fetching your investment data”'),
+                   ('Progress steps', '“Connecting to MF Central” (purple bar, loading icon) and “Fetching your portfolio” (green bar, shield icon)'),
+                   ('Status line', '“Processing portfolio data” with three dots'),
+                   ('Footer', '“256-bit encryption” · “ISO 27001 compliant”'),
+               ])),
       'data': ('<b>Portfolio Fetch Started Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Portfolio Fetch Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
       'status': WIP,
+      'fields': [
+        (img('f10-steps.png'), spec(Field_Name='Progress steps', Field_Type='Progress bars',
+            Action='Shows the two steps – Connecting to MF Central, then Fetching your portfolio – as they progress; display only.',
+            Condition='What is shown if the fetch fails is to be confirmed ' + pend('P-22')), OK),
+        (img('f10-processing.png'), spec(Field_Name='Processing portfolio data', Field_Type='Status text',
+            Action='Display only, shown while the data is processed. When the fetch completes the customer moves to Sl. No 11 automatically.'), OK),
+      ],
     },
     {
       'sl': '11',
@@ -728,7 +743,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-22', 'Module 5', 'Sl. No 10 – Mutual Fund Portfolio Fetching screen on MF Central: please share the UAT screenshot so the screen content can be written, and confirm what is shown if the fetch fails.'),
+ ('P-22', 'Module 5', 'Sl. No 10 – MF Central Fetching Your Portfolio screen: the screenshot is shared (DISC-160); please confirm what is shown if the fetch fails or times out, and where the customer goes from there.'),
  ('P-21', 'Module 5', 'Mutual Fund Portfolio Fetching: (a) Sl. No 12 – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here; (b) Sl. No 8 – the wrong OTP message and the number of attempts allowed on the MF Central OTP page.'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
