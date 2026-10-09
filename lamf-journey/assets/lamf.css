@@ -734,3 +734,20 @@ body.page-screens { padding: 40px 76px; }
 .mfc-foot i { width: 5px; height: 5px; border-radius: 50%; background: #888; display: inline-block; } .mfc-foot i.g { background: #43A047; }
 .mfc-wm { mix-blend-mode: multiply; }
 .done-card > p.mfc-foot { max-width: none; margin: 0; }
+
+/* 07.4 Fetching Your Portfolio (DISC-160) */
+.mfc-grad-panel { width: 600px; max-width: 100%; background: linear-gradient(135deg, #F4EEFF, #E9F3FF 55%, #FDEFF4); padding: 130px 0 40px; display: flex; justify-content: center; margin-top: 18px; }
+.fetch-card { width: 388px; padding: 28px 26px 30px; }
+.mfc-fetch-ic { width: 76px; display: block; margin: 0 auto 10px; }
+.fetch-card h2 { color: #7B3FC4; font-size: 16px; margin-bottom: 8px; }
+.fetch-card > p { font-size: 11px !important; color: #666; margin-bottom: 18px; line-height: 1.5; }
+.mfc-step { border: 1px solid #E5E5E5; border-radius: 8px; padding: 12px 12px 8px; margin-bottom: 8px; text-align: left; display: flex; flex-wrap: wrap; align-items: center; font-size: 11px; }
+.mfc-step span { flex: 1; } .mfc-step > i { font-style: normal; color: #6A3AB8; font-size: 12px; }
+.mfc-step i.spin { width: 11px; height: 11px; border: 2px solid #D9CCF2; border-top-color: #6A3AB8; border-radius: 50%; animation: mfcspin 1s linear infinite; }
+.mfc-step .bar { width: 100%; height: 4px; background: #EEE; border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.mfc-step .bar b { display: block; height: 100%; width: 0; animation: mfcfill 2.4s ease-out forwards; }
+.mfc-step .bar.p b { background: #6A3AB8; } .mfc-step .bar.g b { background: #43A047; animation-delay: .6s; }
+@keyframes mfcfill { to { width: 100%; } }
+.mfc-proc { font-size: 10.5px !important; color: #777; margin: 14px 0 22px !important; display: flex; gap: 5px; align-items: center; justify-content: center; }
+.mfc-proc i { width: 5px; height: 5px; border-radius: 50%; background: #9575CD; display: inline-block; }
+.fetch-card .mfc-foot { font-size: 9.5px; }

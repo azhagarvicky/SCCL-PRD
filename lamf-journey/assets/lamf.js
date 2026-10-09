@@ -370,11 +370,15 @@
     </div></main>`;
 
   T.mfcFetching = () => `
-    <main class="mfc-page"><div class="mfc-card mfc-center">
-      ${mfcLogo}<div class="mfc-spin"></div>
-      <h3>Fetching your mutual fund portfolio</h3>
-      <p>Please wait while your portfolio is fetched from the selected AMCs.</p>
-    </div></main>`;
+    <main class="mfc-page">${mfcLogo}<div class="mfc-grad-panel"><div class="mfc-card mfc-center fetch-card">
+      ${img('mfc-fetch.png', 'mfc-fetch-ic')}
+      <h2>Fetching Your Portfolio...</h2>
+      <p>Connecting to MF Central and<br>fetching your investment data</p>
+      <div class="mfc-step"><span>Connecting to MF Central</span><i class="spin"></i><div class="bar p"><b></b></div></div>
+      <div class="mfc-step"><span>Fetching your portfolio</span><i>⛉</i><div class="bar g"><b></b></div></div>
+      <p class="mfc-proc"><i></i><i></i><i></i> Processing portfolio data</p>
+      <p class="mfc-foot"><i class="g"></i>256-bit encryption <i></i>ISO 27001 compliant</p>
+    </div></div></main>`;
 
   T.mfcDone = () => `
     <main class="mfc-page mfc-grad">${mfcLogo}<div class="mfc-card mfc-center done-card">
