@@ -436,14 +436,14 @@ MODULES = [
  },
  {
   'title': 'Module 5 – Mutual Fund Portfolio Fetching',
-  'screens': 'MF Central pages: Screen 07.2) OTP · 07.3) Select AMCs · 07.4) Portfolio Fetching · 07.5) Portfolio Discovery Complete · Screen 07.1) PAN and Mobile Number Combination No Data Available',
+  'screens': 'MF Central pages (owned by MF Central – LOS has no access; issues raised to MF Central by mail): Screen 07.2) OTP · 07.3) Select AMCs · 07.4) Portfolio Fetching · 07.5) Portfolio Discovery Complete · LOS page: Screen 07.1) PAN and Mobile Number Combination No Data Available',
   'rows': [
     {
       'sl': '8',
       'shot': img('screen-08.png'),
       'func': 'User entering the 6-digit OTP received from MF Central and clicking “Authenticate with OTP”',
       'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has data for the PAN and mobile number combination, the customer is taken to the MF Central page (outside the LOS). '
-               'MF Central sends a 6-digit OTP to the mobile number; the customer enters it and clicks Authenticate with OTP to authorise sharing of the mutual fund portfolio for Loan Against Mutual Funds.</p>'
+               'MF Central sends a 6-digit OTP to the mobile number; the customer enters it and clicks Authenticate with OTP to authorise sharing of the mutual fund portfolio for Loan Against Mutual Funds. <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
                    ('Usecase card', '“Usecase: Loan Against Mutual Funds”; “By authenticating, you authorize requesting platform registered with SEBI/RBI to securely access your mutual fund portfolio data from MF Central for Loan Against Mutual Funds”'),
@@ -462,7 +462,7 @@ MODULES = [
          spec(Field_Name='Enter your 6-digit OTP', Field_Type='OTP field (6 boxes)',
             Minimum_Character='6 Char', Maximum_Character='6 Char', Input_Value_format='Numeric, masked',
             Action='User has to enter the 6-digit OTP received from MF Central on the mobile number.',
-            Validation='Wrong OTP message and attempt limit to be confirmed ' + pend('P-21')), OK),
+            Validation='Wrong OTP handling is done by MF Central (not controlled by the LOS).'), OK),
         (states(('f08-auth.png', 'Before – light, until 6 digits are entered'), ('f08-auth-enabled.png', 'After – enabled once 6 digits are entered')),
          spec(Field_Name='Authenticate with OTP', Field_Type='CTA (Button)',
             Action='On click with the correct OTP, the customer moves to Select AMCs (Sl. No 9).',
@@ -474,7 +474,7 @@ MODULES = [
       'shot': img('screen-10.png'),
       'func': 'User selecting the AMCs whose mutual funds are to be fetched and clicking “Continue to Portfolio Import”',
       'desc': ('<p>MF Central lists every AMC in which the customer holds mutual funds, with the market value of the holding. '
-               'The customer selects the AMCs to share; only the funds of the selected AMCs are fetched – funds of AMCs that are not selected are not fetched.</p>'
+               'The customer selects the AMCs to share; only the funds of the selected AMCs are fetched – funds of AMCs that are not selected are not fetched. <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
                    ('Usecase', '“Usecase: Loan Against Mutual Funds”'),
@@ -507,7 +507,7 @@ MODULES = [
       'shot': img('screen-10-fetch.png'),
       'func': 'MF Central fetching the mutual fund portfolio of the selected AMCs',
       'desc': ('<p>After Continue to Portfolio Import, MF Central shows the Fetching Your Portfolio screen while it connects and fetches the portfolio of the selected AMCs. '
-               'No action is needed from the customer; when the fetch is complete the Portfolio Discovery Complete screen is shown (Sl. No 11).</p>'
+               'No action is needed from the customer; when the fetch is complete the Portfolio Discovery Complete screen is shown (Sl. No 11). <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
                    ('Icon', 'Portfolio icon with an arrow'),
@@ -523,7 +523,7 @@ MODULES = [
       'fields': [
         (img('f10-steps.png'), spec(Field_Name='Progress steps', Field_Type='Progress bars',
             Action='Shows the two steps – Connecting to MF Central, then Fetching your portfolio – as they progress; display only.',
-            Condition='What is shown if the fetch fails is to be confirmed ' + pend('P-22')), OK),
+            Condition='Failure handling is done by MF Central (not controlled by the LOS).'), OK),
         (img('f10-processing.png'), spec(Field_Name='Processing portfolio data', Field_Type='Status text',
             Action='Display only, shown while the data is processed. When the fetch completes the customer moves to Sl. No 11 automatically.'), OK),
       ],
@@ -533,7 +533,7 @@ MODULES = [
       'shot': img('screen-11.png'),
       'func': 'Portfolio Discovery Complete – MF Central confirms the fetch and redirects the customer back to the LOS',
       'desc': ('<p>When the portfolio is fetched, MF Central shows the Portfolio Discovery Complete screen and redirects the customer back to the LOS within 3 seconds '
-               '(“Redirecting in 3s” counting down to 0s), to the MF Central to LOS Redirecting page (Screen 08).</p>'
+               '(“Redirecting in 3s” counting down to 0s), to the MF Central to LOS Redirecting page (Screen 08). <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
                    ('Icon', 'Green tick'),
@@ -743,8 +743,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-22', 'Module 5', 'Sl. No 10 – MF Central Fetching Your Portfolio screen: the screenshot is shared (DISC-160); please confirm what is shown if the fetch fails or times out, and where the customer goes from there.'),
- ('P-21', 'Module 5', 'Mutual Fund Portfolio Fetching: (a) Sl. No 12 – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here; (b) Sl. No 8 – the wrong OTP message and the number of attempts allowed on the MF Central OTP page.'),
+ ('P-21', 'Module 5', 'Sl. No 12 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
@@ -759,6 +758,8 @@ PENDING = [
 # Answered clarifications: (ID, Module, Question, Answer, Answered on).
 # P-11 – P-15 were answered on 23-09-2026, before this PRD was written (log PEND-006 – PEND-010).
 COMPLETED = [
+ ('P-22', 'Module 5', 'Sl. No 10 – MF Central Fetching Your Portfolio screen: the screenshot is shared (DISC-160); please confirm what is shown if the fetch fails or times out, and where the customer goes from there. Also: wrong OTP message and attempts on the MF Central OTP page (was P-21 b).',
+  'The MF Central pages (OTP, Select AMCs, Fetching, Portfolio Discovery Complete) belong to MF Central; the LOS has no access to them. Their behaviour, including failures and wrong OTP handling, is MF Central’s; any functional issue is raised to MF Central by mail (DISC-161).', '09-10-2026'),
  ('P-19', 'Module 4', 'Sl. No 5 – LOS to MF Central consent page: the row is written from the prototype screen. Please share the UAT screenshots so the screenshot and field crops can be replaced, and confirm what the Dashboard and Profile icons (top right) do on this page.',
   'UAT screenshots shared (DISC-142). Credit Score icon opens the credit score pop up (score from Experian, fetched date, category, Raise an issue link to Experian, close); Profile icon opens the Profiles pop up (name as per PAN, PAN Number, Logout to the Landing page, close).', '07-10-2026'),
  ('P-16', 'Module 2', 'Experian consent checkbox: the UAT screenshots shared on 30-09-2026 (uatlamf.shriramcredit.in) show the Enter OTP pop up without the Experian consent checkbox, and Submit OTP turns yellow as soon as 6 digits are entered. Sl. No 3 describes the checkbox as mandatory. Confirm whether the checkbox is part of the live journey.',
