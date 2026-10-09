@@ -402,7 +402,7 @@ MODULES = [
       'func': 'MF Central redirection pop up after clicking “Check Credit Limit” – countdown, then redirect to MF Central',
       'desc': ('<p>On clicking Check Credit Limit (Sl. No 5) the system shall open the MF Central redirection pop up over the page. '
                'The pop up counts down from 5 seconds to 1 second (“Redirecting to MF Central in 5 seconds” … “1 seconds”) while the progress bar fills; '
-               'when the countdown ends the customer is redirected to the MF Central page to fetch the mutual fund portfolio. '
+               'when the countdown ends, MF Central checks the PAN and mobile number combination: if data is available the customer is redirected to the MF Central page (Sl. No 8), otherwise the “isn’t linked to the PAN” page is shown (Sl. No 9). '
                'If the customer clicks the close icon, a confirmation pop up asks whether to cancel the portfolio fetch.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
@@ -430,6 +430,66 @@ MODULES = [
             Action='On click, the confirmation pop up closes and the redirection pop up continues, with the countdown starting again from 5 seconds.'), OK),
         (img('f07-yes.png'), spec(Field_Name='Yes, cancel', Field_Type='CTA (Button)',
             Action='On click, both pop ups close, the portfolio fetch is cancelled and the customer is back on the LOS to MF Central consent page (Sl. No 5).'), OK),
+      ],
+    },
+  ],
+ },
+ {
+  'title': 'Module 5 – Mutual Fund Portfolio Fetching',
+  'screens': 'Screen 07) MF Central Mock Page · Screen 06.1) PAN and Mobile Number not linked page',
+  'rows': [
+    {
+      'sl': '8',
+      'shot': img('screen-08.png'),
+      'func': 'User entering the OTP received from MF Central to fetch the mutual fund portfolio (PAN and mobile number linked)',
+      'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has data for the PAN and mobile number combination, the customer is taken to the MF Central page. '
+               'MF Central sends a 6-digit OTP to the mobile number; the customer enters it and clicks Submit to allow the mutual fund portfolio to be fetched. '
+               'In UAT this page is a mock MF Central page.</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Title', '“Mock MFCentral Page” (UAT)'),
+                   ('Sub title', '“Enter Otp”'),
+                   ('OTP boxes', '6 single digit boxes'),
+                   ('CTA', '“Submit” – grey until all 6 digits are entered, then yellow'),
+               ])),
+      'data': ('<b>MF Central OTP Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>MF Central OTP Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
+      'status': WIP,
+      'fields': [
+        (img('f08-otp.png'), spec(Field_Name='Enter Otp', Field_Type='OTP field (6 boxes)',
+            Minimum_Character='6 Char', Maximum_Character='6 Char', Input_Value_format='Numeric',
+            Action='User has to enter the 6-digit OTP received from MF Central on the mobile number.',
+            Validation='Wrong OTP message and attempt limit on the MF Central page to be confirmed ' + pend('P-21')), OK),
+        (img('f08-submit.png'), spec(Field_Name='Submit', Field_Type='CTA (Button)',
+            Action='On click with the correct OTP, MF Central shares the mutual fund portfolio and the customer is returned to the LOS (MF Central to LOS redirecting page).',
+            Condition='Disabled (grey) until all 6 digits are entered.'), OK),
+      ],
+    },
+    {
+      'sl': '9',
+      'shot': img('screen-09.png'),
+      'func': 'PAN and mobile number not linked – MF Central has no data for the combination',
+      'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has no data for the PAN and mobile number combination, the customer is not taken to MF Central; '
+               'a separate page is shown saying the mobile number is not linked to the PAN entered.</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Illustration', 'Three cards with question marks'),
+                   ('Message', '“The identifier below isn’t linked to the PAN you entered”'),
+                   ('Mobile number', 'Phone icon with the masked mobile number (e.g. +919XXXX1623)'),
+                   ('CTA', '“Refresh” with the refresh icon'),
+               ])),
+      'data': ('<b>Not Linked Page Shown Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Refresh Clicked:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Refresh Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f09-message.png'), spec(Field_Name='Not linked message', Field_Type='Display text',
+            Action='“The identifier below isn’t linked to the PAN you entered” – display only.'), OK),
+        (img('f09-mobile.png'), spec(Field_Name='Mobile number', Field_Type='Display field',
+            Prefilled_Value='Mobile number verified in Sl. No 2 and 3, masked as +91 + first digit + XXXX + last 4 digits',
+            Action='Display only, not editable'), OK),
+        (icon('f09-refresh.png'), spec(Field_Name='Refresh', Field_Type='CTA',
+            Action='On click, the MF Central fetch is tried again ' + pend('P-21')), OK),
       ],
     },
   ],
@@ -595,6 +655,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-21', 'Module 5', 'Mutual Fund Portfolio Fetching: (a) Sl. No 9 – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here; (b) Sl. No 8 – the wrong OTP message and the number of attempts allowed on the MF Central page.'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
