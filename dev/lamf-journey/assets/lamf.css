@@ -685,3 +685,52 @@ body.page-screens { padding: 40px 76px; }
 .nl-ph svg { width: 14px; height: 14px; }
 .nl-ref { display: inline-flex; gap: 5px; align-items: center; background: var(--yellow-soft); color: var(--yellow); font-weight: 700; font-size: 11.5px; padding: 4px 10px; border-radius: 12px; cursor: pointer; }
 .nl-ref svg { width: 12px; height: 12px; }
+
+/* 07.2 – 07.5 MF Central pages (DISC-159) */
+.mfc-page { min-height: 100vh; background: #F8F8FA; display: flex; flex-direction: column; align-items: center; padding: 50px 16px 40px; font-family: Inter, system-ui, sans-serif; }
+.mfc-col { width: 480px; max-width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.mfc-wm { width: 100px; display: block; margin: 0 auto 6px; }
+.mfc-use { width: 100%; background: linear-gradient(135deg, #FFF8F3, #FBF1EE); border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.06); padding: 20px 26px; text-align: center; }
+.mfc-use-h { display: flex; gap: 12px; align-items: center; justify-content: center; padding-bottom: 14px; border-bottom: 1px solid #F0D9CF; margin-bottom: 14px; text-align: left; }
+.mfc-use-h small { display: block; font-size: 11.5px; color: #8A7A72; } .mfc-use-h b { font-size: 13px; }
+.mfc-ring { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #F3C7B6; box-shadow: inset 0 0 0 5px #fff, inset 0 0 0 8px #E9A48A; }
+.mfc-use p { font-size: 11.5px; color: #A0705C; line-height: 1.5; }
+.mfc-box { width: 100%; background: #FAFAFA; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.06); padding: 30px 40px; text-align: center; }
+.mfc-otp-l { font-size: 13.5px; margin-bottom: 14px; } .mfc-shield { color: #8E24AA; } .mfc-shield.blue { color: #3949AB; }
+.mfc-otp input { width: 40px; height: 40px; background: #F3F3F3; -webkit-text-security: disc; }
+.mfc-btn { width: 100%; height: 40px; margin-top: 20px; border-radius: 6px; color: #fff; font-size: 14px; background: linear-gradient(90deg, #6A3AB8, #A43FC4); opacity: .55; }
+.mfc-btn.btn-primary { opacity: 1; }
+.mfc-sec { background: #fff; text-align: left; padding: 26px 30px; }
+.mfc-sec h4 { color: #3949AB; font-size: 13.5px; margin-bottom: 12px; }
+.mfc-sec li { list-style: none; font-size: 11.5px; color: #555; display: flex; gap: 8px; margin-bottom: 8px; }
+.mfc-sec i { font-style: normal; width: 13px; flex: 0 0 13px; font-size: 10px; text-align: center; border-radius: 50%; color: #fff; height: 13px; line-height: 13px; }
+.mfc-sec i.r { background: #E53935; } .mfc-sec i.g { background: #757575; } .mfc-sec i.s { color: #E53935; } .mfc-sec i.t { color: #43A047; }
+.mfc-card { width: 694px; max-width: 100%; background: #fff; border-radius: 14px; box-shadow: 0 6px 24px rgba(0,0,0,.06); padding: 32px 26px 14px; text-align: center; }
+.mfc-pill { display: inline-block; background: #FF7A50; color: #fff; font-size: 11.5px; font-weight: 600; border-radius: 16px; padding: 7px 16px; margin: 12px 0 18px; }
+.amc-card h3 { font-size: 15.5px; margin-bottom: 14px; }
+.amc-all, .amc-row { display: flex; align-items: center; gap: 22px; text-align: left; cursor: pointer; }
+.amc-all { font-size: 12.5px; font-weight: 600; margin: 0 0 18px 6px; }
+.amc-row { margin-bottom: 10px; }
+.amc-card input[type=checkbox] { width: 18px; height: 18px; accent-color: #6A3AB8; margin-left: 6px; }
+.amc-box { flex: 1; display: flex; align-items: center; gap: 12px; border: 1px solid #E5E5E5; border-radius: 10px; padding: 12px 16px; }
+.amc-row.on .amc-box { border-color: #A98ADB; background: #F8F5FE; }
+.amc-lg { width: 38px; height: 34px; object-fit: contain; } .amc-box b { flex: 1; font-size: 12.5px; }
+.amc-v { text-align: right; color: #2E7D32; font-weight: 700; font-size: 13px; } .amc-v small { display: block; font-size: 9.5px; color: #888; font-weight: 500; letter-spacing: .3px; }
+.mfc-btn2 { width: 100%; height: 40px; margin-top: 120px; border-radius: 6px; color: #fff; font-weight: 600; font-size: 13.5px; background: linear-gradient(90deg, #FF7043, #EC407A); }
+.mfc-btn2:disabled { background: #CFCFCF; color: #6F6F6F; cursor: not-allowed; }
+.mfc-center { padding: 40px 36px; } .mfc-center h3 { margin: 18px 0 8px; } .mfc-center p { font-size: 13px; color: #666; }
+.mfc-spin { width: 42px; height: 42px; margin: 24px auto 0; border: 4px solid #E8DDF7; border-top-color: #6A3AB8; border-radius: 50%; animation: mfcspin 1s linear infinite; }
+@keyframes mfcspin { to { transform: rotate(360deg); } }
+.mfc-grad { background: linear-gradient(135deg, #F4EEFF, #E9F3FF 55%, #FDEFF4); }
+.done-card { width: 522px; margin-top: 40px; }
+.mfc-ok { width: 74px; display: block; margin: 0 auto 18px; border-radius: 14px; }
+.done-card h2 { color: #7B3FC4; font-size: 21px; margin-bottom: 10px; }
+.done-card > p { max-width: 260px; margin: 0 auto 26px; line-height: 1.55; }
+.mfc-okbar { display: flex; gap: 12px; align-items: center; text-align: left; background: #EEFBF2; border: 1px solid #BFE9CC; border-radius: 10px; padding: 12px 18px; }
+.mfc-okbar > span { width: 20px; height: 20px; border: 2px solid #2E7D32; color: #2E7D32; border-radius: 50%; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
+.mfc-okbar b { display: block; color: #1B5E20; font-size: 12.5px; } .mfc-okbar small { color: #2E7D32; font-size: 11px; }
+.mfc-redir { border: 1px solid #DDD; border-radius: 8px; padding: 11px; margin: 18px 0 20px; font-size: 13.5px; }
+.mfc-foot { font-size: 11px; color: #555; display: flex; gap: 8px; justify-content: center; align-items: center; }
+.mfc-foot i { width: 5px; height: 5px; border-radius: 50%; background: #888; display: inline-block; } .mfc-foot i.g { background: #43A047; }
+.mfc-wm { mix-blend-mode: multiply; }
+.done-card > p.mfc-foot { max-width: none; margin: 0; }

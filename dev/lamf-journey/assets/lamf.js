@@ -16,7 +16,10 @@
     '06) LOS to MF Central Redirection loading page',
     '07) MF Central Data Check Mock',
     '07.1) PAN and Mobile Number Combination No Data Available',
-    '07.2) MF Central Mock Page',
+    '07.2) MF Central OTP Page',
+    '07.3) MF Central Select AMCs Page',
+    '07.4) MF Central Portfolio Fetching Page',
+    '07.5) MF Central Portfolio Discovery Complete Page',
     '08) MF Central to LOS Redirecting Page',
     '09) MF Central to LOS Fetching Mutual Fund Portfolio Page',
     '10) MF Central to LOS Analysing Mutual Fund Portfolio Page',
@@ -333,14 +336,54 @@
     </div></main>`;
 
   /* 07 MF Central mock */
+  /* 07.2 – 07.5 MF Central pages (DISC-159) – laid out as in the owner's UAT screenshots; OTP 000000 in the prototype */
+  const mfcLogo = img('mfc-wordmark.png', 'mfc-wm');
   T.mfMock = () => `
-    ${header('app')}
-    <main><div class="card mock-card">
-      <h2>Mock MFCentral Page</h2><h4>Enter Otp</h4>
-      <div class="otp" style="justify-content:center">${'<input maxlength="1" inputmode="numeric">'.repeat(6)}</div>
-      <p class="otp-hint" style="margin:12px auto 0">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
-      <p class="field-err" id="demo-otp-err" style="text-align:center"></p>
-      <button class="btn btn-disabled btn-block" data-cta="submit">Submit</button>
+    <main class="mfc-page"><div class="mfc-col">
+      ${mfcLogo}
+      <div class="mfc-use"><div class="mfc-use-h"><span class="mfc-ring"></span><div><small>Usecase:</small><b>Loan Against Mutual Funds</b></div></div>
+        <p>By authenticating, you authorize <b>requesting platform</b> registered with SEBI/RBI to securely access your mutual fund portfolio data from MF Central for <b>Loan Against Mutual Funds</b></p></div>
+      <div class="mfc-box mock-card">
+        <p class="mfc-otp-l"><span class="mfc-shield">⛨</span> Enter your 6-digit OTP</p>
+        <div class="otp mfc-otp" style="justify-content:center">${'<input maxlength="1" inputmode="numeric">'.repeat(6)}</div>
+        <p class="otp-hint" style="margin:12px auto 0">Please use OTP <b>${OTP_RULES.demoOtp}</b> to proceed</p>
+        <p class="field-err" id="demo-otp-err" style="text-align:center"></p>
+        <button class="mfc-btn" data-cta="submit">Authenticate with OTP</button>
+      </div>
+      <div class="mfc-box mfc-sec"><h4><span class="mfc-shield blue">⛨</span> Secure Authentication for Portfolio Access</h4>
+        <ul><li><i class="r">!</i>We do not store your OTP or sensitive credentials</li>
+        <li><i class="s">★</i>Data is end to end encrypted and securely shared only on authentication of OTP by Investor</li>
+        <li><i class="g">i</i>Access is limited to Personal Finance Management only</li>
+        <li><i class="t">✓</i>Consent artifact is valid for one time data sharing</li>
+        <li><i class="t">✓</i>MF Central follows an every time consent model for sharing the data</li></ul></div>
+    </div></main>`;
+
+  const AMCS = [['amc-dsp.png', 'DSP Mutual Fund', '₹20,008.48'], ['amc-hdfc.png', 'HDFC Mutual Fund', '₹88.9'], ['amc-ppfas.png', 'PPFAS Mutual Fund', '₹972.45'], ['amc-shriram.png', 'Shriram Mutual Fund', '₹0']];
+  T.mfcAmc = () => `
+    <main class="mfc-page"><div class="mfc-card amc-card">
+      ${mfcLogo}
+      <span class="mfc-pill">▭ Usecase: Loan Against Mutual Funds</span>
+      <h3>Select AMCs for Loan Assessment</h3>
+      <label class="amc-all"><input type="checkbox" id="amc-all"><span>Select All AMCs</span></label>
+      ${AMCS.map(([lg, n, v], k) => `<label class="amc-row"><input type="checkbox" data-amc="${k}"><span class="amc-box">${img(lg, 'amc-lg')}<b>${n}</b><span class="amc-v"><small>MARKET VALUE</small>${v}</span></span></label>`).join('')}
+      <button class="mfc-btn2" data-cta="continue" disabled>Continue to Portfolio Import</button>
+    </div></main>`;
+
+  T.mfcFetching = () => `
+    <main class="mfc-page"><div class="mfc-card mfc-center">
+      ${mfcLogo}<div class="mfc-spin"></div>
+      <h3>Fetching your mutual fund portfolio</h3>
+      <p>Please wait while your portfolio is fetched from the selected AMCs.</p>
+    </div></main>`;
+
+  T.mfcDone = () => `
+    <main class="mfc-page mfc-grad">${mfcLogo}<div class="mfc-card mfc-center done-card">
+      ${img('mfc-success.png', 'mfc-ok')}
+      <h2>Portfolio Discovery Complete!</h2>
+      <p>Your mutual fund portfolio has been successfully fetched and will now be sent to the Requested Platform.</p>
+      <div class="mfc-okbar"><span>✓</span><div><b>Data fetched successfully</b><small>All portfolio information secured</small></div></div>
+      <div class="mfc-redir">Redirecting in <span id="mfc-left">3</span>s →</div>
+      <p class="mfc-foot"><i class="g"></i>256-bit encryption <i></i>ISO 27001 compliant</p>
     </div></main>`;
 
   /* 08 Redirecting */
@@ -1072,17 +1115,31 @@
   };
   const boxesOf = (sel) => () => [...document.querySelectorAll(sel + ' .otp input')];
   const joined = (sel) => () => boxesOf(sel)().map((i) => i.value).join('');
-  BEHAVIOUR['07.2) MF Central Mock Page'] = demoOtpScreen(joined('.mock-card'), boxesOf('.mock-card'), '.mock-card [data-cta="submit"]', '08) MF Central to LOS Redirecting Page');
+  BEHAVIOUR['07.2) MF Central OTP Page'] = demoOtpScreen(joined('.mock-card'), boxesOf('.mock-card'), '.mock-card [data-cta="submit"]', '07.3) MF Central Select AMCs Page');
   BEHAVIOUR['16.3) KYC Verification Page Email verification popup'] = demoOtpScreen(joined('.m-eotp'), boxesOf('.m-eotp'), '.m-eotp [data-cta="submit-otp"]', '16.4) KYC Verification Page email verification completed');
   BEHAVIOUR['16.5.3) KYC Verification Page Aadhar verification Enter aadhar OTP'] = demoOtpScreen(() => (document.querySelector('.dl-in') || {}).value || '', () => [...document.querySelectorAll('.dl-in')], '[data-cta="submit"]', '16.5.4) KYC Verification Page Aadhar verification Enter PIN');
 
   BEHAVIOUR['07) MF Central Data Check Mock'] = () => {
-    document.querySelectorAll('.pan-mock [data-r]').forEach((bt) => { bt.onclick = () => go(bt.dataset.r === 'yes' ? '07.2) MF Central Mock Page' : '07.1) PAN and Mobile Number Combination No Data Available'); });
+    document.querySelectorAll('.pan-mock [data-r]').forEach((bt) => { bt.onclick = () => go(bt.dataset.r === 'yes' ? '07.2) MF Central OTP Page' : '07.1) PAN and Mobile Number Combination No Data Available'); });
   };
   BEHAVIOUR['07.1) PAN and Mobile Number Combination No Data Available'] = () => {
     const m = store.get(K.mobile);
     if (m && m.length === 10) document.getElementById('nl-mobile').textContent = `+91${m[0]}XXXX${m.slice(6)}`;
     document.querySelector('[data-cta="refresh"]').onclick = () => go('06) LOS to MF Central Redirection loading page');   // retry the MF Central fetch (P-21)
+  };
+
+  BEHAVIOUR['07.3) MF Central Select AMCs Page'] = () => {
+    const all = document.getElementById('amc-all'), rows = [...document.querySelectorAll('[data-amc]')], cta = document.querySelector('.amc-card [data-cta="continue"]');
+    const sync = () => { const n = rows.filter((r) => r.checked).length; all.checked = n === rows.length; cta.disabled = n === 0; rows.forEach((r) => r.closest('.amc-row').classList.toggle('on', r.checked)); };
+    all.addEventListener('change', () => { rows.forEach((r) => { r.checked = all.checked; }); sync(); });
+    rows.forEach((r) => r.addEventListener('change', sync));
+    cta.addEventListener('click', () => { if (cta.disabled) return; store.set('lamf.amcs', rows.filter((r) => r.checked).map((r) => AMCS[+r.dataset.amc][1])); go('07.4) MF Central Portfolio Fetching Page'); });
+    sync();
+  };
+  BEHAVIOUR['07.4) MF Central Portfolio Fetching Page'] = () => { TIMERS.push(setTimeout(() => go('07.5) MF Central Portfolio Discovery Complete Page'), 2500)); };
+  BEHAVIOUR['07.5) MF Central Portfolio Discovery Complete Page'] = () => {
+    let n = 3; const el = document.getElementById('mfc-left');
+    const t = setInterval(() => { n -= 1; el.textContent = Math.max(n, 0); if (n <= 0) { clearInterval(t); go('08) MF Central to LOS Redirecting Page'); } }, 1000); TIMERS.push(t);
   };
 
   function wireBehaviour() {
@@ -1124,7 +1181,7 @@
 
   /* ---------------- Dev navigator ---------------- */
   // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
-  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '9', '07.2': '8' };
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '12', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11' };
   const prdHref = (screen) => {
     const row = PRD_ROW[(String(screen).match(/^([\d.]+)\)/) || [])[1]];
     if (SPA()) return '#PRD' + (row ? '/sl-' + row : '');
