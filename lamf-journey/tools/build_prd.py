@@ -436,7 +436,7 @@ MODULES = [
  },
  {
   'title': 'Module 5 – Mutual Fund Portfolio Fetching',
-  'screens': 'Screen 07) MF Central Mock Page · Screen 06.1) PAN and Mobile Number not linked page',
+  'screens': 'Screen 07.2) MF Central Mock Page (data available) · Screen 07.1) PAN and Mobile Number Combination No Data Available (no data available)',
   'rows': [
     {
       'sl': '8',

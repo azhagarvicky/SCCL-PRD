@@ -12,7 +12,7 @@
   <a href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>
   <div>
     <h1>SCCL LAMF – LOS Product Requirements Document (PRD)</h1>
-    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 09-10-2026 06:02</p>
+    <p>Customer Online Journey &nbsp;·&nbsp; Last updated: 09-10-2026 06:21</p>
   </div>
   <a class="prd-link" href="screens.html">All screens →</a>
 </header>
@@ -71,7 +71,7 @@
 <tr><td class="shot"><img src="prd-assets/f07-yes.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Yes, cancel</p><p><b>Field Type:</b> CTA (Button)</p><p><b>Action:</b> On click, both pop ups close, the portfolio fetch is cancelled and the customer is back on the LOS to MF Central consent page (Sl. No 5).</p></div></td></tr>
 </tbody></table>
 <h2>Module 5 – Mutual Fund Portfolio Fetching</h2>
-<p class="screens">Screen 07) MF Central Mock Page · Screen 06.1) PAN and Mobile Number not linked page</p>
+<p class="screens">Screen 07.2) MF Central Mock Page (data available) · Screen 07.1) PAN and Mobile Number Combination No Data Available (no data available)</p>
 <table><thead><tr><th style="width:52px">SL.No</th><th style="width:330px">Screenshot</th><th style="width:190px">Functionality</th><th>Description</th><th style="width:190px">Data Points Required</th><th style="width:165px">Status</th></tr></thead><tbody>
 <tr id="sl-8"><td rowspan="3" class="sl">8</td><td class="shot"><img src="prd-assets/screen-08.png" alt=""></td><td rowspan="3">User entering the OTP received from MF Central to fetch the mutual fund portfolio (PAN and mobile number linked)</td><td><p>After the redirection countdown (Sl. No 7), when MF Central has data for the PAN and mobile number combination, the customer is taken to the MF Central page. MF Central sends a 6-digit OTP to the mobile number; the customer enters it and clicks Submit to allow the mutual fund portfolio to be fetched. In UAT this page is a mock MF Central page.</p><div class="spec"><p><b>Screen Content:</b></p><ul class="content-list"><li><b>Header:</b> Top navigation – see Sl. No 6</li><li><b>Title:</b> “Mock MFCentral Page” (UAT)</li><li><b>Sub title:</b> “Enter Otp”</li><li><b>OTP boxes:</b> 6 single digit boxes</li><li><b>CTA:</b> “Submit” – grey until all 6 digits are entered, then yellow</li></ul></div></td><td rowspan="3" class="dp"><b>MF Central OTP Submitted Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br><b>MF Central OTP Status:</b><ul><li>Success</li><li>Failure</li></ul></td><td rowspan="3"><span class="tag wip">WIP</span></td></tr>
 <tr><td class="shot"><img src="prd-assets/f08-otp.png" alt=""></td><td><div class="spec"><p><b>Field Name:</b> Enter Otp</p><p><b>Field Type:</b> OTP field (6 boxes)</p><p><b>Minimum Character:</b> 6 Char</p><p><b>Maximum Character:</b> 6 Char</p><p><b>Input Value format:</b> Numeric</p><p><b>Action:</b> User has to enter the 6-digit OTP received from MF Central on the mobile number.</p><p><b>Validation:</b> Wrong OTP message and attempt limit on the MF Central page to be confirmed <a class="pend-ref" href="#P-21" onclick="var t=document.getElementById('P-21');if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}return false" title="Open pending clarification P-21">Pending · P-21</a></p></div></td></tr>
