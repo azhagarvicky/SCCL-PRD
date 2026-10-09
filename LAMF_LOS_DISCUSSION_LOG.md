@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 09-10-2026 13:45 IST
+**Last Updated:** 09-10-2026 13:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -193,6 +193,7 @@
 | DISC-158 | 09-10-2026 | Prototype screens 07 / 07.1 / 07.2 | Rename and reorder | “07) MF Central Mock Page” becomes “07.2) MF Central Mock Page”; the no-data page becomes “07.1) PAN and Mobile Number Combination No Data Available”; between 06 and 07.1 a prototype mock page with Data available / Data not available | New screen “07) MF Central Data Check Mock” (consent page with the mock pop up) reached when the 06 countdown ends; Data available → 07.2, Data not available → 07.1. Old 06.1 / 07 pages removed. Go to PRD: 07 → Sl. No 7, 07.1 → Sl. No 9, 07.2 → Sl. No 8. PRD Module 5 screens line renamed | Implemented |
 | DISC-159 | 09-10-2026 | PRD Module 5 / Screens 07.2 – 07.5 – MF Central | MF Central process | MF Central steps: (1) enter the OTP received from MF Central; (2) select the AMCs listed (only selected AMCs’ funds are fetched); (3) Mutual Fund Portfolio Fetching screen; (4) Portfolio Discovery Complete, redirecting within 3 seconds to LOS screen 08 | PRD Module 5 rewritten with UAT crops: Sl. No 8 MF Central OTP (Authenticate with OTP, before / after), 9 Select AMCs (Select All, AMC rows, Continue to Portfolio Import, before / after), 10 Portfolio Fetching (screenshot pending – P-22), 11 Portfolio Discovery Complete (3 s redirect), 12 No data available (was 9). Prototype: 07.2 renamed MF Central OTP Page (MF Central layout, OTP 000000), new 07.3 Select AMCs, 07.4 Portfolio Fetching, 07.5 Portfolio Discovery Complete (3 → 0 then screen 08); Go to PRD mapped | Implemented |
 | DISC-160 | 09-10-2026 | PRD Sl. No 10 / Screen 07.4 – MF Central Fetching Your Portfolio | Screenshot shared | Owner shared the UAT screenshot of the MF Central fetching screen (lamf-sdk.mfcentral.com/lamf-processing) | Sl. No 10 written from the screenshot: screen crop, Screen Content (title, sub text, two progress steps, Processing portfolio data, footer), fields Progress steps and Processing portfolio data. P-22 narrowed to the failure / timeout case. Prototype 07.4 rebuilt to match (icon, progress bars filling, then 07.5) | Implemented |
+| DISC-161 | 09-10-2026 | PRD Module 5 – MF Central pages | Ownership of the MF Central pages | The LOS has no access to the MF Central pages: LOS redirects to MF Central and MF Central redirects back to LOS after its process. Any functional issue on those pages is raised to MF Central by mail | Module 5 screens line and Sl. No 8 – 11 descriptions state the pages are owned by MF Central and issues are raised to MF Central by mail; wrong OTP and fetch failure handling noted as MF Central’s. P-22 (and P-21 b) answered and moved to Completed; P-21 kept only for Refresh on the LOS no-data page (Sl. No 12) | Implemented |
 
 ---
 
@@ -669,7 +670,7 @@
 | PEND-064 | Curated Offers | Live message and behaviour when the customer’s age (from the PAN-page DOB) is outside 18–70 years (PRD P-18, DISC-119) | 05-10-2026 | Open |
 | PEND-065 | Top Navigation – credit score pop up | What the pop up shows when Experian returns no score (new to credit, no record, call failure) (PRD P-20, DISC-151) | 08-10-2026 | Open |
 | PEND-066 | Mutual Fund Portfolio Fetching | Refresh action on the not linked page; MF Central wrong OTP message and attempts (PRD P-21, DISC-157) | 09-10-2026 | Open |
-| PEND-067 | Mutual Fund Portfolio Fetching | UAT screenshot of the MF Central Portfolio Fetching screen and its failure case (PRD P-22, DISC-159) | 09-10-2026 | Open |
+| PEND-067 | Mutual Fund Portfolio Fetching | UAT screenshot of the MF Central Portfolio Fetching screen and its failure case (PRD P-22, DISC-159) | 09-10-2026 | Closed (DISC-161) |
 
 ---
 
