@@ -751,3 +751,259 @@ body.page-screens { padding: 40px 76px; }
 .mfc-proc { font-size: 10.5px !important; color: #777; margin: 14px 0 22px !important; display: flex; gap: 5px; align-items: center; justify-content: center; }
 .mfc-proc i { width: 5px; height: 5px; border-radius: 50%; background: #9575CD; display: inline-block; }
 .fetch-card .mfc-foot { font-size: 9.5px; }
+
+/* ==========================================================
+   Screens 16.6 – 24 (Photo, Bank, Customer details, Pledging, Agreement & E-Mandate,
+   Sanction letter, e-Sign, E-Mandate, Submitted, Your loans) – styles taken from the
+   Apply for New Loan prototype (lamf-existing-customer), scoped to these screens only (DISC-171)
+   ========================================================== */
+.hdr-cta { color: var(--yellow); font-weight: 700; font-size: 15px; cursor: pointer; }
+.yl { max-width: 950px; margin: 0 auto; padding: 36px 16px 60px; }
+.yl h1 { font-size: 21px; font-weight: 700; margin-bottom: 24px; }
+.yl h2 { font-size: 17px; font-weight: 500; display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+.yl-badge { display: inline-flex; align-items: center; gap: 5px; background: #EAF7EE; color: #1E7B3A; font-size: 11px; font-weight: 500; padding: 3px 7px; border-radius: 4px; }
+.yl-badge i { width: 6px; height: 6px; border-radius: 50%; background: #1FA049; }
+.yl-top { display: grid; grid-template-columns: 407px 1fr; gap: 21px; margin-bottom: 22px; }
+.yl-bal { border: 1px solid var(--line); border-radius: 10px; padding: 26px 21px 22px; text-align: center; display: flex; flex-direction: column; }
+.yl-bal p { font-size: 14px; }
+.yl-bal > b { font-size: 29px; font-weight: 700; margin-top: 8px; }
+.yl-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: auto; padding-top: 30px; }
+.yl-btns .btn { height: 46px; font-size: 14px; padding: 0; }
+.yl-repay { border: 1px solid var(--yellow); color: var(--yellow); background: #fff; }
+.yl-withdraw { color: #fff; }
+.yl-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.yl-stat { border: 1px solid var(--line); border-radius: 10px; padding: 13px 11px; display: grid; gap: 5px; }
+.yl-stat span { font-size: 12.5px; }
+.yl-stat b { font-size: 16px; font-weight: 700; }
+.yl-tabs { display: flex; margin-bottom: 20px; overflow-x: auto; scrollbar-width: none; }
+.yl-tabs a { flex: none; white-space: nowrap; padding: 6px 14px 10px; font-size: 14.5px; font-weight: 700; border-bottom: 2px solid transparent; }
+.yl-tabs a.on { border-color: var(--yellow); }
+.yl-docs { display: flex; gap: 18px; flex-wrap: wrap; }
+.yl-doc { width: 180px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.yl-doc-top { position: relative; height: 123px; background: #F7F7F7; display: grid; place-items: center; }
+.yl-pdf svg { width: 36px; height: 43px; display: block; }
+.yl-dl { position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.yl-dl svg { width: 14px; height: 14px; }
+.yl-doc-foot { padding: 11px 11px 10px; border-top: 1px solid var(--line); }
+.yl-doc-foot p { font-size: 13.5px; }
+.yl-doc-foot small { font-size: 12px; color: var(--muted); }
+@media (max-width: 760px) { .yl-top { grid-template-columns: 1fr; } }
+/* ---------- 15 / 16 KYC mocks + failure note on the KYC page (DISC-047) ---------- */
+.kyc-mock .mock-p { font-size: 13.5px; color: var(--ink-2); margin-top: -4px; }
+.mock-2btn { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mock-2btn .btn { margin-top: 26px; }
+.kyc-fail { margin: 10px 0 0; min-height: 0; }
+
+/* ---------- KYC Bank Details (existing PAN) + Continue (DISC-048) ---------- */
+.kyc-bank { display: flex; align-items: center; gap: 10px; margin-top: 18px; padding: 16px 18px; border: 1px solid var(--yellow); border-radius: 12px; background: #F8FAFF; font-size: 15px; }
+.kyc-bank .kb-logo { width: 26px; height: 26px; object-fit: contain; flex: none; }
+.kyc-bank .kb-gen { display: grid; place-items: center; color: var(--ink-2); }
+.kyc-bank .kb-gen svg { width: 22px; height: 22px; }
+.kyc-bank b { font-weight: 700; margin-left: 4px; }
+.kyc-bank .kb-n { letter-spacing: .5px; color: var(--ink-2); }
+.kyc-bank .kb-ok { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; background: var(--yellow); color: #fff; display: grid; place-items: center; flex: none; }
+.kyc-bank .kb-ok svg { width: 12px; height: 12px; }
+.kyc-cont { margin-top: 22px; }
+@media (max-width: 560px) { .kyc-bank { flex-wrap: wrap; font-size: 14px; } }
+
+/* ---------- 17 Customer details + ETB personal details (DISC-050) ---------- */
+.cd-page .loan-strip { margin-bottom: 10px; }
+.cd-sec { border-bottom: 1px solid var(--line); padding: 26px 0 28px; }
+.cd-h { display: flex; align-items: center; gap: 12px; width: 100%; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
+.cd-h .kt { font-size: 22px; }
+.cd-chev { margin-left: auto; width: 20px; height: 20px; color: var(--ink-2); transition: transform .15s; }
+.cd-chev svg { width: 20px; height: 20px; }
+.cd-sec:not(.open) .cd-chev { transform: rotate(180deg); }
+.cd-sec:not(.open) .cd-body { display: none; }
+.cd-body { margin-top: 22px; }
+.cd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+.cd-l { display: block; font-size: 14px; color: var(--ink-2); margin-bottom: 10px; }
+.cd-l i { font-style: normal; color: var(--ink-2); margin-left: 2px; }
+.cd-v { font-size: 15px; font-weight: 500; padding-top: 4px; }
+.cd-f .field-err { margin-top: 4px; min-height: 0; }
+.cd-chk { margin-top: 16px; font-size: 14.5px; align-items: center; }
+.cd-cta { text-align: center; padding-top: 24px; }
+.cd-cta .btn { min-width: 178px; }
+.an-sub { font-size: 14px; font-weight: 700; margin: 20px 0 2px; color: var(--ink-2); }
+.an-decl .cd-chk { margin-top: 10px; font-size: 13px; }
+.field-lbl .req { font-style: normal; margin-left: 2px; }
+.an-select { appearance: none; cursor: pointer; letter-spacing: .5px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9l6 6 6-6' fill='none' stroke='%23414651' stroke-width='2'/%3E%3C/svg%3E") right 14px center/16px no-repeat; padding-right: 40px; }
+/* ---------- 18 Pledging of Mutual Fund (DISC-056) ---------- */
+.pl-page { max-width: 594px; padding-bottom: 60px; }
+.pl-page .back { margin: 22px 0 18px; }
+.pl-t { font-size: 15.5px; font-weight: 700; margin-bottom: 16px; }
+.pl-sum { display: flex; gap: 44px; flex-wrap: wrap; background: var(--yellow-soft); border-radius: 10px; padding: 16px 14px 18px; margin-bottom: 18px; }
+.pl-sum > div > span { display: block; font-size: 13px; margin-bottom: 6px; }
+.pl-sum b { font-size: 24px; font-weight: 700; }
+.pl-card { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #fff; position: relative; z-index: 1; }
+.pl-row { display: flex; align-items: center; gap: 10px; padding: 16px 18px; }
+.pl-logo { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; overflow: hidden; flex: none; }
+.pl-logo img { width: 100%; height: 100%; object-fit: cover; }
+.pl-n { font-size: 15px; font-weight: 500; }
+.pl-v { font-size: 14px; margin-top: 2px; }
+.pl-v b { margin-left: 4px; }
+.pl-badge { margin-left: auto; background: #FDE8E8; color: #D92C20; font-size: 13px; padding: 3px 8px; border-radius: 6px; }
+.pl-badge.ok { background: var(--green-bg); color: #1E7B3A; }
+.pl-btns { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); }
+.pl-btns button { height: 42px; font-size: 14.5px; border: 0; cursor: pointer; }
+.pl-view { background: #fff; color: var(--yellow); font-weight: 700; }
+.pl-go { background: var(--yellow); color: var(--ink); font-weight: 700; }
+.pl-go.done { background: var(--green-bg); color: #1E7B3A; cursor: default; }
+.pl-otp-note { background: #F4F4F4; border-radius: 0 0 14px 14px; margin-top: -14px; padding: 22px 12px 10px; text-align: center; font-size: 13px; }
+.m-plotp { width: 480px; max-width: 100%; height: auto; min-height: 0; padding: 40px 36px 34px; }
+.m-plotp h3 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+.m-plotp .sent { font-size: 13.5px; color: var(--muted); margin-bottom: 18px; }
+.m-plotp .sent b { color: var(--ink-2); }
+.m-plotp .resend { font-size: 12.5px; margin-top: 10px; }
+.m-plotp .btn { margin-top: 22px; }
+.m-pledged { width: 480px; max-width: 100%; padding: 70px 30px 76px; text-align: center; }
+.m-pledged .pl-tick svg { width: 46px; height: 46px; }
+.m-pledged h3 { font-size: 21px; font-weight: 700; margin: 12px 0 10px; }
+.m-pledged p { font-size: 14px; color: var(--muted); }
+.ag-page { padding-top: 14px; }
+.ag-page .kyc-btn { width: auto; min-width: 173px; padding: 0 30px; white-space: nowrap; }
+.ag-page .kyc-row:last-child { border-bottom: 1px solid var(--line); }
+
+/* ---------- 20 Sanction letter + 21 e-sign mock (DISC-058) ---------- */
+.sl-bg { background: #EFEFEF; padding: 24px 16px 190px; min-height: 100vh; }
+.sl-doc { max-width: 900px; margin: 0 auto; background: #fff; padding: 60px 70px 40px; font-family: 'Times New Roman', Times, serif; font-size: 17px; line-height: 1.5; color: #111; }
+.sl-doc p { margin: 0 0 12px; }
+.sl-logo { text-align: right; margin-bottom: 30px; } .sl-logo img { height: 70px; }
+.sl-h { text-align: center; font-size: 26px; font-weight: 700; text-decoration: underline; margin-bottom: 40px; }
+.sl-date { text-align: right; }
+.sl-name { font-size: 22px; font-weight: 700; margin-bottom: 4px !important; }
+.sl-h2 { font-size: 20px; font-weight: 700; text-align: center; margin: 50px 0 6px; }
+.sl-sub { text-align: center; font-weight: 700; }
+.sl-t { width: 100%; border-collapse: collapse; font-size: 15px; margin: 10px 0 20px; }
+.sl-t th, .sl-t td { border: 1px solid #333; padding: 7px 9px; vertical-align: top; text-align: left; }
+.sl-t td:first-child { width: 60px; }
+.sl-foot { text-align: center; border-top: 2px solid #999; margin: 50px -70px 0; padding: 18px 20px 6px; font-size: 14px; }
+.sl-foot b { font-size: 20px; } .sl-foot p { margin: 4px 0 0 !important; }
+.sl-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: #F6F7F9; border-top: 1px solid #E4E6EA; font-family: system-ui, sans-serif; }
+.sl-chk { display: flex; gap: 14px; max-width: 900px; margin: 0 auto; padding: 22px 16px 18px; font-size: 13.5px; color: #555; cursor: pointer; }
+.sl-chk input { width: 20px; height: 20px; flex: none; accent-color: #2F6BF2; }
+.sl-submit { display: block; width: 100%; height: 42px; border: 0; background: #2F6BF2; color: #fff; font-weight: 700; font-size: 14px; cursor: pointer; }
+.sl-submit:disabled { background: #EEF0F3; color: #999; cursor: not-allowed; }
+.dg-hdr { display: flex; align-items: center; gap: 14px; padding: 12px 24px; background: #fff; border-bottom: 1px solid #ddd; font-family: system-ui, sans-serif; }
+.dg-logo { font-size: 26px; font-weight: 700; color: #1E5FBF; letter-spacing: -.5px; }
+.dg-mock { font-size: 12px; background: #FFF4CC; border: 1px solid #F1D56B; padding: 2px 8px; border-radius: 10px; }
+.dg-bg { background: #C9DCF6; padding: 12px 16px 220px; min-height: 100vh; }
+.dg-doc { max-width: 750px; padding: 30px 90px 30px; font-size: 14.5px; }
+.dg-doc .sl-logo img { height: 44px; }
+.dg-more { color: #777; font-style: italic; }
+.dg-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 -4px 16px rgba(0,0,0,.08); padding: 14px 16px 12px; text-align: center; font-family: system-ui, sans-serif; }
+.dg-chk { display: flex; gap: 12px; max-width: 640px; margin: 0 auto 14px; text-align: left; font-size: 11px; color: #444; border-bottom: 1px dashed #ddd; padding-bottom: 12px; }
+.dg-chk input { width: 16px; height: 16px; flex: none; accent-color: #555; }
+.dg-sign { width: 430px; max-width: 100%; height: 48px; border: 0; border-radius: 24px; background: #0A5BC4; color: #fff; font-weight: 700; font-size: 15px; cursor: pointer; }
+.dg-sign:disabled { background: #BBB; cursor: not-allowed; }
+.dg-sec { font-size: 11px; color: #666; margin-top: 8px; }
+@media (max-width: 700px) { .sl-doc, .dg-doc { padding: 30px 20px; } .sl-foot { margin: 40px -20px 0; } }
+.sl-logo img { display: block; margin-left: auto; }
+
+/* ---------- 21.1 – 21.3 e-sign OTP, signed pages (DISC-059) ---------- */
+.dg-ov { background: rgba(0,0,0,.45); z-index: 60; }
+.dg-otp { width: 600px; max-width: 100%; border-radius: 4px; padding: 26px 110px 22px; text-align: center; font-family: system-ui, sans-serif; }
+.dg-otp h3 { font-size: 17px; font-weight: 400; padding-bottom: 8px; border-bottom: 1px solid #ddd; margin-bottom: 30px; }
+.dg-in { width: 100%; height: 34px; border: 1px solid #ccc; border-radius: 4px; padding: 0 10px; font-size: 14px; outline: none; }
+.dg-in:focus { border-color: #0A5BC4; }
+.dg-boxes { justify-content: space-between; margin-top: 14px; }
+.dg-boxes input { width: 48px; height: 48px; border: 1px solid #ccc; border-radius: 4px; }
+.dg-boxes input:focus { border: 2px solid #0A5BC4; }
+.dg-hint { margin: 12px auto 0; }
+.dg-otp .field-err { min-height: 0; margin-top: 6px; text-align: left; }
+.dg-submit { margin-top: 18px; width: 154px; height: 38px; border: 0; border-radius: 19px; background: #0A5BC4; color: #fff; font-weight: 700; font-size: 13.5px; cursor: pointer; }
+.dg-exit { min-height: 100vh; background: #F7F7F7; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: system-ui, sans-serif; color: #444; }
+.dg-exit-ico { width: 150px; height: 150px; }
+.dg-exit-t { font-size: 16px; margin-top: 6px; } .dg-exit-s { font-size: 14px; }
+.dg-mock-fixed { position: fixed; top: 12px; left: 16px; z-index: 5; font-family: system-ui, sans-serif; }
+.ag-done { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.ag-done-ico { width: 80px; height: 90px; margin-bottom: 10px; }
+.ag-done h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; } .ag-done p { font-size: 13px; }
+@media (max-width: 600px) { .dg-otp { padding: 24px 20px; } .dg-boxes input { width: 40px; height: 44px; } }
+
+/* ---------- 22 E-Mandate (Digio look-alike), 22.1 NPCI, 22.2 exit, 23 submitted (DISC-060) ---------- */
+.em-bg { min-height: 100vh; background: #fff; padding: 22px 16px; font-family: system-ui, sans-serif; }
+.em-card { max-width: 526px; margin: 0 auto; border-radius: 12px; box-shadow: 0 2px 14px rgba(0,0,0,.12); overflow: hidden; background: #fff; }
+.em-hdr { display: flex; align-items: center; gap: 10px; padding: 12px 22px; border-bottom: 1px solid #eee; flex-wrap: wrap; }
+.em-sec { margin-left: auto; font-size: 11px; background: #F1F4F8; border-radius: 10px; padding: 2px 8px; }
+.em-body { display: grid; grid-template-columns: 172px 1fr; }
+.em-ov { background: #EEF3FA; padding: 26px 20px; font-size: 12px; }
+.em-ov > span, .em-bank > span, .em-val span { display: block; color: #555; font-size: 10.5px; margin-top: 14px; }
+.em-ov p, .em-val p { font-size: 13px; margin-top: 3px; }
+.em-ovt { color: #1E5FBF; font-weight: 700; font-size: 12.5px !important; margin: 0 !important; }
+.em-max { display: block; font-size: 19px; margin-top: 4px; }
+.em-val { margin-top: 18px; border-left: 1px solid #9DB5DA; padding-left: 14px; } .em-val b { font-size: 11px; margin-left: -4px; }
+.em-main { font-size: 12px; }
+.em-bank { padding: 14px 24px 16px; border-bottom: 1px solid #ddd; }
+.em-bn { display: flex; align-items: center; gap: 12px; font-size: 13px; } .em-bn img { width: 28px; height: 28px; object-fit: contain; }
+.em-bank p { font-size: 13px; margin-top: 3px; } .em-acc { display: flex; gap: 8px; align-items: center; }
+.em-eye { cursor: pointer; font-size: 12px; } .em-2 { display: flex; justify-content: space-between; }
+.em-modes { padding: 14px 24px 18px; } .em-modes h4 { font-size: 16px; margin-bottom: 8px; } .em-modes > p { color: #777; font-size: 12px; margin-bottom: 10px; }
+.em-mode { display: flex; align-items: center; gap: 10px; border: 1px solid #ddd; border-radius: 4px; padding: 9px 14px; margin-bottom: 9px; color: #1E5FBF; font-weight: 700; font-size: 13px; cursor: pointer; }
+.em-mode.on { background: #0A5BC4; color: #fff; border-color: #0A5BC4; } .em-mode input { accent-color: #fff; }
+.em-chk { display: flex; gap: 14px; padding: 12px 16px; border-top: 1px solid #ddd; font-size: 10px; color: #666; line-height: 1.5; cursor: pointer; }
+.em-chk input { width: 18px; height: 18px; flex: none; accent-color: #0A5BC4; } .em-chk em { font-style: normal; color: #1E5FBF; }
+.em-foot { padding: 14px 16px 18px; text-align: center; }
+.em-submit { width: 294px; max-width: 100%; height: 40px; border: 0; border-radius: 20px; background: #0A5BC4; color: #fff; font-weight: 700; cursor: pointer; }
+.em-submit:disabled { background: #AFC9EE; cursor: not-allowed; }
+.np { text-align: center; font-family: system-ui, sans-serif; padding-top: 6px; }
+.np h2 { font-size: 20px; font-weight: 400; } .np-id { margin: 34px 0 0; font-size: 15px; }
+.np-btns { display: flex; justify-content: space-between; width: 604px; max-width: calc(100% - 32px); margin: 0 auto; }
+.np-btns button { width: 118px; height: 40px; border-radius: 20px; font-size: 14px; cursor: pointer; }
+.np-acc { background: #0A5BC4; color: #fff; border: 0; font-weight: 700; } .np-rej { background: #fff; color: #0A5BC4; border: 1px solid #0A5BC4; width: 104px !important; }
+.em-ok { width: 88px; height: 88px; margin-bottom: 18px; }
+.sb-page { max-width: 1186px; padding-bottom: 50px; }
+.sb-t { display: flex; align-items: center; gap: 10px; font-size: 21px; font-weight: 700; margin: 18px 0 18px; }
+.sb-tick svg { width: 28px; height: 28px; display: block; }
+.sb-card { border: 1px solid var(--line); border-radius: 12px; padding: 26px 36px; }
+.sb-row { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+.sb-row small { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; } .sb-row b { font-weight: 500; white-space: nowrap; }
+.sb-cta { text-align: center; margin-top: 28px; } .sb-cta .btn { height: 42px; padding: 0 18px; }
+@media (max-width: 560px) { .em-body { grid-template-columns: 1fr; } .sb-card { padding: 16px; } }
+.em-max { font-size: 16.5px; word-break: break-all; }
+.em-2 { margin-top: 14px; } .em-2 span { display: block; color: #555; font-size: 10.5px; }
+
+/* ---------- 24 Your loans – submitted loan (DISC-061) ---------- */
+.yl-badge.sub { background: #FFF1EA; color: #E8661C; } .yl-badge.sub i { background: #F07A2B; }
+.yl-note { font-size: 12px !important; margin-top: auto; padding-top: 22px; }
+.yl-off { padding-top: 10px; } .yl-off .btn:disabled { opacity: .55; cursor: not-allowed; }
+.yl-off .yl-repay:disabled { background: #fff; color: var(--yellow); } .yl-off .yl-withdraw:disabled { background: var(--yellow); color: #fff; }
+.yl-empty { background: #F9F9F9; border-radius: 12px; padding: 18px 16px 24px; text-align: center; font-size: 14px; }
+.yl-empty svg { width: 36px; height: 40px; margin-bottom: 6px; }
+
+/* ---------- Your loans – loan selector when one mobile number has several loans (DISC-062) ---------- */
+.yl-sel { display: flex; gap: 14px; overflow-x: auto; margin: -8px 0 24px; padding-bottom: 4px; scrollbar-width: thin; }
+.yl-lc { flex: 0 0 230px; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer; display: grid; gap: 4px; }
+.yl-lc.on { border-color: var(--yellow); background: var(--yellow-soft); box-shadow: 0 0 0 1px var(--yellow); }
+.yl-lc-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.yl-lc-no { font-size: 11.5px; color: var(--muted); letter-spacing: .3px; }
+.yl-lc-p { font-size: 13.5px; font-weight: 500; }
+.yl-lc-pan { font-size: 12px; color: var(--ink-2); letter-spacing: .4px; }
+.yl-lc-amt { font-size: 16px; font-weight: 700; }
+
+.yl-withdraw, .yl-off .yl-withdraw:disabled { color: var(--ink); }
+.yl-repay, .yl-off .yl-repay:disabled { color: var(--ink); border-color: var(--yellow); }
+.pl-view { color: var(--ink); }
+.kyc-bank .kb-ok { color: var(--ink); }
+/* ---------- Full sanction letter / loan agreement text (DISC-067) ---------- */
+.doc-text { white-space: pre-wrap; font-family: 'Times New Roman', Times, serif; font-size: 15.5px; line-height: 1.5; color: #111; }
+.doc-text b { font-weight: 700; }
+.doc-text .doc-foot { display: block; margin-top: 26px; padding-top: 12px; border-top: 2px solid #999; font-weight: 700; text-align: center; }
+.dg-doc .doc-text { font-size: 14px; }
+/* ---------- New PAN bank details form on the KYC page (DISC-069, FD page layout) ---------- */
+.bk-form { margin-top: 18px; }
+.bk-note { font-size: 13px; line-height: 1.5; color: var(--ink-2); background: #FFFCF2; border: 1px solid #FBE9A6; border-radius: 8px; padding: 10px 14px; }
+.bk-l { font-size: 14px; font-weight: 600; margin: 18px 0 10px; }
+.bk-opts { display: flex; gap: 12px; flex-wrap: wrap; }
+.bk-opt { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font: inherit; font-size: 14px; color: var(--ink); cursor: pointer; }
+.bk-opt.on { border-color: var(--yellow); background: #FFFCF2; font-weight: 600; }
+.bk-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #9A9A9A; flex: none; }
+.bk-opt.on .bk-dot { border-color: var(--ink); background: radial-gradient(circle, var(--ink) 0 3.5px, var(--yellow) 4px); }
+.bk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; margin-top: 18px; }
+.bk-grid .input { width: 100%; }
+.bk-grid .field-err { margin-top: 6px; min-height: 0; }
+.bk-ifsc-help { display: inline-block; margin-top: 6px; font-size: 12.5px; cursor: pointer; }
+.bk-manual[hidden], .bk-upi[hidden] { display: none; }
+.bk-form .kyc-btn { margin-top: 22px; width: auto; min-width: 192px; padding: 0 28px; white-space: nowrap; }
+@media (max-width: 640px) { .bk-grid { grid-template-columns: 1fr; } .bk-opt { flex: 1 1 100%; } }
+

@@ -1,0 +1,486 @@
+In principle e-Sanction Letter
+{{DATE}}
+{{NAME}} 
+{{ADDR1}},
+{{ADDR2}},
+{{ADDR3}}
+Customer ID : A000000011
+Dear Sir/Madam,
+Reg: Your request for Financial Assistance of 
+ ₹
+ {{AMOUNT}}
+We are pleased to inform you that based on your online loan application, we are offering you an in-
+principle   e-Sanction   of   loan   against   Mutual   funds   of  
+ ₹ {{AMOUNT}}  for   the   purpose   of   "{{PURPOSE}}" as per the terms and conditions given in Key Fact Statement (KFS). This credit facility
+will be available to you on execution of all the necessary documents and collateral pledge/lien mark
+in favor of SHRIRAM CREDIT COMPANY LIMITED.
+In case of any clarification, please do not hesitate to contact us at lassupport@shriramcredit.in
+Thank you, and we assure you of our best services at all times.
+Yours faithfully,
+SHRIRAM CREDIT COMPANY LIMITED
+Signed By:
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Annexure A: Key Fact Statement
+Part 1 – Interest rate and fees / charges
+Sr No
+1 (a)
+1 (b)
+2
+3
+Parameter
+Details
+Type of Loan
+Loan Against pledge of Mutual Funds  
+Loan proposal /  Customer ID
+SCCLMF20260900155 / A000000011
+Sanctioned Loan Amount ( )₹
+Loan Term (months)
+₹
+ {{AMOUNT}}
+12 Months
+4
+Instalment Details
+Type of instalments: Monthly
+Number of Dues: 12 Months
+– Interest: 12 Months (Fixed)
+– Principal: 1 (bullet at maturity)
+ {{DUE}}
+Due ( ): 
+₹ ₹
+Commencement of repayment, post sanction (in 
+days): 36
+5
+6 (a)
+Rate of Interest per annum (%) and 
+type (fixed / floating / Hybrid)
+Fees / charges borne by customer 
+payable to RE
+Processing Fee 
+Loan Renewal Charges
+Bank Swap Charges
+10.5 % p.a. and Fixed
+One-time / Recurring & Amount
+One-time | 
+₹
+ {{FEE}} + GST
+Recurring | Annual | 
+₹
+ 999 + GST
+Recurring | 
+₹
+ 250 + GST
+6 (b)
+Payable to Third Party through RE
+One-time / Recurring | 
+ ₹ 750.00 + GST
+Lien Marking Charges
+Lien Removal Charges
+Stamp Duty
+One-time | 
+₹
+ 450 + GST
+Event-based | 
+₹
+ 100 + GST
+One-time | 
+(As per State – Tamil Nadu)
+ 200 + GST 
+₹
+Annual Percentage Rate (APR) (%)
+11.13 % (computed on net disbursed amount 
+using IRR approach, reducing balance method – 
+see Annexure B)
+Purpose of Loan
+{{PURPOSE}}
+7
+8
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+The Loan-to-Value (LTV) ratio applicable to the 
+Loan shall be up to 45% for Equity Mutual Fund 
+Units and up to 75% for Debt Mutual Fund Units.
+Where the security comprises a combination of 
+Equity and Debt Mutual Fund Units, the 
+applicable LTV shall be calculated on a 
+proportionate basis. The Borrower shall maintain 
+the applicable prescribed LTV throughout the 
+tenure of the Loan and until all amounts due and 
+payable under the Loan are fully discharged
+i) EMI or online payment 
+ii) NACH mandate for Interest/Principal amount
+NAV as declared by respective AMC at the end 
+of previous day
+i) Open ended mutual funds issued by AMC's of 
+India
+ii) All exchange listed approved list of Shares
+9
+Prescribed LTV
+Payment System
+Valuation  
+Collateral
+10
+11
+12
+13
+Details about Contingent Charges
+Part Payment
+Foreclosure Charges
+Nil
+Nil
+If the LTV exceeds the applicable Prescribed 
+LTV (Point-9), the Borrower shall top-up the 
+pledged Units or make a part-payment. SCCL 
+shall at its sole discretion invoke the pledge to 
+make good the shortfall, without further 
+intimation. Additional lien marking charges shall 
+apply for Unit top-ups, and lien 
+removal/invocation charges shall apply, as 
+applicable.
+SCCL shall sell the pledged mutual fund units in 
+the market with/without any specific notice in 
+case of: (i) default in payment of interest / 
+principal for EMI presentation and the 
+representation in one cycle ; (ii) non top-up or 
+non-payment within stipulated time; (iii) other 
+events of default as per the Loan Agreement
+₹
+ 100 + GST per instance
+36% p.a. charges shall be payable on the unpaid 
+interest/EMI for the delayed period in case of 
+delay in payment
+Top-up provision (Margin Call) – 
+Invocation & Revocation charges
+Remedy in case of default
+Bounce Charges per bounce 
+(dishonour of any payment 
+instrument, non-payment on due 
+date, or mandate rejection / failure)
+Penal charge per annum for delay in 
+payment of Instalment(s) (from the 
+respective due date until the date of 
+receipt of the full instalment(s) 
+amount)
+*Charges levied by RTA / NSDL / CDSL to SCCL, and the same shall be recovered from clients at actuals.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Part 2 – Other Qualitative Information
+Sr No
+Parameter
+Details
+1
+2
+3
+4
+5
+6
+7
+8
+Clause of Loan Agreement relating 
+to engagement of recovery agents
+Clause of Loan Agreement which 
+details grievance redressal 
+mechanism
+Not Applicable
+Refer footnote no. 9
+Name, designation, address, phone 
+number and email id of Nodal 
+Grievance Redressal Officer of 
+Lender
+Satya Pravas Parida
+Vice President (Lending Business)
+Shriram Credit Company Limited 
+1st Floor, 101-104, A Wing, Dynasty Business 
+Park, Near Chakala-JB Nagar Metro Station,
+Andheri – Kurla Road, Andheri – East, 
+Mumbai 400 059
+Phone: +91 898-100-3538
+E-mail: grievanceredressal@shriramcredit.in
+Whether the loan is, or in future may 
+be, subject to transfer to other REs or
+securitisation (Yes / No)
+No
+In case of lending under 
+collaborative lending arrangements 
+(e.g., co-lending / outsourcing), 
+following additional details may be 
+furnished
+Not applicable
+In case of digital loans, following specific disclosures may be furnished:
+(i) Cooling-off / look-up period, in 
+terms of RE's Board approved policy,
+during which borrower shall not be 
+charged any penalty on prepayment 
+of loan
+(ii) Details of Lending Service 
+Provider (LSP) acting as recovery 
+agent and authorised to approach the 
+borrower
+Name, designation, address, phone 
+number and email id of Nodal 
+Grievance Redressal Officer of 
+Lending Service Provider (LSP)
+3 days from the date of first disbursal.
+For cancellation of your loan, you can write to us 
+at lassupport@shriramcredit.in
+Not Applicable
+Not Applicable
+Working day
+Bank working day
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Annexure B: Illustration for computation of APR
+Sr No
+Parameter
+Details
+1
+2
+(a)
+(b)
+(c)
+(d)
+3
+4
+5
+6
+(a)
+(b)
+7
+8
+9
+Loan Amount
+ (Sr no.2 of KFS Part 1)
+Loan term (in months) 
+(Sr no.3 of KFS Part 1)
+No. of instalments for payment of 
+principal, in case of non-equated 
+periodic loan
+(i) Type of (Equated Periodic 
+Instalment (EPI)
+(ii) Amount of each EPI ( )₹
+(iii) Number of EPIs
+– Interest
+– Principal
+₹
+ {{AMOUNT}}
+12 Months
+Not Applicable
+Monthly
+₹
+ {{DUE}}
+12 Months
+12 Months
+1
+No. of instalments for payment of 
+capitalised interest, if any
+Not Applicable
+Commencement of repayment, post 
+sanction (in days)
+36
+Interest rate type (fixed / floating / 
+hybrid)
+Fixed
+Rate of Interest per annum (%)
+10.5 %
+Total interest amount to be charged 
+during the entire tenure of the loan as
+per the rate prevailing on sanction 
+date
+₹
+ 2100000.00
+Fees and charges payable by 
+customer
+ 100750.00 + GST
+₹
+Should be total of (a) and (b)
+Processing Fee
+Payable to third party routed through 
+RE (Sr no.6(b) of KFS Part 1)
+₹
+ {{FEE}} + GST
+ ₹ 750.00 + GST
+Net disbursed amount for APR (1- 6)
+₹
+ 19881115.00
+Total Amount to be paid by borrower
+towards loan (1+5+6)
+₹
+ 22218885.00
+Annual Percentage Rate – Effective 
+annualised interest rate (in %) 
+[computed on net disbursed amount 
+using IRR approach and reducing 
+balance method]
+11.13 %
+10
+Due date of payment of instalment 
+and interest
+5
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+Annexure C: Illustrative Repayment Schedule
+Instl
+No.
+Opening
+Principal (
+)₹
+Instl Amt (
+)₹
+Principal
+)₹
+(
+Interest
+)₹
+(
+Closing
+Principal (
+)₹
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+Footnotes:
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+20175000
+{{AMOUNT}}
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+175000
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+{{AMOUNT}}
+0
+1) This KFS is valid for 15 days from the date of e-signing.
+2) SCCL may at any point in time request additional documents other than those collected from 
+the applicant with the application.
+3) The disbursement of the loan shall be at the absolute and sole discretion of SHRIRAM 
+CREDIT COMPANY LIMITED and SCCL reserves the right to amend the above terms of 
+the sanction before disbursement or during the tenure of the loan under intimation to the 
+customer.
+4) All indirect taxes, Duties, levies including but not limited to interest tax, GST, Educational 
+Cess as may be applicable and amended from time to time will be additionally charged in 
+connection with the loan. 
+5) All payments to lender (SCCL) shall be done only from verified bank accounts. Any other 
+receipts shall not be accepted. 
+6) Actual interest calculation would change based on gap days between date of loan 
+disbursement and first due date of EMI. Gap days interest will be added to the First EMI.
+7) The repayment schedule is for illustrative purpose. There might be a difference in the actual 
+repayment amount due to rounding-off vis-à-vis the instalment amount mentioned in the Key 
+Fact Statement. APR is computed on net disbursed amount using IRR Approach.
+8) Processing fees paid by the borrower is non-refundable at any point of time. 
+9) For any grievance(s) against the Lender, the Borrower may write to 
+grievanceredressal@shriramcredit.in or contact the Lender's Grievance Redressal Officer as 
+detailed in Part 2, Sr. no. 3 of this KFS.
+10) All interest under the loan shall accrue from day to day and shall be calculated on a reducing 
+balance (Written Down Valuation) method from the date of disbursement to the Borrower, 
+considering base days to be (a) 365 days in a non-leap year and (b) 366 days in a leap year.
+11)  Extension beyond the sanctioned tenure shall be considered at the discretion of SCCL only 
+upon prior written request from the borrower. 
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+12) This sanction is subject to execution of loan documents in the format as may be prescribed by 
+SCCL. 
+13) The Borrower indemnifies SHRIRAM CREDIT COMPANY LIMITED against any existing 
+charge, encumbrance, lien, interest or security of any creditor or any other person likely to 
+attach the proceeds of the said loan and against any claim or damage it may suffer for 
+extension of this loan. 
+14) The Company (SHRIRAM CREDIT COMPANY LIMITED) at its sole discretion retains the 
+right with no obligation, to review and renew the facility for such further periods on such 
+terms and conditions as it may deem fit. 
+15) Change of Address, Mobile number, Email etc. of the borrower if any need to be intimated to 
+SCCL within one month of such change along with valid proof. 
+16) In the case of the existing loan outstanding (principal, interest etc.) is fully repaid by the 
+borrower, SCCL will un-pledge/release the lien marking within 30 days of the receipt of full 
+and final settlement of funds. 
+17) The rates of interest will be different for different categories of borrowers based on the 
+individual credit and risk profiles and based on the interest rate model disclosed in the 
+company.
+18) SCCL provides an explicit option to the borrower to exit the loan within the Cooling-
+off/Look-up period by repaying the principal amount and the proportionate APR without any 
+penalty during the said period. Stamp duty, GST and other statutory charges/taxes 
+levied/collected will not be refunded.
+19) The Borrower may request a change of the registered repayment bank account up to a 
+maximum of two (2) times during the tenure of the Loan, subject to the Lender's approval and
+applicable process requirements.
+20) An Annual Renewal Charge shall be levied where the Loan Facility is renewed or continued 
+beyond loan tenure. The charge shall be payable upon each such renewal or continuation until
+the Loan is fully repaid or otherwise closed.
+Your acceptance of this offer shall be construed as your willingness to be bound by the above terms 
+and conditions and to execute all documents required by us before availing of this facility. The above 
+terms and conditions do not in any way override the loan agreement and other documents you will 
+execute in the course of this facility.
+SHRIRAM CREDIT COMPANY LIMITED 
+Regd. Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai – 600017, Phone: 91-44-49052500/2501, Fax: 91-44-49052696/97
+     Corporate Office: No. 221, 3rd Floor, Thiru Vi Ka Salai, Royapettah High Road, Mylapore, Chennai-600004, Phone: 044-42983690
+          CIN: U65993TN1980PLC008215
+
