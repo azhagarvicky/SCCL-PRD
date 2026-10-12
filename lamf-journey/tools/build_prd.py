@@ -646,13 +646,13 @@ MODULES = [
  },
  {
   'title': 'Top Navigation',
-  'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every page from Screen 05) LOS to MF Central Redirection consent page onwards – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
+  'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every LOS page from Screen 05) LOS to MF Central Redirection consent page onwards (not on the MF Central pages) – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
   'rows': [
     {
       'sl': '6',
       'shot': img('f06-topnav.png'),
       'func': 'Top navigation shown on every page after PAN verification',
-      'desc': ('<p>The top navigation is shown at the top of every page from Sl. No 5 onwards and stays fixed when the page is scrolled (the PAN Details page has its own top navigation – see Sl. No 6.3). '
+      'desc': ('<p>The top navigation is shown at the top of every LOS page from Sl. No 5 onwards (it is not shown on the MF Central pages, Sl. No 8 – 11) and stays fixed when the page is scrolled (the PAN Details page has its own top navigation – see Sl. No 6.3). '
                'It gives the customer access to the credit score fetched from Experian and to the profile (with Logout) from any page.</p>'
                + screen_content([
                    ('Left', 'Shriram Credit logo'),
@@ -807,7 +807,7 @@ COMPLETED_COLUMNS = [
 PENDING = [
  ('P-21', 'Module 5', 'Sl. No 12 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
- ('P-18', 'Module 4', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
+ ('P-18', 'Curated Offers', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
  ('P-03', 'Module 1', 'Any backend check on the mobile number at this stage (existing customer, ongoing application, blacklist)?'),
  ('P-05', 'Module 2', 'Resend and wrong attempt blocks to be enforced server side against the mobile number (currently held in the prototype browser storage). Confirm reset conditions for the counters.'),
