@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 12-10-2026 15:08 IST
+**Last Updated:** 12-10-2026 15:25 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -200,6 +200,7 @@
 | DISC-165 | 12-10-2026 | PRD numbering after Sl. No 11 | Sequence | In the journey the step after 11 is the next one, but the PRD jumped from Sl. No 11 to 13 (12 was the no-data page) | No-data page renumbered Sl. No 7.1 and moved into Module 4 right after Sl. No 7 (it is the other outcome of the redirection); Module 6 rows renumbered 12 Redirecting to Dashboard, 13 Fetching, 14 Analysing, 15 Generating; all references, P-21 and Go to PRD updated. Main path now runs 1 – 15 in order | Implemented |
 | DISC-166 | 12-10-2026 | PRD Sl. No 13 – 15 – loader screens | No header in Screen Content | The loader screens show only the loader content, so “Header: Top navigation – see Sl. No 6” is not needed there | Header line removed from the Screen Content of Sl. No 13, 14 and 15; Loader line notes that only the loader pop up is shown with the page behind blurred | Implemented |
 | DISC-167 | 12-10-2026 | PRD Module 7 / Screens 12 – 12.2 – Curated Offers | Curated Offers PRD | Owner: create the PRD for the Curated Offers page | Module 7 – Curated Offers (WIP) written from the prototype screens: Sl. No 16 Curated Offers (banner, offer card, Credit Limit link, Start Application with the age check, portfolio summary, Refresh portfolio, mobile strip, fund cards, drop off, data points), 16.1 How is it calculated (calculation, tabs, eligible / not eligible cards), 16.2 Refresh portfolio pop up, 16.3 drop off view (progress strip, Discard / Continue). P-23 asks for UAT screenshots and the Refresh / Discard behaviour. Prototype: Credit Limit → 12.1.1, tabs and back, Refresh portfolio → pop up (close → 12, Refresh → MF Central redirection), Start Application / Continue → 13.1; Go to PRD mapped to 16 – 16.3 | Implemented |
+| DISC-168 | 12-10-2026 | PRD Modules 8 – 10 / Screens 13.1 – 16.5.9 – Mutual Fund Selection, Summary, KYC | PRD and journey after Curated Offers (stage 1) | Owner: create the PRD and journey for the whole flow (using the Apply for New Loan prototype as reference); owner will correct | Prototype: screens 13.1 – 16.5.9 wired end to end (location Allow / Just this Time → 13.2, Block → 13.3, Refresh → 13.1; 13.2 Continue to apply → 14 → 16.1; View details, email OTP 000000 → 16.4 → Start KYC → Digio / DigiLocker 16.5.1 – 16.5.4 → auto 16.5.5 – 16.5.9). PRD (all WIP, from the prototype): Module 8 Mutual Fund Selection Sl. No 17 – 17.5, Module 9 Loan Application Summary Sl. No 18, Module 10 KYC Verification Sl. No 19 – 19.12; Go to PRD mapped. P-24 asks for UAT screenshots and the open behaviours. Next: Photo Verification, Bank Details, Pledging, Agreement & E-Mandate (stage 2), then the Apply for New Loan PRD (stage 3) | Implemented |
 
 ---
 
@@ -678,6 +679,7 @@
 | PEND-066 | Mutual Fund Portfolio Fetching | Refresh action on the not linked page; MF Central wrong OTP message and attempts (PRD P-21, DISC-157) | 09-10-2026 | Open |
 | PEND-067 | Mutual Fund Portfolio Fetching | UAT screenshot of the MF Central Portfolio Fetching screen and its failure case (PRD P-22, DISC-159) | 09-10-2026 | Closed (DISC-161) |
 | PEND-068 | Curated Offers | UAT screenshots of Curated Offers, How is it calculated, Refresh pop up and drop off view; Refresh Portfolio and Discard behaviour (PRD P-23, DISC-167) | 12-10-2026 | Open |
+| PEND-069 | Mutual Fund Selection / Summary / KYC | UAT screenshots of Sl. No 17 – 19.12; ongoing application pop up trigger, amount limit and email messages, email OTP rules, Aadhaar status timeout, Photo / Bank steps (PRD P-24, DISC-168) | 12-10-2026 | Open |
 
 ---
 
