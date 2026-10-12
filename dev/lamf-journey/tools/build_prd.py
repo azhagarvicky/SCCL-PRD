@@ -343,7 +343,7 @@ MODULES = [
  },
  {
   'title': 'Module 4 – Mutual Fund Portfolio Fetch (MF Central)',
-  'screens': 'Screen 05) LOS to MF Central Redirection consent page · Screen 06) LOS to MF Central Redirection loading page',
+  'screens': 'Screen 05) LOS to MF Central Redirection consent page · Screen 06) LOS to MF Central Redirection loading page · Screen 07.1) PAN and Mobile Number Combination No Data Available',
   'rows': [
     {
       'sl': '5',
@@ -402,7 +402,7 @@ MODULES = [
       'func': 'MF Central redirection pop up after clicking “Check Credit Limit” – countdown, then redirect to MF Central',
       'desc': ('<p>On clicking Check Credit Limit (Sl. No 5) the system shall open the MF Central redirection pop up over the page. '
                'The pop up counts down from 5 seconds to 1 second (“Redirecting to MF Central in 5 seconds” … “1 seconds”) while the progress bar fills; '
-               'when the countdown ends, MF Central checks the PAN and mobile number combination: if data is available the customer is redirected to MF Central (Sl. No 8), otherwise the “isn’t linked to the PAN” page is shown (Sl. No 12). '
+               'when the countdown ends, MF Central checks the PAN and mobile number combination: if data is available the customer is redirected to MF Central (Sl. No 8), otherwise the “isn’t linked to the PAN” page is shown (Sl. No 7.1). '
                'If the customer clicks the close icon, a confirmation pop up asks whether to cancel the portfolio fetch.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
@@ -432,11 +432,38 @@ MODULES = [
             Action='On click, both pop ups close, the portfolio fetch is cancelled and the customer is back on the LOS to MF Central consent page (Sl. No 5).'), OK),
       ],
     },
+    {
+      'sl': '7.1',
+      'shot': img('screen-09.png'),
+      'func': 'PAN and mobile number not linked – MF Central has no data for the combination',
+      'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has no data for the PAN and mobile number combination, the customer is not taken to MF Central; '
+               'a separate page is shown saying the mobile number is not linked to the PAN entered.</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Illustration', 'Three cards with question marks'),
+                   ('Message', '“The identifier below isn’t linked to the PAN you entered”'),
+                   ('Mobile number', 'Phone icon with the masked mobile number (e.g. +919XXXX1623)'),
+                   ('CTA', '“Refresh” with the refresh icon'),
+               ])),
+      'data': ('<b>Not Linked Page Shown Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Refresh Clicked:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Refresh Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f09-message.png'), spec(Field_Name='Not linked message', Field_Type='Display text',
+            Action='“The identifier below isn’t linked to the PAN you entered” – display only.'), OK),
+        (img('f09-mobile.png'), spec(Field_Name='Mobile number', Field_Type='Display field',
+            Prefilled_Value='Mobile number verified in Sl. No 2 and 3, masked as +91 + first digit + XXXX + last 4 digits',
+            Action='Display only, not editable'), OK),
+        (icon('f09-refresh.png'), spec(Field_Name='Refresh', Field_Type='CTA',
+            Action='On click, the MF Central fetch is tried again ' + pend('P-21')), OK),
+      ],
+    },
   ],
  },
  {
   'title': 'Module 5 – Mutual Fund Portfolio Fetching',
-  'screens': 'MF Central pages (owned by MF Central – LOS has no access; issues raised to MF Central by mail): Screen 07.2) OTP · 07.3) Select AMCs · 07.4) Portfolio Fetching · 07.5) Portfolio Discovery Complete · LOS page: Screen 07.1) PAN and Mobile Number Combination No Data Available',
+  'screens': 'MF Central pages (owned by MF Central – LOS has no access; issues raised to MF Central by mail): Screen 07.2) OTP · 07.3) Select AMCs · 07.4) Portfolio Fetching · 07.5) Portfolio Discovery Complete',
   'rows': [
     {
       'sl': '8',
@@ -533,7 +560,7 @@ MODULES = [
       'shot': img('screen-11.png'),
       'func': 'Portfolio Discovery Complete – MF Central confirms the fetch and redirects the customer back to the LOS',
       'desc': ('<p>When the portfolio is fetched, MF Central shows the Portfolio Discovery Complete screen and redirects the customer back to the LOS within 3 seconds '
-               '(“Redirecting in 3s” counting down to 0s), to the Redirecting to Dashboard page in the LOS (Sl. No 13). <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
+               '(“Redirecting in 3s” counting down to 0s), to the Redirecting to Dashboard page in the LOS (Sl. No 12). <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
                    ('Icon', 'Green tick'),
@@ -550,34 +577,7 @@ MODULES = [
         (img('f12-status.png'), spec(Field_Name='Data fetched successfully', Field_Type='Status banner',
             Action='Confirms the portfolio was fetched – display only.'), OK),
         (img('f12-redirect.png'), spec(Field_Name='Redirecting in Ns', Field_Type='Timer',
-            Action='Counts down from 3 seconds to 0; then the customer is redirected to the LOS – Redirecting to Dashboard (Sl. No 13).'), OK),
-      ],
-    },
-    {
-      'sl': '12',
-      'shot': img('screen-09.png'),
-      'func': 'PAN and mobile number not linked – MF Central has no data for the combination',
-      'desc': ('<p>After the redirection countdown (Sl. No 7), when MF Central has no data for the PAN and mobile number combination, the customer is not taken to MF Central; '
-               'a separate page is shown saying the mobile number is not linked to the PAN entered.</p>'
-               + screen_content([
-                   ('Header', 'Top navigation – see Sl. No 6'),
-                   ('Illustration', 'Three cards with question marks'),
-                   ('Message', '“The identifier below isn’t linked to the PAN you entered”'),
-                   ('Mobile number', 'Phone icon with the masked mobile number (e.g. +919XXXX1623)'),
-                   ('CTA', '“Refresh” with the refresh icon'),
-               ])),
-      'data': ('<b>Not Linked Page Shown Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
-               '<b>Refresh Clicked:</b><ul><li>Yes</li><li>No</li></ul><br>'
-               '<b>Refresh Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
-      'fields': [
-        (img('f09-message.png'), spec(Field_Name='Not linked message', Field_Type='Display text',
-            Action='“The identifier below isn’t linked to the PAN you entered” – display only.'), OK),
-        (img('f09-mobile.png'), spec(Field_Name='Mobile number', Field_Type='Display field',
-            Prefilled_Value='Mobile number verified in Sl. No 2 and 3, masked as +91 + first digit + XXXX + last 4 digits',
-            Action='Display only, not editable'), OK),
-        (icon('f09-refresh.png'), spec(Field_Name='Refresh', Field_Type='CTA',
-            Action='On click, the MF Central fetch is tried again ' + pend('P-21')), OK),
+            Action='Counts down from 3 seconds to 0; then the customer is redirected to the LOS – Redirecting to Dashboard (Sl. No 12).'), OK),
       ],
     },
   ],
@@ -587,11 +587,11 @@ MODULES = [
   'screens': 'Screen 08) MF Central to LOS Redirecting Page · 09) Fetching Mutual Fund Portfolio · 10) Analysing Mutual Fund Portfolio · 11) Generating Loan Offers',
   'rows': [
     {
-      'sl': '13',
+      'sl': '12',
       'shot': img('screen-13.png'),
       'func': 'Customer returns from MF Central to the LOS – Redirecting to Dashboard',
       'desc': ('<p>After MF Central redirects the customer back (Sl. No 11), the LOS shows the Redirecting to Dashboard screen. '
-               'No action is needed from the customer; the Fetching Mutual Fund Portfolio screen opens automatically (Sl. No 14).</p>'
+               'No action is needed from the customer; the Fetching Mutual Fund Portfolio screen opens automatically (Sl. No 13).</p>'
                + screen_content([
                    ('Header', 'Top navigation – see Sl. No 6'),
                    ('Message', '“Redirecting to Dashboard...”'),
@@ -600,10 +600,10 @@ MODULES = [
       'status': WIP,
     },
     {
-      'sl': '14',
+      'sl': '13',
       'shot': img('screen-14.png'),
       'func': 'LOS fetching the mutual fund portfolio received from MF Central',
-      'desc': ('<p>The LOS shows a loader pop up over the Credit Limit Against Mutual Fund page while it fetches the mutual fund portfolio shared by MF Central. No action is needed from the customer; the next screen opens automatically (Sl. No 15).</p>'
+      'desc': ('<p>The LOS shows a loader pop up over the Credit Limit Against Mutual Fund page while it fetches the mutual fund portfolio shared by MF Central. No action is needed from the customer; the next screen opens automatically (Sl. No 14).</p>'
                + screen_content([
                    ('Header', 'Top navigation – see Sl. No 6'),
                    ('Loader', 'Animated placeholder cards'),
@@ -615,10 +615,10 @@ MODULES = [
       'status': WIP,
     },
     {
-      'sl': '15',
+      'sl': '14',
       'shot': img('screen-15.png'),
       'func': 'LOS analysing the mutual fund portfolio',
-      'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it analyses the portfolio – eligible and non eligible funds and their values. No action is needed from the customer; the next screen opens automatically (Sl. No 16).</p>'
+      'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it analyses the portfolio – eligible and non eligible funds and their values. No action is needed from the customer; the next screen opens automatically (Sl. No 15).</p>'
                + screen_content([
                    ('Header', 'Top navigation – see Sl. No 6'),
                    ('Loader', 'Animated placeholder cards'),
@@ -629,7 +629,7 @@ MODULES = [
       'status': WIP,
     },
     {
-      'sl': '16',
+      'sl': '15',
       'shot': img('screen-16.png'),
       'func': 'LOS generating the best loan offers',
       'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it generates the loan offers from the analysed portfolio. No action is needed from the customer; the next screen opens automatically (the Curated Offers page).</p>'
@@ -805,7 +805,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
- ('P-21', 'Module 5', 'Sl. No 12 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
+ ('P-21', 'Module 4', 'Sl. No 7.1 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Curated Offers', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
  ('P-02', 'Module 1', 'Does the Continue CTA call an OTP send API at this point, and what is the failure behaviour?'),
