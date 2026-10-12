@@ -642,6 +642,146 @@ MODULES = [
   ],
  },
  {
+  'title': 'Module 7 – Curated Offers',
+  'screens': 'Screen 12) Curated Offers Page · 12.1.1 – 12.1.3) How is it calculated · 12.2) Refresh portfolio · 12.2) Curated offers page for drop off view',
+  'rows': [
+    {
+      'sl': '16',
+      'shot': img('screen-16.png'),
+      'func': 'Customer viewing the credit limit and loan offer worked out from the mutual fund portfolio, and starting the application',
+      'desc': ('<p>After the loan offers are generated (Sl. No 15), the customer lands on the Curated Offers page. '
+               'It shows the credit limit worked out from the eligible mutual fund portfolio, the interest rate, processing fee and tenure, '
+               'the total portfolio value and every mutual fund fetched from MF Central. The customer clicks Start Application to continue to the mutual fund selection. '
+               'The 18 to 70 years age limit (from the DOB entered in Sl. No 4) is checked on this page. '
+               'Written from the prototype screen – to be checked against UAT ' + pend('P-23') + '</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Banner', '“Borrow only what you need and pay interest only on the utilised amount”'),
+                   ('Title', '“Curated offers for you”'),
+                   ('Sub text', '“Processing fee and monthly EMI shown are indicative. Final values will depend on the actual loan amount availed.”'),
+                   ('Offer card', '“Credit Limit” with the amount (e.g. ₹ 6,19,13,200, underlined link); “Interest Rate” (e.g. 10.50% p.a.), “Processing Fee” (e.g. ₹ 3,09,566), “Tenure in Months” (e.g. 12); CTA “Start Application”'),
+                   ('Portfolio summary', '“Total Portfolio Value” (e.g. ₹ 12,04,62,749.99); “Last updated: DD-MM-YYYY HH:MM:SS” with “Refresh portfolio”'),
+                   ('Mobile strip', 'Masked mobile number (e.g. +919XXXX1623), number of securities and total value (e.g. 13 Security • ₹ 12,04,62,749.99)'),
+                   ('Fund cards', 'One card per mutual fund: AMC logo, fund name, “Folio No.”, “No. of Units”, “Current Value”'),
+                   ('Validation message', '“Applicant must be between 18 to 70 years of age.” – when the customer’s age is outside 18 to 70 ' + pend('P-18')),
+               ])
+               + drop_off([
+                   ('When', 'The customer leaves the journey on this page without clicking Start Application'),
+                   ('On return', 'After logging in again with the mobile number (Sl. No 2) and OTP (Sl. No 3), the customer lands on the drop off view of this page (Sl. No 16.3) ' + pend('P-23')),
+               ])),
+      'data': ('<b>Credit Limit:</b> amount<br><br>'
+               '<b>Interest Rate:</b> % p.a.<br><br>'
+               '<b>Processing Fee:</b> amount<br><br>'
+               '<b>Tenure in Months:</b> number<br><br>'
+               '<b>Total Portfolio Value:</b> amount<br><br>'
+               '<b>Number of Securities:</b> number<br><br>'
+               '<b>Age Check:</b><ul><li>Within 18 to 70</li><li>Outside 18 to 70</li></ul><br>'
+               '<b>Curated Offers Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>Start Application Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f16-banner.png'), spec(Field_Name='Info banner', Field_Type='Display text',
+            Action='“Borrow only what you need and pay interest only on the utilised amount” – display only.'), OK),
+        (img('f16-cl.png'), spec(Field_Name='Credit Limit', Field_Type='Amount (hyperlink)',
+            Action='Shows the maximum credit limit worked out from the eligible portfolio. On click, the How is it calculated page opens (Sl. No 16.1).'), OK),
+        (img('f16-offer.png'), spec(Field_Name='Interest Rate, Processing Fee, Tenure in Months', Field_Type='Display values',
+            Action='Show the offer terms – display only. Processing fee is indicative; the final value depends on the loan amount availed.'), OK),
+        (states(('f16-start.png', 'Enabled – age within 18 to 70'), ('f16-offer-age.png', 'Disabled – age outside 18 to 70')),
+         spec(Field_Name='Start Application', Field_Type='CTA (Button)',
+            Action='On click, the customer continues to the mutual fund selection (location access, then MF Selection).',
+            Condition='When the customer’s age (from the DOB entered in Sl. No 4) is outside 18 to 70, the CTA is disabled and the age message is shown.'), OK),
+        (img('f16-age.png'), spec(Field_Name='Age validation', Field_Type='Validation message',
+            Validation='“Applicant must be between 18 to 70 years of age.” – shown on this page only, when the age is outside 18 to 70 (customers are not blocked at PAN verification, so they can be tracked). Exact position on the page to be confirmed ' + pend('P-18')), OK),
+        (img('f16-tpv.png'), spec(Field_Name='Total Portfolio Value', Field_Type='Display value',
+            Action='Total current value of all the mutual funds fetched – display only.'), OK),
+        (img('f16-lu.png'), spec(Field_Name='Last updated / Refresh portfolio', Field_Type='Display date and time + hyperlink',
+            Action='Shows when the portfolio was last fetched. On clicking Refresh portfolio, the Refresh portfolio pop up opens (Sl. No 16.2).'), OK),
+        (img('f16-strip.png'), spec(Field_Name='Mobile strip', Field_Type='Display',
+            Action='Masked mobile number, number of securities and total value – display only.'), OK),
+        (img('f16-fund.png'), spec(Field_Name='Fund card', Field_Type='Display card (one per fund)',
+            Action='AMC logo, fund name, Folio No., No. of Units and Current Value of each fund – display only.'), OK),
+      ],
+    },
+    {
+      'sl': '16.1',
+      'shot': img('screen-16-1.png'),
+      'func': 'Customer viewing how the credit limit is calculated – All, Eligible and Non-Eligible portfolio',
+      'desc': ('<p>Opened by clicking the Credit Limit amount on the Curated Offers page (Sl. No 16). '
+               'It explains the credit limit: total portfolio value, minus the non-eligible portfolio, gives the eligible portfolio and the credit limit available. '
+               'Three tabs list the funds – All, Eligible Portfolio and Non-Eligible Portfolio; non-eligible funds carry a “Not Eligible” strip and a credit limit of ₹ 0.</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Back link', '“Loan Against Mutual Funds” with the back arrow'),
+                   ('Credit limit', '“Your maximum credit limit is” with the amount and a coins image'),
+                   ('Description', '“We determine your credit limit based on your eligible mutual fund portfolio and our lending policies. This is the maximum amount you can borrow.”'),
+                   ('Calculation', '“Total Portfolio Value”, “Non-Eligible Portfolio Value” (minus), “Eligible Portfolio Value”, “Credit Limit Available”'),
+                   ('Tabs', '“All”, “Eligible Portfolio”, “Non-Eligible Portfolio”'),
+                   ('Mobile strip', 'Masked mobile number and number of securities in the selected tab'),
+                   ('Fund cards', 'AMC logo, fund name, “Folio No.”, “Pledgeable Units”, “Current Value”, “Credit Limit”; “Not Eligible” strip on non-eligible funds'),
+               ])),
+      'data': ('<b>Tab Viewed:</b><ul><li>All</li><li>Eligible Portfolio</li><li>Non-Eligible Portfolio</li></ul><br>'
+               '<b>How is it calculated Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f161-back.png'), spec(Field_Name='Loan Against Mutual Funds (back)', Field_Type='Back link',
+            Action='On click, the customer returns to the Curated Offers page (Sl. No 16).'), OK),
+        (img('f161-rows.png'), spec(Field_Name='Credit limit calculation', Field_Type='Display values',
+            Action='Total Portfolio Value − Non-Eligible Portfolio Value = Eligible Portfolio Value; Credit Limit Available is worked out from the eligible value – display only.'), OK),
+        (states(('f161-tabs.png', 'All'), ('f161-tabs-el.png', 'Eligible Portfolio'), ('f161-tabs-ne.png', 'Non-Eligible Portfolio')),
+         spec(Field_Name='Tabs', Field_Type='Tabs',
+            Action='On click, the fund list shows all funds, only eligible funds (sorted by credit limit) or only non-eligible funds; the selected tab is highlighted.',
+            Condition='All is selected by default.'), OK),
+        (img('f161-card.png'), spec(Field_Name='Fund card', Field_Type='Display card',
+            Action='Pledgeable Units, Current Value and Credit Limit of the fund – display only.'), OK),
+        (img('f161-ne.png'), spec(Field_Name='Not Eligible fund', Field_Type='Display card with strip',
+            Action='A fund that cannot be pledged shows the “Not Eligible” strip and Credit Limit ₹ 0.'), OK),
+      ],
+    },
+    {
+      'sl': '16.2',
+      'shot': img('screen-16-2.png'),
+      'func': 'Customer refreshing the linked mutual fund portfolio',
+      'desc': ('<p>Opened by clicking Refresh portfolio on the Curated Offers page. The pop up asks the customer to refresh all linked portfolios to see the current value of the investments and continue. '
+               'When it is shown automatically and what Refresh Portfolio does are to be confirmed ' + pend('P-23') + '</p>'
+               + screen_content([
+                   ('Title', '“Refresh all linked portfolios to continue”'),
+                   ('Text', '“Please refresh your portfolio to view the current value of your investments and continue with the application.”'),
+                   ('Portfolio box', 'Masked mobile number, “Last refreshed Today” and “Refresh Portfolio”'),
+                   ('Close icon', '(X) at the top right'),
+               ])),
+      'data': '<b>Refresh Portfolio Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+      'fields': [
+        (img('f162-box.png'), spec(Field_Name='Refresh Portfolio', Field_Type='Hyperlink',
+            Action='On click, the portfolio is fetched again from MF Central (MF Central redirection – Sl. No 7) ' + pend('P-23')), OK),
+        ('', spec(Field_Name='(X) Close icon', Field_Type='Icon',
+            Action='On click, the pop up closes and the customer stays on the Curated Offers page.'), OK),
+      ],
+    },
+    {
+      'sl': '16.3',
+      'shot': img('screen-16-3.png'),
+      'func': 'Curated Offers page for a customer who dropped off and came back',
+      'desc': ('<p>A customer who left on the Curated Offers page and logs in again sees the drop off view of the page: a different banner, a progress strip on the offer card and two CTAs, Discard and Continue. '
+               'The rest of the page is the same as Sl. No 16.</p>'
+               + screen_content([
+                   ('Banner', '“Avail a loan of up to 75% of your eligible Mutual Fund portfolio”'),
+                   ('Progress strip', '“1/4 Complete your application to get cash”'),
+                   ('CTAs', '“Discard” and “Continue”'),
+               ])),
+      'data': ('<b>Drop off View Shown Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
+               '<b>CTA Clicked:</b><ul><li>Continue</li><li>Discard</li></ul>'),
+      'status': WIP,
+      'fields': [
+        (img('f163-prog.png'), spec(Field_Name='Progress strip', Field_Type='Display text',
+            Action='“1/4 Complete your application to get cash” – shows the application step the customer is on.'), OK),
+        (img('f163-btns.png'), spec(Field_Name='Discard / Continue', Field_Type='CTAs',
+            Action='Continue: the customer continues the application (mutual fund selection). Discard: to be confirmed ' + pend('P-23')), OK),
+      ],
+    },
+  ],
+ },
+ {
   'title': 'Top Navigation',
   'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every LOS page from Screen 05) LOS to MF Central Redirection consent page onwards (not on the MF Central pages) – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
   'rows': [
@@ -802,6 +942,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) what Refresh Portfolio does (MF Central redirection again?) and when the Refresh pop up is shown automatically; (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view.'),
  ('P-21', 'Module 4', 'Sl. No 7.1 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Curated Offers', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),

@@ -1027,7 +1027,28 @@
       const c = b.cloneNode(true); c.classList.remove('is-live'); c.classList.add('is-off'); c.setAttribute('aria-disabled', 'true'); b.replaceWith(c);
     });
   };
-  ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = curatedAgeCheck; });
+  // Curated Offers links (DISC-167)
+  const CO = '12) Curated Offers Page', SEL = '13.1) Mutual Fund Selection Location access';
+  const curatedLinks = () => {
+    const on = (cta, to) => document.querySelectorAll(`[data-cta="${cta}"]`).forEach((el) => { if (!el.classList.contains('is-off')) el.onclick = () => go(to); });
+    on('how-calculated', '12.1.1) How is it calculated_All Portfolio');
+    on('refresh-portfolio', '12.2) Refresh portfolio');
+    on('start-application', SEL);
+    on('continue', SEL);
+  };
+  ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = () => { curatedAgeCheck(); curatedLinks(); }; });
+  ['12.1.1) How is it calculated_All Portfolio', '12.1.2) How is it calculated_Eligible Portfolio', '12.1.3) How is it calculated_Non Eligible Portfolio'].forEach((k) => {
+    BEHAVIOUR[k] = () => {
+      const tab = { all: '12.1.1) How is it calculated_All Portfolio', eligible: '12.1.2) How is it calculated_Eligible Portfolio', ne: '12.1.3) How is it calculated_Non Eligible Portfolio' };
+      Object.entries(tab).forEach(([t, to]) => { const b = document.querySelector(`[data-cta="tab-${t}"]`); if (b) b.onclick = () => go(to); });
+      const back = document.querySelector('[data-cta="back"]'); if (back) back.onclick = () => go(CO);
+    };
+  });
+  BEHAVIOUR['12.2) Refresh portfolio'] = () => {
+    const m = document.querySelector('.m-refresh'); if (!m) return;
+    m.querySelector('.close').onclick = () => go(CO);
+    m.querySelector('[data-cta="refresh-portfolio"]').onclick = () => go('06) LOS to MF Central Redirection loading page');   // fetch again from MF Central (P-23)
+  };
 
   // Screen 05 (DISC-140): PAN carried from screen 04; Check Credit Limit is enabled only when the MF Central consent is ticked.
   BEHAVIOUR['05) LOS to MF Central Redirection consent page'] = () => {
@@ -1192,9 +1213,10 @@
 
   /* ---------------- Dev navigator ---------------- */
   // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
-  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '7.1', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11', '08': '12', '09': '13', '10': '14', '11': '15' };
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '7.1', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11', '08': '12', '09': '13', '10': '14', '11': '15', '12': '16', '12.1.1': '16.1', '12.1.2': '16.1', '12.1.3': '16.1', '12.2': '16' };
   const prdHref = (screen) => {
-    const row = PRD_ROW[(String(screen).match(/^([\d.]+)\)/) || [])[1]];
+    const BY_NAME = { '12.2) Refresh portfolio': '16.2', '12.2) Curated offers page for dorpoff view': '16.3' };   // two screens share 12.2
+    const row = BY_NAME[screen] || PRD_ROW[(String(screen).match(/^([\d.]+)\)/) || [])[1]];
     if (SPA()) return '#PRD' + (row ? '/sl-' + row : '');
     return 'SCCL_LAMF_LOS_PRD.html' + (row ? '#sl-' + row : '');
   };
