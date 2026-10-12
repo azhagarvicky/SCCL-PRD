@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 12-10-2026 14:47 IST
+**Last Updated:** 12-10-2026 14:50 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -197,6 +197,7 @@
 | DISC-162 | 09-10-2026 | PRD Module 6 / Screens 08 – 11 – back in the LOS | Automatic processing screens | After 08 Redirecting to Dashboard the journey moves on by itself to Fetching, Analysing and Generating (screens already built). Prototype: about 3 seconds each, Redirecting to Dashboard 1.5 seconds. PRD: list each screen, no seconds | Prototype: 08 → (1.5 s) 09 → (3 s) 10 → (3 s) 11 → (3 s) 12 Curated Offers, automatically. PRD: Module 6 – Mutual Fund Portfolio Processing with Sl. No 13 Redirecting to Dashboard (owner’s UAT screenshot), 14 Fetching, 15 Analysing, 16 Generating (prototype screenshots), each with Screen Content and data points, no timings. Go to PRD: 08 → 13, 09 → 14, 10 → 15, 11 → 16 | Implemented |
 | DISC-163 | 12-10-2026 | PRD Sl. No 11 | Wrong-looking reference | Owner: Sl. No 11 seemed to point back to Sl. No 8 | The text said “(Screen 08)” – the prototype screen number of MF Central to LOS Redirecting, not PRD Sl. No 8. Now refers to the PRD row: Redirecting to Dashboard (Sl. No 13), in the description and the Redirecting in Ns field. Rule: inside rows, refer to PRD Sl. No, not prototype screen numbers | Implemented |
 | DISC-164 | 12-10-2026 | PRD – all cross references | Recheck all | Owner asked to recheck everything after the Sl. No 11 → “Screen 08” mix-up | Every “Sl. No” reference in rows, change requests and clarifications checked against the current numbering (1 – 16, 6 – 6.3). Fixed: (1) Top Navigation (Sl. No 6 and its heading) said it is on every page from Sl. No 5 onwards – now “every LOS page … not on the MF Central pages (Sl. No 8 – 11)”; (2) P-18 was labelled Module 4 but is about Curated Offers – relabelled “Curated Offers”. No other wrong references found | Implemented |
+| DISC-165 | 12-10-2026 | PRD numbering after Sl. No 11 | Sequence | In the journey the step after 11 is the next one, but the PRD jumped from Sl. No 11 to 13 (12 was the no-data page) | No-data page renumbered Sl. No 7.1 and moved into Module 4 right after Sl. No 7 (it is the other outcome of the redirection); Module 6 rows renumbered 12 Redirecting to Dashboard, 13 Fetching, 14 Analysing, 15 Generating; all references, P-21 and Go to PRD updated. Main path now runs 1 – 15 in order | Implemented |
 
 ---
 
