@@ -382,7 +382,7 @@ MODULES = [
                '<b>MF Central Consent:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Consent Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Check Credit Limit Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (img('f05-pan.png'), spec(Field_Name='PAN Number', Field_Type='Display field',
             Prefilled_Value='PAN Number verified in Sl. No 4, shown with spaces as ABCDE 1234 F', Action='Display only, not editable'), OK),
@@ -417,7 +417,7 @@ MODULES = [
                '<b>Cancel Clicked:</b><ul><li>Yes, cancel</li><li>No, don’t</li></ul><br>'
                '<b>Cancel Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Redirected to MF Central Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (img('f07-countdown.png'), spec(Field_Name='Redirection countdown', Field_Type='Timer with progress bar',
             Action='Starts at 5 seconds and counts down to 1 second; when it ends the customer is redirected to the MF Central page automatically.',
@@ -448,7 +448,7 @@ MODULES = [
       'data': ('<b>Not Linked Page Shown Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Refresh Clicked:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Refresh Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (img('f09-message.png'), spec(Field_Name='Not linked message', Field_Type='Display text',
             Action='“The identifier below isn’t linked to the PAN you entered” – display only.'), OK),
@@ -481,7 +481,7 @@ MODULES = [
                ])),
       'data': ('<b>MF Central OTP Authenticated Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>MF Central OTP Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (img('f08-usecase.png'), spec(Field_Name='Usecase card', Field_Type='Display',
             Action='Shows the use case (Loan Against Mutual Funds) and the authorisation text – display only.'), OK),
@@ -513,7 +513,7 @@ MODULES = [
       'data': ('<b>AMCs Listed:</b> names and market values shown<br><br>'
                '<b>AMCs Selected:</b> names of the selected AMCs<br><br>'
                '<b>Continue Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (states(('f10-selectall.png', 'Before – unticked'), ('f10-selectall-ticked.png', 'After – ticked')),
          spec(Field_Name='Select All AMCs', Field_Type='Check box',
@@ -546,7 +546,7 @@ MODULES = [
                ])),
       'data': ('<b>Portfolio Fetch Started Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Portfolio Fetch Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (img('f10-steps.png'), spec(Field_Name='Progress steps', Field_Type='Progress bars',
             Action='Shows the two steps – Connecting to MF Central, then Fetching your portfolio – as they progress; display only.',
@@ -572,7 +572,7 @@ MODULES = [
                ])),
       'data': ('<b>Portfolio Fetch Completed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Redirected to LOS Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (img('f12-status.png'), spec(Field_Name='Data fetched successfully', Field_Type='Status banner',
             Action='Confirms the portfolio was fetched – display only.'), OK),
@@ -597,7 +597,7 @@ MODULES = [
                    ('Message', '“Redirecting to Dashboard...”'),
                ])),
       'data': '<b>Returned to LOS Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
     },
     {
       'sl': '13',
@@ -611,7 +611,7 @@ MODULES = [
                ])),
       'data': ('<b>Portfolio Received in LOS Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS<br><br>'
                '<b>Portfolio Fetch Status:</b><ul><li>Success</li><li>Failure</li></ul>'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
     },
     {
       'sl': '14',
@@ -624,13 +624,13 @@ MODULES = [
                    ('Sub text', '“This might take a min, thanks for your patience”'),
                ])),
       'data': '<b>Portfolio Analysis Completed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
     },
     {
       'sl': '15',
-      'shot': img('screen-16.png'),
+      'shot': img('screen-16-gen.png'),
       'func': 'LOS generating the best loan offers',
-      'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it generates the loan offers from the analysed portfolio. No action is needed from the customer; the next screen opens automatically (the Curated Offers page).</p>'
+      'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it generates the loan offers from the analysed portfolio. No action is needed from the customer; the next screen opens automatically (the Curated Offers page, Sl. No 16).</p>'
                + screen_content([
                    ('Loader', 'Animated placeholder cards – only the loader pop up is shown; the page behind is blurred'),
                    ('Title', '“Generating best loan offers for you”'),
@@ -651,7 +651,7 @@ MODULES = [
       'func': 'Customer viewing the credit limit and loan offer worked out from the mutual fund portfolio, and starting the application',
       'desc': ('<p>After the loan offers are generated (Sl. No 15), the customer lands on the Curated Offers page. '
                'It shows the credit limit worked out from the eligible mutual fund portfolio, the interest rate, processing fee and tenure, '
-               'the total portfolio value and every mutual fund fetched from MF Central. The customer clicks Start Application to continue to the mutual fund selection. '
+               'the total portfolio value and every mutual fund fetched from MF Central. The customer clicks Start Application to continue to the mutual fund selection (location access Sl. No 17.1, then Sl. No 17). '
                'The 18 to 70 years age limit (from the DOB entered in Sl. No 4) is checked on this page. '
                'Written from the prototype screen – to be checked against UAT ' + pend('P-23') + '</p>'
                + screen_content([
@@ -688,7 +688,7 @@ MODULES = [
             Action='Show the offer terms – display only. Processing fee is indicative; the final value depends on the loan amount availed.'), OK),
         (states(('f16-start.png', 'Enabled – age within 18 to 70'), ('f16-offer-age.png', 'Disabled – age outside 18 to 70')),
          spec(Field_Name='Start Application', Field_Type='CTA (Button)',
-            Action='On click, the customer continues to the mutual fund selection (location access, then MF Selection).',
+            Action='On click, the customer continues to the mutual fund selection – location access (Sl. No 17.1), then the Mutual Fund Selection page (Sl. No 17).',
             Condition='When the customer’s age (from the DOB entered in Sl. No 4) is outside 18 to 70, the CTA is disabled and the age message is shown.'), OK),
         (img('f16-age.png'), spec(Field_Name='Age validation', Field_Type='Validation message',
             Validation='“Applicant must be between 18 to 70 years of age.” – shown on this page only, when the age is outside 18 to 70 (customers are not blocked at PAN verification, so they can be tracked). Exact position on the page to be confirmed ' + pend('P-18')), OK),
@@ -776,7 +776,7 @@ MODULES = [
         (img('f163-prog.png'), spec(Field_Name='Progress strip', Field_Type='Display text',
             Action='“1/4 Complete your application to get cash” – shows the application step the customer is on.'), OK),
         (img('f163-btns.png'), spec(Field_Name='Discard / Continue', Field_Type='CTAs',
-            Action='Continue: the customer continues the application (mutual fund selection). Discard: to be confirmed ' + pend('P-23')), OK),
+            Action='Continue: the customer continues the application – location access (Sl. No 17.1), then the Mutual Fund Selection page (Sl. No 17). Discard: to be confirmed ' + pend('P-23')), OK),
       ],
     },
   ],
@@ -1190,20 +1190,20 @@ MODULES = [
  },
  {
   'title': 'Top Navigation',
-  'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every LOS page from Screen 05) LOS to MF Central Redirection consent page onwards (not on the MF Central pages) – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
+  'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every LOS page from Screen 05) LOS to MF Central Redirection consent page onwards (not on the MF Central pages or the Digio / DigiLocker pages) – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
   'rows': [
     {
       'sl': '6',
       'shot': img('f06-topnav.png'),
       'func': 'Top navigation shown on every page after PAN verification',
-      'desc': ('<p>The top navigation is shown at the top of every LOS page from Sl. No 5 onwards (it is not shown on the MF Central pages, Sl. No 8 – 11) and stays fixed when the page is scrolled (the PAN Details page has its own top navigation – see Sl. No 6.3). '
+      'desc': ('<p>The top navigation is shown at the top of every LOS page from Sl. No 5 onwards (it is not shown on the MF Central pages, Sl. No 8 – 11, or on the Digio / DigiLocker pages and the KYC redirect page, Sl. No 19.4 – 19.10) and stays fixed when the page is scrolled (the PAN Details page has its own top navigation – see Sl. No 6.3). '
                'It gives the customer access to the credit score fetched from Experian and to the profile (with Logout) from any page.</p>'
                + screen_content([
                    ('Left', 'Shriram Credit logo'),
                    ('Right', 'Credit Score icon (Sl. No 6.1) and Profile icon (Sl. No 6.2)'),
                ])),
       'data': 'Captured in Sl. No 6.1 and 6.2',
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (icon('f06-logo.png'), spec(Field_Name='Shriram Credit logo', Field_Type='Image (top navigation, left corner)',
             Action='Display only.'), OK),
@@ -1230,7 +1230,7 @@ MODULES = [
                ])),
       'data': ('<b>Credit Score Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Credit Score Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (icon('f05-credit-icon.png'), spec(Field_Name='Credit Score icon', Field_Type='Icon (top navigation, right corner)',
             Action='On click, the system shall open the credit score pop up.'), OK),
@@ -1254,7 +1254,7 @@ MODULES = [
                ])),
       'data': ('<b>Profile Viewed:</b><ul><li>Yes</li><li>No</li></ul><br>'
                '<b>Profile Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (icon('f05-profile-icon.png'), spec(Field_Name='Profile icon', Field_Type='Icon (top navigation, right corner)',
             Action='On click, the system shall open the Profiles pop up.'), OK),
@@ -1276,7 +1276,7 @@ MODULES = [
                    ('Right', 'Logout icon'),
                ])),
       'data': 'No data captured from this navigation',
-      'status': WIP,
+      'status': DONE,   # confirmed by the owner (DISC-170) – do not change without the owner's instruction
       'fields': [
         (icon('f06-logo.png'), spec(Field_Name='Shriram Credit logo', Field_Type='Image (top navigation, left corner)',
             Action='Display only.'), OK),
