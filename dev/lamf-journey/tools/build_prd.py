@@ -605,8 +605,7 @@ MODULES = [
       'func': 'LOS fetching the mutual fund portfolio received from MF Central',
       'desc': ('<p>The LOS shows a loader pop up over the Credit Limit Against Mutual Fund page while it fetches the mutual fund portfolio shared by MF Central. No action is needed from the customer; the next screen opens automatically (Sl. No 14).</p>'
                + screen_content([
-                   ('Header', 'Top navigation – see Sl. No 6'),
-                   ('Loader', 'Animated placeholder cards'),
+                   ('Loader', 'Animated placeholder cards – only the loader pop up is shown; the page behind is blurred'),
                    ('Title', '“Fetching your mutual fund portfolio..”'),
                    ('Sub text', '“This might take a min, thanks for your patience”'),
                ])),
@@ -620,8 +619,7 @@ MODULES = [
       'func': 'LOS analysing the mutual fund portfolio',
       'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it analyses the portfolio – eligible and non eligible funds and their values. No action is needed from the customer; the next screen opens automatically (Sl. No 15).</p>'
                + screen_content([
-                   ('Header', 'Top navigation – see Sl. No 6'),
-                   ('Loader', 'Animated placeholder cards'),
+                   ('Loader', 'Animated placeholder cards – only the loader pop up is shown; the page behind is blurred'),
                    ('Title', '“Analyzing your mutual fund portfolio..”'),
                    ('Sub text', '“This might take a min, thanks for your patience”'),
                ])),
@@ -634,8 +632,7 @@ MODULES = [
       'func': 'LOS generating the best loan offers',
       'desc': ('<p>The LOS shows a loader pop up over the (blurred) Curated Offers page while it generates the loan offers from the analysed portfolio. No action is needed from the customer; the next screen opens automatically (the Curated Offers page).</p>'
                + screen_content([
-                   ('Header', 'Top navigation – see Sl. No 6'),
-                   ('Loader', 'Animated placeholder cards'),
+                   ('Loader', 'Animated placeholder cards – only the loader pop up is shown; the page behind is blurred'),
                    ('Title', '“Generating best loan offers for you”'),
                    ('Sub text', '“This might take a min, thanks for your patience”'),
                ])),
