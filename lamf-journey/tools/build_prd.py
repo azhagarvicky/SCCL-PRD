@@ -533,7 +533,7 @@ MODULES = [
       'shot': img('screen-11.png'),
       'func': 'Portfolio Discovery Complete – MF Central confirms the fetch and redirects the customer back to the LOS',
       'desc': ('<p>When the portfolio is fetched, MF Central shows the Portfolio Discovery Complete screen and redirects the customer back to the LOS within 3 seconds '
-               '(“Redirecting in 3s” counting down to 0s), to the MF Central to LOS Redirecting page (Screen 08). <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
+               '(“Redirecting in 3s” counting down to 0s), to the Redirecting to Dashboard page in the LOS (Sl. No 13). <b>MF Central page:</b> this page is owned and run by MF Central, outside the LOS – the LOS redirects the customer to MF Central and MF Central redirects the customer back to the LOS when its process is complete. The LOS has no access to change it; any functional issue on this page is raised to MF Central by mail.</p>'
                + screen_content([
                    ('Logo', 'MF Central logo'),
                    ('Icon', 'Green tick'),
@@ -550,7 +550,7 @@ MODULES = [
         (img('f12-status.png'), spec(Field_Name='Data fetched successfully', Field_Type='Status banner',
             Action='Confirms the portfolio was fetched – display only.'), OK),
         (img('f12-redirect.png'), spec(Field_Name='Redirecting in Ns', Field_Type='Timer',
-            Action='Counts down from 3 seconds to 0; then the customer is redirected to the LOS (MF Central to LOS Redirecting page).'), OK),
+            Action='Counts down from 3 seconds to 0; then the customer is redirected to the LOS – Redirecting to Dashboard (Sl. No 13).'), OK),
       ],
     },
     {
