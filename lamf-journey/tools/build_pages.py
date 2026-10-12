@@ -3,7 +3,7 @@
 import os, html
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CUR = "LAMF.T.curated()"
-CUR75 = "LAMF.T.curated({banner:'Avail a loan of up to 75% of your eligible Mutual Fund portfolio'})"
+CUR75 = "LAMF.T.curated()"
 SEL = "LAMF.T.selection(LAMF.SEL_DEFAULT)"
 PAGES = {
  "01) LAMF Landing Page": "LAMF.render(LAMF.T.landing())",
@@ -26,7 +26,7 @@ PAGES = {
  "12.1.1) How is it calculated_All Portfolio": "LAMF.render(LAMF.T.calc('all'))",
  "12.1.2) How is it calculated_Eligible Portfolio": "LAMF.render(LAMF.T.calc('eligible'))",
  "12.1.3) How is it calculated_Non Eligible Portfolio": "LAMF.render(LAMF.T.calc('ne'))",
- "12.2) Curated offers page for dorpoff view": "LAMF.render(LAMF.T.curated({dropoff:true, banner:'Avail a loan of up to 75% of your eligible Mutual Fund portfolio'}))",
+ "12.2) Curated offers page for dorpoff view": "LAMF.render(LAMF.T.curated({dropoff:true}))",
  "12.2) Refresh portfolio": f"LAMF.render(LAMF.withModal({CUR75}, LAMF.T.refreshModal()))",
  "13.1) Mutual Fund Selection Location access": f"LAMF.render({SEL} + LAMF.T.locationPopup(), {{bodyClass:'scrolled-bottom'}})",
  "13.2) Mutual Fund Selection Page": f"LAMF.render({SEL})",

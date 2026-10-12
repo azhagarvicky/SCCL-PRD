@@ -1007,3 +1007,25 @@ body.page-screens { padding: 40px 76px; }
 .bk-form .kyc-btn { margin-top: 22px; width: auto; min-width: 192px; padding: 0 28px; white-space: nowrap; }
 @media (max-width: 640px) { .bk-grid { grid-template-columns: 1fr; } .bk-opt { flex: 1 1 100%; } }
 
+
+/* ---------- 12 Curated offers: banner ticker, KFS document row, success toast (DISC-172) ---------- */
+.info-banner.ticker { overflow: hidden; }
+.tk-win { height: 24px; overflow: hidden; width: 100%; }
+.tk-list { display: grid; justify-items: center; animation: tk-up 9s infinite; }
+.tk-list span { display: flex; align-items: center; justify-content: center; gap: 10px; height: 24px; line-height: 24px; white-space: nowrap; }
+@keyframes tk-up {
+  0%, 30% { transform: translateY(0); }
+  33.3%, 63.3% { transform: translateY(-24px); }
+  66.6%, 96.6% { transform: translateY(-48px); }
+  100% { transform: translateY(-72px); }
+}
+@media (prefers-reduced-motion: reduce) { .tk-list { animation-duration: 18s; } }
+@media (max-width: 560px) { .info-banner.ticker { font-size: 13px; } .tk-list span { white-space: normal; } }
+.kfs-row { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: #F7F7F7; border-top: 1px solid var(--line); font-size: 13px; color: #6B6B6B; cursor: pointer; }
+.kfs-ico { width: 16px; height: 16px; display: grid; place-items: center; }
+.kfs-ico svg { width: 16px; height: 16px; }
+.kfs-chev { margin-left: auto; font-size: 18px; line-height: 1; color: #8A8A8A; }
+.toast-ok { position: fixed; left: 50%; bottom: 46px; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 10px; background: #12753B; color: #fff; font-size: 14px; font-weight: 600; padding: 10px 18px; border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.18); white-space: nowrap; animation: toast-in .2s ease-out; }
+.toast-ok .tk-ok { width: 20px; height: 20px; border-radius: 50%; background: #fff; color: #12753B; display: grid; place-items: center; flex: none; }
+.toast-ok .tk-ok svg { width: 13px; height: 13px; stroke-width: 2.6; }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }

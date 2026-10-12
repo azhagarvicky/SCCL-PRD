@@ -118,6 +118,7 @@
     logout: S('<path d="M10 4H5v16h5"/><path d="M14 8l4 4-4 4M18 12H9"/>'),
     back: S('<path d="M20 12H4M10 6l-6 6 6 6"/>'),
     check: S('<path d="M5 12.5l4.5 4.5L19 7.5"/>', '0 0 24 24', 'stroke="#fff" stroke-width="2.6"'),
+    doc: S('<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>'),
     bank: S('<path d="M3 10h18L12 4z"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>'),
     chev: S('<path d="M6 15l6-6 6 6"/>', '0 0 24 24', 'stroke-width="1.8"'),
     close: S('<circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/>', '0 0 24 24', 'stroke="#555" stroke-width="1.3"'),
@@ -417,9 +418,11 @@
   T.redirecting = () => `${header('app')}<p class="redirecting">Redirecting to Dashboard...</p>`;
 
   /* 12 Curated offers */
+  // Banner ticker (DISC-172): three messages scroll up one after another, 3 seconds each, then repeat
+  const TICKER = ['Borrow only what you need and pay interest only on the utilised amount', 'Avail a loan of up to 75% of your eligible Mutual Fund portfolio', 'Quick digital process with fast loan disbursal'];
   T.curated = (o = {}) => `
     ${header('app')}
-    <div class="info-banner">${img('banner-icon.png')}${o.banner || 'Borrow only what you need and pay interest only on the utilised amount'}</div>
+    <div class="info-banner ticker"><div class="tk-win"><div class="tk-list">${[...TICKER, TICKER[0]].map((t) => `<span>${img('banner-icon.png')}${t}</span>`).join('')}</div></div></div>
     <main class="wrap-980 curated">
       <h3 class="co-t">Curated offers for you</h3>
       <p class="co-s">Processing fee and monthly EMI shown are indicative. Final values will depend on the actual loan amount availed.</p>
@@ -433,6 +436,7 @@
             <div style="text-align:right"><span>Tenure in Months</span><u>${PORTFOLIO.tenure}</u></div>
           </div>
         </div>
+        <a class="kfs-row" data-cta="kfs-document"><span class="kfs-ico">${ICON.doc}</span>KFS document<span class="kfs-chev">›</span></a>
         ${o.dropoff ? `<div class="offer-2btn"><button class="discard" data-cta="discard">Discard</button><button class="btn-primary" data-cta="continue">Continue</button></div>`
                     : `<button class="offer-btn" data-cta="start-application">Start Application</button>`}
       </div>
@@ -1386,7 +1390,20 @@
     on('start-application', SEL);
     on('continue', SEL);
   };
-  ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = () => { curatedAgeCheck(); curatedLinks(); }; });
+  // Success toast (DISC-172): after the portfolio is retrieved from MF Central the Curated Offers page shows
+  // “Portfolio fetched successfully” (after Refresh Portfolio: “Portfolio refreshed successfully”) for 3 seconds.
+  const TOAST_KEY = 'lamf.toast';
+  const successToast = (msg, ms = 3000) => {
+    document.body.insertAdjacentHTML('beforeend', `<div class="toast-ok" role="status"><span class="tk-ok">${ICON.check}</span>${msg}</div>`);
+    const el = document.body.lastElementChild;
+    TIMERS.push(setTimeout(() => el.remove(), ms));
+  };
+  const curatedToast = () => {
+    const t = store.get(TOAST_KEY); if (!t || t === 'refresh-pending') return;
+    store.set(TOAST_KEY, null);
+    successToast(t === 'refreshed' ? 'Portfolio refreshed successfully' : 'Portfolio fetched successfully');
+  };
+  ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = () => { curatedAgeCheck(); curatedLinks(); curatedToast(); }; });
   ['12.1.1) How is it calculated_All Portfolio', '12.1.2) How is it calculated_Eligible Portfolio', '12.1.3) How is it calculated_Non Eligible Portfolio'].forEach((k) => {
     BEHAVIOUR[k] = () => {
       const tab = { all: '12.1.1) How is it calculated_All Portfolio', eligible: '12.1.2) How is it calculated_Eligible Portfolio', ne: '12.1.3) How is it calculated_Non Eligible Portfolio' };
@@ -1397,7 +1414,7 @@
   BEHAVIOUR['12.2) Refresh portfolio'] = () => {
     const m = document.querySelector('.m-refresh'); if (!m) return;
     m.querySelector('.close').onclick = () => go(CO);
-    m.querySelector('[data-cta="refresh-portfolio"]').onclick = () => go('06) LOS to MF Central Redirection loading page');   // fetch again from MF Central (P-23)
+    m.querySelector('[data-cta="refresh-portfolio"]').onclick = () => { store.set(TOAST_KEY, 'refresh-pending'); go('06) LOS to MF Central Redirection loading page'); };   // fetch again from MF Central (P-23)
   };
 
   // Screen 05 (DISC-140): PAN carried from screen 04; Check Credit Limit is enabled only when the MF Central consent is ticked.
@@ -1523,6 +1540,9 @@
    ['10) MF Central to LOS Analysing Mutual Fund Portfolio Page', '11) MF Central to LOS Generating Loan Page', 3000],
    ['11) MF Central to LOS Generating Loan Page', '12) Curated Offers Page', 3000]]
     .forEach(([from, to, ms]) => { BEHAVIOUR[from] = () => { TIMERS.push(setTimeout(() => go(to), ms)); }; });
+  // Back from MF Central with the portfolio → the Curated Offers page shows the success toast
+  { const prev08 = BEHAVIOUR['08) MF Central to LOS Redirecting Page'];
+    BEHAVIOUR['08) MF Central to LOS Redirecting Page'] = () => { store.set(TOAST_KEY, store.get(TOAST_KEY) === 'refresh-pending' ? 'refreshed' : 'fetched'); prev08(); }; }
 
   // Screens 13 – 16.5.9 navigation (DISC-168): CTA → next screen; DigiLocker hand-back screens advance on their own.
   const S13 = { loc: '13.1) Mutual Fund Selection Location access', sel: '13.2) Mutual Fund Selection Page', off: '13.3) Mutual Fund Selection page if location disabled',
