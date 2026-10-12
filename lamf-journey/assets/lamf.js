@@ -1174,6 +1174,42 @@
    ['11) MF Central to LOS Generating Loan Page', '12) Curated Offers Page', 3000]]
     .forEach(([from, to, ms]) => { BEHAVIOUR[from] = () => { TIMERS.push(setTimeout(() => go(to), ms)); }; });
 
+  // Screens 13 – 16.5.9 navigation (DISC-168): CTA → next screen; DigiLocker hand-back screens advance on their own.
+  const S13 = { loc: '13.1) Mutual Fund Selection Location access', sel: '13.2) Mutual Fund Selection Page', off: '13.3) Mutual Fund Selection page if location disabled',
+    sum: '14) Loan Application Summary', kyc: '16.1) KYC Verification Page', det: '16.2) KYC Verification Page view details popup', em: '16.3) KYC Verification Page Email verification popup',
+    emOk: '16.4) KYC Verification Page email verification completed', dg1: '16.5.1) KYC Verification Page Aadhar verification', dg2: '16.5.2) KYC Verification Page Aadhar verification Enter aadhar',
+    dg3: '16.5.3) KYC Verification Page Aadhar verification Enter aadhar OTP', dg4: '16.5.4) KYC Verification Page Aadhar verification Enter PIN', dg5: '16.5.5) KYC Verification Page Aadhar verification Fetching',
+    dg6: '16.5.6) KYC Verification Page Aadhar verification process done in digilocker yet to redirect to los', dg7: '16.5.7) KYC Verification Page Aadhar verification process done in digilocker  to los auto redirection',
+    dg8: '16.5.8) KYC Verification Page Aadhar verification process done in digilocker  redirected to los but status getting updated', dg9: '16.5.9) KYC Verification Page Aadhar verification completed' };
+  const NAV = {
+    [S13.loc]: { 'loc-allow': S13.sel, 'loc-once': S13.sel, 'loc-block': S13.off },
+    [S13.off]: { refresh: S13.loc },
+    ['13.4) Mutual Fund Selection page if location disabled & proceed']: { 'yes-continue': S13.sel, 'go-dashboard': CO },
+    [S13.sel]: { 'continue-to-apply': S13.sum, back: CO },
+    ['13.5) Mutual Fund Selection page loan amount edit']: { 'update-loan': S13.sel, 'continue-to-apply': S13.sum, back: CO },
+    ['13.6) Mutual Fund Selection page loan amount edit as fund wise']: { 'continue-to-apply': S13.sum, back: CO },
+    [S13.sum]: { continue: S13.kyc, back: S13.sel },
+    [S13.kyc]: { 'view-details': S13.det, 'verify-email': S13.em, back: S13.sum },
+    [S13.det]: { close: S13.kyc, back: S13.sum },
+    [S13.emOk]: { 'start-kyc': S13.dg1, 'view-details': S13.det, back: S13.sum },
+    [S13.dg1]: { proceed: S13.dg2, cancel: S13.emOk },
+    [S13.dg2]: { next: S13.dg3 },
+    [S13.dg4]: { done: S13.dg5 },
+    [S13.dg9]: { 'view-details': S13.det, back: S13.sum },
+  };
+  const AUTO = [[S13.dg5, S13.dg6, 2500], [S13.dg6, S13.dg7, 1500], [S13.dg7, S13.dg8, 1500], [S13.dg8, S13.dg9, 3000]];
+  Object.entries(NAV).forEach(([scr, map]) => {
+    const prev = BEHAVIOUR[scr];
+    BEHAVIOUR[scr] = () => {
+      if (prev) prev();
+      Object.entries(map).forEach(([cta, to]) => {
+        const els = cta === 'close' ? document.querySelectorAll('.overlay .close') : document.querySelectorAll(`[data-cta="${cta}"]`);
+        els.forEach((el) => { el.style.cursor = 'pointer'; el.onclick = (e) => { e.preventDefault(); go(to); }; });
+      });
+    };
+  });
+  AUTO.forEach(([from, to, ms]) => { const prev = BEHAVIOUR[from]; BEHAVIOUR[from] = () => { if (prev) prev(); TIMERS.push(setTimeout(() => go(to), ms)); }; });
+
   function wireBehaviour() {
     const fn = BEHAVIOUR[currentScreen()];
     if (fn) fn();
@@ -1213,7 +1249,7 @@
 
   /* ---------------- Dev navigator ---------------- */
   // Go to PRD (DISC-153): each screen opens its own row in the PRD; screens without a row yet open the PRD at the top.
-  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '7.1', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11', '08': '12', '09': '13', '10': '14', '11': '15', '12': '16', '12.1.1': '16.1', '12.1.2': '16.1', '12.1.3': '16.1', '12.2': '16' };
+  const PRD_ROW = { '01': '1', '02': '2', '03': '3', '04': '4', '05': '5', '06': '7', '07': '7', '07.1': '7.1', '07.2': '8', '07.3': '9', '07.4': '10', '07.5': '11', '08': '12', '09': '13', '10': '14', '11': '15', '12': '16', '12.1.1': '16.1', '12.1.2': '16.1', '12.1.3': '16.1', '12.2': '16', '13.1': '17.1', '13.2': '17', '13.3': '17.2', '13.4': '17.3', '13.5': '17.4', '13.6': '17.5', '14': '18', '16.1': '19', '16.2': '19.1', '16.3': '19.2', '16.4': '19.3', '16.5.1': '19.4', '16.5.2': '19.5', '16.5.3': '19.6', '16.5.4': '19.7', '16.5.5': '19.8', '16.5.6': '19.9', '16.5.7': '19.10', '16.5.8': '19.11', '16.5.9': '19.12' };
   const prdHref = (screen) => {
     const BY_NAME = { '12.2) Refresh portfolio': '16.2', '12.2) Curated offers page for dorpoff view': '16.3' };   // two screens share 12.2
     const row = BY_NAME[screen] || PRD_ROW[(String(screen).match(/^([\d.]+)\)/) || [])[1]];

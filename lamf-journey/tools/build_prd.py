@@ -782,6 +782,413 @@ MODULES = [
   ],
  },
  {
+  'title': 'Module 8 – Mutual Fund Selection',
+  'screens': 'Screen 13.1) Location access · 13.2) Mutual Fund Selection Page · 13.3) Location disabled · 13.4) Ongoing application pop up · 13.5) Loan amount edit · 13.6) Fund wise amount edit',
+  'rows': [
+    {
+      'sl': '17',
+      'shot': img('screen-17.png'),
+      'func': 'Customer choosing the loan amount and the mutual funds to pledge',
+      'desc': ('<p>After Start Application on the Curated Offers page (Sl. No 16) and location access (Sl. No 17.1), the customer lands on the Mutual Fund Selection page, step 1 of 4. '
+               'The loan amount is set with the slider or typed (Sl. No 17.4); the LOS selects the funds needed to cover it. The customer can also tick or untick funds and edit the amount taken from each fund (Sl. No 17.5). '
+               'Continue to apply opens the Loan Application Summary (Sl. No 18). '
+               'Written from the prototype screen – to be checked against UAT ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6'),
+                   ('Stepper', '“1 Selection of Mutual Fund”, “2 KYC Verification &amp; Bank details”, “3 Pledging of Mutual Fund”, “4 Agreement &amp; E-Mandate” – step 1 active'),
+                   ('Back link', '“Back”'),
+                   ('Loan amount box', '“Loan Amount” with the amount and edit pencil; slider from “₹ 10,000” to the credit limit (e.g. ₹ 2,00,00,000)'),
+                   ('Selection summary', '“Funds selected for pledging”; “Current market value of units selected for pledging” with the amount; “No. of funds selected” with the count'),
+                   ('Select All', 'Checkbox “Select All”'),
+                   ('Mobile strip', 'Masked mobile number, number of funds and total value (e.g. 9 Fund • ₹ 8,91,60,659.02)'),
+                   ('Fund cards', 'Checkbox, AMC logo, fund name, “Folio No.”, “Selected Amount” with edit pencil, “No of Units”, “Current Value”, “Max Limit” (each with an (i) icon)'),
+                   ('CTA', '“Continue to apply ₹ amount”'),
+               ])
+               + drop_off([
+                   ('When', 'The customer leaves the journey on this page'),
+                   ('On return', 'After logging in again, the ongoing application pop up is shown (Sl. No 17.3) ' + pend('P-24')),
+               ])),
+      'data': ('<b>Loan Amount Selected:</b> amount<br><br>'
+               '<b>Funds Selected:</b> fund name, folio no., selected amount, units – per fund<br><br>'
+               '<b>Market Value of Units Selected:</b> amount<br><br>'
+               '<b>No. of Funds Selected:</b> number<br><br>'
+               '<b>Continue to apply Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f17-stepper.png'), spec(Field_Name='Stepper', Field_Type='Display',
+            Action='Shows the 4 application steps; the current step is highlighted and completed steps carry a tick – display only.'), OK),
+        (img('f17-loan.png'), spec(Field_Name='Loan Amount', Field_Type='Slider + amount with edit pencil', Value_Type='Amount (₹)',
+            Action='Moving the slider changes the loan amount; the funds to be pledged and the CTA amount are updated with it. On clicking the pencil, the amount can be typed (Sl. No 17.4).',
+            Condition='Minimum ₹ 10,000; maximum is the credit limit from the Curated Offers page.'), OK),
+        (icon('f17-selall.png'), spec(Field_Name='Select All', Field_Type='Checkbox',
+            Action='Ticks or unticks every fund. Shown part-ticked (–) when only some funds are selected.'), OK),
+        (img('f17-card.png'), spec(Field_Name='Fund card', Field_Type='Checkbox + display card',
+            Action='Ticking a fund adds it for pledging; unticking removes it. Selected Amount is the amount taken against the fund and can be edited with the pencil (Sl. No 17.5). No of Units, Current Value and Max Limit are display only.'), OK),
+        (img('f17-cta.png'), spec(Field_Name='Continue to apply', Field_Type='CTA (Button)',
+            Action='Shows the selected loan amount. On click, the Loan Application Summary opens (Sl. No 18).',
+            Condition='Disabled while the loan amount is being edited (Sl. No 17.4) or location access is not given (Sl. No 17.2).'), OK),
+        ('', spec(Field_Name='Back', Field_Type='Link',
+            Action='On click, the customer returns to the Curated Offers page (Sl. No 16).'), OK),
+      ],
+    },
+    {
+      'sl': '17.1',
+      'shot': img('screen-17-1.png'),
+      'func': 'Browser asking the customer for location access',
+      'desc': ('<p>When the customer starts the application, the browser asks for permission to read the location. '
+               'Allow or Just this Time opens the Mutual Fund Selection page (Sl. No 17); Block shows the location disabled view (Sl. No 17.2). '
+               'The pop up is the browser’s own; its look depends on the browser.</p>'
+               + screen_content([
+                   ('Title', '“uatlamf.shriramcredit.in wants to”'),
+                   ('Text', '“Know your location”'),
+                   ('Buttons', '“Block”, “Just this Time”, “Allow”'),
+               ])),
+      'data': ('<b>Location Permission:</b><ul><li>Allowed</li><li>Allowed this time</li><li>Blocked</li></ul><br>'
+               '<b>Customer Location:</b> latitude, longitude<br><br>'
+               '<b>Location Captured Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f171-perm.png'), spec(Field_Name='Location permission', Field_Type='Browser pop up',
+            Action='Allow / Just this Time: the location is captured and the Mutual Fund Selection page opens. Block: the location disabled view opens (Sl. No 17.2).'), OK),
+      ],
+    },
+    {
+      'sl': '17.2',
+      'shot': img('screen-17-2.png'),
+      'func': 'Mutual Fund Selection page when location access is blocked',
+      'desc': ('<p>When the customer blocks location access, the Mutual Fund Selection page shows a message asking for location access and Continue to apply stays disabled. '
+               'Refresh asks for the location again (Sl. No 17.1).</p>'
+               + screen_content([
+                   ('Message', '“Kindly provide location access in order to proceed with the loan application.” with “Refresh”'),
+                   ('CTA', '“Continue to apply ₹ amount” – disabled'),
+               ])),
+      'data': '<b>Location Blocked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+      'fields': [
+        (img('f172-toast.png'), spec(Field_Name='Location message', Field_Type='Message with hyperlink',
+            Action='On clicking Refresh, the browser location pop up is shown again (Sl. No 17.1).'), OK),
+        (img('f172-cta.png'), spec(Field_Name='Continue to apply', Field_Type='CTA (Button) – disabled',
+            Condition='Stays disabled until location access is given.'), OK),
+      ],
+    },
+    {
+      'sl': '17.3',
+      'shot': img('screen-17-3.png'),
+      'func': 'Customer with an ongoing application choosing to continue it',
+      'desc': ('<p>A customer who already has an application in progress is asked whether to continue it. '
+               'Yes, Continue opens the Mutual Fund Selection page (Sl. No 17); No, Take me to the dashboard returns to the Curated Offers page (Sl. No 16). '
+               'When exactly this pop up is shown is to be confirmed ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('Text', '“You have an ongoing loan application, would you like to proceed further with it?”'),
+                   ('CTAs', '“No, Take me to the dashboard” and “Yes, Continue”'),
+               ])),
+      'data': '<b>Ongoing Application Choice:</b><ul><li>Yes, Continue</li><li>No, Take me to the dashboard</li></ul>',
+      'status': WIP,
+      'fields': [
+        (img('f173-modal.png'), spec(Field_Name='No, Take me to the dashboard / Yes, Continue', Field_Type='CTAs',
+            Action='Yes, Continue: the Mutual Fund Selection page opens. No, Take me to the dashboard: the Curated Offers page opens.'), OK),
+      ],
+    },
+    {
+      'sl': '17.4',
+      'shot': img('screen-17-4.png'),
+      'func': 'Customer typing the loan amount',
+      'desc': ('<p>On clicking the pencil next to the loan amount, the amount becomes an input box with an Update link. '
+               'Continue to apply is disabled until the customer clicks Update; then the funds and the CTA amount are recalculated for the typed amount.</p>'
+               + screen_content([
+                   ('Loan amount box', '“Loan Amount”, “₹” input with the amount and “Update”'),
+                   ('CTA', '“Continue to apply ₹ amount” – disabled while editing'),
+               ])),
+      'data': '<b>Loan Amount Entered:</b> amount',
+      'status': WIP,
+      'fields': [
+        (img('f174-loan.png'), spec(Field_Name='Loan Amount', Field_Type='Input box + Update link', Value_Type='Numeric',
+            Action='On clicking Update, the slider, the selected funds and the CTA amount change to the typed amount.',
+            Condition='Minimum ₹ 10,000; maximum is the credit limit.',
+            Validation='Message for an amount below the minimum or above the credit limit – to be confirmed ' + pend('P-24')), OK),
+      ],
+    },
+    {
+      'sl': '17.5',
+      'shot': img('screen-17-5.png'),
+      'func': 'Customer editing the amount taken from one fund',
+      'desc': ('<p>On clicking the pencil next to a fund’s Selected Amount, the amount becomes an input box with a tick. '
+               'The customer types the amount to take from that fund (up to its Max Limit) and confirms it with the tick; the loan amount and CTA amount are updated.</p>'
+               + screen_content([
+                   ('Fund card', '“Selected Amount” input with the tick, “No of Units”, “Current Value”, “Max Limit”'),
+               ])),
+      'data': '<b>Selected Amount per Fund:</b> amount',
+      'status': WIP,
+      'fields': [
+        (img('f175-card.png'), spec(Field_Name='Selected Amount', Field_Type='Input box + tick', Value_Type='Numeric',
+            Action='On clicking the tick, the amount is saved for the fund and the loan amount is updated.',
+            Condition='Up to the Max Limit of the fund.',
+            Validation='Message for an amount above the Max Limit – to be confirmed ' + pend('P-24')), OK),
+      ],
+    },
+  ],
+ },
+ {
+  'title': 'Module 9 – Loan Application Summary',
+  'screens': 'Screen 14) Loan Application Summary',
+  'rows': [
+    {
+      'sl': '18',
+      'shot': img('screen-18.png'),
+      'func': 'Customer reviewing the loan terms and charges before KYC',
+      'desc': ('<p>After Continue to apply (Sl. No 17), the customer sees the summary of the application: loan amount, pledge value, tenure, disbursement and repayment type, interest rate, monthly interest, charges and repayment details. '
+               'Continue opens KYC Verification (Sl. No 19); Back returns to the Mutual Fund Selection page. '
+               'Written from the prototype screen – to be checked against UAT ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6; stepper – step 1 active'),
+                   ('Back link', '“Back”'),
+                   ('Title', '“Application details”'),
+                   ('Amount box', '“Loan amount” and “Pledge Value”'),
+                   ('Terms', '“Tenure” (e.g. 12 months), “Disbursement Type” (Multiple), “Repayment Type” (Interest Only)'),
+                   ('Rate box', '“Interest Rate” (e.g. 10.5% p.a) and “Monthly Interest” (e.g. ₹ 1,35,940.88), each with an (i) icon'),
+                   ('Charges', '“Charges (Inclusive of GST)”: “Processing fee”, “Stamp duty”, “Lien Marking Charges”, “Lien Removal Charges”, each with an (i) icon'),
+                   ('Repayment details', '“Interest autopay” – “5th of every month”'),
+                   ('CTA', '“Continue”'),
+               ])),
+      'data': ('<b>Loan Amount:</b> amount<br><br><b>Pledge Value:</b> amount<br><br><b>Tenure:</b> months<br><br>'
+               '<b>Disbursement Type:</b> Multiple<br><br><b>Repayment Type:</b> Interest Only<br><br>'
+               '<b>Interest Rate:</b> % p.a<br><br><b>Monthly Interest:</b> amount<br><br>'
+               '<b>Processing fee, Stamp duty, Lien Marking Charges, Lien Removal Charges:</b> amount each<br><br>'
+               '<b>Summary Continue Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f18-box.png'), spec(Field_Name='Loan amount / Pledge Value', Field_Type='Display values',
+            Action='Loan amount selected on Sl. No 17 and the market value of the units pledged – display only.'), OK),
+        (img('f18-rate.png'), spec(Field_Name='Interest Rate / Monthly Interest', Field_Type='Display values with (i)',
+            Action='Display only; the (i) icon explains the value. Monthly Interest is worked out on the loan amount.'), OK),
+        (img('f18-cta.png'), spec(Field_Name='Continue', Field_Type='CTA (Button)',
+            Action='On click, KYC Verification opens (Sl. No 19).'), OK),
+      ],
+    },
+  ],
+ },
+ {
+  'title': 'Module 10 – KYC Verification',
+  'screens': 'Screen 16.1) KYC Verification Page · 16.2) View details pop up · 16.3) Email OTP pop up · 16.4) Email verified · 16.5.1 – 16.5.7) Aadhaar verification with DigiLocker (Digio) · 16.5.8) Getting status · 16.5.9) Aadhaar verified',
+  'rows': [
+    {
+      'sl': '19',
+      'shot': img('screen-19.png'),
+      'func': 'Customer completing KYC – Email, PAN, Aadhaar, Photo and Bank Details',
+      'desc': ('<p>Step 2 of 4. The KYC Verification page lists five checks done one after the other: Email Verification, PAN Verification (already Complete from Sl. No 4), Aadhaar Verification with DigiLocker, Photo Verification and Bank Details. '
+               'Only the current check is open; the later ones show Pending. '
+               'Written from the prototype screen – to be checked against UAT ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('Header', 'Top navigation – see Sl. No 6; stepper – step 1 ticked, step 2 active'),
+                   ('Back link', '“Back”'),
+                   ('Loan strip', '“Your loan amount is ₹ amount” with “View details”'),
+                   ('Title', '“KYC Verification” – “This step is required as per our lending guidelines.”'),
+                   ('1 Email Verification', 'Email input; “We will use this email address for all official communications related to your loan application and account.”; CTA “Verify”'),
+                   ('2 PAN Verification', '“Complete”'),
+                   ('3 Aadhaar Verification with DigiLocker', '“Pending”'),
+                   ('4 Photo Verification', '“Pending”'),
+                   ('5 Bank Details', '“Pending”'),
+               ])),
+      'data': ('<b>Email ID:</b> email address<br><br>'
+               '<b>KYC Page Viewed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f19-strip.png'), spec(Field_Name='Your loan amount is / View details', Field_Type='Display + hyperlink',
+            Action='On clicking View details, the Loan details pop up opens (Sl. No 19.1).'), OK),
+        ('', spec(Field_Name='Email Verification', Field_Type='Input box', Value_Type='Email address',
+            Validation='Message for an empty or invalid email – to be confirmed ' + pend('P-24')), OK),
+        (img('f19-verify.png'), spec(Field_Name='Verify', Field_Type='CTA (Button)',
+            Action='On click, an OTP is sent to the email and the Enter OTP pop up opens (Sl. No 19.2).'), OK),
+        ('', spec(Field_Name='Back', Field_Type='Link',
+            Action='On click, the Loan Application Summary opens (Sl. No 18).'), OK),
+      ],
+    },
+    {
+      'sl': '19.1',
+      'shot': img('screen-19-1.png'),
+      'func': 'Customer viewing the loan details from the KYC page',
+      'desc': ('<p>Opened by View details on the KYC page. Shows the loan amount, the market value and number of mutual funds selected, and a card for each fund selected for pledging.</p>'
+               + screen_content([
+                   ('Title', '“Loan details”'),
+                   ('Values', '“Loan Amount”, “Market Value of MF selected”, “No. of MF selected”'),
+                   ('Sub title', '“Mutual Fund selected for pledging”'),
+                   ('Fund cards', 'Fund name, “Folio No.”, “Selected Amount”, “Selected Units”, “Current Value”, “Max Limit”'),
+                   ('Close icon', '(X) at the top right'),
+               ])),
+      'data': 'No data captured',
+      'status': WIP,
+      'fields': [
+        (img('f191-modal.png'), spec(Field_Name='Loan details pop up', Field_Type='Pop up',
+            Action='Display only. (X) closes the pop up and the customer stays on the KYC page.'), OK),
+      ],
+    },
+    {
+      'sl': '19.2',
+      'shot': img('screen-19-2.png'),
+      'func': 'Customer verifying the email with OTP',
+      'desc': ('<p>A 6 digit OTP is sent to the email entered. Submit OTP is enabled once all 6 digits are entered; a correct OTP marks Email Verification Complete (Sl. No 19.3). '
+               'Resend timer, attempts and wrong OTP message – to be confirmed ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('Title', '“Enter OTP”'),
+                   ('Text', '“A 6-digit OTP has been sent to your registered email address” with the email'),
+                   ('OTP boxes', '6 boxes'),
+                   ('Resend', '“Didn’t receive OTP?” timer and “Resend OTP”'),
+                   ('CTA', '“Submit OTP”'),
+               ])),
+      'data': ('<b>Email OTP Verified:</b><ul><li>Yes</li><li>No</li></ul><br>'
+               '<b>Email Verified Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f192-modal.png'), spec(Field_Name='Enter OTP', Field_Type='6 OTP boxes + CTA', Value_Type='Numeric',
+            Action='On Submit OTP with the correct OTP, the pop up closes and Email Verification shows Complete.',
+            Condition='Submit OTP is enabled only when all 6 digits are entered.'), OK),
+      ],
+    },
+    {
+      'sl': '19.3',
+      'shot': img('screen-19-3.png'),
+      'func': 'Email verified – customer starting Aadhaar KYC',
+      'desc': ('<p>After the email is verified, Email Verification shows Complete and Aadhaar Verification with DigiLocker opens with Start KYC. '
+               'Start KYC opens the Digio page (Sl. No 19.4).</p>'
+               + screen_content([
+                   ('1 Email Verification', '“Complete”'),
+                   ('3 Aadhaar Verification with DigiLocker', 'CTA “Start KYC”'),
+               ])),
+      'data': '<b>Start KYC Clicked Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+      'fields': [
+        (img('f193-start.png'), spec(Field_Name='Start KYC', Field_Type='CTA (Button)',
+            Action='On click, the customer is taken to Digio to fetch the Aadhaar from DigiLocker (Sl. No 19.4).'), OK),
+      ],
+    },
+    {
+      'sl': '19.4',
+      'shot': img('screen-19-4.png'),
+      'func': 'Digio page – consent to fetch documents from DigiLocker',
+      'desc': ('<p>Digio page (third party). Shows the steps to fetch the documents and the documents requested (Aadhaar Card and PAN Verification Record) with the customer’s consent. '
+               'Proceed opens DigiLocker (Sl. No 19.5); Cancel returns to the KYC page.</p>'
+               + screen_content([
+                   ('Header', 'Digio logo, “Secured by digio”'),
+                   ('Title', '“Steps to securely fetch documents”'),
+                   ('Steps', '“Enter Aadhaar number”, “Enter OTP and PIN (optional)”, “Select requested documents:” (Aadhaar Card, PAN Verification Record), “Document fetch from DigiLocker”'),
+                   ('Requested', '“Requested: Aadhaar Card | PAN Card” with the consent text'),
+                   ('Consent', '“By proceeding further I hereby authorize Digio to pull my documents from Digilocker and share with SHRIRAM CREDIT COMPANY LIMITED”'),
+                   ('CTAs', '“Cancel” and “Proceed”'),
+               ])),
+      'data': '<b>Digio Consent Given Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+    },
+    {
+      'sl': '19.5',
+      'shot': img('screen-19-5.png'),
+      'func': 'DigiLocker – customer entering the Aadhaar number',
+      'desc': ('<p>DigiLocker page (third party). The customer enters the 12 digit Aadhaar number and clicks Next.</p>'
+               + screen_content([
+                   ('Title', '“Sign up” – “It takes just a minute”'),
+                   ('Field', '“Enter your Aadhaar Number” – 3 boxes of 4 digits'),
+                   ('Text', '“DigiLocker uses Aadhaar to enable authentic document access”'),
+                   ('CTA', '“Next”; link “Try another way”'),
+               ])),
+      'data': 'Not captured by the LOS (entered on DigiLocker)',
+      'status': WIP,
+    },
+    {
+      'sl': '19.6',
+      'shot': img('screen-19-6.png'),
+      'func': 'DigiLocker – customer entering the Aadhaar OTP',
+      'desc': ('<p>DigiLocker page (third party). An OTP is sent to the mobile number linked to the Aadhaar; the customer enters it and clicks Submit.</p>'
+               + screen_content([
+                   ('Title', '“Verify Aadhaar OTP”'),
+                   ('Text', '“DigiLocker has sent you an OTP to your registered mobile (xxxxxx1623)”; “Please enter OTP to complete verification”'),
+                   ('CTA', '“Submit”; “Didn’t get the OTP? Resend OTP”'),
+               ])),
+      'data': 'Not captured by the LOS (entered on DigiLocker)',
+      'status': WIP,
+    },
+    {
+      'sl': '19.7',
+      'shot': img('screen-19-7.png'),
+      'func': 'DigiLocker – customer entering the Security PIN',
+      'desc': ('<p>DigiLocker page (third party), shown when the customer is already registered with DigiLocker. The customer enters the 6 digit Security PIN and clicks Done.</p>'
+               + screen_content([
+                   ('Title', '“You are already registered with DigiLocker”'),
+                   ('Field', '“Please enter your 6 digit Security PIN to Signin” – 6 boxes; “Forgot my PIN”'),
+                   ('CTA', '“Done”'),
+               ])),
+      'data': 'Not captured by the LOS (entered on DigiLocker)',
+      'status': WIP,
+    },
+    {
+      'sl': '19.8',
+      'shot': img('screen-19-8.png'),
+      'func': 'Digio fetching the documents',
+      'desc': ('<p>Digio page (third party). The documents are fetched from DigiLocker; no action is needed from the customer.</p>'
+               + screen_content([
+                   ('Message', '“Securely fetching documents” – “Please do not refresh or close the window”'),
+               ])),
+      'data': 'No data captured',
+      'status': WIP,
+    },
+    {
+      'sl': '19.9',
+      'shot': img('screen-19-9.png'),
+      'func': 'Digio – KYC process completed',
+      'desc': ('<p>Digio page (third party). Shown when the documents are fetched; the customer is redirected back to the LOS automatically.</p>'
+               + screen_content([
+                   ('Message', '“KYC process completed” – “Do not close the window. You will be redirected.”'),
+               ])),
+      'data': '<b>Digio KYC Completed Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+    },
+    {
+      'sl': '19.10',
+      'shot': img('screen-19-10.png'),
+      'func': 'LOS – KYC successfully completed, redirecting',
+      'desc': ('<p>LOS page shown when the customer comes back from Digio; it returns to the KYC page automatically.</p>'
+               + screen_content([
+                   ('Message', '“KYC successfully completed.” – “Redirecting you back to the process in 1 seconds”'),
+               ])),
+      'data': '<b>Returned from Digio Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+    },
+    {
+      'sl': '19.11',
+      'shot': img('screen-19-11.png'),
+      'func': 'KYC page – Aadhaar status being updated',
+      'desc': ('<p>Back on the KYC page, Aadhaar Verification shows Getting status while the Aadhaar details are received from DigiLocker. When the status is received, Aadhaar Verification shows Complete (Sl. No 19.12). '
+               'What is shown if the status is not received in time – to be confirmed ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('Status', '“Getting status” – “This might take up to 2m:58s” (count down)'),
+                   ('Text', '“Your Aadhaar details are being fetched from DigiLocker. This process may take a few minutes. Please keep this tab open and avoid refreshing the page.”'),
+               ])),
+      'data': ('<b>Aadhaar Fetch Status:</b><ul><li>Success</li><li>Failure</li></ul><br>'
+               '<b>Aadhaar Details Received Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS'),
+      'status': WIP,
+      'fields': [
+        (img('f1911-status.png'), spec(Field_Name='Getting status', Field_Type='Status (Button, not clickable) with timer',
+            Action='Counts down while the status is fetched – display only.'), OK),
+      ],
+    },
+    {
+      'sl': '19.12',
+      'shot': img('screen-19-12.png'),
+      'func': 'Aadhaar verified – customer starting Photo Verification',
+      'desc': ('<p>Aadhaar Verification shows Complete and Photo Verification opens with Start. The Photo Verification and Bank Details steps follow ' + pend('P-24') + '</p>'
+               + screen_content([
+                   ('3 Aadhaar Verification with DigiLocker', '“Complete”'),
+                   ('4 Photo Verification', 'CTA “Start”'),
+                   ('5 Bank Details', '“Pending”'),
+               ])),
+      'data': '<b>Aadhaar Verified Date &amp; Time:</b><br>DD-MMM-YYYY; HH:MM:SS',
+      'status': WIP,
+      'fields': [
+        (img('f1912-start.png'), spec(Field_Name='Start (Photo Verification)', Field_Type='CTA (Button)',
+            Action='On click, the photo verification starts ' + pend('P-24')), OK),
+      ],
+    },
+  ],
+ },
+ {
   'title': 'Top Navigation',
   'screens': 'Screen 04) Enter PAN Details – logo and Logout only (Sl. No 6.3) · every LOS page from Screen 05) LOS to MF Central Redirection consent page onwards (not on the MF Central pages) – logo, Credit Score and Profile (Sl. No 6, 6.1, 6.2)',
   'rows': [
@@ -942,6 +1349,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-24', 'Modules 8 – 10', 'Sl. No 17 – 19.12 (Mutual Fund Selection, Loan Application Summary, KYC Verification) are written from the prototype screens. Please share the UAT screenshots and confirm: (a) when the ongoing application pop up (17.3) is shown; (b) messages for a loan amount or fund amount outside the limits (17.4, 17.5) and for an invalid email (19); (c) email OTP resend timer, attempts and wrong OTP message (19.2); (d) what is shown if the Aadhaar status is not received in time (19.11); (e) the Photo Verification and Bank Details steps (19.12 onwards).'),
  ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) what Refresh Portfolio does (MF Central redirection again?) and when the Refresh pop up is shown automatically; (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view.'),
  ('P-21', 'Module 4', 'Sl. No 7.1 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
