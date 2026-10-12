@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 12-10-2026 14:57 IST
+**Last Updated:** 12-10-2026 15:08 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -199,6 +199,7 @@
 | DISC-164 | 12-10-2026 | PRD – all cross references | Recheck all | Owner asked to recheck everything after the Sl. No 11 → “Screen 08” mix-up | Every “Sl. No” reference in rows, change requests and clarifications checked against the current numbering (1 – 16, 6 – 6.3). Fixed: (1) Top Navigation (Sl. No 6 and its heading) said it is on every page from Sl. No 5 onwards – now “every LOS page … not on the MF Central pages (Sl. No 8 – 11)”; (2) P-18 was labelled Module 4 but is about Curated Offers – relabelled “Curated Offers”. No other wrong references found | Implemented |
 | DISC-165 | 12-10-2026 | PRD numbering after Sl. No 11 | Sequence | In the journey the step after 11 is the next one, but the PRD jumped from Sl. No 11 to 13 (12 was the no-data page) | No-data page renumbered Sl. No 7.1 and moved into Module 4 right after Sl. No 7 (it is the other outcome of the redirection); Module 6 rows renumbered 12 Redirecting to Dashboard, 13 Fetching, 14 Analysing, 15 Generating; all references, P-21 and Go to PRD updated. Main path now runs 1 – 15 in order | Implemented |
 | DISC-166 | 12-10-2026 | PRD Sl. No 13 – 15 – loader screens | No header in Screen Content | The loader screens show only the loader content, so “Header: Top navigation – see Sl. No 6” is not needed there | Header line removed from the Screen Content of Sl. No 13, 14 and 15; Loader line notes that only the loader pop up is shown with the page behind blurred | Implemented |
+| DISC-167 | 12-10-2026 | PRD Module 7 / Screens 12 – 12.2 – Curated Offers | Curated Offers PRD | Owner: create the PRD for the Curated Offers page | Module 7 – Curated Offers (WIP) written from the prototype screens: Sl. No 16 Curated Offers (banner, offer card, Credit Limit link, Start Application with the age check, portfolio summary, Refresh portfolio, mobile strip, fund cards, drop off, data points), 16.1 How is it calculated (calculation, tabs, eligible / not eligible cards), 16.2 Refresh portfolio pop up, 16.3 drop off view (progress strip, Discard / Continue). P-23 asks for UAT screenshots and the Refresh / Discard behaviour. Prototype: Credit Limit → 12.1.1, tabs and back, Refresh portfolio → pop up (close → 12, Refresh → MF Central redirection), Start Application / Continue → 13.1; Go to PRD mapped to 16 – 16.3 | Implemented |
 
 ---
 
@@ -676,6 +677,7 @@
 | PEND-065 | Top Navigation – credit score pop up | What the pop up shows when Experian returns no score (new to credit, no record, call failure) (PRD P-20, DISC-151) | 08-10-2026 | Open |
 | PEND-066 | Mutual Fund Portfolio Fetching | Refresh action on the not linked page; MF Central wrong OTP message and attempts (PRD P-21, DISC-157) | 09-10-2026 | Open |
 | PEND-067 | Mutual Fund Portfolio Fetching | UAT screenshot of the MF Central Portfolio Fetching screen and its failure case (PRD P-22, DISC-159) | 09-10-2026 | Closed (DISC-161) |
+| PEND-068 | Curated Offers | UAT screenshots of Curated Offers, How is it calculated, Refresh pop up and drop off view; Refresh Portfolio and Discard behaviour (PRD P-23, DISC-167) | 12-10-2026 | Open |
 
 ---
 
