@@ -4,5 +4,20 @@
     "status": "Closed",
     "closed": "27-09-2026 13:20",
     "note": "Test comment confirmed: saved from the dev site into the Google Sheet and read back by Claude. Closed to test the Open → Closed flow."
+  },
+  "C-0002": {
+    "status": "Closed",
+    "closed": "12-10-2026 15:26",
+    "note": "Test comment (New Loan (ETB) landing page); no change needed. Closed on the owner's confirmation."
+  },
+  "C-0003": {
+    "status": "Closed",
+    "closed": "12-10-2026 15:26",
+    "note": "Test comment (16.4 KYC email verified page); no change needed. Closed on the owner's confirmation."
+  },
+  "C-0004": {
+    "status": "Closed",
+    "closed": "12-10-2026 15:26",
+    "note": "Test comment (production Home page); no change needed. Closed on the owner's confirmation."
   }
 }
