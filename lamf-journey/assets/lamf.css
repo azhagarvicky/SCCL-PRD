@@ -1026,6 +1026,6 @@ body.page-screens { padding: 40px 76px; }
 .kfs-ico svg { width: 16px; height: 16px; }
 .kfs-chev { margin-left: auto; font-size: 18px; line-height: 1; color: #8A8A8A; }
 .toast-ok { position: fixed; left: 50%; bottom: 46px; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 10px; background: #12753B; color: #fff; font-size: 14px; font-weight: 600; padding: 10px 18px; border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,.18); white-space: nowrap; animation: toast-in .2s ease-out; }
-.toast-ok .tk-ok { width: 20px; height: 20px; border-radius: 50%; background: #fff; color: #12753B; display: grid; place-items: center; flex: none; }
-.toast-ok .tk-ok svg { width: 13px; height: 13px; stroke-width: 2.6; }
+.toast-ok .tk-ok { width: 22px; height: 22px; display: grid; place-items: center; flex: none; }
+.toast-ok .tk-ok svg { width: 22px; height: 22px; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }

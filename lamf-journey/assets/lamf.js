@@ -1392,14 +1392,19 @@
   };
   // Success toast (DISC-172): after the portfolio is retrieved from MF Central the Curated Offers page shows
   // “Portfolio fetched successfully” (after Refresh Portfolio: “Portfolio refreshed successfully”) for 3 seconds.
-  const TOAST_KEY = 'lamf.toast';
+  const TOAST_KEY = 'lamf.toast', LU_KEY = 'lamf.lastUpdated';
+  // white “verified” badge with a green tick, as in the UAT toast
+  const BADGE = (() => { const pts = []; for (let k = 0; k < 24; k += 1) { const r = k % 2 ? 9.2 : 11, a = (Math.PI * k) / 12; pts.push(`${(12 + r * Math.sin(a)).toFixed(2)},${(12 - r * Math.cos(a)).toFixed(2)}`); }
+    return `<svg viewBox="0 0 24 24"><polygon points="${pts.join(' ')}" fill="#fff" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.6 12.3l3 3 5.8-6.2" fill="none" stroke="#12753B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`; })();
   const successToast = (msg, ms = 3000) => {
-    document.body.insertAdjacentHTML('beforeend', `<div class="toast-ok" role="status"><span class="tk-ok">${ICON.check}</span>${msg}</div>`);
+    document.body.insertAdjacentHTML('beforeend', `<div class="toast-ok" role="status"><span class="tk-ok">${BADGE}</span>${msg}</div>`);
     const el = document.body.lastElementChild;
     TIMERS.push(setTimeout(() => el.remove(), ms));
   };
   const curatedToast = () => {
-    const t = store.get(TOAST_KEY); if (!t || t === 'refresh-pending') return;
+    const lu = store.get(LU_KEY), luEl = document.querySelector('.curated .lu');
+    if (lu && luEl && luEl.firstChild) luEl.firstChild.textContent = `Last updated: ${lu} `;   // time of the last refresh
+    const t = store.get(TOAST_KEY); if (!t) return;
     store.set(TOAST_KEY, null);
     successToast(t === 'refreshed' ? 'Portfolio refreshed successfully' : 'Portfolio fetched successfully');
   };
@@ -1414,7 +1419,12 @@
   BEHAVIOUR['12.2) Refresh portfolio'] = () => {
     const m = document.querySelector('.m-refresh'); if (!m) return;
     m.querySelector('.close').onclick = () => go(CO);
-    m.querySelector('[data-cta="refresh-portfolio"]').onclick = () => { store.set(TOAST_KEY, 'refresh-pending'); go('06) LOS to MF Central Redirection loading page'); };   // fetch again from MF Central (P-23)
+    // Refresh Portfolio (DISC-173): the portfolio is refreshed in place – pop up closes, Last updated shows the new time and the toast confirms it
+    m.querySelector('[data-cta="refresh-portfolio"]').onclick = () => {
+      const d = new Date(), p2 = (n) => String(n).padStart(2, '0');
+      store.set(LU_KEY, `${p2(d.getDate())}-${p2(d.getMonth() + 1)}-${d.getFullYear()} ${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}`);
+      store.set(TOAST_KEY, 'refreshed'); go(CO);
+    };   // fetch again from MF Central (P-23)
   };
 
   // Screen 05 (DISC-140): PAN carried from screen 04; Check Credit Limit is enabled only when the MF Central consent is ticked.
@@ -1542,7 +1552,7 @@
     .forEach(([from, to, ms]) => { BEHAVIOUR[from] = () => { TIMERS.push(setTimeout(() => go(to), ms)); }; });
   // Back from MF Central with the portfolio → the Curated Offers page shows the success toast
   { const prev08 = BEHAVIOUR['08) MF Central to LOS Redirecting Page'];
-    BEHAVIOUR['08) MF Central to LOS Redirecting Page'] = () => { store.set(TOAST_KEY, store.get(TOAST_KEY) === 'refresh-pending' ? 'refreshed' : 'fetched'); prev08(); }; }
+    BEHAVIOUR['08) MF Central to LOS Redirecting Page'] = () => { store.set(TOAST_KEY, 'fetched'); store.set(LU_KEY, null); prev08(); }; }
 
   // Screens 13 – 16.5.9 navigation (DISC-168): CTA → next screen; DigiLocker hand-back screens advance on their own.
   const S13 = { loc: '13.1) Mutual Fund Selection Location access', sel: '13.2) Mutual Fund Selection Page', off: '13.3) Mutual Fund Selection page if location disabled',
