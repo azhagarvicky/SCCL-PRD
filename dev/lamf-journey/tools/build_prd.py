@@ -752,7 +752,7 @@ MODULES = [
       'shot': img('screen-16-2.png'),
       'func': 'Customer refreshing the linked mutual fund portfolio',
       'desc': ('<p>Opened by clicking Refresh portfolio on the Curated Offers page. The pop up asks the customer to refresh all linked portfolios to see the current value of the investments and continue. '
-               'When it is shown automatically and what Refresh Portfolio does are to be confirmed ' + pend('P-23') + '</p>'
+               'Refresh Portfolio refreshes the portfolio and returns to the Curated Offers page with the toast “Portfolio refreshed successfully”. When the pop up is shown automatically is to be confirmed ' + pend('P-23') + '</p>'
                + screen_content([
                    ('Title', '“Refresh all linked portfolios to continue”'),
                    ('Text', '“Please refresh your portfolio to view the current value of your investments and continue with the application.”'),
@@ -763,7 +763,7 @@ MODULES = [
       'status': WIP,
       'fields': [
         (img('f162-box.png'), spec(Field_Name='Refresh Portfolio', Field_Type='Hyperlink',
-            Action='On click, the portfolio is fetched again from MF Central (MF Central redirection – Sl. No 7); when the customer is back on the Curated Offers page, the toast “Portfolio refreshed successfully” is shown for 3 seconds (Sl. No 16) ' + pend('P-23')), OK),
+            Action='On click, the linked portfolio is refreshed: the pop up closes, the customer stays on the Curated Offers page, “Last updated” shows the date and time of this refresh and the green toast “Portfolio refreshed successfully” is shown for 3 seconds (Sl. No 16).'), OK),
         ('', spec(Field_Name='(X) Close icon', Field_Type='Icon',
             Action='On click, the pop up closes and the customer stays on the Curated Offers page.'), OK),
       ],
@@ -1360,7 +1360,7 @@ COMPLETED_COLUMNS = [
 
 PENDING = [
  ('P-24', 'Modules 8 – 10', 'Sl. No 17 – 19.12 (Mutual Fund Selection, Loan Application Summary, KYC Verification) are written from the prototype screens. Please share the UAT screenshots and confirm: (a) when the ongoing application pop up (17.3) is shown; (b) messages for a loan amount or fund amount outside the limits (17.4, 17.5) and for an invalid email (19); (c) email OTP resend timer, attempts and wrong OTP message (19.2); (d) what is shown if the Aadhaar status is not received in time (19.11); (e) the Photo Verification and Bank Details steps (19.12 onwards).'),
- ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) what Refresh Portfolio does (MF Central redirection again?) and when the Refresh pop up is shown automatically; (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view; (d) what the KFS document link on the offer card opens; (e) how long each banner ticker message stays before the next one scrolls up (prototype: 3 seconds).'),
+ ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) when the Refresh pop up is shown automatically, and whether Refresh Portfolio asks for an MF Central OTP before refreshing (the prototype refreshes in place and shows “Portfolio refreshed successfully”, as in the UAT screenshot of 12-10-2026); (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view; (d) what the KFS document link on the offer card opens; (e) how long each banner ticker message stays before the next one scrolls up (prototype: 3 seconds).'),
  ('P-21', 'Module 4', 'Sl. No 7.1 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Curated Offers', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),
