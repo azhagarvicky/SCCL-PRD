@@ -651,7 +651,7 @@ MODULES = [
       'func': 'Customer viewing the credit limit and loan offer worked out from the mutual fund portfolio, and starting the application',
       'desc': ('<p>After the loan offers are generated (Sl. No 15), the customer lands on the Curated Offers page. '
                'It shows the credit limit worked out from the eligible mutual fund portfolio, the interest rate, processing fee and tenure, '
-               'the total portfolio value and every mutual fund fetched from MF Central. A green toast “Portfolio fetched successfully” confirms the portfolio was retrieved and disappears after 3 seconds. The customer clicks Start Application to continue to the mutual fund selection (location access Sl. No 17.1, then Sl. No 17). '
+               'the total portfolio value and every mutual fund fetched from MF Central. Every time the customer lands on this page a green toast “Portfolio fetched successfully” is shown and disappears after 3 seconds. The customer clicks Start Application to continue to the mutual fund selection (location access Sl. No 17.1, then Sl. No 17). '
                'The 18 to 70 years age limit (from the DOB entered in Sl. No 4) is checked on this page. '
                'Written from the prototype screen – to be checked against UAT ' + pend('P-23') + '</p>'
                + screen_content([
@@ -659,12 +659,12 @@ MODULES = [
                    ('Banner', 'Ticker – scrolls up through three messages one after another and repeats: “Borrow only what you need and pay interest only on the utilised amount”, “Avail a loan of up to 75% of your eligible Mutual Fund portfolio”, “Quick digital process with fast loan disbursal”'),
                    ('Title', '“Curated offers for you”'),
                    ('Sub text', '“Processing fee and monthly EMI shown are indicative. Final values will depend on the actual loan amount availed.”'),
-                   ('Offer card', '“Credit Limit” with the amount (e.g. ₹ 6,19,13,200, underlined link); “Interest Rate” (e.g. 10.50% p.a.), “Processing Fee” (e.g. ₹ 3,09,566), “Tenure in Months” (e.g. 12); “KFS document” with an arrow; CTA “Start Application”'),
+                   ('Product card', '“Credit Limit” with the amount (e.g. ₹ 6,19,13,200, underlined and clickable); “Interest Rate” (e.g. 10.50% p.a.), “Processing Fee” (e.g. ₹ 3,09,566), “Tenure in Months” (e.g. 12); “KFS document” with an arrow; CTA “Start Application”'),
                    ('Portfolio summary', '“Total Portfolio Value” (e.g. ₹ 12,04,62,749.99); “Last updated: DD-MM-YYYY HH:MM:SS” with “Refresh portfolio”'),
                    ('Mobile strip', 'Masked mobile number (e.g. +919XXXX1623), number of securities and total value (e.g. 13 Security • ₹ 12,04,62,749.99)'),
                    ('Fund cards', 'One card per mutual fund: AMC logo, fund name, “Folio No.”, “No. of Units”, “Current Value”'),
                    ('Validation message', '“Applicant must be between 18 to 70 years of age.” – when the customer’s age is outside 18 to 70 ' + pend('P-18')),
-                   ('Success toast', '“Portfolio fetched successfully” – shown at the bottom of the page when the customer lands here after the portfolio is retrieved from MF Central; “Portfolio refreshed successfully” after Refresh Portfolio (Sl. No 16.2). Disappears automatically after 3 seconds'),
+                   ('Success toast', '“Portfolio fetched successfully” – shown at the bottom of the page every time the customer lands on this page; “Portfolio refreshed successfully” after Refresh Portfolio (Sl. No 16.2). Disappears automatically after 3 seconds'),
                ])
                + drop_off([
                    ('When', 'The customer leaves the journey on this page without clicking Start Application'),
@@ -686,9 +686,11 @@ MODULES = [
          spec(Field_Name='Info banner (ticker)', Field_Type='Ticker – vertical scrolling text',
             Action='Display only. The banner holds three messages; each one scrolls up and is replaced by the next, then the ticker starts again from the first:<ol><li>“Borrow only what you need and pay interest only on the utilised amount”</li><li>“Avail a loan of up to 75% of your eligible Mutual Fund portfolio”</li><li>“Quick digital process with fast loan disbursal”</li></ol>',
             Condition='Shown on the Curated Offers page and its drop off view (Sl. No 16.3). How long each message stays on screen to be confirmed ' + pend('P-23')), OK),
-        (img('f16-cl.png'), spec(Field_Name='Credit Limit', Field_Type='Amount (hyperlink)',
-            Action='Shows the maximum credit limit worked out from the eligible portfolio. On click, the How is it calculated page opens (Sl. No 16.1).'), OK),
-        (img('f16-offer.png'), spec(Field_Name='Interest Rate, Processing Fee, Tenure in Months', Field_Type='Display values',
+        (img('f16-offer.png'), spec(Field_Name='Product card', Field_Type='Card',
+            Action='Shows the loan offer: Credit Limit (clickable), Interest Rate, Processing Fee, Tenure in Months, the KFS document link and the Start Application CTA. Each element is described below.'), OK),
+        (img('f16-cl.png'), spec(Field_Name='Credit Limit', Field_Type='Amount (hyperlink) – in the product card',
+            Action='Shows the maximum credit limit worked out from the eligible portfolio (e.g. ₹ 6,19,13,200). The amount is clickable: on click, the customer is taken to the How is it calculated page with the All Portfolio tab selected (Sl. No 16.1).'), OK),
+        (img('f16-offer.png'), spec(Field_Name='Interest Rate, Processing Fee, Tenure in Months', Field_Type='Display values – in the product card',
             Action='Show the offer terms – display only. Processing fee is indicative; the final value depends on the loan amount availed.'), OK),
         (img('f16-kfs.png'), spec(Field_Name='KFS document', Field_Type='Link row with arrow',
             Action='Opens the Key Fact Statement (KFS) for the offer. What it opens (document / pop up / download) to be confirmed ' + pend('P-23')), OK),
@@ -706,8 +708,8 @@ MODULES = [
             Action='Masked mobile number, number of securities and total value – display only.'), OK),
         (states(('f16-toast.png', 'After the portfolio is fetched'), ('f16-toast-refresh.png', 'After Refresh Portfolio')),
          spec(Field_Name='Portfolio success toast', Field_Type='Toast message (green, bottom of the page)',
-            Action='“Portfolio fetched successfully” is shown when the customer lands on this page after the portfolio is retrieved from MF Central (Sl. No 12 – 15). After Refresh Portfolio (Sl. No 16.2) the toast reads “Portfolio refreshed successfully”.',
-            Condition='Disappears automatically after 3 seconds; it is not shown when the page is opened again without a new fetch.'), OK),
+            Action='“Portfolio fetched successfully” is shown every time the customer lands on this page – after the portfolio is fetched (Sl. No 12 – 15), on coming back from How is it calculated (Sl. No 16.1), on logging in again, or on reloading the page. Right after Refresh Portfolio (Sl. No 16.2) the toast reads “Portfolio refreshed successfully”.',
+            Condition='Disappears automatically after 3 seconds.'), OK),
         (img('f16-fund.png'), spec(Field_Name='Fund card', Field_Type='Display card (one per fund)',
             Action='AMC logo, fund name, Folio No., No. of Units and Current Value of each fund – display only.'), OK),
       ],
@@ -772,7 +774,7 @@ MODULES = [
       'sl': '16.3',
       'shot': img('screen-16-3.png'),
       'func': 'Curated Offers page for a customer who dropped off and came back',
-      'desc': ('<p>A customer who left on the Curated Offers page and logs in again sees the drop off view of the page: a progress strip on the offer card and two CTAs, Discard and Continue, in place of Start Application. '
+      'desc': ('<p>A customer who left on the Curated Offers page and logs in again sees the drop off view of the page: a progress strip on the product card and two CTAs, Discard and Continue, in place of Start Application. '
                'The rest of the page is the same as Sl. No 16.</p>'
                + screen_content([
                    ('Banner', 'Same ticker as Sl. No 16'),
@@ -1360,7 +1362,7 @@ COMPLETED_COLUMNS = [
 
 PENDING = [
  ('P-24', 'Modules 8 – 10', 'Sl. No 17 – 19.12 (Mutual Fund Selection, Loan Application Summary, KYC Verification) are written from the prototype screens. Please share the UAT screenshots and confirm: (a) when the ongoing application pop up (17.3) is shown; (b) messages for a loan amount or fund amount outside the limits (17.4, 17.5) and for an invalid email (19); (c) email OTP resend timer, attempts and wrong OTP message (19.2); (d) what is shown if the Aadhaar status is not received in time (19.11); (e) the Photo Verification and Bank Details steps (19.12 onwards).'),
- ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) when the Refresh pop up is shown automatically, and whether Refresh Portfolio asks for an MF Central OTP before refreshing (the prototype refreshes in place and shows “Portfolio refreshed successfully”, as in the UAT screenshot of 12-10-2026); (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view; (d) what the KFS document link on the offer card opens; (e) how long each banner ticker message stays before the next one scrolls up (prototype: 3 seconds).'),
+ ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) when the Refresh pop up is shown automatically, and whether Refresh Portfolio asks for an MF Central OTP before refreshing (the prototype refreshes in place and shows “Portfolio refreshed successfully”, as in the UAT screenshot of 12-10-2026); (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view; (d) what the KFS document link on the product card opens; (e) how long each banner ticker message stays before the next one scrolls up (prototype: 3 seconds).'),
  ('P-21', 'Module 4', 'Sl. No 7.1 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
  ('P-20', 'Top Navigation', 'Sl. No 6.1 – credit score pop up when there is no valid score. Experian scores run from 300 to 900, so a score below 300 is not returned; instead the response can carry no score for (a) a customer with no or too little credit history (new to credit), (b) no record found for the mobile number / PAN, or (c) the Experian call failing or timing out. Please check on UAT (e.g. with a new-to-credit customer) or with the tech team what the live journey does in each case: is the Credit Score icon still shown, what does the pop up show (e.g. “Score not available”, a blank meter, or an error), and does the journey continue as normal?'),
  ('P-18', 'Curated Offers', 'Curated Offers page: the 18 to 70 years age limit (from the DOB entered on the PAN Details page) is validated on this page, not on PAN Details, so customers outside the limit are not blocked at PAN verification and can be tracked. Message confirmed by the owner: “Applicant must be between 18 to 70 years of age.” (DISC-139). Still to confirm: where exactly on the Curated Offers page it is shown, and whether Start Application is blocked.'),

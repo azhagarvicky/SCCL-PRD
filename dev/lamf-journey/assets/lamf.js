@@ -1390,7 +1390,7 @@
     on('start-application', SEL);
     on('continue', SEL);
   };
-  // Success toast (DISC-172): after the portfolio is retrieved from MF Central the Curated Offers page shows
+  // Success toast (DISC-172, DISC-174): every time the customer lands on the Curated Offers page it shows
   // “Portfolio fetched successfully” (after Refresh Portfolio: “Portfolio refreshed successfully”) for 3 seconds.
   const TOAST_KEY = 'lamf.toast', LU_KEY = 'lamf.lastUpdated';
   // white “verified” badge with a green tick, as in the UAT toast
@@ -1404,8 +1404,8 @@
   const curatedToast = () => {
     const lu = store.get(LU_KEY), luEl = document.querySelector('.curated .lu');
     if (lu && luEl && luEl.firstChild) luEl.firstChild.textContent = `Last updated: ${lu} `;   // time of the last refresh
-    const t = store.get(TOAST_KEY); if (!t) return;
-    store.set(TOAST_KEY, null);
+    // Shown every time the customer lands on the page (DISC-174); right after Refresh Portfolio it reads “refreshed”
+    const t = store.get(TOAST_KEY); store.set(TOAST_KEY, null);
     successToast(t === 'refreshed' ? 'Portfolio refreshed successfully' : 'Portfolio fetched successfully');
   };
   ['12) Curated Offers Page', '12.2) Curated offers page for dorpoff view'].forEach((k) => { BEHAVIOUR[k] = () => { curatedAgeCheck(); curatedLinks(); curatedToast(); }; });
