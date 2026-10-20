@@ -418,6 +418,19 @@
   T.redirecting = () => `${header('app')}<p class="redirecting">Redirecting to Dashboard...</p>`;
 
   /* 12 Curated offers */
+  /* Product card (DISC-175). Processing fee on the sanctioned limit (shown without GST; GST is charged extra):
+     up to ₹ 10 lakh – 1% or ₹ 999, whichever is higher; ₹ 10 lakh to ₹ 50 lakh – 0.8%; more than ₹ 50 lakh – 0.5% */
+  const processingFee = (limit) => {
+    const n = Number(String(limit).replace(/[^\d]/g, '')) || 0;
+    if (n <= 1000000) return Math.max(n * 0.01, 999);
+    if (n <= 5000000) return n * 0.008;
+    return n * 0.005;
+  };
+  const OFFER_TIPS = {
+    rate: 'The interest rate applicable to your loan. Interest is charged only on the amount you withdraw from your sanctioned credit limit.',
+    fee: 'A one-time processing fee charged on your sanctioned loan limit at the time of loan disbursal. Taxes, if applicable, will be charged extra.',
+    tenure: 'The repayment period applicable to your loan facility. The tenure shown is indicative and subject to the terms of your loan agreement.',
+  };
   // Banner ticker (DISC-172): three messages scroll up one after another, 3 seconds each, then repeat
   const TICKER = ['Borrow only what you need and pay interest only on the utilised amount', 'Avail a loan of up to 75% of your eligible Mutual Fund portfolio', 'Quick digital process with fast loan disbursal'];
   T.curated = (o = {}) => `
@@ -431,9 +444,9 @@
         <div class="offer-in">
           <div class="offer-row"><span class="ol">Credit Limit</span><a class="ov" data-cta="how-calculated">${rs(PORTFOLIO.creditLimit)}</a></div>
           <div class="offer-grid">
-            <div><span>Interest Rate</span><u>${PORTFOLIO.interest}</u></div>
-            <div style="text-align:center"><span>Processing Fee</span><u>${rs(PORTFOLIO.fee)}</u></div>
-            <div style="text-align:right"><span>Tenure in Months</span><u>${PORTFOLIO.tenure}</u></div>
+            <div><span>Interest Rate</span><u class="tip" tabindex="0" data-tip="${OFFER_TIPS.rate}">${PORTFOLIO.interest}</u></div>
+            <div style="text-align:center"><span>Processing Fee</span><u class="tip tip-c" tabindex="0" data-tip="${OFFER_TIPS.fee}">${rs(inr(processingFee(PORTFOLIO.creditLimit)))}</u></div>
+            <div style="text-align:right"><span>Tenure in Months</span><u class="tip tip-r" tabindex="0" data-tip="${OFFER_TIPS.tenure}">${PORTFOLIO.tenure}</u></div>
           </div>
         </div>
         <a class="kfs-row" data-cta="kfs-document"><span class="kfs-ico">${ICON.doc}</span>KFS document<span class="kfs-chev">›</span></a>

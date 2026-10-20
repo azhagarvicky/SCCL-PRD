@@ -659,6 +659,7 @@ MODULES = [
                    ('Banner', 'Ticker – scrolls up through three messages one after another and repeats: “Borrow only what you need and pay interest only on the utilised amount”, “Avail a loan of up to 75% of your eligible Mutual Fund portfolio”, “Quick digital process with fast loan disbursal”'),
                    ('Title', '“Curated offers for you”'),
                    ('Sub text', '“Processing fee and monthly EMI shown are indicative. Final values will depend on the actual loan amount availed.”'),
+                   ('Hover messages', 'Interest Rate: “The interest rate applicable to your loan. Interest is charged only on the amount you withdraw from your sanctioned credit limit.” · Processing Fee: “A one-time processing fee charged on your sanctioned loan limit at the time of loan disbursal. Taxes, if applicable, will be charged extra.” · Tenure in Months: “The repayment period applicable to your loan facility. The tenure shown is indicative and subject to the terms of your loan agreement.”'),
                    ('Product card', '“Credit Limit” with the amount (e.g. ₹ 6,19,13,200, underlined and clickable); “Interest Rate” (e.g. 10.50% p.a.), “Processing Fee” (e.g. ₹ 3,09,566), “Tenure in Months” (e.g. 12); “KFS document” with an arrow; CTA “Start Application”'),
                    ('Portfolio summary', '“Total Portfolio Value” (e.g. ₹ 12,04,62,749.99); “Last updated: DD-MM-YYYY HH:MM:SS” with “Refresh portfolio”'),
                    ('Mobile strip', 'Masked mobile number (e.g. +919XXXX1623), number of securities and total value (e.g. 13 Security • ₹ 12,04,62,749.99)'),
@@ -671,9 +672,9 @@ MODULES = [
                    ('On return', 'After logging in again with the mobile number (Sl. No 2) and OTP (Sl. No 3), the customer lands on the drop off view of this page (Sl. No 16.3) ' + pend('P-23')),
                ])),
       'data': ('<b>Credit Limit:</b> amount<br><br>'
-               '<b>Interest Rate:</b> % p.a.<br><br>'
-               '<b>Processing Fee:</b> amount<br><br>'
-               '<b>Tenure in Months:</b> number<br><br>'
+               '<b>Interest Rate:</b> 10.5% p.a.<br><br>'
+               '<b>Processing Fee:</b> amount (slab on the sanctioned limit, without GST)<br><br>'
+               '<b>Tenure in Months:</b> 12<br><br>'
                '<b>Total Portfolio Value:</b> amount<br><br>'
                '<b>Number of Securities:</b> number<br><br>'
                '<b>Age Check:</b><ul><li>Within 18 to 70</li><li>Outside 18 to 70</li></ul><br>'
@@ -689,9 +690,23 @@ MODULES = [
         (img('f16-offer.png'), spec(Field_Name='Product card', Field_Type='Card',
             Action='Shows the loan offer: Credit Limit (clickable), Interest Rate, Processing Fee, Tenure in Months, the KFS document link and the Start Application CTA. Each element is described below.'), OK),
         (img('f16-cl.png'), spec(Field_Name='Credit Limit', Field_Type='Amount (hyperlink) – in the product card',
-            Action='Shows the maximum credit limit worked out from the eligible portfolio (e.g. ₹ 6,19,13,200). The amount is clickable: on click, the customer is taken to the How is it calculated page with the All Portfolio tab selected (Sl. No 16.1).'), OK),
-        (img('f16-offer.png'), spec(Field_Name='Interest Rate, Processing Fee, Tenure in Months', Field_Type='Display values – in the product card',
-            Action='Show the offer terms – display only. Processing fee is indicative; the final value depends on the loan amount availed.'), OK),
+            Value_Type='₹ (X) – amount in Indian format, e.g. ₹ 6,19,13,200',
+            Action='Shows the maximum credit limit worked out from the eligible portfolio. The amount is clickable: on click, the customer is taken to the How is it calculated page with the All Portfolio tab selected (Sl. No 16.1).',
+            Note='How X (the credit limit) is calculated will be shared by the owner ' + pend('P-25')), OK),
+        (img('f16-tip-rate.png'), spec(Field_Name='Interest Rate', Field_Type='Display value with hover message – in the product card',
+            Value_Type='(X)% p.a. – X is 10.5 (shown as 10.50% p.a.)',
+            Action='Display only. On hover (tap on mobile), the message is shown: “The interest rate applicable to your loan. Interest is charged only on the amount you withdraw from your sanctioned credit limit.”'), OK),
+        (img('f16-tip-fee.png'), spec(Field_Name='Processing Fee', Field_Type='Display value with hover message – in the product card',
+            Value_Type='₹ (X) – amount in Indian format, worked out on the sanctioned limit (shown without GST):'
+              '<table class="mini"><tr><th>Sanctioned limit</th><th>Processing fee</th></tr>'
+              '<tr><td>Up to ₹ 10 lakh</td><td>1% of the sanctioned limit or ₹ 999, whichever is higher, + GST</td></tr>'
+              '<tr><td>₹ 10 lakh to ₹ 50 lakh</td><td>0.8% of the sanctioned limit + GST</td></tr>'
+              '<tr><td>More than ₹ 50 lakh</td><td>0.5% of the sanctioned limit + GST</td></tr></table>'
+              'e.g. credit limit ₹ 6,19,13,200 (more than ₹ 50 lakh) → 0.5% = ₹ 3,09,566. Exactly ₹ 10 lakh is taken in the first slab and exactly ₹ 50 lakh in the second ' + pend('P-25'),
+            Action='Display only. On hover (tap on mobile), the message is shown: “A one-time processing fee charged on your sanctioned loan limit at the time of loan disbursal. Taxes, if applicable, will be charged extra.”'), OK),
+        (img('f16-tip-tenure.png'), spec(Field_Name='Tenure in Months', Field_Type='Display value with hover message – in the product card',
+            Value_Type='(X) – X is 12',
+            Action='Display only. On hover (tap on mobile), the message is shown: “The repayment period applicable to your loan facility. The tenure shown is indicative and subject to the terms of your loan agreement.”'), OK),
         (img('f16-kfs.png'), spec(Field_Name='KFS document', Field_Type='Link row with arrow',
             Action='Opens the Key Fact Statement (KFS) for the offer. What it opens (document / pop up / download) to be confirmed ' + pend('P-23')), OK),
         (states(('f16-start.png', 'Enabled – age within 18 to 70'), ('f16-offer-age.png', 'Disabled – age outside 18 to 70')),
@@ -1361,6 +1376,7 @@ COMPLETED_COLUMNS = [
 ]
 
 PENDING = [
+ ('P-25', 'Curated Offers', 'Sl. No 16 – product card: (a) how the Credit Limit (X) is calculated – to be shared by the owner; (b) Processing Fee slabs at the boundaries: is a sanctioned limit of exactly ₹ 10 lakh in the first slab (1% / ₹ 999) or the second (0.8%), and exactly ₹ 50 lakh in the second (0.8%) or the third (0.5%)? The PRD and prototype take ₹ 10 lakh in the first and ₹ 50 lakh in the second. (c) Is the fee rounded to the nearest rupee?'),
  ('P-24', 'Modules 8 – 10', 'Sl. No 17 – 19.12 (Mutual Fund Selection, Loan Application Summary, KYC Verification) are written from the prototype screens. Please share the UAT screenshots and confirm: (a) when the ongoing application pop up (17.3) is shown; (b) messages for a loan amount or fund amount outside the limits (17.4, 17.5) and for an invalid email (19); (c) email OTP resend timer, attempts and wrong OTP message (19.2); (d) what is shown if the Aadhaar status is not received in time (19.11); (e) the Photo Verification and Bank Details steps (19.12 onwards).'),
  ('P-23', 'Curated Offers', 'Sl. No 16 – 16.3 are written from the prototype screens. Please share the UAT screenshots of the Curated Offers page, How is it calculated, the Refresh portfolio pop up and the drop off view, and confirm: (a) when the Refresh pop up is shown automatically, and whether Refresh Portfolio asks for an MF Central OTP before refreshing (the prototype refreshes in place and shows “Portfolio refreshed successfully”, as in the UAT screenshot of 12-10-2026); (b) what Discard does in the drop off view; (c) whether a returning customer always lands on the drop off view; (d) what the KFS document link on the product card opens; (e) how long each banner ticker message stays before the next one scrolls up (prototype: 3 seconds).'),
  ('P-21', 'Module 4', 'Sl. No 7.1 (LOS page) – what exactly happens on Refresh (MF Central checked again and the redirection pop up shown again, or something else), and can the customer change the mobile number or PAN from here? (The MF Central OTP part of this question is answered – see P-22.)'),
