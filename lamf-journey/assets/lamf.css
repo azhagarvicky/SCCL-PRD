@@ -1029,3 +1029,14 @@ body.page-screens { padding: 40px 76px; }
 .toast-ok .tk-ok { width: 22px; height: 22px; display: grid; place-items: center; flex: none; }
 .toast-ok .tk-ok svg { width: 22px; height: 22px; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ---------- 12 Curated offers: hover message on Interest Rate, Processing Fee, Tenure (DISC-175) ---------- */
+.offer-grid .tip { position: relative; cursor: help; display: inline-block; outline: none; }
+.offer-grid .tip::after { content: attr(data-tip); position: absolute; left: 0; bottom: calc(100% + 10px); width: 260px; padding: 10px 12px; border-radius: 8px; background: #1F1F1F; color: #fff; font-size: 12.5px; font-weight: 400; line-height: 1.45; white-space: normal; text-align: left; box-shadow: 0 6px 18px rgba(0,0,0,.18); opacity: 0; visibility: hidden; transition: opacity .15s; z-index: 30; pointer-events: none; }
+.offer-grid .tip::before { content: ''; position: absolute; left: 14px; bottom: calc(100% + 4px); border: 6px solid transparent; border-top-color: #1F1F1F; border-bottom: 0; opacity: 0; visibility: hidden; transition: opacity .15s; z-index: 30; }
+.offer-grid .tip.tip-c::after { left: 50%; transform: translateX(-50%); } .offer-grid .tip.tip-c::before { left: calc(50% - 6px); }
+.offer-grid .tip.tip-r::after { left: auto; right: 0; } .offer-grid .tip.tip-r::before { left: auto; right: 8px; }
+.offer-grid .tip:hover::after, .offer-grid .tip:hover::before, .offer-grid .tip:focus::after, .offer-grid .tip:focus::before { opacity: 1; visibility: visible; }
+.offer { overflow: visible; }
+.offer > :first-child { border-radius: 9px 9px 0 0; } .offer > :last-child { border-radius: 0 0 9px 9px; }
+.offer-2btn > :first-child { border-bottom-left-radius: 9px; } .offer-2btn > :last-child { border-bottom-right-radius: 9px; }
