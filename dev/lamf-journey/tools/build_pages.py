@@ -121,6 +121,11 @@ COMMS = [
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your Mutual Fund units have been successfully pledged against your loan with Shriram Credit. You may now proceed further - Shriram Credit",
   "Dear AZHAGARSAMY, Your Mutual Fund units have been successfully pledged against your loan with Shriram Credit. You may now proceed further - Shriram Credit",
+  "-", "SGRCDT-T", "Yes"), ("Sanction Letter",
+  "After the Sanction Letter is generated successfully (customer clicks “Sign Agreement” on the “Agreement and E-Mandate” page and the Sanction Letter is generated)",
+  "LOS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, Your Loan Against Mutual Fund has been sanctioned. Your Sanction Letter will be shared separately. Please proceed to sign the eAgreement to continue your loan journey - Shriram Credit",
+  "Dear AZHAGARSAMY, Your Loan Against Mutual Fund has been sanctioned. Your Sanction Letter will be shared separately. Please proceed to sign the eAgreement to continue your loan journey - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
