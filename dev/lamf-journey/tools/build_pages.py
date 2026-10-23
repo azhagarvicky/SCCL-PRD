@@ -116,6 +116,12 @@ COMMS = [
   "Dear {#alphanumeric#}, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
   "Dear AZHAGARSAMY, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
+ ("Pledging of Mutual Fund",
+  "After the mutual fund units are successfully pledged on the “Pledging of Mutual Fund” page (Pledge Securities → MF Central OTP → “Successfully pledged!”)",
+  "LOS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, Your Mutual Fund units have been successfully pledged against your loan with Shriram Credit. You may now proceed further - Shriram Credit",
+  "Dear Nithin, Your Mutual Fund units have been successfully pledged against your loan with Shriram Credit. You may now proceed further - Shriram Credit",
+  "-", "SGRCDT-T", "To be confirmed"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
               "Actual Content", "Mail Subject", "SMS Header", "Available"]
