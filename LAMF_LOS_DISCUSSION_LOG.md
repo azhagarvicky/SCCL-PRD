@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-10-2026 17:10 IST
+**Last Updated:** 23-10-2026 17:13 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -211,6 +211,7 @@
 | DISC-176 | 23-10-2026 | Home page (index.html) / communications.html | Customer communications table and contact line | Owner: on the index page create one more CTA for communication, with a table in the format of the owner’s sheet (Oct_2026 / 23_Oct_2026); also mention on the index page “Created by Azhagarsamy Subburaj – for any observation or clarification please reach out to azhagarsamy.s@shriramcredit.in” | Home page: third CTA “Customer communications →” and the line “Created by Azhagarsamy Subburaj. For any observation or clarification, please reach out to azhagarsamy.s@shriramcredit.in” (mail link). New page communications.html (also #COMMS in the cloud copy) with the sheet’s columns – S.No, Stage, Scenarios, Application, Communication Type, Sender, Content Structure, Actual Content (sample value underlined), Mail Subject, SMS Header, Available – and its 3 rows: OTP SMS on the mobile number page; no MF investments found at MF Central; not eligible per BRE (all LOS / SMS / SCCL / SGRCDT-T / Yes). Rows live in COMMS in tools/build_pages.py | Implemented |
 | DISC-177 | 23-10-2026 | communications.html | Name not underlined | Owner: in Actual Content there is no underline for AZHAGARSAMY – just the name | Underline removed from the name in rows 2 and 3 (the OTP value 123456 in row 1 stays underlined, as in the sheet); page intro no longer says “(underlined)” | Implemented |
 | DISC-178 | 23-10-2026 | communications.html | Pledge success SMS | Owner: after the mutual fund units are successfully pledged the customer receives the SMS “Dear {#alphanumeric#}, Your Mutual Fund units have been successfully pledged against your loan with Shriram Credit. You may now proceed further - Shriram Credit” (sample: Dear Nithin, …) | Row 4 added: Stage Pledging of Mutual Fund; scenario after the units are pledged (Pledge Securities → MF Central OTP → Successfully pledged!); LOS / SMS / SCCL; SMS Header SGRCDT-T assumed as for the other SMS; Available “To be confirmed” – asked the owner | Implemented |
+| DISC-179 | 23-10-2026 | communications.html | Pledge success SMS confirmed | Owner: the template is already available and uses the same SMS header; change the sample name Nithin to AZHAGARSAMY (caps, as before) | Row 4: Available = Yes, SMS Header SGRCDT-T confirmed, Actual Content “Dear AZHAGARSAMY, Your Mutual Fund units have been successfully pledged …” | Implemented |
 
 ---
 
