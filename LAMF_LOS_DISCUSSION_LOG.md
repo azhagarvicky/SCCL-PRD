@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-10-2026 17:13 IST
+**Last Updated:** 23-10-2026 17:30 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -212,6 +212,7 @@
 | DISC-177 | 23-10-2026 | communications.html | Name not underlined | Owner: in Actual Content there is no underline for AZHAGARSAMY – just the name | Underline removed from the name in rows 2 and 3 (the OTP value 123456 in row 1 stays underlined, as in the sheet); page intro no longer says “(underlined)” | Implemented |
 | DISC-178 | 23-10-2026 | communications.html | Pledge success SMS | Owner: after the mutual fund units are successfully pledged the customer receives the SMS “Dear {#alphanumeric#}, Your Mutual Fund units have been successfully pledged against your loan with Shriram Credit. You may now proceed further - Shriram Credit” (sample: Dear Nithin, …) | Row 4 added: Stage Pledging of Mutual Fund; scenario after the units are pledged (Pledge Securities → MF Central OTP → Successfully pledged!); LOS / SMS / SCCL; SMS Header SGRCDT-T assumed as for the other SMS; Available “To be confirmed” – asked the owner | Implemented |
 | DISC-179 | 23-10-2026 | communications.html | Pledge success SMS confirmed | Owner: the template is already available and uses the same SMS header; change the sample name Nithin to AZHAGARSAMY (caps, as before) | Row 4: Available = Yes, SMS Header SGRCDT-T confirmed, Actual Content “Dear AZHAGARSAMY, Your Mutual Fund units have been successfully pledged …” | Implemented |
+| DISC-180 | 23-10-2026 | communications.html | Sanction letter SMS | Owner: after the Sanction Letter is generated successfully the customer receives “Dear {#alphanumeric#}, Your Loan Against Mutual Fund has been sanctioned. Your Sanction Letter will be shared separately. Please proceed to sign the eAgreement to continue your loan journey - Shriram Credit”; same SMS header; available | Row 5 added: Stage Sanction Letter; LOS / SMS / SCCL; sample “Dear AZHAGARSAMY, …”; SMS Header SGRCDT-T; Available Yes | Implemented |
 
 ---
 
