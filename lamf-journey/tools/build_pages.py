@@ -108,13 +108,13 @@ COMMS = [
   "After clicked the “Check Credit Limit” CTA in “LOS to MF Central Redirection consent page” then in MF central, there is no data available the combination of “mobile number” and “PAN Number”",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, No Mutual Fund investments were found for the details you provided. Please verify your credentials and try again - Shriram Credit",
-  "Dear <u>AZHAGARSAMY</u>, No Mutual Fund investments were found for the details you provided. Please verify your credentials and try again - Shriram Credit",
+  "Dear AZHAGARSAMY, No Mutual Fund investments were found for the details you provided. Please verify your credentials and try again - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
  ("Applying SCCL’s Eligibility Business Rule Engine (BRE)",
   "After fetched mutual fund portfolio from MF central then applying SCCL’s eligibility BRE, as per BRE users not eligible",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
-  "Dear <u>AZHAGARSAMY</u>, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
+  "Dear AZHAGARSAMY, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
@@ -128,7 +128,7 @@ def comms_body(home):
     rows = "".join("<tr><td>%d</td>%s</tr>" % (k, "".join(f"<td>{esc(v)}</td>" for v in r)) for k, r in enumerate(COMMS, 1))
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
             f'<p>SMS and mail sent to the customer during the LOS journey ({len(COMMS)} communications). '
-            'Content Structure shows the approved template; Actual Content shows a sample with the variable filled in (underlined).</p>'
+            'Content Structure shows the approved template; Actual Content shows a sample with the variable filled in.</p>'
             f'<div class="comms-wrap"><table class="comms"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
             + CONTACT)
 
