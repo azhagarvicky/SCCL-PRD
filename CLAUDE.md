@@ -61,7 +61,7 @@ GitHub is the only shared memory, so these rules apply to every session, local o
 
 - Source (edit these): `lamf-journey/assets/lamf.js` (screen templates, `FLOW` / `BEHAVIOUR` maps,
   `OTP_RULES`), `lamf-journey/assets/lamf.css`, `lamf-journey/assets/review.js` (review comments), `lamf-journey/tools/comments-apps-script.gs`, `comment-status.json`, `lamf-journey/assets/prd.css`,
-  `lamf-journey/tools/build_pages.py` (screen list), `lamf-journey/tools/build_prd.py` (PRD content),
+  `lamf-journey/tools/build_pages.py` (screen list, and `COMMS` – the customer communications table), `lamf-journey/tools/build_prd.py` (PRD content),
   `LAMF_LOS_DISCUSSION_LOG.md`, `.github/workflows/`.
 - Generated (never edit by hand): the numbered screen `.html` files, `lamf-journey/index.html`,
-  `screens.html`, `cloud.html`, `assets/screens.js`, `SCCL_LAMF_LOS_PRD.html`, `assets/prd-body.js`.
+  `screens.html`, `communications.html`, `cloud.html`, `assets/screens.js`, `SCCL_LAMF_LOS_PRD.html`, `assets/prd-body.js`.

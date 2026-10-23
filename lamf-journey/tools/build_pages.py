@@ -94,7 +94,45 @@ from urllib.parse import quote
 # files and the cloud copy; only the link targets differ. Styles live in lamf.css.
 LOGO = '<a class="logo" href="{home}" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>'
 
-def home_body(home, prd, journey):
+# Customer communications (SMS / mail) sent by the LOS – shown on communications.html (DISC-176).
+# Columns follow the owner's sheet "Oct_2026": S.No, Stage, Scenarios, Application, Communication Type,
+# Sender, Content Structure, Actual Content, Mail Subject, SMS Header, Available. Add new rows here.
+COMMS = [
+ ("Enter Mobile Number Page",
+  "After entered the mobile number and user clicking the “Continue” CTA on “Enter your MF linked Mobile Number” page",
+  "LOS", "SMS", "SCCL",
+  "{#numeric#} is your OTP to sign in to Shriram Credit Loan Against Mutual Fund. Do not share this OTP with anyone - Shriram Credit",
+  "<u>123456</u> is your OTP to sign in to Shriram Credit Loan Against Mutual Fund. Do not share this OTP with anyone - Shriram Credit",
+  "-", "SGRCDT-T", "Yes"),
+ ("Mutual Fund Portfolio fetching in MF Central",
+  "After clicked the “Check Credit Limit” CTA in “LOS to MF Central Redirection consent page” then in MF central, there is no data available the combination of “mobile number” and “PAN Number”",
+  "LOS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, No Mutual Fund investments were found for the details you provided. Please verify your credentials and try again - Shriram Credit",
+  "Dear <u>AZHAGARSAMY</u>, No Mutual Fund investments were found for the details you provided. Please verify your credentials and try again - Shriram Credit",
+  "-", "SGRCDT-T", "Yes"),
+ ("Applying SCCL’s Eligibility Business Rule Engine (BRE)",
+  "After fetched mutual fund portfolio from MF central then applying SCCL’s eligibility BRE, as per BRE users not eligible",
+  "LOS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
+  "Dear <u>AZHAGARSAMY</u>, We regret that your loan request could not be approved per our policy. For assistance, contact our support team - Shriram Credit",
+  "-", "SGRCDT-T", "Yes"),
+]
+COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
+              "Actual Content", "Mail Subject", "SMS Header", "Available"]
+CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
+           'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
+
+def comms_body(home):
+    esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>")
+    head = "".join(f"<th>{c}</th>" for c in COMMS_COLS)
+    rows = "".join("<tr><td>%d</td>%s</tr>" % (k, "".join(f"<td>{esc(v)}</td>" for v in r)) for k, r in enumerate(COMMS, 1))
+    return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
+            f'<p>SMS and mail sent to the customer during the LOS journey ({len(COMMS)} communications). '
+            'Content Structure shows the approved template; Actual Content shows a sample with the variable filled in (underlined).</p>'
+            f'<div class="comms-wrap"><table class="comms"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+            + CONTACT)
+
+def home_body(home, prd, journey, comms):
     return (f'<header class="home-top">{LOGO.format(home=home)}</header>'
             '<main class="home">'
             '<p class="home-kicker">Shriram Credit · Loan Against Mutual Funds</p>'
@@ -103,7 +141,8 @@ def home_body(home, prd, journey):
             '<div class="home-ctas">'
             f'<a class="home-cta" href="{prd}">Open the PRD document →</a>'
             f'<a class="home-cta" href="{journey}">Start the LAMF journey →</a>'
-            '</div></main>')
+            f'<a class="home-cta" href="{comms}">Customer communications →</a>'
+            '</div>' + CONTACT + '</main>')
 
 def screens_body(home, link):
     items = "\n".join(f'<li><a href="{link(n)}">{html.escape(n)}</a></li>' for n in PAGES)
@@ -126,11 +165,13 @@ PAGE = """<!doctype html>
 """
 with open(os.path.join(ROOT, "index.html"), "w") as f:
     f.write(PAGE.format(title="LAMF Online Journey", cls="page-home",
-                        body=home_body("index.html", "SCCL_LAMF_LOS_PRD.html", "screens.html")))
+                        body=home_body("index.html", "SCCL_LAMF_LOS_PRD.html", "screens.html", "communications.html")))
+with open(os.path.join(ROOT, "communications.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
 with open(os.path.join(ROOT, "screens.html"), "w") as f:
     f.write(PAGE.format(title="LAMF Online Journey – Screens", cls="page-screens",
                         body=screens_body("index.html", lambda n: quote(n + ".html"))))
-print(len(PAGES), "pages + index.html (home) + screens.html written")
+print(len(PAGES), "pages + index.html (home) + screens.html + communications.html written")
 
 # ---- cloud copy: one page, hash routed (artifact sandboxes cannot navigate between files)
 import json as _json
@@ -141,7 +182,8 @@ screens_js = ["/* Generated by tools/build_pages.py – one render function per 
 for name, code in PAGES.items():
     screens_js.append(f"  {_json.dumps(name)}: function () {{ {code}; }},")
 screens_js.append("};")
-screens_js.append("window.HOME_HTML = " + _json.dumps(home_body("#", "#PRD", "#SCREENS")) + ";")
+screens_js.append("window.HOME_HTML = " + _json.dumps(home_body("#", "#PRD", "#SCREENS", "#COMMS")) + ";")
+screens_js.append("window.COMMS_HTML = " + _json.dumps(comms_body("#")) + ";")
 screens_js.append("window.SCREENS_HTML = " + _json.dumps(screens_body("#", lambda n: "#" + _q(n))) + ";")
 with open(os.path.join(ROOT, "assets", "screens.js"), "w") as f:
     f.write("\n".join(screens_js) + "\n")
@@ -192,6 +234,7 @@ CLOUD = """<!doctype html>
     var fn = window.SCREEN_RENDER[name];
     if (fn) { fn(); return; }
     if (name === 'SCREENS') { LAMF.render(window.SCREENS_HTML, { bodyClass: 'page-screens' }); return; }
+    if (name === 'COMMS') { LAMF.render(window.COMMS_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-comms'); return; }
     LAMF.render(window.HOME_HTML, { bodyClass: 'page-home' });
   }
   window.addEventListener('hashchange', route);

@@ -1040,3 +1040,22 @@ body.page-screens { padding: 40px 76px; }
 .offer { overflow: visible; }
 .offer > :first-child { border-radius: 9px 9px 0 0; } .offer > :last-child { border-radius: 0 0 9px 9px; }
 .offer-2btn > :first-child { border-bottom-left-radius: 9px; } .offer-2btn > :last-child { border-bottom-right-radius: 9px; }
+
+/* ---------- Home page: Customer communications CTA + contact line; communications.html table (DISC-176) ---------- */
+.page-home .home-contact { margin-top: 44px; font-size: 14px; color: var(--ink-2); max-width: 640px; line-height: 1.6; }
+.page-home .home-contact a, .page-comms .home-contact a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.page-comms .comms-wrap { overflow-x: auto; border: 1px solid #C9D2E3; border-radius: 6px; }
+.page-comms table.comms { border-collapse: collapse; width: 100%; min-width: 1500px; font-size: 13.5px; line-height: 1.45; }
+.page-comms .comms th { background: #B4C6E7; color: #111; font-weight: 700; text-align: left; padding: 8px 10px; border: 1px solid #8EA3CB; white-space: nowrap; position: sticky; top: 0; }
+.page-comms .comms td { border: 1px solid #C9D2E3; padding: 8px 10px; vertical-align: top; color: #111; }
+.page-comms .comms td:nth-child(1) { text-align: center; width: 48px; }
+.page-comms .comms td:nth-child(7), .page-comms .comms td:nth-child(8) { min-width: 320px; }
+.page-comms .comms tbody tr:nth-child(even) td { background: #F7F9FD; }
+.page-comms .comms u { text-decoration-thickness: 1.5px; text-underline-offset: 2px; }
+.page-comms .home-contact { margin-top: 28px; font-size: 14px; color: var(--ink-2); }
+@media (max-width: 760px) { .page-home .home-contact { margin-top: 28px; font-size: 13px; } }
+.page-comms table.comms { min-width: 1900px; }
+.page-comms .comms td:nth-child(2) { min-width: 190px; }
+.page-comms .comms td:nth-child(3) { min-width: 340px; }
+.page-comms .comms td:nth-child(4), .page-comms .comms td:nth-child(5), .page-comms .comms td:nth-child(6), .page-comms .comms td:nth-child(9), .page-comms .comms td:nth-child(10), .page-comms .comms td:nth-child(11) { white-space: nowrap; }
+.page-comms .comms td:nth-child(7), .page-comms .comms td:nth-child(8) { min-width: 380px; }
