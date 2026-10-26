@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-10-2026 10:41 IST
+**Last Updated:** 26-10-2026 12:13 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -221,6 +221,7 @@
 | DISC-186 | 26-10-2026 | communications.html | EMI resubmission reminder / success / failed SMS | Owner: EMI resubmission reminder – “Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} will be re-presented on {#alphanumeric#}. Please ensure sufficient balance to avoid any disruption - Shriram Credit”; resubmission success – “… was successfully debited on {#alphanumeric#}. Thank you for your payment - Shriram Credit”; resubmission failed – “… was rejected again by your bank on {#alphanumeric#}. Please check your registered email for further details - Shriram Credit” | Rows 13 – 15 added, templates exactly as given; samples written by Claude (Rs. 10,000, re-presented / debited / rejected on 10-11-2026, the retry date); Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 | DISC-187 | 26-10-2026 | communications.html | Loan tenure completion and loan account closure SMS | Owner: successful loan tenure completion (all EMI instalments done) – “Dear {#alphanumeric#}, Loan fully repaid! Your MF units will be released in 2-3 working days and your loan account will be closed - Shriram Credit”; loan account closure – “Dear {#alphanumeric#}, Your loan account {#alphanumeric#} has been successfully closed on {#alphanumeric#}. Thank your for your association with Shriram Credit - Shriram Credit” (loan account number SCCLMF20261000102; closed on = loan end date) | Rows 16 – 17 added, templates exactly as given (incl. “Thank your” – asked the owner whether it should read “Thank you”); sample closure date 26-10-2027 (12-month tenure from today) written by Claude; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed | Implemented |
 | DISC-188 | 26-10-2026 | communications.html | Loan account closure SMS wording | Owner: change “Thank your for your association” to “Thank you for your association” | Row 17 Content Structure and Actual Content corrected | Implemented |
+| DISC-189 | 26-10-2026 | communications.html | LAMF application submitted SMS | Owner: LAMF application submit – once the E-Mandate is completed successfully the loan application is considered submitted, and this SMS goes: “Dear {#alp#}, Your Loan Against Mutual Fund application has been successfully submitted - Shriram Credit” | Added as row 7 (after Loan Agreement e-Sign, before Withdrawal, in journey order – later rows renumbered 8 – 18); template exactly as given with {#alp#} – asked the owner whether it should be {#alphanumeric#} like the others; Application LOS, SMS Header SGRCDT-T and Available Yes assumed – to be confirmed | Implemented |
 
 ---
 
