@@ -137,6 +137,18 @@ COMMS = [
   "Dear {#alp#}, Your Loan Against Mutual Fund application has been successfully submitted - Shriram Credit",
   "Dear AZHAGARSAMY, Your Loan Against Mutual Fund application has been successfully submitted - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
+ ("Loan Lodgement Approval",
+  "After the application is submitted, the OPS team approves in the backend LMS, back to back: first the Loan Account Opening approval, then the Loan Lodgement approval. This SMS is triggered when the Loan Lodgement is approved",
+  "LMS", "SMS", "SCCL",
+  "Dear {#alp#}, Your Shriram Credit - Loan Against Mutual Fund is approved and active. Withdraw your funds now:- {#urg#} - Shriram Credit",
+  "Dear AZHAGARSAMY, Your Shriram Credit - Loan Against Mutual Fund is approved and active. Withdraw your funds now:- https://lamf.shriramcredit.in/ - Shriram Credit",
+  "-", "SGRCDT-T", "Yes"),
+ ("Loan Account Opening / Loan Lodgement Rejection",
+  "When the OPS team rejects the Loan Account Opening or the Loan Lodgement in the backend LMS – one common SMS for either rejection. Template drafted by Claude for approval; to be created and registered",
+  "LMS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, We regret that your Loan Against Mutual Fund application could not be approved at this stage. For assistance, please contact our support team - Shriram Credit",
+  "Dear AZHAGARSAMY, We regret that your Loan Against Mutual Fund application could not be approved at this stage. For assistance, please contact our support team - Shriram Credit",
+  "-", "SGRCDT-T", "No – to be created"),
  ("Withdrawal",
   "When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal",
   "LOS", "SMS", "SCCL",
@@ -207,7 +219,9 @@ CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For 
 def comms_body(home):
     esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>")
     head = "".join(f"<th>{c}</th>" for c in COMMS_COLS)
-    rows = "".join("<tr><td>%d</td>%s</tr>" % (k, "".join(f"<td>{esc(v)}</td>" for v in r)) for k, r in enumerate(COMMS, 1))
+    # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
+    rows = "".join('<tr%s><td>%d</td>%s</tr>' % (' class="na"' if r[-1].startswith("No") else "", k, "".join(f"<td>{esc(v)}</td>" for v in r))
+                   for k, r in enumerate(COMMS, 1))
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
             f'<p>SMS and mail sent to the customer during the LOS journey ({len(COMMS)} communications). '
             'Content Structure shows the approved template; Actual Content shows a sample with the variable filled in.</p>'
