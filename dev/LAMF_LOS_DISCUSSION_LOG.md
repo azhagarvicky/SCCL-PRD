@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-10-2026 14:17 IST
+**Last Updated:** 26-10-2026 14:20 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -228,6 +228,7 @@
 | DISC-193 | 26-10-2026 | communications.html | Lien marking failed SMS (not available) | Owner: when lien marking fails an SMS has to be sent; it is not available – create it | Row 5 added after the pledge success SMS (later rows renumbered, table now 22 rows): drafted by Claude – “Dear {#alphanumeric#}, Lien marking of your Mutual Fund units could not be completed. Please log in and try pledging again to continue your loan application: {#urg#} - Shriram Credit” (sample link https://lamf.shriramcredit.in/); Available “No – to be created”, row highlighted; Application LOS, SMS Header SGRCDT-T assumed | Implemented |
 | DISC-194 | 26-10-2026 | communications.html | LTV breach (margin call) and LTV breach liquidation SMS | Owner: LTV breach trigger (margin call) – “Dear {#alp#}, Your loan value has dropped. Please pay or pledge immediately to avoid liquidation of your portfolio. {#urg#} - Shriram Credit.” (sample URL https://uatlamf.shriramcredit.in/user/loans/? – URL has to be changed); LAMF LTV breach liquidation – “Dear {#alp#}, Your LTV has breached. As per the loan terms, liquidation of your pledged securities will be initiated to recover the shortfall - Shriram Credit.” | Rows 21 – 22 added after Part Payment (tenure completion and closure now 23 – 24); templates exactly as given; margin call sample uses the live domain https://lamf.shriramcredit.in/user/loans/ in place of the UAT link (to be confirmed); liquidation sample written by Claude; Application LOS, SMS Header SGRCDT-T, Available Yes assumed | Implemented |
 | DISC-195 | 26-10-2026 | communications.html | Principal repayment reminder and liquidation for O/S SMS | Owner: LAMF principal repayment reminder – sent the day after the loan end date when the principal is still unpaid: “Dear {#alp#}, Your LAMF has matured and the outstanding principal remains unpaid. You are requested to make immediate payment to avoid liquidation of MF pledged units {#urg#} - Shriram Credit.”; LAMF liquidation for O/S – sent on the day liquidation is initiated: “Dear {#alp#}, As the outstanding principal is still unpaid, we are initiating liquidation for recovery of outstanding dues - Shriram Credit” | Rows 23 – 24 added after the LTV rows (tenure completion and closure now 25 – 26); templates exactly as given; samples written by Claude (link https://lamf.shriramcredit.in/user/loans/ as in row 21); Application LOS, SMS Header SGRCDT-T, Available Yes assumed | Implemented |
+| DISC-196 | 26-10-2026 | communications.html | SMS ending | Owner: every SMS ends with “Shriram Credit” – no full stop after it | Trailing full stop after “Shriram Credit” removed from every Content Structure and Actual Content that had one | Implemented |
 
 ---
 
