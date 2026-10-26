@@ -147,6 +147,11 @@ COMMS = [
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit.",
   "Dear AZHAGARSAMY, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit.",
+  "-", "SGRCDT-T", "Yes"), ("EMI Reminder",
+  "Notifying the customer of an upcoming instalment before its due date",
+  "LOS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} is due on {#alphanumeric#}. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit.",
+  "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 is due on 05-11-2026. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
