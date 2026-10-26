@@ -189,8 +189,8 @@ COMMS = [
  ("Loan Account Closure",
   "When the loan account is closed (closed on = loan end date)",
   "LOS", "SMS", "SCCL",
-  "Dear {#alphanumeric#}, Your loan account {#alphanumeric#} has been successfully closed on {#alphanumeric#}. Thank your for your association with Shriram Credit - Shriram Credit",
-  "Dear AZHAGARSAMY, Your loan account SCCLMF20261000102 has been successfully closed on 26-10-2027. Thank your for your association with Shriram Credit - Shriram Credit",
+  "Dear {#alphanumeric#}, Your loan account {#alphanumeric#} has been successfully closed on {#alphanumeric#}. Thank you for your association with Shriram Credit - Shriram Credit",
+  "Dear AZHAGARSAMY, Your loan account SCCLMF20261000102 has been successfully closed on 26-10-2027. Thank you for your association with Shriram Credit - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
