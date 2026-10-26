@@ -126,6 +126,11 @@ COMMS = [
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your Loan Against Mutual Fund has been sanctioned. Your Sanction Letter will be shared separately. Please proceed to sign the eAgreement to continue your loan journey - Shriram Credit",
   "Dear AZHAGARSAMY, Your Loan Against Mutual Fund has been sanctioned. Your Sanction Letter will be shared separately. Please proceed to sign the eAgreement to continue your loan journey - Shriram Credit",
+  "-", "SGRCDT-T", "Yes"), ("Loan Agreement e-Sign",
+  "After the customer signs the loan agreement successfully (e-Sign at Digio – Aadhaar / VID + OTP → “Signed Successfully”)",
+  "LOS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, Your Loan Against Mutual Fund application has been successfully processed - Shriram Credit.",
+  "Dear AZHAGARSAMY, Your Loan Against Mutual Fund application has been successfully processed - Shriram Credit.",
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
