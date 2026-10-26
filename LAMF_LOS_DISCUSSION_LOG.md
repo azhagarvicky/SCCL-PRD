@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-10-2026 10:24 IST
+**Last Updated:** 26-10-2026 10:27 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -218,6 +218,7 @@
 | DISC-183 | 26-10-2026 | communications.html | Withdrawal confirmed and loan disbursed SMS | Owner: on the completion of each withdrawal – “Dear {#alphanumeric#}, Your withdrawal request is confirmed. Your loan amount will be disbursed to your bank account shortly - Shriram Credit.”; when the loan is disbursed – “Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit.” (samples with AZHAGARSAMY) | Rows 8 (Withdrawal – request confirmed) and 9 (Loan Disbursed) added, text exactly as given; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 | DISC-184 | 26-10-2026 | communications.html | EMI reminder SMS | Owner: EMI reminder, notifying upcoming instalments – “Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} is due on {#alphanumeric#}. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit.” (sample: AZHAGARSAMY, Rs. 10,000, 05-11-2026) | Row 10 added, text exactly as given; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 | DISC-185 | 26-10-2026 | communications.html | EMI success and EMI failed SMS | Owner: EMI success – “Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} was successfully debited on {#alphanumeric#}. Thank you for your timely payment - Shriram Credit”; EMI failed (instalment bounces) – “Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} was rejected by your bank on {#alphanumeric#}. We will retry on {#alphanumeric#}. Please ensure sufficient balance - Shriram Credit.”; retry date is the 10th | Rows 11 (EMI Success) and 12 (EMI Failed, retry on the 10th) added; samples written by Claude: Rs. 10,000, debited / rejected on 05-11-2026, retry on 10-11-2026; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
+| DISC-186 | 26-10-2026 | communications.html | EMI resubmission reminder / success / failed SMS | Owner: EMI resubmission reminder – “Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} will be re-presented on {#alphanumeric#}. Please ensure sufficient balance to avoid any disruption - Shriram Credit”; resubmission success – “… was successfully debited on {#alphanumeric#}. Thank you for your payment - Shriram Credit”; resubmission failed – “… was rejected again by your bank on {#alphanumeric#}. Please check your registered email for further details - Shriram Credit” | Rows 13 – 15 added, templates exactly as given; samples written by Claude (Rs. 10,000, re-presented / debited / rejected on 10-11-2026, the retry date); Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 
 ---
 
