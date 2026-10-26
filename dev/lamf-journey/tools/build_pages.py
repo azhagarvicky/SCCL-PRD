@@ -131,6 +131,11 @@ COMMS = [
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your Loan Against Mutual Fund application has been successfully processed - Shriram Credit.",
   "Dear AZHAGARSAMY, Your Loan Against Mutual Fund application has been successfully processed - Shriram Credit.",
+  "-", "SGRCDT-T", "Yes"), ("Withdrawal",
+  "When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal",
+  "LOS", "SMS", "SCCL",
+  "{#numeric#} is your OTP to confirm the withdrawal of Rs. {#alphanumeric#} from your Loan Against Mutual Fund. Do not share this OTP with anyone - Shriram Credit",
+  "<u>123456</u> is your OTP to confirm the withdrawal of Rs. 10,000 from your Loan Against Mutual Fund. Do not share this OTP with anyone - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
