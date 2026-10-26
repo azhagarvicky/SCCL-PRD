@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-10-2026 10:19 IST
+**Last Updated:** 26-10-2026 10:22 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -216,6 +216,7 @@
 | DISC-181 | 26-10-2026 | communications.html | Loan agreement e-Sign SMS | Owner: after the loan agreement e-Sign is done the customer receives “Dear {#alphanumeric#}, Your Loan Against Mutual Fund application has been successfully processed - Shriram Credit.” | Row 6 added: Stage Loan Agreement e-Sign; LOS / SMS / SCCL; sample “Dear AZHAGARSAMY, …”; SMS Header SGRCDT-T and Available Yes assumed as for rows 4 – 5 – to be confirmed by the owner | Implemented |
 | DISC-182 | 26-10-2026 | communications.html | Withdrawal OTP SMS | Owner: at the withdrawal stage, when the customer initiates a withdrawal, the OTP SMS is “{#numeric#} is your OTP to confirm the withdrawal of Rs. {#alphanumeric#} from your Loan Against Mutual Fund. Do not share this OTP with anyone - Shriram Credit” (sample: 123456 … Rs. 10,000) | Row 7 added: Stage Withdrawal; sample OTP 123456 underlined like row 1; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 | DISC-183 | 26-10-2026 | communications.html | Withdrawal confirmed and loan disbursed SMS | Owner: on the completion of each withdrawal – “Dear {#alphanumeric#}, Your withdrawal request is confirmed. Your loan amount will be disbursed to your bank account shortly - Shriram Credit.”; when the loan is disbursed – “Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit.” (samples with AZHAGARSAMY) | Rows 8 (Withdrawal – request confirmed) and 9 (Loan Disbursed) added, text exactly as given; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
+| DISC-184 | 26-10-2026 | communications.html | EMI reminder SMS | Owner: EMI reminder, notifying upcoming instalments – “Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} is due on {#alphanumeric#}. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit.” (sample: AZHAGARSAMY, Rs. 10,000, 05-11-2026) | Row 10 added, text exactly as given; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 
 ---
 
