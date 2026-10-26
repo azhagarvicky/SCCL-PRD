@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-10-2026 09:40 IST
+**Last Updated:** 26-10-2026 09:52 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -214,6 +214,7 @@
 | DISC-179 | 23-10-2026 | communications.html | Pledge success SMS confirmed | Owner: the template is already available and uses the same SMS header; change the sample name Nithin to AZHAGARSAMY (caps, as before) | Row 4: Available = Yes, SMS Header SGRCDT-T confirmed, Actual Content “Dear AZHAGARSAMY, Your Mutual Fund units have been successfully pledged …” | Implemented |
 | DISC-180 | 23-10-2026 | communications.html | Sanction letter SMS | Owner: after the Sanction Letter is generated successfully the customer receives “Dear {#alphanumeric#}, Your Loan Against Mutual Fund has been sanctioned. Your Sanction Letter will be shared separately. Please proceed to sign the eAgreement to continue your loan journey - Shriram Credit”; same SMS header; available | Row 5 added: Stage Sanction Letter; LOS / SMS / SCCL; sample “Dear AZHAGARSAMY, …”; SMS Header SGRCDT-T; Available Yes | Implemented |
 | DISC-181 | 26-10-2026 | communications.html | Loan agreement e-Sign SMS | Owner: after the loan agreement e-Sign is done the customer receives “Dear {#alphanumeric#}, Your Loan Against Mutual Fund application has been successfully processed - Shriram Credit.” | Row 6 added: Stage Loan Agreement e-Sign; LOS / SMS / SCCL; sample “Dear AZHAGARSAMY, …”; SMS Header SGRCDT-T and Available Yes assumed as for rows 4 – 5 – to be confirmed by the owner | Implemented |
+| DISC-182 | 26-10-2026 | communications.html | Withdrawal OTP SMS | Owner: at the withdrawal stage, when the customer initiates a withdrawal, the OTP SMS is “{#numeric#} is your OTP to confirm the withdrawal of Rs. {#alphanumeric#} from your Loan Against Mutual Fund. Do not share this OTP with anyone - Shriram Credit” (sample: 123456 … Rs. 10,000) | Row 7 added: Stage Withdrawal; sample OTP 123456 underlined like row 1; Application LOS, SMS Header SGRCDT-T and Available Yes assumed as for the other rows – to be confirmed by the owner | Implemented |
 
 ---
 
