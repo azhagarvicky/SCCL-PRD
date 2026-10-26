@@ -1059,3 +1059,5 @@ body.page-screens { padding: 40px 76px; }
 .page-comms .comms td:nth-child(3) { min-width: 340px; }
 .page-comms .comms td:nth-child(4), .page-comms .comms td:nth-child(5), .page-comms .comms td:nth-child(6), .page-comms .comms td:nth-child(9), .page-comms .comms td:nth-child(10), .page-comms .comms td:nth-child(11) { white-space: nowrap; }
 .page-comms .comms td:nth-child(7), .page-comms .comms td:nth-child(8) { min-width: 380px; }
+.page-comms .comms tr.na td { background: #FFF7E6 !important; }
+.page-comms .comms tr.na td:last-child { color: #B42318; font-weight: 700; }
