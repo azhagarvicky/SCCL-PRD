@@ -321,19 +321,135 @@ COMMS = [
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
               "Actual Content", "Mail Subject", "SMS Header", "Available"]
+# Customer e-mails (owner's document "Email Notifications for Customer – Quicklend 0109 Revised", DISC-199).
+# Same columns as COMMS; Communication Type “Mail”, Mail Subject filled, SMS Header “-”.
+# Body text keeps the document wording; “\n” is a line break. Actual Content = the body with sample values.
+MAIL_SIGN = "\n\nWarm regards,\nTeam Shriram Credit"
+MAIL_DISCLAIMER = ("\n\nDisclaimer:\nThis is an automated reminder. Please do not reply to this message, as the mailbox is not monitored "
+                   "and you will not receive a response. Loan against Securities is for personal use only and cannot be used for speculative "
+                   "activities, capital market-related purposes, or anti-social purposes.")
+SUPPORT = "Should you have any questions, require clarification, or assistance, please feel free to reach out to our customer support at lassupport@shriramcredit.in. Our team will be happy to assist you."
+THANKS = "Thank you for choosing Shriram Credit as your trusted financial partner. We look forward to supporting you throughout your loan journey."
+CLOSED_BODY = ("We have received the final payment and are pleased to confirm that your loan account has been closed in our records. We appreciate your commitment to timely repayment and hope this facility served your financial needs effectively.\n\n"
+               "Lien Removal Process:\nAs your loan is now fully repaid, we have initiated the process to release the lien on your pledged Mutual Fund units.\n"
+               "• Timeline: The lien will be removed within 2 to 3 working days.\n"
+               "• Confirmation: You will receive a separate notification from the Registrar and Transfer Agent (CAMS/KFintech) once your units are fully \"unlocked\" and fully accessible to you.\n\n"
+               "Next Steps:\nNo Objection Certificate (NOC): Your formal No Objection Certificate is being generated and will be sent to you in a separate communication shortly.\n\n"
+               "Important Information:\n• Please retain this email for your records as confirmation of loan closure until you receive your formal No Objection Certificate.\n"
+               "• In case the lien is not removed within the stated timeline, please contact us for assistance.\n\n" + SUPPORT +
+               "\n\nWe thank you for choosing Shriram Credit and look forward to serving you again.")
+EMI_REMINDER = ("This is a reminder that your next EMI of Rs. 5,085 for your loan will be automatically deducted from your bank account on 10/07/2026. Kindly ensure that your account has sufficient funds to cover the payment.\n\n"
+                "Here are the details of your loan:\n• Borrowed amount: ₹ 55,000\n• Outstanding amount: ₹ 55,000\n• Bank account number: XXXXXXXXXXX\n\n"
+                "Please note that failure or bounce of the EMI payment may attract penal charges. We encourage you to make sure that your account balance is adequate to avoid any inconvenience.\n\nThank you for your cooperation.")
+DISB = lambda first: ("We are happy to inform you that your loan amount of ₹[XXXX] has been credited to your bank account.\n\n"
+                "Loan Details:\n• Customer ID: [XXXX]\n• Loan Account ID: [XXXX]\n• Disbursement Type: " + ("<<Single / Multiple>>" if first else "<<Multiple>>") +
+                "\n• Disbursement No.: " + ("<<1>>" if first else "") + "\n• Disbursement UTRN: [XXXX]\n• Loan Tenure: [XX months]\n• " +
+                ("EMI Amount: ₹[XXXX]" if first else "EMI Amount of this disbursement for 30-day cycle: ₹[XXXX]") +
+                "\n• First EMI Due Date: [Date]\n• Balance amount available <<₹>> (If disbursement type is MULTIPLE.)\n\n" +
+                ("Repayment Schedule" if first else "Repayment Schedule (display only the residual term) – cumulative of all disbursements till date") +
+                "\nRepayment Date | Repayment Amount\nDD-MMM-YYYY | ₹XXXXXX\nDD-MMM-YYYY | ₹XXXXXX\nDD-MMM-YYYY | ₹XXXXXX\n\n"
+                "Please note that the purpose of the loan, as confirmed by you, is <<Purpose>> and not for any speculative trading in securities, derivatives, commodities, or any unlawful purposes.\n\n" + THANKS)
+_M = [
+ ("Email Verification", "When the customer clicks Verify for the email on the KYC Verification page", "LOS",
+  "XXXXXX – Your Email Verification OTP for Shriram Credit LAMF",
+  "Dear Customer,\n\nXXXXXX is the OTP to verify your email and continue with your Shriram Credit’s Loan Against Mutual Fund application.\n\nPlease do not share the OTP with anyone.",
+  [("XXXXXX", "123456")]),
+ ("Mutual Fund Pledge Successful", "After the mutual fund units are successfully pledged", "LOS",
+  "Your mutual fund pledge is successful",
+  "Dear [Customer Name],\n\nCongratulations! Your mutual fund has been successfully pledged against your applied loan with Shriram Credit.\n\nYou are one step closer to receiving your funds. We’ll notify you once the loan is disbursed.", []),
+ ("Loan Sanction Letter Mail", "After the Sanction Letter is generated. To: customer e-mail ID; CC: loandocuments@shriramcredit.in; Sanction Letter attached", "LOS",
+  "SCCL Loan Sanction Letter – << Full Name of the customer >>",
+  "Dear [Customer Name],\n\nWe are pleased to inform you that your loan application with Shriram Credit Company Limited (SCCL) has been approved.\n\nFor your reference, we have attached the Loan Sanction Letter, which contains the complete details of your approved loan, including the sanctioned amount, tenure, repayment schedule, interest rate, and applicable terms and conditions.\n\nWe encourage you to review this document thoroughly to ensure you are familiar with the loan structure and repayment obligations.\n\n" + SUPPORT + "\n\n" + THANKS, []),
+ ("Loan Agreement Mail", "After the loan agreement is e-signed. To: customer e-mail ID; CC: loandocuments@shriramcredit.in; signed Loan Agreement attached", "LOS",
+  "SCCL Loan Agreement – << Full Name of the customer >>",
+  "Dear [Customer Name],\n\nWe are pleased to inform you that your loan application with Shriram Credit Company Limited (SCCL) has been approved, and your loan agreement is now ready for your review.\n\nYour Loan ID is XXXXXXXX\n\n📄 Attached to this email, you will find your digitally signed loan agreement. We request that you review the document carefully to ensure that all details, terms, and conditions are accurate and aligned with the Sanction Letter.\n\n✅ If everything is in order, no further action is required. Your loan will be processed strictly in accordance with the terms outlined in the agreement.\n\n" + SUPPORT + "\n\n" + THANKS,
+  [("XXXXXXXX", "SCCLMF20261000102")]),
+ ("Withdrawal Initiation", "After the loan is approved and the LAMF account is created – the customer can now initiate a withdrawal", "LMS",
+  "Withdrawal Initiation: Successful LAMF Account Creation – << Full Name of the customer >>",
+  "Dear [Customer Name],\n\nWe are pleased to inform you that your loan application with Shriram Credit Company Limited (SCCL) has been successfully approved, and your Loan ID is XXXXXXXX.\n\nYou can now initiate the withdrawal request for the approved amount at https://lamf.shriramcredit.in/.\n\n" + SUPPORT + "\n\n" + THANKS,
+  [("XXXXXXXX", "SCCLMF20261000102")]),
+ ("Loan Disbursal Confirmation (First Disbursement)", "When the first disbursement is credited to the customer’s bank account", "LMS",
+  "Loan disbursed to your account", "Dear [Customer Name],\n\n" + DISB(True),
+  [("₹[XXXX] has", "₹10,000 has"), ("Customer ID: [XXXX]", "Customer ID: SCCL1000102"), ("Loan Account ID: [XXXX]", "Loan Account ID: SCCLMF20261000102"), ("<<Single / Multiple>>", "Multiple"), ("<<1>>", "1"), ("UTRN: [XXXX]", "UTRN: UTIBR52026102700001"), ("[XX months]", "12 months"), ("EMI Amount: ₹[XXXX]", "EMI Amount: ₹88"), ("[Date]", "05-11-2026"), ("<<₹>>", "₹1,55,26,100"), ("<<Purpose>>", "Home Renovation")]),
+ ("Loan Disbursal Confirmation (Subsequent Disbursement)", "When each later disbursement (disbursement type Multiple) is credited", "LMS",
+  "Loan disbursed to your account", "Dear [Customer Name],\n\n" + DISB(False),
+  [("₹[XXXX] has", "₹20,000 has"), ("Customer ID: [XXXX]", "Customer ID: SCCL1000102"), ("Loan Account ID: [XXXX]", "Loan Account ID: SCCLMF20261000102"), ("<<Multiple>>", "Multiple"), ("Disbursement No.: \n", "Disbursement No.: 2\n"), ("UTRN: [XXXX]", "UTRN: UTIBR52026110200002"), ("[XX months]", "12 months"), ("cycle: ₹[XXXX]", "cycle: ₹175"), ("[Date]", "05-12-2026"), ("<<₹>>", "₹1,55,06,100"), ("<<Purpose>>", "Home Renovation")]),
+ ("Upcoming EMI Due Reminder", "Sent 5 days before the original presentation of the EMI (routine T-5)", "LMS",
+  "Reminder: Your EMI of ₹[XXXX] is due on [Date]", "Dear [Customer Name],\n\n" + EMI_REMINDER, []),
+ ("EMI Presentation Mail", "Sent one day before the EMI presentation date (routine T-1)", "LMS",
+  "EMI Presentation Alert – <<Date of EMI>>", "Dear [Customer Name],\n\n" + EMI_REMINDER, []),
+ ("Successful EMI Deduction Mail", "Routine EMI clearance – the EMI is debited successfully", "LMS",
+  "Your EMI of ₹[XXXX] Has Been Successfully Deducted",
+  "Dear [Customer Name],\n\nWe are writing to confirm that your EMI of ₹[XXXX] for the loan account [Loan ID] was successfully debited on [Date] from your registered bank account.\n\n📄 EMI Details:\n• Loan Account Number: [Loan ID]\n• EMI Amount: ₹[XXXX]\n• Deduction Date: [Date]\n• Next EMI Due Date: [Next Date]\n\nThank you for ensuring timely payment. Regular EMI payments help maintain a strong credit history and a smooth loan journey.\n\n" + SUPPORT,
+  [("₹[XXXX]", "₹10,000"), ("[Loan ID]", "SCCLMF20261000102"), ("[Next Date]", "05-12-2026"), ("[Date]", "05-11-2026")]),
+ ("Instalment Failure / EMI Bounce Notification (Bounce – 1A)", "When the EMI bounces (insufficient balance); re-presented on T+5 days", "LMS",
+  "Alert: Your EMI payment failed",
+  "Dear [Customer Name],\n\nWe could not process your EMI of ₹[XXXX] for the loan account [Loan ID] on [Date] due to insufficient balance.\n\nWe will re-present the EMI on <<T+5 days>>. Please ensure your account has a sufficient balance to avoid penalties.\n\nIn case the amount is not received on the re-presentation date, we shall initiate loan closure procedures.\n\n" + SUPPORT,
+  [("₹[XXXX]", "₹10,000"), ("[Loan ID]", "SCCLMF20261000102"), ("[Date]", "05-11-2026"), ("<<T+5 days>>", "10-11-2026")]),
+ ("Second EMI Representation Reminder (1B T-1)", "Sent one day before the EMI is re-presented", "LMS",
+  "Final Reminder: EMI Re-presentation on [Date]",
+  "Dear [Customer Name],\n\nThis is to inform you that your EMI of ₹[XXXX] will be re-presented on [Date].\n\nPlease ensure your account has a sufficient balance to avoid penalties and negative impact on your credit score.\n\nIn case the amount is not received on the re-presentation date, we shall initiate loan closure procedures.",
+  [("₹[XXXX]", "₹10,000"), ("[Date]", "10-11-2026")]),
+ ("Initiation of Loan Closure Procedures (2B Bounce)", "When the re-presented EMI bounces again – pledge liquidation is initiated", "LMS",
+  "Urgent: Mutual Fund Liquidation Scheduled",
+  "Dear [Customer Name],\n\nSince you defaulted on your repayment, we are initiating the pledge liquidation process to recover the total outstanding amount.\n\n" + SUPPORT, []),
+ ("Part Payment", "When a part payment is processed successfully; the revised repayment schedule is attached", "LMS",
+  "Payment Acknowledgment: Your Shriram Credit Loan Against Mutual Funds Part Payment Has Been Processed",
+  "Dear [Customer Name],\n\nWe confirm that part payment towards your Loan Against Mutual Fund (LAMF) from Shriram Credit has been successfully processed.\n\nPayment Summary:\n• Transaction Status: Successful\n• Amount Received: [₹XXXX Mention Amount]\n• Revised Outstanding Balance: [₹XXXX Mention Amount]\n\nUpdated Repayment Schedule:\nAs a result of this payment, your Repayment Schedule has been revised. Please find the updated schedule attached to this email for your reference.\n\n" + SUPPORT + "\n\n" + THANKS,
+  [("Amount Received: [₹XXXX Mention Amount]", "Amount Received: ₹5,000"), ("Balance: [₹XXXX Mention Amount]", "Balance: ₹5,000")]),
+ ("Pre Closure", "When the customer pre-closes the loan (final payment received before the end of the tenure)", "LMS",
+  "Loan Pre-Closure Confirmation: Your Shriram Credit Loan Against Mutual Funds Has Been Closed Successfully",
+  "Dear [Customer Name],\n\nCongratulations on successfully pre-closing your Loan Against Mutual Fund (LAMF) with Shriram Credit.\n\n" + CLOSED_BODY, []),
+ ("Margin Call / Mutual Fund Value Drop Mail", "When the market value of the pledged units drops and the LTV is above the limit", "LMS",
+  "Action Required: Mutual Fund Margin Shortfall",
+  "Dear [Customer Name],\n\nThe current market value of your Mutual Fund units pledged with us has declined and current LTV is at (YY.YY)%\n\nWe request you to make an immediate payment of ₹ (XXXX) (minimum amount) to reduce your total loan outstanding, or increase your collateral pledge (For Equity MF of (XXXX/0.65) or For Debt MF of (XXXX/0.75)) to bring your account within the prescribed limit.\n\nPlease visit our website and follow the easy steps to make the payment or increase your collateral pledge.\n\nFailure to maintain the required margin may result in loan adjustment actions as per the terms of Loan Agreement.\n\nShould you have any questions, require clarification, or need assistance, please feel free to reach out to our customer support team at lassupport@shriramcredit.in. Our team will be happy to assist you.\n\nThank you for your prompt attention to this matter.",
+  [("(YY.YY)%", "82.50%"), ("₹ (XXXX) (minimum amount)", "₹ 10,000 (minimum amount)"), ("Equity MF of (XXXX/0.65)", "Equity MF of ₹15,385"), ("Debt MF of (XXXX/0.75)", "Debt MF of ₹13,333")]),
+ ("Loan Tenure Completion (Closure Mail)", "EMI loan: when the last EMI is paid; balloon loan: when the principal outstanding is paid", "LMS",
+  "Congratulations on completing your loan journey",
+  "Dear [Customer Name],\n\nCongratulations on successfully closing your Loan Against Mutual Fund (LAMF) with Shriram Credit.\n\n" + CLOSED_BODY, []),
+ ("NOC / Loan Closure Certificate", "Manual trigger after the loan is closed; the NOC is attached", "LMS",
+  "Your Loan Account [Loan ID] is closed successfully",
+  "Dear [Customer Name],\n\nWe are pleased to inform you that your loan account [Loan ID] has been closed successfully.\n\nThe No Objection Certificate (NOC) is attached for your records.\n\nYour Customer ID is active with us, and you may visit us for any future requirements.\n\nWe thank you for choosing Shriram Credit and look forward to serving you again.",
+  [("[Loan ID]", "SCCLMF20261000102")]),
+ ("LTV Breach beyond Policy Norms", "When the LTV keeps breaching after the margin call and reaches the liquidation threshold", "LMS",
+  "Immediate Action: Liquidation of Pledged Mutual Fund Units due to LTV Breach",
+  "Dear [Customer Name],\n\nDespite our previous communications, the Loan-to-Value (LTV) ratio of your Loan Against Mutual Funds has continued to breach the permissible limit and has now reached the liquidation threshold.\n\nAccordingly, Shriram Credit has initiated the liquidation of your pledged Mutual Fund units to recover the margin shortfall, in accordance with the terms and conditions of your Loan Agreement.\n\nAny surplus amount, after adjustment of all outstanding dues and applicable charges, shall be dealt with in accordance with the Loan Agreement.\n\nShould you require any clarification or assistance, please feel free to reach out to our customer support at lassupport@shriramcredit.in. Our team will be happy to assist you.\n\nThank you for your understanding.", []),
+ ("Principal Repayment for Loan Closure", "When the loan reaches maturity and the outstanding principal is unpaid – 5 working days grace period", "LMS",
+  "Action Required: Principal Repayment",
+  "Dear [Customer Name],\n\nYour Loan Against Mutual Funds has reached its maturity date and the outstanding principal amount remains unpaid.\n\nAs a goodwill measure, Shriram Credit is providing a grace period of five (5) working days from the maturity date to enable you to repay the outstanding principal.\n\nPlease note that:\n• Interest at the applicable contractual rate shall continue to accrue during the grace period.\n• The outstanding amount must be repaid within the stipulated grace period.\n\nPlease use the below link to check the details and make payment.\n{LINK}\n\nFailure to repay the outstanding amount within the grace period shall result in liquidation of your pledged Mutual Fund units to recover the outstanding dues in accordance with the terms of your Loan Agreement.\n\nShould you require any clarification or assistance, please contact us at lassupport@shriramcredit.in.\n\nThank you for your prompt attention.",
+  [("{LINK}", "https://lamf.shriramcredit.in/user/loans/")]),
+ ("Liquidation for Outstanding Loan (after grace period)", "When the grace period for the matured loan has expired and the principal is still unpaid – liquidation is initiated. (Scenario name in the document was a pasted link – to be confirmed)", "LMS",
+  "Immediate Action: Liquidation of Pledged Mutual Fund Units for Recovery of Outstanding Loan",
+  "Dear [Customer Name],\n\nThe grace period provided for repayment of your matured Loan Against Mutual Funds has expired, and the outstanding principal amount remains unpaid.\n\nAccordingly, Shriram Credit has initiated the liquidation of your pledged Mutual Fund units to recover the outstanding loan amount, together with applicable interest, charges and other dues, in accordance with the terms of the Loan Agreement.\n\nAny balance amount remaining after adjustment of all outstanding dues shall be dealt with in accordance with the Loan Agreement.\n\nShould you require any clarification or assistance, please feel free to contact our customer support at lassupport@shriramcredit.in.\n\nThank you for your understanding.", []),
+]
+def _sample(text, subs):
+    for a, b in subs:
+        text = text.replace(a, b)
+    return (text.replace("[Customer Name]", "AZHAGARSAMY").replace("<< Full Name of the customer >>", "AZHAGARSAMY SUBBURAJ")
+                .replace("<<Date of EMI>>", "05-11-2026").replace("₹[XXXX]", "₹10,000").replace("[Date]", "05-11-2026"))
+MAILS = [(stage, scen, app, "Mail", "SCCL", body + MAIL_SIGN + MAIL_DISCLAIMER, _sample(body + MAIL_SIGN + MAIL_DISCLAIMER, subs),
+          subj, "-", "Yes") for stage, scen, app, subj, body, subs in _M]
+MAIL_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Body (template)",
+             "Body (sample)", "Mail Subject", "SMS Header", "Available"]
+
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
 
-def comms_body(home):
-    esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>")
-    head = "".join(f"<th>{c}</th>" for c in COMMS_COLS)
+def comms_table(rows_data, cols, prefix):
+    esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>").replace("\n", "<br>")
+    head = "".join(f"<th>{c}</th>" for c in cols)
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
     rows = "".join('<tr%s><td>%d</td>%s</tr>' % (' class="na"' if r[-1].startswith("No") else "", k, "".join(f"<td>{esc(v)}</td>" for v in r))
-                   for k, r in enumerate(COMMS, 1))
+                   for k, r in enumerate(rows_data, 1))
+    return f'<div class="comms-wrap"><table class="comms {prefix}"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+
+def comms_body(home):
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
-            f'<p>SMS and mail sent to the customer during the LOS journey ({len(COMMS)} communications). '
-            'Content Structure shows the approved template; Actual Content shows a sample with the variable filled in.</p>'
-            f'<div class="comms-wrap"><table class="comms"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} SMS, {len(MAILS)} mails). '
+            'Content Structure / Body (template) shows the approved template; Actual Content / Body (sample) shows a sample with the variables filled in.</p>'
+            '<nav class="comms-jump"><a href="#comms-sms">SMS (' + str(len(COMMS)) + ')</a><a href="#comms-mail">Mail (' + str(len(MAILS)) + ')</a></nav>'
+            f'<h2 id="comms-sms">SMS</h2>' + comms_table(COMMS, COMMS_COLS, 'sms') +
+            f'<h2 id="comms-mail">Mail</h2><p>Mail Subject is filled; SMS Header does not apply.</p>' + comms_table(MAILS, MAIL_COLS, 'mail')
             + CONTACT)
 
 def home_body(home, prd, journey, comms):
