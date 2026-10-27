@@ -215,11 +215,17 @@ COMMS = [
   "Dear {#alp#}, Your Shriram Credit - Loan Against Mutual Fund is approved and active. Withdraw your funds now:- {#urg#} - Shriram Credit",
   "Dear AZHAGARSAMY, Your Shriram Credit - Loan Against Mutual Fund is approved and active. Withdraw your funds now:- https://lamf.shriramcredit.in/ - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
- ("Loan Account Opening / Loan Lodgement Rejection",
-  "When the OPS team rejects the Loan Account Opening or the Loan Lodgement in the backend LMS – one common SMS for either rejection, with a payment link for the charges the customer has to pay (processing fee, lien marking and lien removal). Template drafted by Claude for approval; to be created and registered",
+ ("Loan Account Opening / Loan Lodgement Rejection (with payment link)",
+  "When the OPS team rejects the Loan Account Opening or the Loan Lodgement in the backend LMS – one common SMS for either rejection – WITH payment link, when the customer has charges to pay (processing fee, lien marking and lien removal). Template drafted by Claude for approval; to be created and registered",
   "LMS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, We regret that your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges (processing fee, lien marking and lien removal) of Rs. {#alphanumeric#} using this link: {#urg#} - Shriram Credit",
   "Dear AZHAGARSAMY, We regret that your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges (processing fee, lien marking and lien removal) of Rs. 92,313 using this link: https://lamf.shriramcredit.in/ - Shriram Credit",
+  "-", "SGRCDT-T", "No – to be created"),
+ ("Loan Account Opening / Loan Lodgement Rejection (without payment link)",
+  "When the OPS team rejects the Loan Account Opening or the Loan Lodgement in the backend LMS – one common SMS for either rejection – WITHOUT payment link, when there are no charges for the customer to pay. Template drafted by Claude for approval; to be created and registered",
+  "LMS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, We regret that your Loan Against Mutual Fund application could not be approved. For assistance, please contact our support team - Shriram Credit",
+  "Dear AZHAGARSAMY, We regret that your Loan Against Mutual Fund application could not be approved. For assistance, please contact our support team - Shriram Credit",
   "-", "SGRCDT-T", "No – to be created"),
  ("Withdrawal",
   "When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal",
@@ -306,6 +312,12 @@ COMMS = [
   "Dear {#alp#}, As the outstanding principal is still unpaid, we are initiating liquidation for recovery of outstanding dues - Shriram Credit",
   "Dear AZHAGARSAMY, As the outstanding principal is still unpaid, we are initiating liquidation for recovery of outstanding dues - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
+ ("Foreclosure Completed",
+  "When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed. Template drafted by Claude for approval; to be created and registered",
+  "LMS", "SMS", "SCCL",
+  "Dear {#alphanumeric#}, Your Loan Against Mutual Fund account {#alphanumeric#} has been foreclosed successfully. Your MF units will be released from lien in 2-3 working days - Shriram Credit",
+  "Dear AZHAGARSAMY, Your Loan Against Mutual Fund account SCCLMF20261000102 has been foreclosed successfully. Your MF units will be released from lien in 2-3 working days - Shriram Credit",
+  "-", "SGRCDT-T", "No – to be created"),
  ("Successful Loan Tenure Completion",
   "When the customer completes all the EMI instalments (loan fully repaid)",
   "LOS", "SMS", "SCCL",
@@ -320,7 +332,12 @@ COMMS = [
   "-", "SGRCDT-T", "Yes"),
 ]
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Content Structure",
-              "Actual Content", "Mail Subject", "SMS Header", "Available"]
+              "Actual Content", "Mail Subject", "SMS Header", "Available", "Status"]
+# Status (DISC-201): SMS the owner marked “Not Required” stay in the table; every other SMS is “Required”.
+SMS_NOT_REQUIRED = {"LAN Generated", "Pre-Pledge Application Expiry Reminder", "Pre-Pledge Application Discarded", "Customer-Initiated Discard",
+                    "Lien Marking Failed", "Post-Pledge Journey Incomplete", "Post-Pledge Application Expiry Reminder", "Lien Removal Request Received"}
+assert SMS_NOT_REQUIRED <= {r[0] for r in COMMS}
+COMMS = [r + ("Not Required" if r[0] in SMS_NOT_REQUIRED else "Required",) for r in COMMS]
 # Customer e-mails (owner's document "Email Notifications for Customer – Quicklend 0109 Revised", DISC-199).
 # Same columns as COMMS; Communication Type “Mail”, Mail Subject filled, SMS Header “-”.
 # Body text keeps the document wording; “\n” is a line break. Actual Content = the body with sample values.
@@ -439,7 +456,9 @@ def comms_table(rows_data, cols, prefix):
     esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>").replace("\n", "<br>")
     head = "".join(f"<th>{c}</th>" for c in cols)
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
-    rows = "".join('<tr%s><td>%d</td>%s</tr>' % (' class="na"' if r[-1].startswith("No") else "", k, "".join(f"<td>{esc(v)}</td>" for v in r))
+    avail = cols.index("Available") - 1
+    cls = lambda r: " ".join(c for c, on in (("na", r[avail].startswith("No")), ("nr", r[-1] == "Not Required")) if on)
+    rows = "".join('<tr class="%s"><td>%d</td>%s</tr>' % (cls(r), k, "".join(f"<td>{esc(v)}</td>" for v in r))
                    for k, r in enumerate(rows_data, 1))
     return f'<div class="comms-wrap"><table class="comms {prefix}"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
 
