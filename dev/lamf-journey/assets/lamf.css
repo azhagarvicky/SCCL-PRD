@@ -1070,3 +1070,8 @@ body.page-screens { padding: 40px 76px; }
 .page-comms table.comms.mail td:nth-child(7), .page-comms table.comms.mail td:nth-child(8) { min-width: 460px; }
 .page-comms table.comms.mail td:nth-child(9) { white-space: normal; min-width: 260px; font-weight: 600; }
 .page-comms table.comms.mail { min-width: 2300px; }
+/* SMS Status column (DISC-201): Not Required rows greyed, kept in the table */
+.page-comms .comms td:nth-child(12) { white-space: nowrap; font-weight: 700; color: #12753B; }
+.page-comms .comms tr.nr td { background: #F1F1F1 !important; color: #8A8A8A; }
+.page-comms .comms tr.nr td:nth-child(12) { color: #B42318; }
+.page-comms table.comms.sms { min-width: 2020px; }
