@@ -428,7 +428,7 @@ def _sample(text, subs):
     return (text.replace("[Customer Name]", "AZHAGARSAMY").replace("<< Full Name of the customer >>", "AZHAGARSAMY SUBBURAJ")
                 .replace("<<Date of EMI>>", "05-11-2026").replace("₹[XXXX]", "₹10,000").replace("[Date]", "05-11-2026"))
 MAILS = [(stage, scen, app, "Mail", "SCCL", body + MAIL_SIGN + MAIL_DISCLAIMER, _sample(body + MAIL_SIGN + MAIL_DISCLAIMER, subs),
-          subj, "-", "Yes") for stage, scen, app, subj, body, subs in _M]
+          subj, "-", "Provided") for stage, scen, app, subj, body, subs in _M]
 MAIL_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Body (template)",
              "Body (sample)", "Mail Subject", "SMS Header", "Available"]
 
