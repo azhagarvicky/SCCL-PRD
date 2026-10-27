@@ -1061,3 +1061,12 @@ body.page-screens { padding: 40px 76px; }
 .page-comms .comms td:nth-child(7), .page-comms .comms td:nth-child(8) { min-width: 380px; }
 .page-comms .comms tr.na td { background: #FFF7E6 !important; }
 .page-comms .comms tr.na td:last-child { color: #B42318; font-weight: 700; }
+
+/* ---------- communications.html: SMS and Mail tables (DISC-199) ---------- */
+.page-comms h2 { font-size: 21px; margin: 30px 0 8px; scroll-margin-top: 20px; }
+.page-comms .comms-jump { display: flex; gap: 12px; margin: -6px 0 6px; }
+.page-comms .comms-jump a { padding: 6px 14px; border: 1px solid var(--line); border-radius: 18px; font-size: 14px; font-weight: 600; }
+.page-comms .comms-jump a:hover { background: var(--yellow-soft); }
+.page-comms table.comms.mail td:nth-child(7), .page-comms table.comms.mail td:nth-child(8) { min-width: 460px; }
+.page-comms table.comms.mail td:nth-child(9) { white-space: normal; min-width: 260px; font-weight: 600; }
+.page-comms table.comms.mail { min-width: 2300px; }
