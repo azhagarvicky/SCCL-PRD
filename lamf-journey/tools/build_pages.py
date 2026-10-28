@@ -245,7 +245,7 @@ COMMS = [
   'Dear AZHAGARSAMY, Your withdrawal request of Rs. 10,000 for loan account SCCLMF20261000102 has been rejected. For assistance, please contact our support team - Shriram Credit',
   "-", "SGRCDT-T", "No – to be created"),
  ("Loan Disbursed (First Disbursement)",
-  "When the loan is disbursed for the first time (first disbursement) – notifying the customer that the amount is credited to the bank account. Each subsequent withdrawal is the mail-only row below",
+  "When the loan is disbursed for the first time (first disbursement) – notifying the customer that the amount is credited to the bank account. Each subsequent withdrawal is the row below (same SMS, different mail)",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
   "Dear AZHAGARSAMY, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
@@ -629,21 +629,24 @@ MAIL_ONLY = [
   {"{{EMI_AMOUNT}}": "10,000", "{{DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
    "{{BANK_ACCOUNT_NUMBER}}": "XXXXXXXX8736", "{{LOAN_ID}}": "SCCLMF20261000102"}),
  ("Loan Disbursed (First Disbursement)", "Loan Disbursed (Subsequent Disbursement)",
-  "On each subsequent withdrawal / disbursement after the first one – notifying the customer that the amount is credited to the bank account (mail only, no SMS). The first disbursement is the row above",
+  "On each subsequent withdrawal / disbursement after the first one – notifying the customer that the amount is credited to the bank account. Same SMS as the first disbursement (row above); only the mail is different",
   "LOS", "08_Loan_Disbursal_Confirmation_Subsequent.html", "Loan disbursed to your account", "Loan disbursed to your account",
   "Trigger: each subsequent disbursement (Disbursement Type: Multiple); the repayment schedule shows the residual term only\n\n",
   {"{{LOAN_AMOUNT}}": "20,000", "{{CUSTOMER_ID}}": "SCCL1000102", "{{LOAN_ACCOUNT_ID}}": "SCCLMF20261000102", "{{DISBURSEMENT_NO}}": "2",
    "{{UTRN}}": "UTIBR52026110200002", "{{LOAN_TENURE}}": "12", "{{EMI_AMOUNT}}": "175", "{{FIRST_EMI_DATE}}": "05-Dec-2026",
    "{{BALANCE_AMOUNT}}": "1,55,06,100", "{{PURPOSE}}": "Home Renovation"}),
 ]
+SAME_SMS_AS_ABOVE = {"Loan Disbursed (Subsequent Disbursement)"}
 for after, stage, scen, app, fname, subj, subj_sample, head, subs in MAIL_ONLY:
     body = head + mail_text(fname)
     sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{CUSTOMER_FULL_NAME}}", "AZHAGARSAMY SUBBURAJ")
     for k, v in subs.items():
         sample = sample.replace(k, v)
     _i = [r[0] for r in COMMS].index(after) + 1
-    COMMS.insert(_i, (stage, scen, app, "Mail", "SCCL", "-", "-", "-", "-", "-",
-                      subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required"))
+    sms = ("Mail", "SCCL", "-", "-", "-", "-", "-")
+    if stage in SAME_SMS_AS_ABOVE:           # same SMS as the row it follows, only the mail differs (DISC-232)
+        sms = ("SMS, Mail",) + COMMS[_i - 1][4:10]
+    COMMS.insert(_i, (stage, scen, app) + sms + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 
 # Sender comes before Communication Type in both tables (DISC-205)

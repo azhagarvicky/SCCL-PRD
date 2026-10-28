@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 16:25 IST
+**Last Updated:** 28-10-2026 16:47 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -264,6 +264,7 @@
 | DISC-229 | 28-10-2026 | communications.html / mails / exports | Principal repayment mail | Owner: for “The day after the loan end date (loan matured) when the outstanding principal is still not paid” the attached 25_Principal_Repayment_for_Loan_Closure.html mail is sent | Row LAMF Principal Repayment Reminder (row 39): Communication Type SMS, Mail (SMS unchanged). Mail subject “Action Required: Principal Repayment {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/25_Principal_Repayment_for_Loan_Closure.html, logo path only changed; CTA shown as [Make Payment →]), Mail Available Yes + View, Mail Status Required. Mail text reader: bullet table rows now read “• text” | Implemented |
 | DISC-230 | 28-10-2026 | communications.html / mails / exports | EMI resubmission reminder mail (1B T-1) | Owner: for EMI Resubmission Reminder the attached 12_Second_EMI_Representation_Reminder_1B_T-1.html mail is sent | Row EMI Resubmission Reminder (row 33): Communication Type SMS, Mail (SMS unchanged). Mail subject “Final Reminder: EMI Re-presentation on {{REPRESENTATION_DATE}} <<{{LOAN_ID}}>>”, content from the template with its trigger line (1 day prior to the EMI re-presentation, 1B T-1), stored as lamf-journey/mails/12_Second_EMI_Representation_Reminder_1B_T-1.html (logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-231 | 28-10-2026 | communications.html / mails / exports | EMI resubmission failed mail (2B bounce) | Owner: when the EMI resubmission fails, the attached 18_Initiation_of_Loan_Closure_Procedures_2B_Bounce.html mail is sent | Row EMI Resubmission Failed (row 35): Communication Type SMS, Mail (SMS unchanged). Mail subject “Urgent: Mutual Fund Liquidation Scheduled {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/18_Initiation_of_Loan_Closure_Procedures_2B_Bounce.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
+| DISC-232 | 28-10-2026 | communications.html / exports | Subsequent disbursement – SMS too | Owner: for Loan Disbursed (Subsequent Disbursement) the same SMS as the first disbursement is sent; only the mail is different | Row 28 Loan Disbursed (Subsequent Disbursement): Communication Type SMS, Mail; SMS Content Structure, Actual SMS Content, SMS Header (SGRCDT-T), SMS Available (Yes) and SMS Status (Required) copied from row 27; mail unchanged (08 template). Scenarios of rows 27 and 28 now say same SMS, different mail | Implemented |
 
 ---
 
