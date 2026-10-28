@@ -250,7 +250,7 @@ COMMS = [
   "Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
   "Dear AZHAGARSAMY, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
   "-", "SGRCDT-T", "Yes"), ("EMI Reminder (T-5)",
-  "First EMI reminder: sent on the 1st of every month – T-5 / T-4 before the EMI presentation date – notifying the customer of the upcoming instalment (SMS and mail). The second reminder, T-1, is mail only (next row)",
+  "First EMI reminder: the EMI is due on the 5th of every month, so this reminder has to be sent on the 1st of every month – notifying the customer of the upcoming instalment (SMS and mail). The second reminder, T-1, is mail only (next row)",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} is due on {#alphanumeric#}. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit",
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 is due on 05-11-2026. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit",
