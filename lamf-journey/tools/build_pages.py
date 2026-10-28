@@ -244,8 +244,8 @@ COMMS = [
   'Dear {#alphanumeric#}, Your withdrawal request of Rs. {#alphanumeric#} for loan account {#alphanumeric#} has been rejected. For assistance, please contact our support team - Shriram Credit',
   'Dear AZHAGARSAMY, Your withdrawal request of Rs. 10,000 for loan account SCCLMF20261000102 has been rejected. For assistance, please contact our support team - Shriram Credit',
   "-", "SGRCDT-T", "No – to be created"),
- ("Loan Disbursed",
-  "When the loan is disbursed – notifying the customer that the amount is credited to the bank account",
+ ("Loan Disbursed (First Disbursement)",
+  "When the loan is disbursed for the first time (first disbursement) – notifying the customer that the amount is credited to the bank account. Each subsequent withdrawal is the mail-only row below",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
   "Dear AZHAGARSAMY, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
@@ -540,7 +540,7 @@ MAIL_TEMPLATES = {
 # Mails given as text / screenshots (no HTML template yet): {stage: (subject structure, sample subject, body, {placeholder: sample})} (DISC-214)
 _SCHEDULE = "REPAYMENT SCHEDULE (12 rows – one per month of the 12-month tenure; a 13th row is shown only when required)\nRepayment Date | Repayment Amount\n"
 TEXT_MAILS = {
- "Loan Disbursed": ("Loan disbursed to your account", "Loan disbursed to your account",
+ "Loan Disbursed (First Disbursement)": ("Loan disbursed to your account", "Loan disbursed to your account",
     "Loan Disbursed\n\nDear {{CUSTOMER_NAME}},\n\nWe are happy to inform you that your loan amount of ₹{{DISBURSED_AMOUNT}} has been credited to your bank account.\n\n"
     "LOAN DETAILS\nCustomer ID: {{CUSTOMER_ID}}\nLoan Account ID: {{LOAN_ACCOUNT_ID}}\nDisbursement Type: {{DISBURSEMENT_TYPE}}\nDisbursement No.: {{DISBURSEMENT_NO}}\n"
     "Disbursement UTRN: {{UTRN}}\nLoan Tenure: {{LOAN_TENURE}} months\nEMI Amount: ₹{{EMI_AMOUNT}}\nFirst EMI Due Date: {{FIRST_EMI_DATE}}\nBalance Amount Available: ₹{{BALANCE_AMOUNT}}\n\n"
@@ -585,6 +585,13 @@ MAIL_ONLY = [
   "Trigger: 1 day before the EMI presentation date (T-1)\n\n",
   {"{{EMI_AMOUNT}}": "10,000", "{{DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
    "{{BANK_ACCOUNT_NUMBER}}": "XXXXXXXX8736", "{{LOAN_ID}}": "SCCLMF20261000102"}),
+ ("Loan Disbursed (First Disbursement)", "Loan Disbursed (Subsequent Disbursement)",
+  "On each subsequent withdrawal / disbursement after the first one – notifying the customer that the amount is credited to the bank account (mail only, no SMS). The first disbursement is the row above",
+  "LOS", "08_Loan_Disbursal_Confirmation_Subsequent.html", "Loan disbursed to your account", "Loan disbursed to your account",
+  "Trigger: each subsequent disbursement (Disbursement Type: Multiple); the repayment schedule shows the residual term only\n\n",
+  {"{{LOAN_AMOUNT}}": "20,000", "{{CUSTOMER_ID}}": "SCCL1000102", "{{LOAN_ACCOUNT_ID}}": "SCCLMF20261000102", "{{DISBURSEMENT_NO}}": "2",
+   "{{UTRN}}": "UTIBR52026110200002", "{{LOAN_TENURE}}": "12", "{{EMI_AMOUNT}}": "175", "{{FIRST_EMI_DATE}}": "05-Dec-2026",
+   "{{BALANCE_AMOUNT}}": "1,55,06,100", "{{PURPOSE}}": "Home Renovation"}),
 ]
 for after, stage, scen, app, fname, subj, subj_sample, head, subs in MAIL_ONLY:
     body = head + mail_text(fname)
@@ -609,7 +616,7 @@ MAIL_COLS, MAILS = _sender_first(MAIL_COLS, MAILS)
 REMARKS = {
  "On the completion of each withdrawal by the customer (withdrawal request confirmed)":
    "This SMS has to come once the withdrawal OTP is verified successfully, but it currently comes only once the UTR is approved in the LMS.",
- "Loan Disbursed": "In the disbursement mail, Disbursement No. ({{DISBURSEMENT_NO}}) and Disbursement UTRN ({{UTRN}}) currently show a random format; the format of both has to be defined correctly.",
+ "Loan Disbursed (First Disbursement)": "In the disbursement mail, Disbursement No. ({{DISBURSEMENT_NO}}) and Disbursement UTRN ({{UTRN}}) currently show a random format; the format of both has to be defined correctly.",
  "Pledging of Mutual Fund": "Both the SMS and Email communication are currently received once the loan lodgement is successful, but they are supposed to come right after the pledging is successful.",
 }
 assert set(REMARKS) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}      # keyed by stage, or by scenario
