@@ -261,7 +261,7 @@ COMMS = [
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 was successfully debited on 05-11-2026. Thank you for your timely payment - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
  ("EMI Failed",
-  "Notifying the customer when the instalment bounces (rejected by the bank); the debit is retried on the 10th",
+  "Notifying the customer when the instalment presented on the 5th of the month bounces (rejected by the bank); the debit is retried on the 10th – SMS and mail",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} was rejected by your bank on {#alphanumeric#}. We will retry on {#alphanumeric#}. Please ensure sufficient balance - Shriram Credit",
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 was rejected by your bank on 05-11-2026. We will retry on 10-11-2026. Please ensure sufficient balance - Shriram Credit",
@@ -536,6 +536,10 @@ MAIL_TEMPLATES = {
     "Trigger: 1st of every month – T-5 / T-4 before the EMI presentation date\n\n",
     {"{{EMI_AMOUNT}}": "10,000", "{{DUE_DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
      "{{BANK_ACCOUNT_NUMBER}}": "XXXXXXXX8736", "{{LOAN_ID}}": "SCCLMF20261000102"}),
+ "EMI Failed": ("11_Instalment_Failure_EMI_Bounce_Notification_1A.html",
+    "Alert: Your EMI payment failed {{LOAN_ID}}", "Alert: Your EMI payment failed SCCLMF20261000102",
+    "Trigger: EMI presented on the 5th of the month bounces (Bounce - 1A); re-presented on the 10th\n\n",
+    {"{{EMI_AMOUNT}}": "10,000", "{{LOAN_ID}}": "SCCLMF20261000102", "{{BOUNCE_DATE}}": "05-11-2026", "{{REPRESENTATION_DATE}}": "10-11-2026"}),
 }
 # Mails given as text / screenshots (no HTML template yet): {stage: (subject structure, sample subject, body, {placeholder: sample})} (DISC-214)
 _SCHEDULE = "REPAYMENT SCHEDULE (12 rows – one per month of the 12-month tenure; a 13th row is shown only when required)\nRepayment Date | Repayment Amount\n"
