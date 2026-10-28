@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 18:33 IST
+**Last Updated:** 28-10-2026 18:35 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -280,6 +280,7 @@
 | DISC-245 | 28-10-2026 | communications.html / exports | Column groups | Owner: S.No to Communication Type is the General (common) group, SMS Content Structure to SMS Available is the SMS group, Mail Subject Structure to Mail Available is the Mail group, and Remarks is common like S.No – Communication Type | Both tables on communications.html get a group header row above the column names: GENERAL (6 columns, blue) · SMS (4, orange) · MAIL (5, green) · GENERAL (Remarks, blue); the column names are tinted in their group colour. Excel: same group row (merged cells, same colours) as row 1 of both sheets, column names in row 2, freeze at C3, filter on row 2. Groups come from COMMS_GROUPS in build_pages.py | Implemented |
 | DISC-246 | 28-10-2026 | communications.html / exports | “-” in the Mail columns of SMS-only rows | Owner: rows whose Communication Type is SMS only (e.g. rows 1 – 3) have no mail – mark the Mail columns “-” instead of blank | Every SMS-only row (main and Not Required tables, page and Excel): Mail Subject Structure, Actual Mail Subject, Mail Content Structure, Actual Mail Content and Mail Available show “-” (as the SMS columns of the mail-only row already do). Remarks left blank | Implemented |
 | DISC-247 | 28-10-2026 | communications.html / exports | Mails to be created for rows 6 – 9 | Owner: rows 6 – 9 – the mail also has to be created | Rows 6 Application Expired – Lien Marked, 7 Lien Removal Initiated, 8 Lien Removal Successful, 9 Lien Removal Failed: Communication Type SMS, Mail; mail subject and content drafted by Claude for approval (DRAFT_MAILS in build_pages.py, same tone, sign-off and disclaimer as the owner’s templates); Mail Available “No – to be created” (row highlighted). Summary: Mail 26 (22 available · 4 to be created), SMS and mail 25, SMS only 9. Excel fix: “No – to be created” in SMS Available / Mail Available now shown in red bold (the earlier column check was one column off) | Implemented |
+| DISC-248 | 28-10-2026 | communications.html / exports | Mail to be created for row 12 | Owner: row 12 (LAMF Application Submit) also needs an email, which is currently not available | Row 12: Communication Type SMS, Mail (SMS unchanged); mail drafted by Claude for approval – subject “Your LAMF application {{LOAN_ID}} has been submitted successfully”, body: E-Mandate completed, application submitted, team will review and notify once the loan account is opened; Mail Available “No – to be created” (row highlighted). Summary: Mail 27 (22 available · 5 to be created), SMS and mail 26, SMS only 8 | Implemented |
 
 ---
 
