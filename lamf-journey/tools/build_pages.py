@@ -453,7 +453,7 @@ MAIL_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", 
 # (Communication Type “Mail”, SMS columns “-”) or both. Mail values stay blank until the owner gives them.
 COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender",
               "SMS Content Structure", "Actual SMS Content", "SMS Header", "SMS Available", "SMS Status",
-              "Mail Subject Structure", "Mail Subject", "Mail Content Structure", "Actual Mail Content", "Mail Available", "Mail Status"]
+              "Mail Subject Structure", "Actual Mail Subject", "Mail Content Structure", "Actual Mail Content", "Mail Available", "Mail Status"]
 SMS_MAIL = {}   # {"SMS stage": "Mail stage"} – cleared on the owner's request (DISC-203); filled again from the owner's list
 _MAIL_BY_STAGE = {m[0]: m for m in MAILS}
 assert set(SMS_MAIL) <= {r[0] for r in COMMS} and set(SMS_MAIL.values()) <= set(_MAIL_BY_STAGE)
