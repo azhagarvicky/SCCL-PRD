@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 17:08 IST
+**Last Updated:** 28-10-2026 17:13 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -269,6 +269,7 @@
 | DISC-234 | 28-10-2026 | communications.html / exports | EMI Reminder – trigger line removed from mail | Owner: the line “Trigger: 1st of every month – T-5 / T-4 before the EMI presentation date” has to be removed in the mail (owner confirmed the reminder on the 1st for the EMI due on the 5th is T-4, not T-5) | Row 29: the trigger line removed from Mail Content Structure and Actual Mail Content; the mail now starts with the template text (EMI Due Reminder). Stage name and row 30 wording unchanged | Implemented |
 | DISC-235 | 28-10-2026 | communications.html / exports | Row 29 renamed and scenario | Owner: rename row 29 “EMI Reminder (T-5)” to “EMI Presentation Reminder (T-5)”; scenario: this communication has to be triggered on the 1st when the EMI is due on the 5th | Row 29 stage “EMI Presentation Reminder (T-5)”; Scenarios: “This communication has to be triggered on the 1st of every month when the EMI is due on the 5th – first reminder of the upcoming instalment (SMS and mail). The second reminder, T-1, is mail only (next row)”. SMS and mail unchanged | Implemented |
 | DISC-236 | 28-10-2026 | communications.html / exports | Row 30 T-1 – scenario and SMS to be created | Owner: update the row 30 scenario correctly (T-1 EMI presentation reminder); an SMS has to be created here – mark the status accordingly | Row 30 EMI Presentation Reminder (T-1): Scenarios – triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th, SMS and mail, SMS drafted by Claude for approval. Communication Type SMS, Mail; SMS drafted (“Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} for loan account {#alphanumeric#} will be presented tomorrow, {#alphanumeric#}. Please maintain sufficient balance to avoid penal charges - Shriram Credit”), SMS Header SGRCDT-T, SMS Available “No – to be created” (amber row), SMS Status Required. Mail unchanged | Implemented |
+| DISC-237 | 28-10-2026 | communications.html / exports | Row 30 scenario wording | Owner: row 30 scenario has to say “This communication has to be triggered 1 day before the EMI presentation date (T-1)”; do not mention “Second EMI” – it confuses with the EMI re-presentation | Row 30 Scenarios: “This communication has to be triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th – SMS and mail. SMS template drafted by Claude for approval; to be created and registered” | Implemented |
 
 ---
 
