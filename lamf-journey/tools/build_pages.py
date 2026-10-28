@@ -623,7 +623,7 @@ COMMS = [_with_mail(r) for r in COMMS]
 # Mail-only rows from HTML templates (no SMS): inserted after the given stage (DISC-216)
 MAIL_ONLY = [
  ("EMI Presentation Reminder (T-5)", "EMI Presentation Reminder (T-1)",
-  "Second EMI reminder: this communication has to be triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th – SMS and mail. SMS template drafted by Claude for approval; to be created and registered. The first reminder, T-5, is the row above",
+  "This communication has to be triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th – SMS and mail. SMS template drafted by Claude for approval; to be created and registered",
   "LOS", "10_EMI_Presentation_T-1.html", "EMI Presentation Alert – {{DATE}}", "EMI Presentation Alert – 05-11-2026",
   "Trigger: 1 day before the EMI presentation date (T-1)\n\n",
   {"{{EMI_AMOUNT}}": "10,000", "{{DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
