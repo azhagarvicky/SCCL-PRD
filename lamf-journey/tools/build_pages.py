@@ -261,7 +261,7 @@ COMMS = [
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 was successfully debited on 05-11-2026. Thank you for your timely payment - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
  ("EMI Failed",
-  "Notifying the customer when the instalment presented on the 5th of the month bounces (rejected by the bank); the debit is retried on the 10th – SMS and mail",
+  "When the EMI presentation fails on the 5th of the month, this communication has to be sent to the customer – SMS and mail",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} was rejected by your bank on {#alphanumeric#}. We will retry on {#alphanumeric#}. Please ensure sufficient balance - Shriram Credit",
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 was rejected by your bank on 05-11-2026. We will retry on 10-11-2026. Please ensure sufficient balance - Shriram Credit",
