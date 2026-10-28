@@ -548,7 +548,7 @@ MAIL_COLS, MAILS = _sender_first(MAIL_COLS, MAILS)
 
 # Remarks – the owner's observations on the live behaviour, last column of the SMS table (DISC-211)
 REMARKS = {
- "Pledging of Mutual Fund": "Both the SMS and the mail “Your mutual fund pledge is successful” are currently received once the loan lodgement is successful; they are supposed to come right after the pledging is successful.",
+ "Pledging of Mutual Fund": "Both the SMS and Email communication are currently received once the loan lodgement is successful, but they are supposed to come right after the pledging is successful.",
 }
 assert set(REMARKS) <= {r[0] for r in COMMS}
 COMMS_COLS = COMMS_COLS + ["Remarks"]
