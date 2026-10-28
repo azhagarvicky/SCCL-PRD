@@ -654,6 +654,9 @@ for after, stage, scen, app, fname, subj, subj_sample, head, subs in MAIL_ONLY:
         sms = ("SMS, Mail", "SCCL") + NEW_SMS[stage] + ("SGRCDT-T", "No – to be created", "Required")
     COMMS.insert(_i, (stage, scen, app) + sms + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
+# SMS Status “Not Required” → Mail Status “Not Required” too (DISC-242)
+assert COMMS_COLS[10] == "SMS Status" and COMMS_COLS[-1] == "Mail Status"
+COMMS = [r[:-1] + ("Not Required",) if r[9] == "Not Required" else r for r in COMMS]
 
 # Sender comes before Communication Type in both tables (DISC-205)
 def _sender_first(cols, rows):
