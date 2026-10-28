@@ -628,6 +628,13 @@ DRAFT_MAILS = {
  "Loan Account Opening / Loan Lodgement Rejection (without payment link)": ("Your LAMF application {{LOAN_ID}} could not be approved",
     "Your LAMF application SCCLMF20261000102 could not be approved",
     "Application Not Approved\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} could not be approved after our review.\n\n" "The applicable charges for this application have been waived, so no payment is required from you.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
+ "Withdrawal Rejected": ("Your withdrawal request for loan account {{LOAN_ID}} has been rejected",
+    "Your withdrawal request for loan account SCCLMF20261000102 has been rejected",
+    "Withdrawal Request Rejected\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your withdrawal request of ₹{{WITHDRAWAL_AMOUNT}} "
+    "for loan account {{LOAN_ID}} has been rejected after our review. No amount has been disbursed against this request.\n\n"
+    "WITHDRAWAL DETAILS\nLoan Account ID: {{LOAN_ID}}\nWithdrawal Amount: ₹{{WITHDRAWAL_AMOUNT}}\nRequest Date: {{REQUEST_DATE}}\nStatus: Rejected\n\n"
+    "You may place a new withdrawal request at any time, subject to your available balance.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
+    {"{{WITHDRAWAL_AMOUNT}}": "10,000", "{{REQUEST_DATE}}": "02-11-2026"}),
  "Lien Removal Failed": ("Lien removal could not be completed – {{LOAN_ID}}", "Lien removal could not be completed – SCCLMF20261000102",
     "Lien Removal Failed\n\nDear {{CUSTOMER_NAME}},\n\nThe removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}} could not be completed "
     "due to a processing issue. Your units remain lien-marked.\n\nOur team is reviewing it and will update you once the lien removal is completed.\n\n"
