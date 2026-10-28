@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 12:13 IST
+**Last Updated:** 28-10-2026 12:15 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -244,6 +244,7 @@
 | DISC-209 | 28-10-2026 | communications.html / mails / exports | Withdrawal OTP – SMS and mail | Owner: for “When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal” a mail is also available (HTML 06_Withdrawal_Verification.html attached) | Template stored as lamf-journey/mails/06_Withdrawal_Verification.html (logo path only). Row Withdrawal (OTP): Communication Type “SMS, Mail”, SMS unchanged; Mail Subject Structure from the template “{{OTP}} – Your Withdrawal Verification OTP for Shriram Credit LAMF”, sample with 123456; content from the HTML, sample with AZHAGARSAMY / 123456 / ₹10,000; Mail Available Yes + View; Mail Status Required. Mail templates can now be matched by scenario (two rows share the stage Withdrawal) | Implemented |
 | DISC-210 | 28-10-2026 | communications.html / mails / exports | Loan lodgement approval – SMS and mail | Owner: for the loan lodgement approval scenario (OPS approves loan account opening, then loan lodgement, in the LMS) a mail is also available (HTML 05_Withdrawal_Initiation.html attached) | Template stored as lamf-journey/mails/05_Withdrawal_Initiation.html (logo path only). Row Loan Lodgement Approval: Communication Type “SMS, Mail”, SMS unchanged; Mail Subject Structure from the template “Withdrawal Initiation: Successful LAMF Account Creation – {{CUSTOMER_FULL_NAME}}”, sample with AZHAGARSAMY SUBBURAJ; content from the HTML (the “Initiate Withdrawal Request” button shown as [Initiate Withdrawal Request]), sample with loan ID SCCLMF20261000102 and https://lamf.shriramcredit.in/; Mail Available Yes + View; Mail Status Required | Implemented |
 | DISC-211 | 28-10-2026 | communications.html / exports | Remarks column | Owner: add a Remarks column and fill only what was said – the mail “Your mutual fund pledge is successful” currently comes once the loan lodgement is successful; it is supposed to come after the pledging is successful | Remarks added as the last column of the SMS table (page and Excel); only the Pledging of Mutual Fund row has a remark (the wording above), all other rows blank | Implemented |
+| DISC-212 | 28-10-2026 | communications.html / exports | Pledge SMS timing | Owner: the pledge success SMS also comes once the lodgement is successful instead of after the pledge | Remark on Pledging of Mutual Fund updated: both the SMS and the mail “Your mutual fund pledge is successful” are currently received once the loan lodgement is successful; they are supposed to come right after the pledging is successful | Implemented |
 
 ---
 
