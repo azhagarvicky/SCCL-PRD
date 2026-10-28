@@ -493,9 +493,16 @@ class _MailText(HTMLParser):
         if tag == "span" and "display:none" in (dict(attrs).get("style") or ""): self.hidden += 1
         if tag == "p": self.depth_p += 1; self.cur = ""
         if tag == "a" and not self.depth_p: self.btn = ""          # CTA button (link outside a paragraph)
+        if tag == "tr": self.row = []                                # table rows (e.g. Loan Details) → “Label: Value”
+        if tag == "td": self.td = ""
         if tag == "br" and self.depth_p: self.cur += "\n"
     def handle_endtag(self, tag):
         if tag == "span" and self.hidden: self.hidden -= 1
+        if tag == "td" and getattr(self, "td", None) is not None:
+            if self.td.strip(): self.row.append(" ".join(self.td.split()))
+            self.td = None
+        if tag == "tr" and getattr(self, "row", None):
+            self.parts.append(": ".join(self.row)); self.row = []
         if tag == "a" and getattr(self, "btn", None) is not None:
             self.parts.append(f"[{self.btn.strip()}]"); self.btn = None
         if tag == "p" and self.depth_p:
@@ -503,6 +510,7 @@ class _MailText(HTMLParser):
     def handle_data(self, d):
         if self.depth_p and not self.hidden: self.cur += d.replace("\xa0", " ")
         elif getattr(self, "btn", None) is not None: self.btn += d
+        elif getattr(self, "td", None) is not None and not self.hidden: self.td += d.replace("\xa0", " ")
 def mail_text(fname):
     t = _MailText(); t.feed(open(os.path.join(ROOT, "mails", fname), encoding="utf-8").read())
     return "\n\n".join(re.sub(r"[ \t]+", " ", x).replace(" \n", "\n").strip() for x in t.parts if x.strip())
@@ -523,6 +531,11 @@ MAIL_TEMPLATES = {
     "Withdrawal Initiation: Successful LAMF Account Creation – {{CUSTOMER_FULL_NAME}}",
     "Withdrawal Initiation: Successful LAMF Account Creation – AZHAGARSAMY SUBBURAJ",
     "", {"{{LOAN_ID}}": "SCCLMF20261000102", "{{Link}}": "https://lamf.shriramcredit.in/"}),
+ "EMI Reminder": ("09_Upcoming_EMI_Due_Reminder_T-5.html",
+    "Reminder: Your EMI of ₹{{EMI_AMOUNT}} is due on {{DUE_DATE}}", "Reminder: Your EMI of ₹10,000 is due on 05-11-2026",
+    "Trigger: 5 days before the original EMI presentation date (T-5)\n\n",
+    {"{{EMI_AMOUNT}}": "10,000", "{{DUE_DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
+     "{{BANK_ACCOUNT_NUMBER}}": "XXXXXXXX8736", "{{LOAN_ID}}": "SCCLMF20261000102"}),
 }
 # Mails given as text / screenshots (no HTML template yet): {stage: (subject structure, sample subject, body, {placeholder: sample})} (DISC-214)
 _SCHEDULE = "REPAYMENT SCHEDULE (12 rows – one per month of the 12-month tenure; a 13th row is shown only when required)\nRepayment Date | Repayment Amount\n"
