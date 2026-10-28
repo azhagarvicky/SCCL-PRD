@@ -614,6 +614,11 @@ DRAFT_MAILS = {
  "Lien Removal Successful": ("Lien removed successfully – {{LOAN_ID}}", "Lien removed successfully – SCCLMF20261000102",
     "Lien Removal Successful\n\nDear {{CUSTOMER_NAME}},\n\nThe lien on your Mutual Fund units pledged against loan account {{LOAN_ID}} has been removed successfully. "
     "Your units are now released from lien.\n\n" + SUPPORT + "\n\nWe thank you for choosing Shriram Credit and look forward to serving you again." + MAIL_SIGN + MAIL_DISCLAIMER),
+ "LAMF Application Submit": ("Your LAMF application {{LOAN_ID}} has been submitted successfully",
+    "Your LAMF application SCCLMF20261000102 has been submitted successfully",
+    "Application Submitted\n\nDear {{CUSTOMER_NAME}},\n\nThank you for completing the E-Mandate. Your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} "
+    "has been submitted successfully.\n\nOur team will now review your application, and you will be notified once your loan account is opened.\n\n"
+    + SUPPORT + "\n\n" + THANKS + MAIL_SIGN + MAIL_DISCLAIMER),
  "Lien Removal Failed": ("Lien removal could not be completed – {{LOAN_ID}}", "Lien removal could not be completed – SCCLMF20261000102",
     "Lien Removal Failed\n\nDear {{CUSTOMER_NAME}},\n\nThe removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}} could not be completed "
     "due to a processing issue. Your units remain lien-marked.\n\nOur team is reviewing it and will update you once the lien removal is completed.\n\n"
