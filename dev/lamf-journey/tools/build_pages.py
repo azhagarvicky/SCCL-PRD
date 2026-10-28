@@ -644,14 +644,22 @@ DRAFT_MAILS = {
     "EMI DETAILS\nLoan Account Number: {{LOAN_ID}}\nEMI Amount: ₹{{EMI_AMOUNT}}\nDeduction Date: {{DEDUCTION_DATE}}\nNext EMI Due Date: {{NEXT_EMI_DATE}}\n\n"
     "Thank you for your payment. Regular EMI payments help maintain a strong credit history and a smooth loan journey.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
     {"{{EMI_AMOUNT}}": "10,000", "{{DEDUCTION_DATE}}": "10-11-2026", "{{NEXT_EMI_DATE}}": "05-12-2026"}),
+ "On the completion of each withdrawal by the customer (withdrawal request confirmed)": ("Your withdrawal request for loan account {{LOAN_ID}} is confirmed",
+    "Your withdrawal request for loan account SCCLMF20261000102 is confirmed",
+    "Withdrawal Request Confirmed\n\nDear {{CUSTOMER_NAME}},\n\nYour withdrawal request of ₹{{WITHDRAWAL_AMOUNT}} for loan account {{LOAN_ID}} has been confirmed. "
+    "The amount will be disbursed to your registered bank account shortly.\n\n"
+    "WITHDRAWAL DETAILS\nLoan Account ID: {{LOAN_ID}}\nWithdrawal Amount: ₹{{WITHDRAWAL_AMOUNT}}\nRequest Date: {{REQUEST_DATE}}\n"
+    "Bank Account Number: {{BANK_ACCOUNT_NUMBER}}\nStatus: Confirmed\n\n"
+    "You will receive a separate confirmation once the amount is credited to your bank account.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
+    {"{{WITHDRAWAL_AMOUNT}}": "10,000", "{{REQUEST_DATE}}": "02-11-2026", "{{BANK_ACCOUNT_NUMBER}}": "XXXXXXXX8736"}),
  "Lien Removal Failed": ("Lien removal could not be completed – {{LOAN_ID}}", "Lien removal could not be completed – SCCLMF20261000102",
     "Lien Removal Failed\n\nDear {{CUSTOMER_NAME}},\n\nThe removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}} could not be completed "
     "due to a processing issue. Your units remain lien-marked.\n\nOur team is reviewing it and will update you once the lien removal is completed.\n\n"
     + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
 }
 def _with_mail(r):
-    if r[0] in DRAFT_MAILS and not r[10]:
-        subj, subj_sample, body, *subs = DRAFT_MAILS[r[0]]
+    if (r[0] in DRAFT_MAILS or r[1] in DRAFT_MAILS) and not r[10]:      # keyed by stage, or by scenario
+        subj, subj_sample, body, *subs = DRAFT_MAILS.get(r[0]) or DRAFT_MAILS[r[1]]
         sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{LOAN_ID}}", "SCCLMF20261000102")
         for k, v in (subs[0] if subs else {}).items():
             sample = sample.replace(k, v)
