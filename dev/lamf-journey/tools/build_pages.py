@@ -594,6 +594,8 @@ TEXT_MAILS = {
      "{{DISBURSEMENT_NO}}": "1", "{{UTRN}}": "UTIBR52026102700001", "{{LOAN_TENURE}}": "12", "{{EMI_AMOUNT}}": "88", "{{FIRST_EMI_DATE}}": "05-Dec-2026",
      "{{BALANCE_AMOUNT}}": "1,55,26,100", "{{PURPOSE}}": "Home Renovation"}),
 }
+# HTML built by Claude from the text mail so that “View” works (DISC-253)
+TEXT_MAIL_VIEW = {"Loan Disbursed (First Disbursement)": "07_Loan_Disbursal_Confirmation_First.html"}
 def _sample_schedule(text):      # sample: 12 monthly rows from 05-Dec-2026 (interest only, principal with the last instalment)
     rows = [f"05-{m}-{y} | ₹{'10,088' if k == 11 else '88'}" for k, (m, y) in enumerate(
         [("Dec", 2026)] + [(x, 2027) for x in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"]])]
@@ -659,7 +661,8 @@ def _with_mail(r):
         sample = _sample_schedule(body).replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY")
         for k, v in subs.items():
             sample = sample.replace(k, v)
-        return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, "Yes", "Required")
+        view = f" [[view:mails/{TEXT_MAIL_VIEW[r[0]]}]]" if r[0] in TEXT_MAIL_VIEW else ""
+        return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, "Yes" + view, "Required")
     t = MAIL_TEMPLATES.get(r[0]) or MAIL_TEMPLATES.get(r[1])      # keyed by stage, or by scenario
     if not t or r[10]:                       # no template, or mail columns already filled
         return r

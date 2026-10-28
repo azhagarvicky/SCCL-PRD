@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 18:50 IST
+**Last Updated:** 28-10-2026 18:55 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -285,6 +285,7 @@
 | DISC-250 | 28-10-2026 | communications.html / exports | Rejection with / without charges – LMS options | Owner: while rejecting the Loan Account Opening or Loan Lodgement, LMS offers “Rejected with Charges” and “Rejected without Charges”; with charges → the customer gets the communication with the payment link; without charges → no payment link, as the charges are waived (e.g. an internal employee who completed testing scenarios) | Row 14 Scenarios: rejected in LMS with the option “Rejected with Charges” – customer pays the charges, communication carries the payment link. Row 15 Scenarios: rejected with the option “Rejected without Charges” – charges waived (e.g. an internal employee who completed a testing scenario), no payment link. Row 15 draft mail line changed to “The applicable charges for this application have been waived, so no payment is required from you.” | Implemented |
 | DISC-251 | 28-10-2026 | communications.html / exports | Mail to be created for row 18 | Owner: row 18 (Withdrawal Rejected) – email required | Row 18: Communication Type SMS, Mail (SMS unchanged); mail drafted by Claude for approval – subject “Your withdrawal request for loan account {{LOAN_ID}} has been rejected”, body: request of ₹{{WITHDRAWAL_AMOUNT}} rejected after review, no amount disbursed, Withdrawal Details (Loan Account ID, Withdrawal Amount, Request Date {{REQUEST_DATE}}, Status Rejected), a new request can be placed subject to the available balance; Mail Available “No – to be created”. Summary: Mail 30 (22 available · 8 to be created), SMS and mail 29, SMS only 5 | Implemented |
 | DISC-252 | 28-10-2026 | communications.html / exports | Mail to be created for row 26 | Owner: row 26 (EMI Resubmission Success) – email required | Row 26: Communication Type SMS, Mail (SMS unchanged); mail drafted by Claude for approval on the lines of the EMI Success template – subject “Your re-presented EMI of ₹{{EMI_AMOUNT}} has been successfully deducted”, body: re-presented EMI debited on {{DEDUCTION_DATE}}, EMI Details (Loan Account Number, EMI Amount, Deduction Date, Next EMI Due Date); Mail Available “No – to be created”. Summary: Mail 31 (22 available · 9 to be created), SMS and mail 30, SMS only 4 | Implemented |
+| DISC-253 | 28-10-2026 | communications.html / mails / exports | View link for row 19 | Owner: row 19 (Loan Disbursed – First Disbursement) Mail Available is Yes but the View link is missing | The first-disbursement mail was given as text only (no HTML template). Built lamf-journey/mails/07_Loan_Disbursal_Confirmation_First.html from that text on the layout of the owner’s 08 subsequent template (placeholders {{DISBURSED_AMOUNT}}, {{DISBURSEMENT_TYPE}}; EMI Amount; 12 repayment rows + 13th row only when required); row 19 Mail Available now “Yes” + View (TEXT_MAIL_VIEW in build_pages.py). Table content of the row unchanged. To be replaced when the owner shares the actual HTML | Implemented |
 
 ---
 
