@@ -546,6 +546,14 @@ def _sender_first(cols, rows):
 COMMS_COLS, COMMS = _sender_first(COMMS_COLS, COMMS)
 MAIL_COLS, MAILS = _sender_first(MAIL_COLS, MAILS)
 
+# Remarks – the owner's observations on the live behaviour, last column of the SMS table (DISC-211)
+REMARKS = {
+ "Pledging of Mutual Fund": "The mail “Your mutual fund pledge is successful” is currently received once the loan lodgement is successful; it is supposed to come right after the pledging is successful.",
+}
+assert set(REMARKS) <= {r[0] for r in COMMS}
+COMMS_COLS = COMMS_COLS + ["Remarks"]
+COMMS = [r + (REMARKS.get(r[0], ""),) for r in COMMS]
+
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
 
