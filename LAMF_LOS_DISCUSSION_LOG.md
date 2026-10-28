@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 12:17 IST
+**Last Updated:** 28-10-2026 12:37 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -246,6 +246,7 @@
 | DISC-211 | 28-10-2026 | communications.html / exports | Remarks column | Owner: add a Remarks column and fill only what was said – the mail “Your mutual fund pledge is successful” currently comes once the loan lodgement is successful; it is supposed to come after the pledging is successful | Remarks added as the last column of the SMS table (page and Excel); only the Pledging of Mutual Fund row has a remark (the wording above), all other rows blank | Implemented |
 | DISC-212 | 28-10-2026 | communications.html / exports | Pledge SMS timing | Owner: the pledge success SMS also comes once the lodgement is successful instead of after the pledge | Remark on Pledging of Mutual Fund updated: both the SMS and the mail “Your mutual fund pledge is successful” are currently received once the loan lodgement is successful; they are supposed to come right after the pledging is successful | Implemented |
 | DISC-213 | 28-10-2026 | communications.html / exports | Pledge remark wording | Owner: make the remark clearer | Remark on Pledging of Mutual Fund now reads: “Both the SMS and Email communication are currently received once the loan lodgement is successful, but they are supposed to come right after the pledging is successful.” | Implemented |
+| DISC-214 | 28-10-2026 | communications.html / exports | Withdrawal confirmed SMS timing; disbursement mail | Owner: the SMS “Your withdrawal request is confirmed…” has to come once the withdrawal OTP is successful but comes once the UTR is approved in the LMS – add in remarks. In the disbursement mail, Disbursement No. {{DISBURSEMENT_NO}} and Disbursement UTRN {{UTRN}} show a random format – the format has to be defined correctly, add in remarks. The repayment schedule has to show 12 rows (sometimes 13 if required) – update the mail structure and content (screenshots of the mail’s Loan Details and Repayment Schedule shared) | Remarks added on Withdrawal (request confirmed) and Loan Disbursed. Loan Disbursed row now SMS, Mail: subject “Loan disbursed to your account”; Mail Content Structure built from the screenshots – Loan Details placeholders {{{{CUSTOMER_ID}}}}, {{{{LOAN_ACCOUNT_ID}}}}, {{{{DISBURSEMENT_TYPE}}}}, {{{{DISBURSEMENT_NO}}}}, {{{{UTRN}}}}, {{{{LOAN_TENURE}}}} months, ₹{{{{EMI_AMOUNT}}}}, {{{{FIRST_EMI_DATE}}}}, ₹{{{{BALANCE_AMOUNT}}}} – and a 12-row repayment schedule with a 13th row only when required; sample with 12 monthly rows (interest only, principal with the last); amount placeholder {{{{DISBURSED_AMOUNT}}}} and {{{{PURPOSE}}}} assumed; Mail Available Yes (no HTML yet, no View link). Mail table first-disbursement body also shows 12 rows + optional 13th | Implemented |
 
 ---
 
