@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 17:23 IST
+**Last Updated:** 28-10-2026 18:01 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -272,6 +272,7 @@
 | DISC-237 | 28-10-2026 | communications.html / exports | Row 30 scenario wording | Owner: row 30 scenario has to say “This communication has to be triggered 1 day before the EMI presentation date (T-1)”; do not mention “Second EMI” – it confuses with the EMI re-presentation | Row 30 Scenarios: “This communication has to be triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th – SMS and mail. SMS template drafted by Claude for approval; to be created and registered” | Implemented |
 | DISC-238 | 28-10-2026 | communications.html / exports | Row 32 EMI Failed – scenario wording | Owner: change the row 32 scenario to “When the EMI presentation is failed on the 5th of the month, this communication has to be sent to the customer” | Row 32 Scenarios: “When the EMI presentation fails on the 5th of the month, this communication has to be sent to the customer – SMS and mail”. SMS, mail and remark unchanged | Implemented |
 | DISC-239 | 28-10-2026 | communications.html / exports | Row 33 EMI Resubmission Reminder – T-1 | Owner: row 33 (notifying the customer before the bounced EMI is re-presented) is T-1 – if the re-presentation is on the 10th, this communication has to be sent on the 9th | Row 33 Scenarios: “… – this communication has to be triggered 1 day before the re-presentation date (T-1), i.e. on the 9th when the EMI is re-presented on the 10th – SMS and mail”. SMS and mail unchanged | Implemented |
+| DISC-240 | 28-10-2026 | communications.html / exports | Separate Mail table removed | Owner: the combined SMS and mail table is fine; the separate Mail table below it (from the earlier email list) is not required – remove it | communications.html (and the cloud COMMS view): only the combined table remains – Mail heading, Mail table and the SMS / Mail jump links removed; intro now “SMS and mail sent to the customer during the LAMF journey (43 communications)”. Excel: Mail sheet removed, single sheet renamed “SMS and Mail”. The old MAILS data stays in build_pages.py (not shown) | Implemented |
 
 ---
 
