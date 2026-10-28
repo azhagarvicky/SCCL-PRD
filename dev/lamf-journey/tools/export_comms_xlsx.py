@@ -24,9 +24,10 @@ def sheet(ws, COMMS, COLS, widths):
       ws.append([k] + [re.sub(r'</?u>', '', v) for v in r])
       av = COLS.index('Available')                      # column number of Available (S.No is column 1)
       na = r[av - 1].startswith('No')
-      nr = 'Status' in COLS and r[-1] == 'Not Required'   # DISC-201: kept, shown greyed
+      st = COLS.index('Status') if 'Status' in COLS else None   # column number of Status
+      nr = st is not None and r[st - 1] == 'Not Required'       # DISC-201: kept, shown greyed
       for c in ws[ws.max_row]:
-          is_av, is_st = c.column == av, 'Status' in COLS and c.column == len(COLS)
+          is_av, is_st = c.column == av, c.column == st
           color = ('B42318' if (is_av and na) or (is_st and nr) else '12753B' if is_st else '8A8A8A' if nr else '000000')
           c.font = Font(name='Calibri', size=11, bold=(is_av and na) or is_st, color=color)
           c.border = bd; c.alignment = Alignment(vertical='top', wrap_text=True, horizontal='center' if c.column == 1 else None)
@@ -48,7 +49,7 @@ def sheet(ws, COMMS, COLS, widths):
   ws.page_setup.fitToWidth = 1; ws.page_setup.fitToHeight = 0
 
 ws = wb.active; ws.title = 'SMS'
-sheet(ws, COMMS, COLS, [6, 28, 45, 12, 14, 9, 55, 55, 12, 12, 18, 14])
+sheet(ws, COMMS, COLS, [6, 28, 45, 12, 14, 9, 55, 55, 12, 12, 18, 14, 16, 40, 80])
 sheet(wb.create_sheet('Mail'), MAILS, MAIL_COLS, [6, 28, 40, 12, 14, 9, 80, 80, 40, 10, 12])
 out = os.path.join(REPO, 'exports', 'LAMF_Customer_Communications.xlsx')
 os.makedirs(os.path.dirname(out), exist_ok=True); wb.save(out)
