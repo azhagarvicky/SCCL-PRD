@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 14:24 IST
+**Last Updated:** 28-10-2026 14:27 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -254,6 +254,7 @@
 | DISC-219 | 28-10-2026 | communications.html / mails / exports | EMI Success mail | Owner: for “Notifying the customer when the instalment is debited successfully” the attached 11_Successful_EMI_Deduction.html mail is also sent | Row EMI Success: Communication Type SMS, Mail (SMS unchanged). Mail subject “Your EMI of ₹{{EMI_AMOUNT}} Has Been Successfully Deducted”, content from the template (stored as lamf-journey/mails/11_Successful_EMI_Deduction.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-220 | 28-10-2026 | communications.html / exports | EMI Failed – mail title remark | Owner: in row 32 (EMI Failed) the mail title “Instalment Failure / EMI Bounce Notification (Bounce - 1A)” has to be changed to “EMI Payment Failed” – mention it in Remarks | Remarks of EMI Failed: “In the mail, the title “Instalment Failure / EMI Bounce Notification (Bounce - 1A)” has to be changed to “EMI Payment Failed”.” Template and mail content left as received | Implemented |
 | DISC-221 | 28-10-2026 | communications.html / exports | EMI Success – Next EMI Due Date remark | Owner: add a remark – what is “Next EMI Due Date: {{NEXT_EMI_DATE}}” for the last EMI, the 12th EMI (given as row 30; the field is in the EMI Success mail, row 31) | Remarks of EMI Success (row 31): “In the mail, “Next EMI Due Date: {{NEXT_EMI_DATE}}” – what is shown for the last EMI (12th EMI), when there is no next EMI, has to be defined.” | Implemented |
+| DISC-222 | 28-10-2026 | communications.html / mails / exports | Part payment mail | Owner: when the customer makes a part payment, the attached 20_Part_Payment.html mail is sent | Row LAMF Part Payment Confirmation (row 36): Communication Type SMS, Mail (SMS unchanged). Mail subject “Payment Acknowledgment: Your Shriram Credit LAMF Part Payment Has Been Processed”, content from the template with the line “Attachment: Updated Repayment Schedule PDF” (stored as lamf-journey/mails/20_Part_Payment.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 
 ---
 
