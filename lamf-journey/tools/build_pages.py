@@ -679,18 +679,22 @@ REMARKS = {
 assert set(REMARKS) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}      # keyed by stage, or by scenario
 COMMS_COLS = COMMS_COLS + ["Remarks"]
 COMMS = [r + (REMARKS.get(r[0]) or REMARKS.get(r[1]) or "",) for r in COMMS]
+# “Not Required” rows go to their own table below the main one, numbered separately (DISC-243)
+COMMS_NR = [r for r in COMMS if r[COMMS_COLS.index("SMS Status") - 1] == "Not Required"]
+COMMS = [r for r in COMMS if r not in COMMS_NR]
 
 # Summary counts shown above the table and in the Excel notes (DISC-241)
 def _col(name): return [r[COMMS_COLS.index(name) - 1] for r in COMMS]
-_types, _sav, _sst = _col("Communication Type"), _col("SMS Available"), _col("SMS Status")
+_types, _sav = _col("Communication Type"), _col("SMS Available")
 COMMS_SUMMARY = [
     ("Total scenarios", len(COMMS), ""),
     ("SMS", sum("SMS" in t for t in _types),
-     f"{_sav.count('Yes')} available · {sum(a.startswith('No') for a in _sav)} to be created · {_sst.count('Not Required')} not required"),
+     f"{_sav.count('Yes')} available · {sum(a.startswith('No') for a in _sav)} to be created"),
     ("Mail", sum("Mail" in t for t in _types), f"{sum(a.startswith('Yes') for a in _col('Mail Available'))} available"),
     ("SMS and mail", _types.count("SMS, Mail"), ""),
     ("SMS only", _types.count("SMS"), ""),
     ("Mail only", _types.count("Mail"), ""),
+    ("Not required", len(COMMS_NR), "separate table below"),
 ]
 
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
@@ -712,12 +716,14 @@ def comms_table(rows_data, cols, prefix):
 
 def comms_body(home):          # one table: SMS and mail together; the separate Mail table was removed (DISC-240)
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
-            f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} communications). '
+            f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} communications; {len(COMMS_NR)} not required, in the table below). '
             'Content Structure shows the approved template; Actual Content shows a sample with the variables filled in.</p>'
             + '<div class="comms-summary">' + "".join(
                 f'<div><b>{v}</b><span>{html.escape(k)}</span>' + (f'<small>{html.escape(d)}</small>' if d else '') + '</div>'
                 for k, v, d in COMMS_SUMMARY) + '</div>'
-            + comms_table(COMMS, COMMS_COLS, 'sms') + CONTACT)
+            + comms_table(COMMS, COMMS_COLS, 'sms')
+            + f'<h2 id="comms-nr">Not Required ({len(COMMS_NR)})</h2><p>SMS and mail marked “Not Required” – kept for reference only; they will not be sent.</p>'
+            + comms_table(COMMS_NR, COMMS_COLS, 'sms') + CONTACT)
 
 def home_body(home, prd, journey, comms):
     return (f'<header class="home-top">{LOGO.format(home=home)}</header>'
