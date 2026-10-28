@@ -686,6 +686,16 @@ COMMS = [r for r in COMMS if r not in COMMS_NR]
 _drop = {COMMS_COLS.index(c) - 1 for c in ("SMS Status", "Mail Status")}
 COMMS, COMMS_NR = ([tuple(v for i, v in enumerate(r) if i not in _drop) for r in t] for t in (COMMS, COMMS_NR))
 COMMS_COLS = [c for c in COMMS_COLS if c not in ("SMS Status", "Mail Status")]
+# Column groups shown as a header row above the column names (DISC-245): General (S.No – Communication Type, and Remarks),
+# SMS (SMS Content Structure – SMS Available), Mail (Mail Subject Structure – Mail Available)
+def _group(c): return "General" if c in ("S.No", "Stage", "Scenarios", "Application", "Sender", "Communication Type", "Remarks") else "SMS" if "SMS" in c else "Mail"
+COMMS_GROUPS = []                          # [(label, number of columns)] in column order
+for _c in COMMS_COLS:
+    if COMMS_GROUPS and COMMS_GROUPS[-1][0] == _group(_c):
+        COMMS_GROUPS[-1] = (COMMS_GROUPS[-1][0], COMMS_GROUPS[-1][1] + 1)
+    else:
+        COMMS_GROUPS.append((_group(_c), 1))
+assert COMMS_GROUPS == [("General", 6), ("SMS", 4), ("Mail", 5), ("General", 1)], COMMS_GROUPS
 
 # Summary counts shown above the table and in the Excel notes (DISC-241)
 def _col(name): return [r[COMMS_COLS.index(name) - 1] for r in COMMS]
@@ -708,7 +718,8 @@ def comms_table(rows_data, cols, prefix):
     # “[[view:path]]” in a cell becomes a “View” link that opens the mail template (HTML) in a new tab (DISC-207)
     esc = lambda t: re.sub(r"\[\[view:([^\]]+)\]\]", r'<br><a class="mail-view" href="\1" target="_blank" rel="noopener">View</a>',
                            html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>").replace("\n", "<br>"))
-    head = "".join(f"<th>{c}</th>" for c in cols)
+    head = "".join(f'<th class="g-{_group(c).lower()}">{c}</th>' for c in cols)
+    groups = "".join(f'<th class="grp g-{g.lower()}" colspan="{n}">{g}</th>' for g, n in COMMS_GROUPS) if cols == COMMS_COLS else ""
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
     avail = cols.index("SMS Available" if "SMS Available" in cols else "Available") - 1
     stat = cols.index("SMS Status") - 1 if "SMS Status" in cols else None
@@ -716,7 +727,7 @@ def comms_table(rows_data, cols, prefix):
     slug = [re.sub(r"[^a-z0-9]+", "-", c.lower()).strip("-") for c in cols[1:]]     # each cell gets a class from its column (DISC-204)
     rows = "".join('<tr class="%s"><td class="c-s-no">%d</td>%s</tr>' % (cls(r), k, "".join(f'<td class="c-{c}">{esc(v)}</td>' for c, v in zip(slug, r)))
                    for k, r in enumerate(rows_data, 1))
-    return f'<div class="comms-wrap"><table class="comms {prefix}"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
+    return f'<div class="comms-wrap"><table class="comms {prefix}"><thead>{f"<tr>{groups}</tr>" if groups else ""}<tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
 
 def comms_body(home):          # one table: SMS and mail together; the separate Mail table was removed (DISC-240)
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'

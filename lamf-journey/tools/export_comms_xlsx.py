@@ -17,9 +17,18 @@ wb = Workbook()
 thin = Side(style='thin', color='000000'); bd = Border(left=thin, right=thin, top=thin, bottom=thin)
 
 def sheet(ws, COMMS, COLS, widths):
-  ws.append(COLS)
-  for c in ws[1]:
-      c.font = Font(name='Calibri', size=11, bold=True); c.fill = PatternFill('solid', fgColor='B4C6E7')
+  FILL = {'General': ('B4C6E7', 'D9E1F2'), 'SMS': ('F8CBAD', 'FCE4D6'), 'Mail': ('C6E0B4', 'E2EFDA')}   # group row, column row (DISC-245)
+  col = 1
+  for g, n in ns['COMMS_GROUPS']:                     # row 1: General · SMS · Mail · General (Remarks)
+      c = ws.cell(1, col, g); ws.merge_cells(start_row=1, start_column=col, end_row=1, end_column=col + n - 1)
+      for k in range(col, col + n):
+          ws.cell(1, k).fill = PatternFill('solid', fgColor=FILL[g][0]); ws.cell(1, k).border = bd
+          ws.cell(2, k).fill = PatternFill('solid', fgColor=FILL[g][1])
+      c.font = Font(name='Calibri', size=12, bold=True); c.alignment = Alignment(horizontal='center', vertical='center')
+      col += n
+  for k, h in enumerate(COLS, 1):                     # row 2: column names
+      c = ws.cell(2, k, h)
+      c.font = Font(name='Calibri', size=11, bold=True)
       c.border = bd; c.alignment = Alignment(vertical='center', wrap_text=True)
   for k, r in enumerate(COMMS, 1):
       ws.append([k] + [re.sub(r'\s*\[\[view:[^\]]+\]\]', '\nView mail', re.sub(r'</?u>', '', v)) for v in r])
@@ -40,7 +49,7 @@ def sheet(ws, COMMS, COLS, widths):
           elif na: c.fill = PatternFill('solid', fgColor='FFF2CC')
   for i, w in enumerate(widths, 1):
       ws.column_dimensions[chr(64 + i)].width = w
-  ws.freeze_panes = 'C2'; ws.auto_filter.ref = f'A1:{chr(64 + len(COLS))}{ws.max_row}'
+  ws.freeze_panes = 'C3'; ws.auto_filter.ref = f'A2:{chr(64 + len(COLS))}{ws.max_row}'
   n = ws.max_row + 2
   ws.cell(n, 1, 'Notes:').font = Font(name='Calibri', bold=True)
   for j, t in enumerate(['Summary – ' + ' · '.join(f'{k}: {v}' + (f' ({d})' if d else '') for k, v, d in ns['COMMS_SUMMARY']),
