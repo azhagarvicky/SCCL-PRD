@@ -694,14 +694,11 @@ def comms_table(rows_data, cols, prefix):
                    for k, r in enumerate(rows_data, 1))
     return f'<div class="comms-wrap"><table class="comms {prefix}"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
 
-def comms_body(home):
+def comms_body(home):          # one table: SMS and mail together; the separate Mail table was removed (DISC-240)
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
-            f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} SMS, {len(MAILS)} mails). '
-            'Content Structure / Body (template) shows the approved template; Actual Content / Body (sample) shows a sample with the variables filled in.</p>'
-            '<nav class="comms-jump"><a href="#comms-sms">SMS (' + str(len(COMMS)) + ')</a><a href="#comms-mail">Mail (' + str(len(MAILS)) + ')</a></nav>'
-            f'<h2 id="comms-sms">SMS</h2>' + comms_table(COMMS, COMMS_COLS, 'sms') +
-            f'<h2 id="comms-mail">Mail</h2><p>Mail Subject is filled; SMS Header does not apply.</p>' + comms_table(MAILS, MAIL_COLS, 'mail')
-            + CONTACT)
+            f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} communications). '
+            'Content Structure shows the approved template; Actual Content shows a sample with the variables filled in.</p>'
+            + comms_table(COMMS, COMMS_COLS, 'sms') + CONTACT)
 
 def home_body(home, prd, journey, comms):
     return (f'<header class="home-top">{LOGO.format(home=home)}</header>'

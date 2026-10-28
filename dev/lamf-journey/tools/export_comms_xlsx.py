@@ -12,7 +12,6 @@ import html
 ns = {'os': os, 're': re, 'html': html, 'ROOT': os.path.dirname(HERE)}   # what the COMMS block uses
 exec(src[src.index('COMMS = ['):src.index('CONTACT = (')], ns)      # only the COMMS / COMMS_COLS data
 COMMS, COLS = ns['COMMS'], ns['COMMS_COLS']
-MAILS, MAIL_COLS = ns['MAILS'], ns['MAIL_COLS']        # Mail sheet (DISC-199)
 
 wb = Workbook()
 thin = Side(style='thin', color='000000'); bd = Border(left=thin, right=thin, top=thin, bottom=thin)
@@ -54,9 +53,8 @@ def sheet(ws, COMMS, COLS, widths):
   ws.page_setup.orientation = 'landscape'; ws.sheet_properties.pageSetUpPr.fitToPage = True
   ws.page_setup.fitToWidth = 1; ws.page_setup.fitToHeight = 0
 
-ws = wb.active; ws.title = 'SMS'
+ws = wb.active; ws.title = 'SMS and Mail'      # single sheet; the Mail sheet was removed (DISC-240)
 sheet(ws, COMMS, COLS, [6, 28, 45, 12, 9, 14, 55, 55, 12, 18, 14, 40, 40, 70, 70, 14, 12, 45])
-sheet(wb.create_sheet('Mail'), MAILS, MAIL_COLS, [6, 28, 40, 12, 14, 9, 80, 80, 40, 10, 12])
 out = os.path.join(REPO, 'exports', 'LAMF_Customer_Communications.xlsx')
 os.makedirs(os.path.dirname(out), exist_ok=True); wb.save(out)
-print(len(COMMS), 'SMS and', len(MAILS), 'mails written to', out)
+print(len(COMMS), 'communications written to', out)
