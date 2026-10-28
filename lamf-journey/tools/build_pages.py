@@ -482,6 +482,15 @@ _i = [r[0] for r in COMMS].index("LAN Generated") + 1     # email verification c
 COMMS = COMMS[:_i] + [EMAIL_VERIFICATION_MAIL] + COMMS[_i:]
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 
+# Sender comes before Communication Type in both tables (DISC-205)
+def _sender_first(cols, rows):
+    i, j = cols.index("Communication Type"), cols.index("Sender")
+    cols = cols[:i] + [cols[j], cols[i]] + cols[j + 1:]
+    rows = [r[:i - 1] + (r[j - 1], r[i - 1]) + r[j:] for r in rows]
+    return cols, rows
+COMMS_COLS, COMMS = _sender_first(COMMS_COLS, COMMS)
+MAIL_COLS, MAILS = _sender_first(MAIL_COLS, MAILS)
+
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
 
