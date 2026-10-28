@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 18:05 IST
+**Last Updated:** 28-10-2026 18:07 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -274,6 +274,7 @@
 | DISC-239 | 28-10-2026 | communications.html / exports | Row 33 EMI Resubmission Reminder – T-1 | Owner: row 33 (notifying the customer before the bounced EMI is re-presented) is T-1 – if the re-presentation is on the 10th, this communication has to be sent on the 9th | Row 33 Scenarios: “… – this communication has to be triggered 1 day before the re-presentation date (T-1), i.e. on the 9th when the EMI is re-presented on the 10th – SMS and mail”. SMS and mail unchanged | Implemented |
 | DISC-240 | 28-10-2026 | communications.html / exports | Separate Mail table removed | Owner: the combined SMS and mail table is fine; the separate Mail table below it (from the earlier email list) is not required – remove it | communications.html (and the cloud COMMS view): only the combined table remains – Mail heading, Mail table and the SMS / Mail jump links removed; intro now “SMS and mail sent to the customer during the LAMF journey (43 communications)”. Excel: Mail sheet removed, single sheet renamed “SMS and Mail”. The old MAILS data stays in build_pages.py (not shown) | Implemented |
 | DISC-241 | 28-10-2026 | communications.html / exports | Summary counts | Owner: show somewhere how many SMS and mails there are and the total scenarios – just a summary count | communications.html: summary cards above the table, counted from the table (COMMS_SUMMARY in build_pages.py): Total scenarios 43 · SMS 42 (25 available, 17 to be created, 8 not required) · Mail 22 (22 available) · SMS and mail 21 · SMS only 21 · Mail only 1. Excel: the same summary as the first line of the Notes under the table | Implemented |
+| DISC-242 | 28-10-2026 | communications.html / exports | Mail Status for Not Required rows | Owner: SMS Status “Not Required” means the mail is not required either | Every row with SMS Status “Not Required” now also has Mail Status “Not Required” (rows 4, 6, 7, 8, 10, 11, 12, 14 – LAN Generated, Pre-Pledge Application Expiry Reminder, Pre-Pledge Application Discarded, Customer-Initiated Discard, Lien Marking Failed, Post-Pledge Journey Incomplete, Post-Pledge Application Expiry Reminder, Lien Removal Request Received); set in build_pages.py from the SMS Status, so it follows any future change | Implemented |
 
 ---
 
