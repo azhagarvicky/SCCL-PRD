@@ -696,6 +696,11 @@ for _c in COMMS_COLS:
     else:
         COMMS_GROUPS.append((_group(_c), 1))
 assert COMMS_GROUPS == [("General", 6), ("SMS", 4), ("Mail", 5), ("General", 1)], COMMS_GROUPS
+# SMS-only rows: the empty Mail columns show “-” (as the SMS columns of a mail-only row do) (DISC-246)
+_mail_ix = [i - 1 for i, c in enumerate(COMMS_COLS) if _group(c) == "Mail"]
+_type_ix = COMMS_COLS.index("Communication Type") - 1
+COMMS, COMMS_NR = ([tuple("-" if r[_type_ix] == "SMS" and i in _mail_ix and not v else v for i, v in enumerate(r)) for r in t]
+                   for t in (COMMS, COMMS_NR))
 
 # Summary counts shown above the table and in the Excel notes (DISC-241)
 def _col(name): return [r[COMMS_COLS.index(name) - 1] for r in COMMS]
