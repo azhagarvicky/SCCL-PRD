@@ -623,7 +623,7 @@ COMMS = [_with_mail(r) for r in COMMS]
 # Mail-only rows from HTML templates (no SMS): inserted after the given stage (DISC-216)
 MAIL_ONLY = [
  ("EMI Presentation Reminder (T-5)", "EMI Presentation Reminder (T-1)",
-  "Second EMI reminder: sent 1 day before the EMI presentation date (T-1) – mail only, no SMS. The first reminder, T-5, is the row above",
+  "Second EMI reminder: this communication has to be triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th – SMS and mail. SMS template drafted by Claude for approval; to be created and registered. The first reminder, T-5, is the row above",
   "LOS", "10_EMI_Presentation_T-1.html", "EMI Presentation Alert – {{DATE}}", "EMI Presentation Alert – 05-11-2026",
   "Trigger: 1 day before the EMI presentation date (T-1)\n\n",
   {"{{EMI_AMOUNT}}": "10,000", "{{DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
@@ -637,6 +637,10 @@ MAIL_ONLY = [
    "{{BALANCE_AMOUNT}}": "1,55,06,100", "{{PURPOSE}}": "Home Renovation"}),
 ]
 SAME_SMS_AS_ABOVE = {"Loan Disbursed (Subsequent Disbursement)"}
+# SMS not available yet for a mail row – drafted by Claude for approval, to be created and registered (DISC-236)
+NEW_SMS = {"EMI Presentation Reminder (T-1)": (
+    "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} for loan account {#alphanumeric#} will be presented tomorrow, {#alphanumeric#}. Please maintain sufficient balance to avoid penal charges - Shriram Credit",
+    "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 for loan account SCCLMF20261000102 will be presented tomorrow, 05-11-2026. Please maintain sufficient balance to avoid penal charges - Shriram Credit")}
 for after, stage, scen, app, fname, subj, subj_sample, head, subs in MAIL_ONLY:
     body = head + mail_text(fname)
     sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{CUSTOMER_FULL_NAME}}", "AZHAGARSAMY SUBBURAJ")
@@ -646,6 +650,8 @@ for after, stage, scen, app, fname, subj, subj_sample, head, subs in MAIL_ONLY:
     sms = ("Mail", "SCCL", "-", "-", "-", "-", "-")
     if stage in SAME_SMS_AS_ABOVE:           # same SMS as the row it follows, only the mail differs (DISC-232)
         sms = ("SMS, Mail",) + COMMS[_i - 1][4:10]
+    if stage in NEW_SMS:
+        sms = ("SMS, Mail", "SCCL") + NEW_SMS[stage] + ("SGRCDT-T", "No – to be created", "Required")
     COMMS.insert(_i, (stage, scen, app) + sms + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 
