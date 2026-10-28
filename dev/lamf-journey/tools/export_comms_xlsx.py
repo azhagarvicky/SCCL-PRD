@@ -5,6 +5,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+SITE = 'https://azhagarvicky.github.io/SCCL-PRD/dev/lamf-journey/'
 REPO = os.path.dirname(os.path.dirname(HERE))
 src = open(os.path.join(HERE, 'build_pages.py')).read()
 ns = {}
@@ -21,7 +22,11 @@ def sheet(ws, COMMS, COLS, widths):
       c.font = Font(name='Calibri', size=11, bold=True); c.fill = PatternFill('solid', fgColor='B4C6E7')
       c.border = bd; c.alignment = Alignment(vertical='center', wrap_text=True)
   for k, r in enumerate(COMMS, 1):
-      ws.append([k] + [re.sub(r'</?u>', '', v) for v in r])
+      ws.append([k] + [re.sub(r'\s*\[\[view:[^\]]+\]\]', '\nView mail', re.sub(r'</?u>', '', v)) for v in r])
+      for col, v in enumerate(r, 2):                     # “View mail” opens the mail template on the dev site (DISC-207)
+          m = re.search(r'\[\[view:([^\]]+)\]\]', v)
+          if m:
+              cell = ws.cell(ws.max_row, col); cell.hyperlink = SITE + m.group(1)
       av = COLS.index('SMS Available' if 'SMS Available' in COLS else 'Available')   # column number (S.No is column 1)
       na = r[av - 1].startswith('No')
       st = COLS.index('SMS Status') if 'SMS Status' in COLS else None   # column number of SMS Status

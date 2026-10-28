@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 11:27 IST
+**Last Updated:** 28-10-2026 11:37 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -239,6 +239,7 @@
 | DISC-204 | 28-10-2026 | communications.html / exports | Email Verification mail row; SMS table columns renamed and re-ordered | Owner: add a row for Email Verification (mail available, no SMS) from the attached template 01_Email_Verification.html – Application LOS, Communication Type Mail, Sender SCCL, SMS content columns “-”. Rename Content Structure → SMS Content Structure, Actual Content → Actual SMS Content, Available → SMS Available, Mail Subject → Mail Subject Structure; SMS Header before the mail columns; add Mail Subject, Mail Content Structure, Actual Mail Content, Mail Available, Mail Status | SMS table columns now: S.No, Stage, Scenarios, Application, Communication Type, Sender, SMS Content Structure, Actual SMS Content, SMS Header, SMS Available, SMS Status (was Status), Mail Subject Structure, Mail Subject, Mail Content Structure, Actual Mail Content, Mail Available, Mail Status (page and Excel). Row 5 Email Verification added after LAN Generated (LOS step 9): SMS columns “-”; subject structure “XXXXXX – Your Email Verification OTP for Shriram Credit LAMF”, sample subject with 123456; mail content from the HTML template ({{{{CUSTOMER_NAME}}}}, {{{{OTP}}}}, new disclaimer wording, © line) and the sample with AZHAGARSAMY / 123456; Mail Available “Provided”, Mail Status “Required”. Mail columns of all other rows blank until the owner gives them. Table now 41 rows. Cells styled by column class instead of position | Implemented |
 | DISC-205 | 28-10-2026 | communications.html / exports | Column order | Owner: Sender has to come before Communication Type | Sender moved before Communication Type in the SMS table and, for consistency, in the Mail table (page and Excel) | Implemented |
 | DISC-206 | 28-10-2026 | communications.html / exports | Column name | Owner: rename Mail Subject as Actual Mail Subject | SMS table column “Mail Subject” renamed “Actual Mail Subject” (page and Excel); the Mail table’s own Mail Subject column unchanged | Implemented |
+| DISC-207 | 28-10-2026 | communications.html / mails / exports | Email Verification mail – View link | Owner: for the Email Verification row Mail Available is “Yes”, with a “View” hyperlink below it that shows the mail in HTML format | Mail Available = “Yes” + “View” link (opens in a new tab). The owner’s template is stored as lamf-journey/mails/01_Email_Verification.html (only change: logo path points to the site logo); placeholders {{CUSTOMER_NAME}} / {{OTP}} kept. Excel: cell shows “Yes / View mail”, hyperlinked to the dev copy. CLAUDE.md source list updated | Implemented |
 
 ---
 

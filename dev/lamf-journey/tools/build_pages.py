@@ -476,7 +476,7 @@ EMAIL_VERIFICATION_MAIL = (
  "Warm regards,\nTeam Shriram Credit\n\nDisclaimer: This is an automated reminder. Please do not reply to this message, as the mailbox is not monitored "
  "and you will not receive a response. Loan against Securities is only for personal use. The loan amount cannot be used for speculative activities, "
  "capital market-related purposes, or anti-social purposes.\n\n© 2026 Shriram Credit Company Limited. All rights reserved.",
- "", "Provided", "Required")
+ "", "Yes [[view:mails/01_Email_Verification.html]]", "Required")
 EMAIL_VERIFICATION_MAIL = EMAIL_VERIFICATION_MAIL[:13] + (EMAIL_VERIFICATION_MAIL[12].replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{OTP}}", "123456"),) + EMAIL_VERIFICATION_MAIL[14:]
 _i = [r[0] for r in COMMS].index("LAN Generated") + 1     # email verification comes right after the Application Summary
 COMMS = COMMS[:_i] + [EMAIL_VERIFICATION_MAIL] + COMMS[_i:]
@@ -495,7 +495,9 @@ CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For 
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
 
 def comms_table(rows_data, cols, prefix):
-    esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>").replace("\n", "<br>")
+    # “[[view:path]]” in a cell becomes a “View” link that opens the mail template (HTML) in a new tab (DISC-207)
+    esc = lambda t: re.sub(r"\[\[view:([^\]]+)\]\]", r'<br><a class="mail-view" href="\1" target="_blank" rel="noopener">View</a>',
+                           html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>").replace("\n", "<br>"))
     head = "".join(f"<th>{c}</th>" for c in cols)
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
     avail = cols.index("SMS Available" if "SMS Available" in cols else "Available") - 1
