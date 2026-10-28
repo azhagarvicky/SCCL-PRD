@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 14:33 IST
+**Last Updated:** 28-10-2026 14:35 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -256,6 +256,7 @@
 | DISC-221 | 28-10-2026 | communications.html / exports | EMI Success – Next EMI Due Date remark | Owner: add a remark – what is “Next EMI Due Date: {{NEXT_EMI_DATE}}” for the last EMI, the 12th EMI (given as row 30; the field is in the EMI Success mail, row 31) | Remarks of EMI Success (row 31): “In the mail, “Next EMI Due Date: {{NEXT_EMI_DATE}}” – what is shown for the last EMI (12th EMI), when there is no next EMI, has to be defined.” | Implemented |
 | DISC-222 | 28-10-2026 | communications.html / mails / exports | Part payment mail | Owner: when the customer makes a part payment, the attached 20_Part_Payment.html mail is sent | Row LAMF Part Payment Confirmation (row 36): Communication Type SMS, Mail (SMS unchanged). Mail subject “Payment Acknowledgment: Your Shriram Credit LAMF Part Payment Has Been Processed”, content from the template with the line “Attachment: Updated Repayment Schedule PDF” (stored as lamf-journey/mails/20_Part_Payment.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-223 | 28-10-2026 | communications.html / mails / exports | Pre-closure mail | Owner: once the pre-closure is done, the attached 21_Pre_Closure.html mail is sent | Row Foreclosure Completed (row 41): Communication Type SMS, Mail (SMS and its “No – to be created” status unchanged). Mail subject “Loan Pre-Closure Confirmation: Your Shriram Credit LAMF Has Been Closed Successfully”, content from the template (stored as lamf-journey/mails/21_Pre_Closure.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
+| DISC-224 | 28-10-2026 | communications.html / mails / exports | Loan tenure completion mail | Owner: when the loan tenure is completed, the attached 23_Loan_Tenure_Completion.html mail is sent | Row Successful Loan Tenure Completion (row 42): Communication Type SMS, Mail (SMS unchanged). Mail subject “Congratulations on completing your loan journey”, content from the template with its trigger line (last EMI paid – EMI type, or principal outstanding paid – Balloon type), stored as lamf-journey/mails/23_Loan_Tenure_Completion.html (logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 
 ---
 
