@@ -450,29 +450,11 @@ MAIL_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", 
              "Body (sample)", "Mail Subject", "SMS Header", "Available"]
 
 # SMS ↔ mail (DISC-202): for each SMS, whether a mail is also sent at the same point; if Yes, its subject and body (template).
-SMS_MAIL = {
- "Pledging of Mutual Fund": "Mutual Fund Pledge Successful",
- "Sanction Letter": "Loan Sanction Letter Mail",
- "Loan Agreement e-Sign": "Loan Agreement Mail",
- "Loan Lodgement Approval": "Withdrawal Initiation",
- "Loan Disbursed": "Loan Disbursal Confirmation (First Disbursement)",
- "EMI Reminder": "Upcoming EMI Due Reminder",
- "EMI Success": "Successful EMI Deduction Mail",
- "EMI Failed": "Instalment Failure / EMI Bounce Notification (Bounce – 1A)",
- "EMI Resubmission Reminder": "Second EMI Representation Reminder (1B T-1)",
- "EMI Resubmission Failed": "Initiation of Loan Closure Procedures (2B Bounce)",
- "LAMF Part Payment Confirmation": "Part Payment",
- "LTV Breach Trigger (Margin Call)": "Margin Call / Mutual Fund Value Drop Mail",
- "LAMF LTV Breach Liquidation": "LTV Breach beyond Policy Norms",
- "LAMF Principal Repayment Reminder": "Principal Repayment for Loan Closure",
- "LAMF Liquidation for O/S": "Liquidation for Outstanding Loan (after grace period)",
- "Foreclosure Completed": "Pre Closure",
- "Successful Loan Tenure Completion": "Loan Tenure Completion (Closure Mail)",
- "Loan Account Closure": "NOC / Loan Closure Certificate",
-}
+SMS_MAIL = {}   # cleared on the owner's request (DISC-203) – to be filled again from the owner's list: {"SMS stage": "Mail stage"}
 _MAIL_BY_STAGE = {m[0]: m for m in MAILS}
 assert set(SMS_MAIL) <= {r[0] for r in COMMS} and set(SMS_MAIL.values()) <= set(_MAIL_BY_STAGE)
-COMMS = [r + (("Yes", _MAIL_BY_STAGE[SMS_MAIL[r[0]]][7], _MAIL_BY_STAGE[SMS_MAIL[r[0]]][5]) if r[0] in SMS_MAIL else ("No", "-", "-"))
+# Values blank until the owner confirms them; a mapped SMS shows Yes + subject + content, the rest stay blank
+COMMS = [r + (("Yes", _MAIL_BY_STAGE[SMS_MAIL[r[0]]][7], _MAIL_BY_STAGE[SMS_MAIL[r[0]]][5]) if r[0] in SMS_MAIL else ("", "", ""))
          for r in COMMS]
 COMMS_COLS = COMMS_COLS + ["Mail Communication Available", "Mail Subject Line", "Mail Content"]
 
