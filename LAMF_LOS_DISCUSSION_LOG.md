@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 14:23 IST
+**Last Updated:** 28-10-2026 14:24 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -253,6 +253,7 @@
 | DISC-218 | 28-10-2026 | communications.html / mails / exports | EMI Failed mail (Bounce - 1A) | Owner: for “Notifying the customer when the instalment bounces (rejected by the bank); the debit is retried on the 10th” – the EMI presented on the 5th fails – the attached 11_Instalment_Failure_EMI_Bounce_Notification_1A.html mail is also sent | Row EMI Failed: Communication Type SMS, Mail; Scenarios now says the instalment presented on the 5th of the month bounces, retried on the 10th – SMS and mail. Mail subject “Alert: Your EMI payment failed {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/11_Instalment_Failure_EMI_Bounce_Notification_1A.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-219 | 28-10-2026 | communications.html / mails / exports | EMI Success mail | Owner: for “Notifying the customer when the instalment is debited successfully” the attached 11_Successful_EMI_Deduction.html mail is also sent | Row EMI Success: Communication Type SMS, Mail (SMS unchanged). Mail subject “Your EMI of ₹{{EMI_AMOUNT}} Has Been Successfully Deducted”, content from the template (stored as lamf-journey/mails/11_Successful_EMI_Deduction.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-220 | 28-10-2026 | communications.html / exports | EMI Failed – mail title remark | Owner: in row 32 (EMI Failed) the mail title “Instalment Failure / EMI Bounce Notification (Bounce - 1A)” has to be changed to “EMI Payment Failed” – mention it in Remarks | Remarks of EMI Failed: “In the mail, the title “Instalment Failure / EMI Bounce Notification (Bounce - 1A)” has to be changed to “EMI Payment Failed”.” Template and mail content left as received | Implemented |
+| DISC-221 | 28-10-2026 | communications.html / exports | EMI Success – Next EMI Due Date remark | Owner: add a remark – what is “Next EMI Due Date: {{NEXT_EMI_DATE}}” for the last EMI, the 12th EMI (given as row 30; the field is in the EMI Success mail, row 31) | Remarks of EMI Success (row 31): “In the mail, “Next EMI Due Date: {{NEXT_EMI_DATE}}” – what is shown for the last EMI (12th EMI), when there is no next EMI, has to be defined.” | Implemented |
 
 ---
 
