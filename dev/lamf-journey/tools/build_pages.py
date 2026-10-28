@@ -363,8 +363,10 @@ DISB = lambda first: ("We are happy to inform you that your loan amount of ₹[X
                 "\n• Disbursement No.: " + ("<<1>>" if first else "") + "\n• Disbursement UTRN: [XXXX]\n• Loan Tenure: [XX months]\n• " +
                 ("EMI Amount: ₹[XXXX]" if first else "EMI Amount of this disbursement for 30-day cycle: ₹[XXXX]") +
                 "\n• First EMI Due Date: [Date]\n• Balance amount available <<₹>> (If disbursement type is MULTIPLE.)\n\n" +
-                ("Repayment Schedule" if first else "Repayment Schedule (display only the residual term) – cumulative of all disbursements till date") +
-                "\nRepayment Date | Repayment Amount\nDD-MMM-YYYY | ₹XXXXXX\nDD-MMM-YYYY | ₹XXXXXX\nDD-MMM-YYYY | ₹XXXXXX\n\n"
+                ("Repayment Schedule – 12 rows, one per month of the 12-month tenure; a 13th row is shown only when required\nRepayment Date | Repayment Amount\n" +
+                 "DD-MMM-YYYY | ₹XXXXXX\n" * 12 + "(13th row only when required) DD-MMM-YYYY | ₹XXXXXX\n\n" if first else
+                 "Repayment Schedule (display only the residual term) – cumulative of all disbursements till date"
+                 "\nRepayment Date | Repayment Amount\nDD-MMM-YYYY | ₹XXXXXX\nDD-MMM-YYYY | ₹XXXXXX\nDD-MMM-YYYY | ₹XXXXXX\n\n") +
                 "Please note that the purpose of the loan, as confirmed by you, is <<Purpose>> and not for any speculative trading in securities, derivatives, commodities, or any unlawful purposes.\n\n" + THANKS)
 _M = [
  ("Email Verification", "When the customer clicks Verify for the email on the KYC Verification page", "LOS",
@@ -522,7 +524,33 @@ MAIL_TEMPLATES = {
     "Withdrawal Initiation: Successful LAMF Account Creation – AZHAGARSAMY SUBBURAJ",
     "", {"{{LOAN_ID}}": "SCCLMF20261000102", "{{Link}}": "https://lamf.shriramcredit.in/"}),
 }
+# Mails given as text / screenshots (no HTML template yet): {stage: (subject structure, sample subject, body, {placeholder: sample})} (DISC-214)
+_SCHEDULE = "REPAYMENT SCHEDULE (12 rows – one per month of the 12-month tenure; a 13th row is shown only when required)\nRepayment Date | Repayment Amount\n"
+TEXT_MAILS = {
+ "Loan Disbursed": ("Loan disbursed to your account", "Loan disbursed to your account",
+    "Loan Disbursed\n\nDear {{CUSTOMER_NAME}},\n\nWe are happy to inform you that your loan amount of ₹{{DISBURSED_AMOUNT}} has been credited to your bank account.\n\n"
+    "LOAN DETAILS\nCustomer ID: {{CUSTOMER_ID}}\nLoan Account ID: {{LOAN_ACCOUNT_ID}}\nDisbursement Type: {{DISBURSEMENT_TYPE}}\nDisbursement No.: {{DISBURSEMENT_NO}}\n"
+    "Disbursement UTRN: {{UTRN}}\nLoan Tenure: {{LOAN_TENURE}} months\nEMI Amount: ₹{{EMI_AMOUNT}}\nFirst EMI Due Date: {{FIRST_EMI_DATE}}\nBalance Amount Available: ₹{{BALANCE_AMOUNT}}\n\n"
+    + _SCHEDULE + "DD-MMM-YYYY | ₹XXXXXXX\n" * 12 + "(13th row only when required) DD-MMM-YYYY | ₹XXXXXXX\n\n"
+    "Please note that the purpose of the loan, as confirmed by you, is {{PURPOSE}} and not for any speculative trading in securities, derivatives, commodities, or any unlawful purposes.\n\n"
+    + THANKS + MAIL_SIGN + MAIL_DISCLAIMER,
+    {"{{DISBURSED_AMOUNT}}": "10,000", "{{CUSTOMER_ID}}": "SCCL1000102", "{{LOAN_ACCOUNT_ID}}": "SCCLMF20261000102", "{{DISBURSEMENT_TYPE}}": "Multiple",
+     "{{DISBURSEMENT_NO}}": "1", "{{UTRN}}": "UTIBR52026102700001", "{{LOAN_TENURE}}": "12", "{{EMI_AMOUNT}}": "88", "{{FIRST_EMI_DATE}}": "05-Dec-2026",
+     "{{BALANCE_AMOUNT}}": "1,55,26,100", "{{PURPOSE}}": "Home Renovation"}),
+}
+def _sample_schedule(text):      # sample: 12 monthly rows from 05-Dec-2026 (interest only, principal with the last instalment)
+    rows = [f"05-{m}-{y} | ₹{'10,088' if k == 11 else '88'}" for k, (m, y) in enumerate(
+        [("Dec", 2026)] + [(x, 2027) for x in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"]])]
+    return text.replace("DD-MMM-YYYY | ₹XXXXXXX\n" * 12, "\n".join(rows) + "\n").replace(
+        "(13th row only when required) DD-MMM-YYYY | ₹XXXXXXX\n", "(13th row only when required – not needed in this sample)\n")
+
 def _with_mail(r):
+    if r[0] in TEXT_MAILS and not r[10]:
+        subj, subj_sample, body, subs = TEXT_MAILS[r[0]]
+        sample = _sample_schedule(body).replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY")
+        for k, v in subs.items():
+            sample = sample.replace(k, v)
+        return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, "Yes", "Required")
     t = MAIL_TEMPLATES.get(r[0]) or MAIL_TEMPLATES.get(r[1])      # keyed by stage, or by scenario
     if not t or r[10]:                       # no template, or mail columns already filled
         return r
@@ -548,11 +576,14 @@ MAIL_COLS, MAILS = _sender_first(MAIL_COLS, MAILS)
 
 # Remarks – the owner's observations on the live behaviour, last column of the SMS table (DISC-211)
 REMARKS = {
+ "On the completion of each withdrawal by the customer (withdrawal request confirmed)":
+   "This SMS has to come once the withdrawal OTP is verified successfully, but it currently comes only once the UTR is approved in the LMS.",
+ "Loan Disbursed": "In the disbursement mail, Disbursement No. ({{DISBURSEMENT_NO}}) and Disbursement UTRN ({{UTRN}}) currently show a random format; the format of both has to be defined correctly.",
  "Pledging of Mutual Fund": "Both the SMS and Email communication are currently received once the loan lodgement is successful, but they are supposed to come right after the pledging is successful.",
 }
-assert set(REMARKS) <= {r[0] for r in COMMS}
+assert set(REMARKS) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}      # keyed by stage, or by scenario
 COMMS_COLS = COMMS_COLS + ["Remarks"]
-COMMS = [r + (REMARKS.get(r[0], ""),) for r in COMMS]
+COMMS = [r + (REMARKS.get(r[0]) or REMARKS.get(r[1]) or "",) for r in COMMS]
 
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
