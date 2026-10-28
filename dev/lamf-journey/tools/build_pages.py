@@ -502,7 +502,7 @@ class _MailText(HTMLParser):
             if self.td.strip(): self.row.append(" ".join(self.td.split()))
             self.td = None
         if tag == "tr" and getattr(self, "row", None):
-            self.parts.append(": ".join(self.row)); self.row = []
+            self.parts.append((" " if self.row[:1] == ["•"] else ": ").join(self.row)); self.row = []      # bullet rows: "• text"
         if tag == "a" and getattr(self, "btn", None) is not None:
             self.parts.append(f"[{self.btn.strip()}]"); self.btn = None
         if tag == "p" and self.depth_p:
@@ -560,6 +560,9 @@ MAIL_TEMPLATES = {
  "LAMF Liquidation for O/S": ("26_Liquidation_for_Outstanding_Loan.html",
     "Immediate Action: Liquidation of Pledged Mutual Fund Units for Recovery of Outstanding Loan {{LOAN_ID}}",
     "Immediate Action: Liquidation of Pledged Mutual Fund Units for Recovery of Outstanding Loan SCCLMF20261000102",
+    "", {"{{LOAN_ID}}": "SCCLMF20261000102"}),
+ "LAMF Principal Repayment Reminder": ("25_Principal_Repayment_for_Loan_Closure.html",
+    "Action Required: Principal Repayment {{LOAN_ID}}", "Action Required: Principal Repayment SCCLMF20261000102",
     "", {"{{LOAN_ID}}": "SCCLMF20261000102"}),
  "EMI Success": ("11_Successful_EMI_Deduction.html",
     "Your EMI of ₹{{EMI_AMOUNT}} Has Been Successfully Deducted", "Your EMI of ₹10,000 Has Been Successfully Deducted",
