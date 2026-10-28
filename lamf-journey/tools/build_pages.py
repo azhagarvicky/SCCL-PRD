@@ -449,6 +449,33 @@ MAILS = [(stage, scen, app, "Mail", "SCCL", body + MAIL_SIGN + MAIL_DISCLAIMER, 
 MAIL_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Body (template)",
              "Body (sample)", "Mail Subject", "SMS Header", "Available"]
 
+# SMS ↔ mail (DISC-202): for each SMS, whether a mail is also sent at the same point; if Yes, its subject and body (template).
+SMS_MAIL = {
+ "Pledging of Mutual Fund": "Mutual Fund Pledge Successful",
+ "Sanction Letter": "Loan Sanction Letter Mail",
+ "Loan Agreement e-Sign": "Loan Agreement Mail",
+ "Loan Lodgement Approval": "Withdrawal Initiation",
+ "Loan Disbursed": "Loan Disbursal Confirmation (First Disbursement)",
+ "EMI Reminder": "Upcoming EMI Due Reminder",
+ "EMI Success": "Successful EMI Deduction Mail",
+ "EMI Failed": "Instalment Failure / EMI Bounce Notification (Bounce – 1A)",
+ "EMI Resubmission Reminder": "Second EMI Representation Reminder (1B T-1)",
+ "EMI Resubmission Failed": "Initiation of Loan Closure Procedures (2B Bounce)",
+ "LAMF Part Payment Confirmation": "Part Payment",
+ "LTV Breach Trigger (Margin Call)": "Margin Call / Mutual Fund Value Drop Mail",
+ "LAMF LTV Breach Liquidation": "LTV Breach beyond Policy Norms",
+ "LAMF Principal Repayment Reminder": "Principal Repayment for Loan Closure",
+ "LAMF Liquidation for O/S": "Liquidation for Outstanding Loan (after grace period)",
+ "Foreclosure Completed": "Pre Closure",
+ "Successful Loan Tenure Completion": "Loan Tenure Completion (Closure Mail)",
+ "Loan Account Closure": "NOC / Loan Closure Certificate",
+}
+_MAIL_BY_STAGE = {m[0]: m for m in MAILS}
+assert set(SMS_MAIL) <= {r[0] for r in COMMS} and set(SMS_MAIL.values()) <= set(_MAIL_BY_STAGE)
+COMMS = [r + (("Yes", _MAIL_BY_STAGE[SMS_MAIL[r[0]]][7], _MAIL_BY_STAGE[SMS_MAIL[r[0]]][5]) if r[0] in SMS_MAIL else ("No", "-", "-"))
+         for r in COMMS]
+COMMS_COLS = COMMS_COLS + ["Mail Communication Available", "Mail Subject Line", "Mail Content"]
+
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
 
@@ -457,7 +484,8 @@ def comms_table(rows_data, cols, prefix):
     head = "".join(f"<th>{c}</th>" for c in cols)
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
     avail = cols.index("Available") - 1
-    cls = lambda r: " ".join(c for c, on in (("na", r[avail].startswith("No")), ("nr", r[-1] == "Not Required")) if on)
+    stat = cols.index("Status") - 1 if "Status" in cols else None
+    cls = lambda r: " ".join(c for c, on in (("na", r[avail].startswith("No")), ("nr", stat is not None and r[stat] == "Not Required")) if on)
     rows = "".join('<tr class="%s"><td>%d</td>%s</tr>' % (cls(r), k, "".join(f"<td>{esc(v)}</td>" for v in r))
                    for k, r in enumerate(rows_data, 1))
     return f'<div class="comms-wrap"><table class="comms {prefix}"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
