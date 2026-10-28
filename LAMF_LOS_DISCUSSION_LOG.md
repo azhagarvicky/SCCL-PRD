@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 14:53 IST
+**Last Updated:** 28-10-2026 14:59 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -261,6 +261,7 @@
 | DISC-226 | 28-10-2026 | communications.html / mails / exports | LTV breach liquidation mail | Owner: for “When the LTV breach is not cured – liquidation of the pledged securities is initiated as per the loan terms to recover the shortfall” the attached 24_LTV_Breach_Beyond_Policy_Norms.html mail is sent | Row LAMF LTV Breach Liquidation (row 38): Communication Type SMS, Mail (SMS unchanged). Mail subject “Immediate Action: Liquidation of Pledged Mutual Fund Units due to LTV Breach {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/24_LTV_Breach_Beyond_Policy_Norms.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-227 | 28-10-2026 | communications.html / mails / exports | NOC / loan closure certificate mail | Owner: when the loan account is closed successfully, the attached 24_NOC_Loan_Closure_Certificate.html mail is sent | Row Loan Account Closure (row 43): Communication Type SMS, Mail (SMS unchanged). Mail subject “Your Loan Account {{LOAN_ID}} is closed successfully”, content from the template with “Trigger: manual trigger” and “Attachment: NOC / Loan Closure Certificate PDF” (stored as lamf-journey/mails/24_NOC_Loan_Closure_Certificate.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-228 | 28-10-2026 | communications.html / mails / exports | Liquidation for outstanding loan mail | Owner: for the liquidation for the outstanding loan, the attached 26_Liquidation_for_Outstanding_Loan.html mail is sent | Row LAMF Liquidation for O/S (row 40): Communication Type SMS, Mail (SMS unchanged). Mail subject “Immediate Action: Liquidation of Pledged Mutual Fund Units for Recovery of Outstanding Loan {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/26_Liquidation_for_Outstanding_Loan.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
+| DISC-229 | 28-10-2026 | communications.html / mails / exports | Principal repayment mail | Owner: for “The day after the loan end date (loan matured) when the outstanding principal is still not paid” the attached 25_Principal_Repayment_for_Loan_Closure.html mail is sent | Row LAMF Principal Repayment Reminder (row 39): Communication Type SMS, Mail (SMS unchanged). Mail subject “Action Required: Principal Repayment {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/25_Principal_Repayment_for_Loan_Closure.html, logo path only changed; CTA shown as [Make Payment →]), Mail Available Yes + View, Mail Status Required. Mail text reader: bullet table rows now read “• text” | Implemented |
 
 ---
 
