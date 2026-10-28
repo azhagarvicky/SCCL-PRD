@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 18:09 IST
+**Last Updated:** 28-10-2026 18:18 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -276,6 +276,7 @@
 | DISC-241 | 28-10-2026 | communications.html / exports | Summary counts | Owner: show somewhere how many SMS and mails there are and the total scenarios – just a summary count | communications.html: summary cards above the table, counted from the table (COMMS_SUMMARY in build_pages.py): Total scenarios 43 · SMS 42 (25 available, 17 to be created, 8 not required) · Mail 22 (22 available) · SMS and mail 21 · SMS only 21 · Mail only 1. Excel: the same summary as the first line of the Notes under the table | Implemented |
 | DISC-242 | 28-10-2026 | communications.html / exports | Mail Status for Not Required rows | Owner: SMS Status “Not Required” means the mail is not required either | Every row with SMS Status “Not Required” now also has Mail Status “Not Required” (rows 4, 6, 7, 8, 10, 11, 12, 14 – LAN Generated, Pre-Pledge Application Expiry Reminder, Pre-Pledge Application Discarded, Customer-Initiated Discard, Lien Marking Failed, Post-Pledge Journey Incomplete, Post-Pledge Application Expiry Reminder, Lien Removal Request Received); set in build_pages.py from the SMS Status, so it follows any future change | Implemented |
 | DISC-243 | 28-10-2026 | communications.html / exports | Not Required rows in a separate table | Owner: the Not Required rows mixed in the table are disturbing – put them in a separate table | communications.html: main table now has the 35 active communications (S.No 1–35, renumbered – e.g. old 29 → 21, 30 → 22, 32 → 24, 33 → 25); the 8 Not Required rows are in their own table “Not Required (8)” below it, numbered 1–8. Summary cards count the active rows (35 scenarios · SMS 34 – 25 available, 9 to be created · Mail 22 · SMS and mail 21 · SMS only 13 · Mail only 1) plus a “Not required 8” card. Excel: separate “Not Required” sheet | Implemented |
+| DISC-244 | 28-10-2026 | communications.html / exports | SMS Status and Mail Status columns removed | Owner: now that the Not Required rows are in their own table, the SMS Status and Mail Status columns are not required – remove them | Both columns removed from both tables on communications.html and from both Excel sheets (16 columns now: S.No … SMS Available, Mail Subject Structure … Mail Available, Remarks). The status is still used in build_pages.py to split the Not Required rows into their table | Implemented |
 
 ---
 
