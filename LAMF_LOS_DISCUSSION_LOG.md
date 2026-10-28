@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 17:01 IST
+**Last Updated:** 28-10-2026 17:04 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -267,6 +267,7 @@
 | DISC-232 | 28-10-2026 | communications.html / exports | Subsequent disbursement – SMS too | Owner: for Loan Disbursed (Subsequent Disbursement) the same SMS as the first disbursement is sent; only the mail is different | Row 28 Loan Disbursed (Subsequent Disbursement): Communication Type SMS, Mail; SMS Content Structure, Actual SMS Content, SMS Header (SGRCDT-T), SMS Available (Yes) and SMS Status (Required) copied from row 27; mail unchanged (08 template). Scenarios of rows 27 and 28 now say same SMS, different mail | Implemented |
 | DISC-233 | 28-10-2026 | communications.html / exports | EMI Reminder (T-5) – scenario wording | Owner: the row says T-5, but the EMI is due on the 5th, so this communication has to be sent on the 1st – update the scenario only, keep the communication | Row 29 Scenarios: “First EMI reminder: the EMI is due on the 5th of every month, so this reminder has to be sent on the 1st of every month – notifying the customer of the upcoming instalment (SMS and mail). The second reminder, T-1, is mail only (next row)”. Stage, SMS and mail unchanged | Implemented |
 | DISC-234 | 28-10-2026 | communications.html / exports | EMI Reminder – trigger line removed from mail | Owner: the line “Trigger: 1st of every month – T-5 / T-4 before the EMI presentation date” has to be removed in the mail (owner confirmed the reminder on the 1st for the EMI due on the 5th is T-4, not T-5) | Row 29: the trigger line removed from Mail Content Structure and Actual Mail Content; the mail now starts with the template text (EMI Due Reminder). Stage name and row 30 wording unchanged | Implemented |
+| DISC-235 | 28-10-2026 | communications.html / exports | Row 29 renamed and scenario | Owner: rename row 29 “EMI Reminder (T-5)” to “EMI Presentation Reminder (T-5)”; scenario: this communication has to be triggered on the 1st when the EMI is due on the 5th | Row 29 stage “EMI Presentation Reminder (T-5)”; Scenarios: “This communication has to be triggered on the 1st of every month when the EMI is due on the 5th – first reminder of the upcoming instalment (SMS and mail). The second reminder, T-1, is mail only (next row)”. SMS and mail unchanged | Implemented |
 
 ---
 
