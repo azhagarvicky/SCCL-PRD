@@ -55,7 +55,7 @@ def sheet(ws, COMMS, COLS, widths):
   ws.page_setup.fitToWidth = 1; ws.page_setup.fitToHeight = 0
 
 ws = wb.active; ws.title = 'SMS'
-sheet(ws, COMMS, COLS, [6, 28, 45, 12, 14, 9, 55, 55, 12, 18, 14, 40, 40, 70, 70, 14, 12])
+sheet(ws, COMMS, COLS, [6, 28, 45, 12, 9, 14, 55, 55, 12, 18, 14, 40, 40, 70, 70, 14, 12, 45])
 sheet(wb.create_sheet('Mail'), MAILS, MAIL_COLS, [6, 28, 40, 12, 14, 9, 80, 80, 40, 10, 12])
 out = os.path.join(REPO, 'exports', 'LAMF_Customer_Communications.xlsx')
 os.makedirs(os.path.dirname(out), exist_ok=True); wb.save(out)
