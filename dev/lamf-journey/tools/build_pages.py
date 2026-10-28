@@ -509,9 +509,13 @@ MAIL_TEMPLATES = {
  "Loan Agreement e-Sign": ("04_Loan_Agreement.html",
     "SCCL Loan Agreement – << Full Name of the customer >>", "SCCL Loan Agreement – AZHAGARSAMY SUBBURAJ",
     "To: Customer Email ID\nCC: loandocuments@shriramcredit.in\nAttachment: Digitally signed Loan Agreement PDF\n\n", {"{{LOAN_ID}}": "SCCLMF20261000102"}),
+ # two rows share the stage “Withdrawal”, so this one is keyed by its scenario (DISC-209)
+ "When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal": ("06_Withdrawal_Verification.html",
+    "{{OTP}} – Your Withdrawal Verification OTP for Shriram Credit LAMF", "123456 – Your Withdrawal Verification OTP for Shriram Credit LAMF",
+    "", {"{{OTP}}": "123456", "{{WITHDRAWAL_AMOUNT}}": "10,000"}),
 }
 def _with_mail(r):
-    t = MAIL_TEMPLATES.get(r[0])
+    t = MAIL_TEMPLATES.get(r[0]) or MAIL_TEMPLATES.get(r[1])      # keyed by stage, or by scenario
     if not t or r[10]:                       # no template, or mail columns already filled
         return r
     fname, subj, subj_sample, head, subs = t
@@ -521,7 +525,7 @@ def _with_mail(r):
         sample = sample.replace(k, v)
     # Communication Type → “SMS, Mail”; SMS columns kept as they are
     return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required")
-assert set(MAIL_TEMPLATES) <= {r[0] for r in COMMS}
+assert set(MAIL_TEMPLATES) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}
 COMMS = [_with_mail(r) for r in COMMS]
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 
