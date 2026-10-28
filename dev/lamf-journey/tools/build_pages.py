@@ -480,6 +480,49 @@ EMAIL_VERIFICATION_MAIL = (
 EMAIL_VERIFICATION_MAIL = EMAIL_VERIFICATION_MAIL[:13] + (EMAIL_VERIFICATION_MAIL[12].replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{OTP}}", "123456"),) + EMAIL_VERIFICATION_MAIL[14:]
 _i = [r[0] for r in COMMS].index("LAN Generated") + 1     # email verification comes right after the Application Summary
 COMMS = COMMS[:_i] + [EMAIL_VERIFICATION_MAIL] + COMMS[_i:]
+
+# HTML mail templates sent together with an SMS (DISC-208). The mail text is read from the template itself,
+# so the table and the “View” page always match. {stage: (file, subject structure, sample subject, header lines, samples)}
+from html.parser import HTMLParser
+class _MailText(HTMLParser):
+    def __init__(self):
+        super().__init__(); self.parts, self.cur, self.depth_p, self.hidden = [], "", 0, 0
+    def handle_starttag(self, tag, attrs):
+        if tag == "span" and "display:none" in (dict(attrs).get("style") or ""): self.hidden += 1
+        if tag == "p": self.depth_p += 1; self.cur = ""
+        if tag == "br" and self.depth_p: self.cur += "\n"
+    def handle_endtag(self, tag):
+        if tag == "span" and self.hidden: self.hidden -= 1
+        if tag == "p" and self.depth_p:
+            self.depth_p -= 1; self.parts.append(" ".join(self.cur.split(" ")).strip())
+    def handle_data(self, d):
+        if self.depth_p and not self.hidden: self.cur += d.replace("\xa0", " ")
+def mail_text(fname):
+    t = _MailText(); t.feed(open(os.path.join(ROOT, "mails", fname), encoding="utf-8").read())
+    return "\n\n".join(re.sub(r"[ \t]+", " ", x).replace(" \n", "\n").strip() for x in t.parts if x.strip())
+MAIL_TEMPLATES = {
+ "Pledging of Mutual Fund": ("02_Mutual_Fund_Pledge_Successful.html",
+    "Your mutual fund pledge is successful", "Your mutual fund pledge is successful", "", {}),
+ "Sanction Letter": ("03_Loan_Sanction_Letter.html",
+    "SCCL Loan Sanction Letter – << Full Name of the customer >>", "SCCL Loan Sanction Letter – AZHAGARSAMY SUBBURAJ",
+    "To: Customer Email ID\nCC: loandocuments@shriramcredit.in\nAttachment: Loan Sanction Letter PDF\n\n", {}),
+ "Loan Agreement e-Sign": ("04_Loan_Agreement.html",
+    "SCCL Loan Agreement – << Full Name of the customer >>", "SCCL Loan Agreement – AZHAGARSAMY SUBBURAJ",
+    "To: Customer Email ID\nCC: loandocuments@shriramcredit.in\nAttachment: Digitally signed Loan Agreement PDF\n\n", {"{{LOAN_ID}}": "SCCLMF20261000102"}),
+}
+def _with_mail(r):
+    t = MAIL_TEMPLATES.get(r[0])
+    if not t or r[10]:                       # no template, or mail columns already filled
+        return r
+    fname, subj, subj_sample, head, subs = t
+    body = head + mail_text(fname)
+    sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{CUSTOMER_FULL_NAME}}", "AZHAGARSAMY SUBBURAJ")
+    for k, v in subs.items():
+        sample = sample.replace(k, v)
+    # Communication Type → “SMS, Mail”; SMS columns kept as they are
+    return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required")
+assert set(MAIL_TEMPLATES) <= {r[0] for r in COMMS}
+COMMS = [_with_mail(r) for r in COMMS]
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 
 # Sender comes before Communication Type in both tables (DISC-205)

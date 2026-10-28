@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 11:37 IST
+**Last Updated:** 28-10-2026 11:44 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -240,6 +240,7 @@
 | DISC-205 | 28-10-2026 | communications.html / exports | Column order | Owner: Sender has to come before Communication Type | Sender moved before Communication Type in the SMS table and, for consistency, in the Mail table (page and Excel) | Implemented |
 | DISC-206 | 28-10-2026 | communications.html / exports | Column name | Owner: rename Mail Subject as Actual Mail Subject | SMS table column “Mail Subject” renamed “Actual Mail Subject” (page and Excel); the Mail table’s own Mail Subject column unchanged | Implemented |
 | DISC-207 | 28-10-2026 | communications.html / mails / exports | Email Verification mail – View link | Owner: for the Email Verification row Mail Available is “Yes”, with a “View” hyperlink below it that shows the mail in HTML format | Mail Available = “Yes” + “View” link (opens in a new tab). The owner’s template is stored as lamf-journey/mails/01_Email_Verification.html (only change: logo path points to the site logo); placeholders {{CUSTOMER_NAME}} / {{OTP}} kept. Excel: cell shows “Yes / View mail”, hyperlinked to the dev copy. CLAUDE.md source list updated | Implemented |
+| DISC-208 | 28-10-2026 | communications.html / mails / exports | Pledge, sanction letter and loan agreement – SMS and mail | Owner: for the pledge success row (previously SMS) the communication is now SMS and Mail – keep the existing SMS details and take the mail from the attached HTML (subject “Your mutual fund pledge is successful”); same for the sanction letter and the loan agreement (HTML attached; subjects “SCCL Loan Sanction Letter – << Full Name of the customer >>” and “SCCL Loan Agreement – << Full Name of the customer >>”) | Templates stored as lamf-journey/mails/02_Mutual_Fund_Pledge_Successful.html, 03_Loan_Sanction_Letter.html, 04_Loan_Agreement.html (logo path only changed). Rows Pledging of Mutual Fund, Sanction Letter and Loan Agreement e-Sign: Communication Type “SMS, Mail”, SMS columns unchanged; Mail Subject Structure as given, Actual Mail Subject with AZHAGARSAMY SUBBURAJ; Mail Content Structure read from the HTML at build time (sanction letter / agreement start with To, CC loandocuments@shriramcredit.in and the attachment), Actual Mail Content with AZHAGARSAMY and loan ID SCCLMF20261000102; Mail Available “Yes” + View link; Mail Status Required. Excel updated (View mail hyperlinks) | Implemented |
 
 ---
 

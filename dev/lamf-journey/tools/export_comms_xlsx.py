@@ -8,7 +8,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SITE = 'https://azhagarvicky.github.io/SCCL-PRD/dev/lamf-journey/'
 REPO = os.path.dirname(os.path.dirname(HERE))
 src = open(os.path.join(HERE, 'build_pages.py')).read()
-ns = {}
+import html
+ns = {'os': os, 're': re, 'html': html, 'ROOT': os.path.dirname(HERE)}   # what the COMMS block uses
 exec(src[src.index('COMMS = ['):src.index('CONTACT = (')], ns)      # only the COMMS / COMMS_COLS data
 COMMS, COLS = ns['COMMS'], ns['COMMS_COLS']
 MAILS, MAIL_COLS = ns['MAILS'], ns['MAIL_COLS']        # Mail sheet (DISC-199)
