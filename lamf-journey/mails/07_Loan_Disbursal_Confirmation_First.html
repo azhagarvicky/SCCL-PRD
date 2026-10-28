@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  SHRIRAM CREDIT LAMF - LOAN DISBURSAL CONFIRMATION (FIRST DISBURSEMENT)
+  Built by Claude from the mail text shared by the owner (no HTML template received yet),
+  on the layout of 08_Loan_Disbursal_Confirmation_Subsequent.html (DISC-253)
+  ============================================================
+  Placeholders: {{CUSTOMER_NAME}}, {{DISBURSED_AMOUNT}}, {{CUSTOMER_ID}},
+    {{LOAN_ACCOUNT_ID}}, {{DISBURSEMENT_TYPE}}, {{DISBURSEMENT_NO}}, {{UTRN}},
+    {{LOAN_TENURE}}, {{EMI_AMOUNT}}, {{FIRST_EMI_DATE}},
+    {{BALANCE_AMOUNT}}, {{PURPOSE}}
+  Repayment rows: 12 rows – one per month of the 12-month tenure; a 13th row only when required.
+  Subject: Loan disbursed to your account
+  LOGO: Host shriram-credit-logo.png on your CDN and replace the src.
+  ============================================================
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Loan Disbursed – Shriram Credit</title>
+<!--[if mso]><style type="text/css">table,td,div,p,a{font-family:Arial,Helvetica,sans-serif!important;}</style><![endif]-->
+<style type="text/css">
+  body,table,td,p,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+  table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+  img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;}
+  body{margin:0;padding:0;width:100%!important;height:100%!important;}
+  @media only screen and (max-width:620px){
+    .email-container{width:100%!important;}
+    .px{padding-left:24px!important;padding-right:24px!important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#efeeec;">
+
+<span style="display:none!important;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;color:transparent;">Your next disbursement has been credited to your bank account.&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</span>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#efeeec;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="email-container" style="width:600px;max-width:600px;background-color:#ffffff;border-radius:8px;overflow:hidden;">
+
+        <!-- Logo -->
+        <tr>
+          <td align="center" style="padding:28px 40px 20px 40px;background-color:#ffffff;">
+            <img src="../assets/img/shriram-logo.png" width="200" alt="Shriram Credit" style="display:block;width:200px;height:auto;">
+          </td>
+        </tr>
+
+        <!-- Yellow rule -->
+        <tr><td style="background-color:#FFC20E;height:5px;line-height:5px;font-size:5px;">&nbsp;</td></tr>
+
+        <!-- Title band -->
+        <tr>
+          <td align="center" style="background-color:#1a1a1a;padding:22px 40px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#FFC20E;">Loan Disbursed</p>
+          </td>
+        </tr>
+
+        <!-- Greeting -->
+        <tr>
+          <td class="px" style="padding:36px 48px 0 48px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:24px;color:#1a1a1a;font-weight:bold;">Dear {{CUSTOMER_NAME}},</p>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td class="px" style="padding:18px 48px 0 48px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#333333;text-align:justify;">We are happy to inform you that your loan amount of <span style="font-weight:bold;color:#1a1a1a;">&#8377;{{DISBURSED_AMOUNT}}</span> has been credited to your bank account.</p>
+          </td>
+        </tr>
+
+        <!-- Loan Details -->
+        <tr>
+          <td class="px" style="padding:22px 48px 0 48px;">
+            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#7a6a33;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">Loan Details</p>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #FFC20E;border-radius:8px;overflow:hidden;">
+              <tr style="background-color:#FFF7DF;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;width:55%;">Customer ID</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{CUSTOMER_ID}}</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">Loan Account ID</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{LOAN_ACCOUNT_ID}}</td>
+              </tr>
+              <tr style="background-color:#FFF7DF;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">Disbursement Type</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{DISBURSEMENT_TYPE}}</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">Disbursement No.</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{DISBURSEMENT_NO}}</td>
+              </tr>
+              <tr style="background-color:#FFF7DF;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">Disbursement UTRN</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{UTRN}}</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">Loan Tenure</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{LOAN_TENURE}} months</td>
+              </tr>
+              <tr style="background-color:#FFF7DF;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">EMI Amount</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">&#8377;{{EMI_AMOUNT}}</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">First EMI Due Date</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">{{FIRST_EMI_DATE}}</td>
+              </tr>
+              <tr style="background-color:#FFF7DF;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#555555;">Balance Amount Available</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a1a1a;font-weight:bold;">&#8377;{{BALANCE_AMOUNT}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Repayment Schedule (12 rows; 13th only when required) -->
+        <tr>
+          <td class="px" style="padding:22px 48px 0 48px;">
+            <p style="margin:0 0 4px 0;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:20px;color:#7a6a33;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">Repayment Schedule</p>
+            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#888888;">12 rows – one per month of the 12-month tenure; a 13th row is shown only when required</p>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;">
+              <tr style="background-color:#1a1a1a;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#FFC20E;font-weight:bold;">Repayment Date</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#FFC20E;font-weight:bold;text-align:right;">Repayment Amount</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#ffffff;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY</td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+              <tr style="background-color:#f9f9f9;">
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;">DD-MMM-YYYY <span style="color:#888888;font-size:12px;">(13th row – only when required)</span></td>
+                <td style="padding:10px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333333;text-align:right;">&#8377;XXXXXX</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Purpose note -->
+        <tr>
+          <td class="px" style="padding:20px 48px 0 48px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#555555;text-align:justify;">Please note that the purpose of the loan, as confirmed by you, is <span style="font-weight:bold;color:#1a1a1a;">{{PURPOSE}}</span> and not for any speculative trading in securities, derivatives, commodities, or any unlawful purposes.</p>
+          </td>
+        </tr>
+        <tr>
+          <td class="px" style="padding:16px 48px 0 48px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#333333;text-align:justify;">Thank you for choosing Shriram Credit as your trusted financial partner. We look forward to supporting you throughout your loan journey.</p>
+          </td>
+        </tr>
+
+        <!-- Sign-off -->
+        <tr>
+          <td class="px" style="padding:28px 48px 36px 48px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:24px;color:#333333;">Warm regards,<br><span style="font-weight:bold;color:#1a1a1a;">Team Shriram Credit</span></p>
+          </td>
+        </tr>
+
+        <!-- Disclaimer -->
+        <tr>
+          <td class="px" style="background-color:#FFC20E;padding:18px 48px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#1a1a1a;"><span style="font-weight:bold;">Disclaimer:</span> This is an automated reminder. Please do not reply to this message, as the mailbox is not monitored and you will not receive a response. Loan against Securities is only for personal use. The loan amount cannot be used for speculative activities, capital market-related purposes, or anti-social purposes.</p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td align="center" style="background-color:#1a1a1a;padding:14px 40px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#cccccc;">&copy; 2026 Shriram Credit Company Limited. All rights reserved.</p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
