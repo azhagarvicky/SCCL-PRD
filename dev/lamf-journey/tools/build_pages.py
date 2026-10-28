@@ -600,7 +600,7 @@ def _sample_schedule(text):      # sample: 12 monthly rows from 05-Dec-2026 (int
     return text.replace("DD-MMM-YYYY | ₹XXXXXXX\n" * 12, "\n".join(rows) + "\n").replace(
         "(13th row only when required) DD-MMM-YYYY | ₹XXXXXXX\n", "(13th row only when required – not needed in this sample)\n")
 
-# Mails not available yet – drafted by Claude for approval, to be created (DISC-247): {stage: (subject structure, sample subject, body)}
+# Mails not available yet – drafted by Claude for approval, to be created (DISC-247): {stage: (subject structure, sample subject, body[, {placeholder: sample}])}
 _LIEN_DETAILS = ("LIEN REMOVAL DETAILS\nStatus: Lien removal initiated\nTimeline: 2–3 working days\n"
                  "Confirmation: You will receive a notification from CAMS/KFintech once your units are fully unlocked.\n\n")
 DRAFT_MAILS = {
@@ -619,6 +619,15 @@ DRAFT_MAILS = {
     "Application Submitted\n\nDear {{CUSTOMER_NAME}},\n\nThank you for completing the E-Mandate. Your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} "
     "has been submitted successfully.\n\nOur team will now review your application, and you will be notified once your loan account is opened.\n\n"
     + SUPPORT + "\n\n" + THANKS + MAIL_SIGN + MAIL_DISCLAIMER),
+ "Loan Account Opening / Loan Lodgement Rejection (with payment link)": ("Your LAMF application {{LOAN_ID}} could not be approved",
+    "Your LAMF application SCCLMF20261000102 could not be approved",
+    "Application Not Approved\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} could not be approved after our review.\n\n" "CHARGES PAYABLE\nProcessing fee, lien marking and lien removal charges: ₹{{CHARGES_AMOUNT}}\n\n"
+    "Please pay the applicable charges using the link below.\n\n[Make Payment →] ({{PAYMENT_LINK}})\n\n"
+    "Once the payment is received, the lien on your Mutual Fund units will be removed.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
+    {"{{CHARGES_AMOUNT}}": "92,313", "{{PAYMENT_LINK}}": "https://lamf.shriramcredit.in/"}),
+ "Loan Account Opening / Loan Lodgement Rejection (without payment link)": ("Your LAMF application {{LOAN_ID}} could not be approved",
+    "Your LAMF application SCCLMF20261000102 could not be approved",
+    "Application Not Approved\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} could not be approved after our review.\n\n" "There are no charges payable by you for this application.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
  "Lien Removal Failed": ("Lien removal could not be completed – {{LOAN_ID}}", "Lien removal could not be completed – SCCLMF20261000102",
     "Lien Removal Failed\n\nDear {{CUSTOMER_NAME}},\n\nThe removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}} could not be completed "
     "due to a processing issue. Your units remain lien-marked.\n\nOur team is reviewing it and will update you once the lien removal is completed.\n\n"
@@ -626,8 +635,10 @@ DRAFT_MAILS = {
 }
 def _with_mail(r):
     if r[0] in DRAFT_MAILS and not r[10]:
-        subj, subj_sample, body = DRAFT_MAILS[r[0]]
+        subj, subj_sample, body, *subs = DRAFT_MAILS[r[0]]
         sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{LOAN_ID}}", "SCCLMF20261000102")
+        for k, v in (subs[0] if subs else {}).items():
+            sample = sample.replace(k, v)
         return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, "No – to be created", "Required")
     if r[0] in TEXT_MAILS and not r[10]:
         subj, subj_sample, body, subs = TEXT_MAILS[r[0]]
