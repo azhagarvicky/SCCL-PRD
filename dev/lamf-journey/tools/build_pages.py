@@ -266,7 +266,7 @@ COMMS = [
   "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} was rejected by your bank on {#alphanumeric#}. We will retry on {#alphanumeric#}. Please ensure sufficient balance - Shriram Credit",
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 was rejected by your bank on 05-11-2026. We will retry on 10-11-2026. Please ensure sufficient balance - Shriram Credit",
   "-", "SGRCDT-T", "Yes"), ("EMI Resubmission Reminder",
-  "Notifying the customer before the bounced EMI is re-presented (resubmitted) to the bank",
+  "Notifying the customer before the bounced EMI is re-presented (resubmitted) to the bank – this communication has to be triggered 1 day before the re-presentation date (T-1), i.e. on the 9th when the EMI is re-presented on the 10th – SMS and mail",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} will be re-presented on {#alphanumeric#}. Please ensure sufficient balance to avoid any disruption - Shriram Credit",
   "Dear AZHAGARSAMY, Your EMI of Rs. 10,000 will be re-presented on 10-11-2026. Please ensure sufficient balance to avoid any disruption - Shriram Credit",
