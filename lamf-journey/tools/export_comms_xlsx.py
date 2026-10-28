@@ -37,13 +37,15 @@ def sheet(ws, COMMS, COLS, widths):
           if m:
               cell = ws.cell(ws.max_row, col); cell.hyperlink = SITE + m.group(1)
       av = COLS.index('SMS Available' if 'SMS Available' in COLS else 'Available')   # column number (S.No is column 1)
-      na = r[av - 1].startswith('No')
+      mav = COLS.index('Mail Available') if 'Mail Available' in COLS else av      # a mail to be created is highlighted too (DISC-247)
+      na = r[av - 1].startswith('No') or r[mav - 1].startswith('No')
       st = COLS.index('SMS Status') if 'SMS Status' in COLS else None   # column number of SMS Status
       nr = st is not None and r[st - 1] == 'Not Required'       # DISC-201: kept, shown greyed
       for c in ws[ws.max_row]:
           is_av, is_st = c.column == av, c.column == st or COLS[c.column - 1] == 'Mail Status'
-          color = ('B42318' if (is_av and na) or (c.column == st and nr) else '12753B' if is_st and c.value else '8A8A8A' if nr else '000000')
-          c.font = Font(name='Calibri', size=11, bold=(is_av and na) or is_st, color=color)
+          todo = COLS[c.column - 1] in ('SMS Available', 'Mail Available', 'Available') and str(c.value).startswith('No')   # red, bold (DISC-247)
+          color = ('B42318' if todo or (c.column == st and nr) else '12753B' if is_st and c.value else '8A8A8A' if nr else '000000')
+          c.font = Font(name='Calibri', size=11, bold=todo or is_st, color=color)
           c.border = bd; c.alignment = Alignment(vertical='top', wrap_text=True, horizontal='center' if c.column == 1 else None)
           if nr: c.fill = PatternFill('solid', fgColor='EDEDED')
           elif na: c.fill = PatternFill('solid', fgColor='FFF2CC')
