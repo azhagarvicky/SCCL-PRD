@@ -635,6 +635,13 @@ DRAFT_MAILS = {
     "WITHDRAWAL DETAILS\nLoan Account ID: {{LOAN_ID}}\nWithdrawal Amount: ₹{{WITHDRAWAL_AMOUNT}}\nRequest Date: {{REQUEST_DATE}}\nStatus: Rejected\n\n"
     "You may place a new withdrawal request at any time, subject to your available balance.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
     {"{{WITHDRAWAL_AMOUNT}}": "10,000", "{{REQUEST_DATE}}": "02-11-2026"}),
+ "EMI Resubmission Success": ("Your re-presented EMI of ₹{{EMI_AMOUNT}} has been successfully deducted",
+    "Your re-presented EMI of ₹10,000 has been successfully deducted",
+    "EMI Payment Confirmed\n\nDear {{CUSTOMER_NAME}},\n\nWe are writing to confirm that your EMI of ₹{{EMI_AMOUNT}} for the loan account {{LOAN_ID}}, "
+    "which was re-presented after the earlier failed attempt, was successfully debited on {{DEDUCTION_DATE}} from your registered bank account.\n\n"
+    "EMI DETAILS\nLoan Account Number: {{LOAN_ID}}\nEMI Amount: ₹{{EMI_AMOUNT}}\nDeduction Date: {{DEDUCTION_DATE}}\nNext EMI Due Date: {{NEXT_EMI_DATE}}\n\n"
+    "Thank you for your payment. Regular EMI payments help maintain a strong credit history and a smooth loan journey.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
+    {"{{EMI_AMOUNT}}": "10,000", "{{DEDUCTION_DATE}}": "10-11-2026", "{{NEXT_EMI_DATE}}": "05-12-2026"}),
  "Lien Removal Failed": ("Lien removal could not be completed – {{LOAN_ID}}", "Lien removal could not be completed – SCCLMF20261000102",
     "Lien Removal Failed\n\nDear {{CUSTOMER_NAME}},\n\nThe removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}} could not be completed "
     "due to a processing issue. Your units remain lien-marked.\n\nOur team is reviewing it and will update you once the lien removal is completed.\n\n"
