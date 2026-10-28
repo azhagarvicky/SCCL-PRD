@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  SHRIRAM CREDIT LAMF - 16. MARGIN CALL / MUTUAL FUND VALUE DROP MAIL
+  ============================================================
+  Trigger: LTV Breach – Notifying the user of a margin shortfall
+  Placeholders: {{CUSTOMER_NAME}}, {{LOAN_ID}}, {{CURRENT_LTV}}, {{MINIMUM_AMOUNT}},
+                {{EQUITY_MF_PLEDGE}}, {{DEBT_MF_PLEDGE}}
+  Subject: Action Required: Mutual Fund Margin Shortfall <<Loan ID>>
+  LOGO: Host shriram-credit-logo.png on your CDN and replace the src.
+  ============================================================
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Action Required: Mutual Fund Margin Shortfall – Shriram Credit</title>
+<!--[if mso]><style type="text/css">table,td,div,p,a{font-family:Arial,Helvetica,sans-serif!important;}</style><![endif]-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style type="text/css">
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  body,table,td,p,a{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;}
+  table,td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+  img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;}
+  body{margin:0;padding:0;width:100%!important;height:100%!important;}
+  @media only screen and (max-width:620px){
+    .email-container{width:100%!important;}
+    .px{padding-left:24px!important;padding-right:24px!important;}
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#efeeec;">
+
+<span style="display:none!important;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;color:transparent;">Action Required: Your Mutual Fund value has declined. Immediate payment or collateral increase needed to avoid loan adjustment actions.&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</span>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#efeeec;">
+  <tr>
+    <td align="center" style="padding:32px 12px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="email-container" style="width:600px;max-width:600px;background-color:#ffffff;border-radius:8px;overflow:hidden;">
+
+        <!-- Logo -->
+        <tr>
+          <td align="center" style="padding:28px 40px 20px 40px;background-color:#ffffff;">
+            <img src="../assets/img/shriram-logo.png" width="200" alt="Shriram Credit" style="display:block;width:200px;height:auto;">
+          </td>
+        </tr>
+
+        <!-- Yellow rule -->
+        <tr><td style="background-color:#FFC20E;height:5px;line-height:5px;font-size:5px;">&nbsp;</td></tr>
+
+        <!-- Title band -->
+        <tr>
+          <td align="center" style="background-color:#1a1a1a;padding:22px 40px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:20px;line-height:26px;font-weight:bold;color:#FFC20E;">Margin Call / Mutual Fund Value Drop</p>
+          </td>
+        </tr>
+
+        <!-- Greeting -->
+        <tr>
+          <td class="px" style="padding:36px 48px 0 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:16px;line-height:24px;color:#1a1a1a;font-weight:bold;">Dear {{CUSTOMER_NAME}},</p>
+          </td>
+        </tr>
+
+        <!-- Warning block -->
+        <tr>
+          <td class="px" style="padding:18px 48px 0 48px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#FFF5F5;border:1px solid #c0392b;border-radius:8px;">
+              <tr>
+                <td style="padding:16px 20px;">
+                  <p style="margin:0 0 12px 0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:14px;line-height:22px;color:#8c1d18;text-align:justify;">
+                    &#9888;&nbsp; The current market value of your Mutual Fund units pledged with us has declined and current LTV is at <span style="font-weight:bold;">{{CURRENT_LTV}}%</span>.
+                  </p>
+                  <p style="margin:0 0 12px 0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:14px;line-height:22px;color:#8c1d18;text-align:justify;">
+                    We request you to make an immediate payment of <span style="font-weight:bold;">&#8377;{{MINIMUM_AMOUNT}}</span> (minimum amount) to reduce your total loan outstanding, or increase your collateral pledge (For Equity MF of <span style="font-weight:bold;">&#8377;({{SHORTFALL_AMOUNT}}/0.65)</span> or For Debt MF of <span style="font-weight:bold;">&#8377;({{SHORTFALL_AMOUNT}}/0.75)</span>) to bring your account within the prescribed limit.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td class="px" style="padding:18px 48px 0 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;color:#333333;text-align:justify;">Please visit our website and follow the easy steps to make the payment or increase your collateral pledge.</p>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="px" style="padding:18px 48px 0 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;color:#333333;text-align:justify;"><span style="font-weight:bold;color:#1a1a1a;">Failure to maintain the required margin may result in loan adjustment actions</span> as per the terms of Loan Agreement.</p>
+          </td>
+        </tr>
+
+        <!-- Support -->
+        <tr>
+          <td class="px" style="padding:18px 48px 0 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;color:#333333;text-align:justify;">Should you have any questions, require clarification, or need assistance, please feel free to reach out to our customer support team at <a href="mailto:lassupport@shriramcredit.in" style="color:#1a3e6f;text-decoration:underline;">lassupport@shriramcredit.in</a>. Our team will be happy to assist you.</p>
+          </td>
+        </tr>
+
+        <!-- Thank you -->
+        <tr>
+          <td class="px" style="padding:18px 48px 0 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;color:#333333;">Thank you for your prompt attention to this matter.</p>
+          </td>
+        </tr>
+
+        <!-- Sign-off -->
+        <tr>
+          <td class="px" style="padding:28px 48px 36px 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:15px;line-height:24px;color:#333333;">Warm regards,<br><span style="font-weight:bold;color:#1a1a1a;">Team Shriram Credit</span></p>
+          </td>
+        </tr>
+
+        <!-- Disclaimer -->
+        <tr>
+          <td class="px" style="background-color:#FFC20E;padding:18px 48px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:12px;line-height:18px;color:#1a1a1a;"><span style="font-weight:bold;">Disclaimer:</span> This is an automated reminder. Please do not reply to this message, as this mailbox is not monitored and you will not receive a response. Loan Against Securities is for personal use only and cannot be used for speculative activities, capital market-related purposes, or anti-social purposes.</p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td align="center" style="background-color:#1a1a1a;padding:14px 40px;">
+            <p style="margin:0;font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;font-size:12px;line-height:18px;color:#cccccc;">&copy; 2026 Shriram Credit Company Limited. All rights reserved.</p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
