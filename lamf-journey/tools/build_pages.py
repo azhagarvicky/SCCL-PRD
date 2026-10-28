@@ -490,13 +490,17 @@ class _MailText(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "span" and "display:none" in (dict(attrs).get("style") or ""): self.hidden += 1
         if tag == "p": self.depth_p += 1; self.cur = ""
+        if tag == "a" and not self.depth_p: self.btn = ""          # CTA button (link outside a paragraph)
         if tag == "br" and self.depth_p: self.cur += "\n"
     def handle_endtag(self, tag):
         if tag == "span" and self.hidden: self.hidden -= 1
+        if tag == "a" and getattr(self, "btn", None) is not None:
+            self.parts.append(f"[{self.btn.strip()}]"); self.btn = None
         if tag == "p" and self.depth_p:
             self.depth_p -= 1; self.parts.append(" ".join(self.cur.split(" ")).strip())
     def handle_data(self, d):
         if self.depth_p and not self.hidden: self.cur += d.replace("\xa0", " ")
+        elif getattr(self, "btn", None) is not None: self.btn += d
 def mail_text(fname):
     t = _MailText(); t.feed(open(os.path.join(ROOT, "mails", fname), encoding="utf-8").read())
     return "\n\n".join(re.sub(r"[ \t]+", " ", x).replace(" \n", "\n").strip() for x in t.parts if x.strip())
@@ -513,6 +517,10 @@ MAIL_TEMPLATES = {
  "When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal": ("06_Withdrawal_Verification.html",
     "{{OTP}} – Your Withdrawal Verification OTP for Shriram Credit LAMF", "123456 – Your Withdrawal Verification OTP for Shriram Credit LAMF",
     "", {"{{OTP}}": "123456", "{{WITHDRAWAL_AMOUNT}}": "10,000"}),
+ "Loan Lodgement Approval": ("05_Withdrawal_Initiation.html",
+    "Withdrawal Initiation: Successful LAMF Account Creation – {{CUSTOMER_FULL_NAME}}",
+    "Withdrawal Initiation: Successful LAMF Account Creation – AZHAGARSAMY SUBBURAJ",
+    "", {"{{LOAN_ID}}": "SCCLMF20261000102", "{{Link}}": "https://lamf.shriramcredit.in/"}),
 }
 def _with_mail(r):
     t = MAIL_TEMPLATES.get(r[0]) or MAIL_TEMPLATES.get(r[1])      # keyed by stage, or by scenario
