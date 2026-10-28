@@ -533,7 +533,7 @@ MAIL_TEMPLATES = {
     "", {"{{LOAN_ID}}": "SCCLMF20261000102", "{{Link}}": "https://lamf.shriramcredit.in/"}),
  "EMI Reminder (T-5)": ("09_Upcoming_EMI_Due_Reminder_T-5.html",
     "Reminder: Your EMI of ₹{{EMI_AMOUNT}} is due on {{DUE_DATE}}", "Reminder: Your EMI of ₹10,000 is due on 05-11-2026",
-    "Trigger: 1st of every month – T-5 / T-4 before the EMI presentation date\n\n",
+    "",
     {"{{EMI_AMOUNT}}": "10,000", "{{DUE_DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
      "{{BANK_ACCOUNT_NUMBER}}": "XXXXXXXX8736", "{{LOAN_ID}}": "SCCLMF20261000102"}),
  "LAMF Part Payment Confirmation": ("20_Part_Payment.html",
