@@ -249,7 +249,7 @@ COMMS = [
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
   "Dear AZHAGARSAMY, Congratulations! Your loan has been credited to your bank account. Thank you for choosing Shriram Credit - Shriram Credit",
-  "-", "SGRCDT-T", "Yes"), ("EMI Presentation Reminder (T-5)",
+  "-", "SGRCDT-T", "Yes"), ("EMI Presentation Reminder (T-4)",
   "This communication has to be triggered on the 1st of every month when the EMI is due on the 5th – first reminder of the upcoming instalment (SMS and mail). The second reminder, T-1, is mail only (next row)",
   "LOS", "SMS", "SCCL",
   "Dear {#alphanumeric#}, Your EMI of Rs. {#alphanumeric#} is due on {#alphanumeric#}. Please ensure sufficient balance in your bank account for timely payment - Shriram Credit",
@@ -531,7 +531,7 @@ MAIL_TEMPLATES = {
     "Withdrawal Initiation: Successful LAMF Account Creation – {{CUSTOMER_FULL_NAME}}",
     "Withdrawal Initiation: Successful LAMF Account Creation – AZHAGARSAMY SUBBURAJ",
     "", {"{{LOAN_ID}}": "SCCLMF20261000102", "{{Link}}": "https://lamf.shriramcredit.in/"}),
- "EMI Presentation Reminder (T-5)": ("09_Upcoming_EMI_Due_Reminder_T-5.html",
+ "EMI Presentation Reminder (T-4)": ("09_Upcoming_EMI_Due_Reminder_T-5.html",
     "Reminder: Your EMI of ₹{{EMI_AMOUNT}} is due on {{DUE_DATE}}", "Reminder: Your EMI of ₹10,000 is due on 05-11-2026",
     "",
     {"{{EMI_AMOUNT}}": "10,000", "{{DUE_DATE}}": "05-11-2026", "{{BORROWED_AMOUNT}}": "1,00,000", "{{OUTSTANDING_AMOUNT}}": "1,00,000",
@@ -686,7 +686,7 @@ COMMS = [_with_mail(r) for r in COMMS]
 
 # Mail-only rows from HTML templates (no SMS): inserted after the given stage (DISC-216)
 MAIL_ONLY = [
- ("EMI Presentation Reminder (T-5)", "EMI Presentation Reminder (T-1)",
+ ("EMI Presentation Reminder (T-4)", "EMI Presentation Reminder (T-1)",
   "This communication has to be triggered 1 day before the EMI presentation date (T-1), i.e. on the 4th when the EMI is due on the 5th – SMS and mail. SMS template drafted by Claude for approval; to be created and registered",
   "LOS", "10_EMI_Presentation_T-1.html", "EMI Presentation Alert – {{DATE}}", "EMI Presentation Alert – 05-11-2026",
   "Trigger: 1 day before the EMI presentation date (T-1)\n\n",

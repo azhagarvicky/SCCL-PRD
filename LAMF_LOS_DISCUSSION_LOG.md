@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 18:58 IST
+**Last Updated:** 28-10-2026 19:34 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -287,6 +287,7 @@
 | DISC-252 | 28-10-2026 | communications.html / exports | Mail to be created for row 26 | Owner: row 26 (EMI Resubmission Success) – email required | Row 26: Communication Type SMS, Mail (SMS unchanged); mail drafted by Claude for approval on the lines of the EMI Success template – subject “Your re-presented EMI of ₹{{EMI_AMOUNT}} has been successfully deducted”, body: re-presented EMI debited on {{DEDUCTION_DATE}}, EMI Details (Loan Account Number, EMI Amount, Deduction Date, Next EMI Due Date); Mail Available “No – to be created”. Summary: Mail 31 (22 available · 9 to be created), SMS and mail 30, SMS only 4 | Implemented |
 | DISC-253 | 28-10-2026 | communications.html / mails / exports | View link for row 19 | Owner: row 19 (Loan Disbursed – First Disbursement) Mail Available is Yes but the View link is missing | The first-disbursement mail was given as text only (no HTML template). Built lamf-journey/mails/07_Loan_Disbursal_Confirmation_First.html from that text on the layout of the owner’s 08 subsequent template (placeholders {{DISBURSED_AMOUNT}}, {{DISBURSEMENT_TYPE}}; EMI Amount; 12 repayment rows + 13th row only when required); row 19 Mail Available now “Yes” + View (TEXT_MAIL_VIEW in build_pages.py). Table content of the row unchanged. To be replaced when the owner shares the actual HTML | Implemented |
 | DISC-254 | 28-10-2026 | communications.html / exports | Mail to be created for row 17 | Owner: row 17 (Withdrawal – withdrawal request confirmed) – mail required, currently not available | Row 17: Communication Type SMS, Mail (SMS and remark unchanged); mail drafted by Claude for approval – subject “Your withdrawal request for loan account {{LOAN_ID}} is confirmed”, body: request of ₹{{WITHDRAWAL_AMOUNT}} confirmed, amount disbursed to the registered bank account shortly, Withdrawal Details (Loan Account ID, Withdrawal Amount, Request Date, Bank Account Number, Status Confirmed), separate confirmation once credited; Mail Available “No – to be created”. DRAFT_MAILS can now be keyed by scenario (rows 16 and 17 share the stage “Withdrawal”). Summary: Mail 32 (22 available · 10 to be created), SMS and mail 31, SMS only 3 | Implemented |
+| DISC-255 | 28-10-2026 | communications.html / exports | Row 21 renamed T-4 | Owner: row 21 has to be “EMI Presentation Reminder (T-4)” instead of “EMI Presentation Reminder (T-5)” (sent on the 1st for the EMI due on the 5th) | Row 21 stage renamed “EMI Presentation Reminder (T-4)”; scenario, SMS and mail unchanged. The owner’s mail template file name (09_Upcoming_EMI_Due_Reminder_T-5.html) is kept as received | Implemented |
 
 ---
 
