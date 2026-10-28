@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-10-2026 14:46 IST
+**Last Updated:** 28-10-2026 14:50 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -259,6 +259,7 @@
 | DISC-224 | 28-10-2026 | communications.html / mails / exports | Loan tenure completion mail | Owner: when the loan tenure is completed, the attached 23_Loan_Tenure_Completion.html mail is sent | Row Successful Loan Tenure Completion (row 42): Communication Type SMS, Mail (SMS unchanged). Mail subject “Congratulations on completing your loan journey”, content from the template with its trigger line (last EMI paid – EMI type, or principal outstanding paid – Balloon type), stored as lamf-journey/mails/23_Loan_Tenure_Completion.html (logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-225 | 28-10-2026 | communications.html / mails / exports | Margin call mail (MF value drop) | Owner: for the margin call (mutual fund value drop) the attached 22_Margin_Call_Mutual_Fund_Value_Drop_Mail.html mail is sent | Row LTV Breach Trigger (Margin Call) (row 37): Communication Type SMS, Mail (SMS unchanged). Mail subject “Action Required: Mutual Fund Margin Shortfall <<Loan ID>>”, content from the template with its trigger line (stored as lamf-journey/mails/22_Margin_Call_Mutual_Fund_Value_Drop_Mail.html, logo path only changed); sample LTV 82.50%, minimum ₹10,000, Equity MF ₹15,385 (10,000/0.65), Debt MF ₹13,333 (10,000/0.75). Mail Available Yes + View, Mail Status Required | Implemented |
 | DISC-226 | 28-10-2026 | communications.html / mails / exports | LTV breach liquidation mail | Owner: for “When the LTV breach is not cured – liquidation of the pledged securities is initiated as per the loan terms to recover the shortfall” the attached 24_LTV_Breach_Beyond_Policy_Norms.html mail is sent | Row LAMF LTV Breach Liquidation (row 38): Communication Type SMS, Mail (SMS unchanged). Mail subject “Immediate Action: Liquidation of Pledged Mutual Fund Units due to LTV Breach {{LOAN_ID}}”, content from the template (stored as lamf-journey/mails/24_LTV_Breach_Beyond_Policy_Norms.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
+| DISC-227 | 28-10-2026 | communications.html / mails / exports | NOC / loan closure certificate mail | Owner: when the loan account is closed successfully, the attached 24_NOC_Loan_Closure_Certificate.html mail is sent | Row Loan Account Closure (row 43): Communication Type SMS, Mail (SMS unchanged). Mail subject “Your Loan Account {{LOAN_ID}} is closed successfully”, content from the template with “Trigger: manual trigger” and “Attachment: NOC / Loan Closure Certificate PDF” (stored as lamf-journey/mails/24_NOC_Loan_Closure_Certificate.html, logo path only changed), Mail Available Yes + View, Mail Status Required | Implemented |
 
 ---
 
