@@ -46,7 +46,7 @@ def sheet(ws, COMMS, COLS, widths):
   for j, t in enumerate(['Summary – ' + ' · '.join(f'{k}: {v}' + (f' ({d})' if d else '') for k, v, d in ns['COMMS_SUMMARY']),
 
           'Rows highlighted in yellow (Available = "No – to be created") are templates drafted for approval; they still have to be created and registered.',
-          'Rows with SMS Status = "Not Required" are in the separate "Not Required" sheet – kept for reference only; they will not be sent.',
+          'SMS and mail marked "Not Required" are in the separate "Not Required" sheet – kept for reference only; they will not be sent.',
           'Actual Content shows a sample with the variables filled in (sample customer AZHAGARSAMY, loan account SCCLMF20261000102).',
           'Source: LAMF – Customer Communications page (https://azhagarvicky.github.io/SCCL-PRD/dev/lamf-journey/communications.html).',
           'Created by Azhagarsamy Subburaj. For any observation or clarification, please reach out to azhagarsamy.s@shriramcredit.in'], 1):
@@ -55,7 +55,7 @@ def sheet(ws, COMMS, COLS, widths):
   ws.page_setup.fitToWidth = 1; ws.page_setup.fitToHeight = 0
 
 ws = wb.active; ws.title = 'SMS and Mail'      # single sheet; the Mail sheet was removed (DISC-240)
-W = [6, 28, 45, 12, 9, 14, 55, 55, 12, 18, 14, 40, 40, 70, 70, 14, 12, 45]
+W = [6, 28, 45, 12, 9, 14, 55, 55, 12, 18, 40, 40, 70, 70, 14, 45]
 sheet(ws, COMMS, COLS, W)
 sheet(wb.create_sheet('Not Required'), ns['COMMS_NR'], COLS, W)          # DISC-243
 out = os.path.join(REPO, 'exports', 'LAMF_Customer_Communications.xlsx')

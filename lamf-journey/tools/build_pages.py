@@ -682,6 +682,10 @@ COMMS = [r + (REMARKS.get(r[0]) or REMARKS.get(r[1]) or "",) for r in COMMS]
 # “Not Required” rows go to their own table below the main one, numbered separately (DISC-243)
 COMMS_NR = [r for r in COMMS if r[COMMS_COLS.index("SMS Status") - 1] == "Not Required"]
 COMMS = [r for r in COMMS if r not in COMMS_NR]
+# SMS Status and Mail Status columns are not shown any more – the Not Required rows are in their own table (DISC-244)
+_drop = {COMMS_COLS.index(c) - 1 for c in ("SMS Status", "Mail Status")}
+COMMS, COMMS_NR = ([tuple(v for i, v in enumerate(r) if i not in _drop) for r in t] for t in (COMMS, COMMS_NR))
+COMMS_COLS = [c for c in COMMS_COLS if c not in ("SMS Status", "Mail Status")]
 
 # Summary counts shown above the table and in the Excel notes (DISC-241)
 def _col(name): return [r[COMMS_COLS.index(name) - 1] for r in COMMS]
