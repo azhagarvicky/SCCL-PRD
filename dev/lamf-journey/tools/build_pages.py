@@ -624,6 +624,7 @@ REMARKS = {
  "On the completion of each withdrawal by the customer (withdrawal request confirmed)":
    "This SMS has to come once the withdrawal OTP is verified successfully, but it currently comes only once the UTR is approved in the LMS.",
  "Loan Disbursed (First Disbursement)": "In the disbursement mail, Disbursement No. ({{DISBURSEMENT_NO}}) and Disbursement UTRN ({{UTRN}}) currently show a random format; the format of both has to be defined correctly.",
+ "EMI Failed": "In the mail, the title “Instalment Failure / EMI Bounce Notification (Bounce - 1A)” has to be changed to “EMI Payment Failed”.",
  "Pledging of Mutual Fund": "Both the SMS and Email communication are currently received once the loan lodgement is successful, but they are supposed to come right after the pledging is successful.",
 }
 assert set(REMARKS) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}      # keyed by stage, or by scenario
