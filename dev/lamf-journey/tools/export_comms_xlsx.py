@@ -43,7 +43,8 @@ def sheet(ws, COMMS, COLS, widths):
   ws.freeze_panes = 'C2'; ws.auto_filter.ref = f'A1:{chr(64 + len(COLS))}{ws.max_row}'
   n = ws.max_row + 2
   ws.cell(n, 1, 'Notes:').font = Font(name='Calibri', bold=True)
-  for j, t in enumerate([
+  for j, t in enumerate(['Summary – ' + ' · '.join(f'{k}: {v}' + (f' ({d})' if d else '') for k, v, d in ns['COMMS_SUMMARY']),
+
           'Rows highlighted in yellow (Available = "No – to be created") are templates drafted for approval; they still have to be created and registered.',
           'Rows in grey (SMS Status = "Not Required") are kept for reference only; they will not be sent.',
           'Actual Content shows a sample with the variables filled in (sample customer AZHAGARSAMY, loan account SCCLMF20261000102).',

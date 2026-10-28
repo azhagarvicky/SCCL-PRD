@@ -677,6 +677,19 @@ assert set(REMARKS) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}      # keye
 COMMS_COLS = COMMS_COLS + ["Remarks"]
 COMMS = [r + (REMARKS.get(r[0]) or REMARKS.get(r[1]) or "",) for r in COMMS]
 
+# Summary counts shown above the table and in the Excel notes (DISC-241)
+def _col(name): return [r[COMMS_COLS.index(name) - 1] for r in COMMS]
+_types, _sav, _sst = _col("Communication Type"), _col("SMS Available"), _col("SMS Status")
+COMMS_SUMMARY = [
+    ("Total scenarios", len(COMMS), ""),
+    ("SMS", sum("SMS" in t for t in _types),
+     f"{_sav.count('Yes')} available · {sum(a.startswith('No') for a in _sav)} to be created · {_sst.count('Not Required')} not required"),
+    ("Mail", sum("Mail" in t for t in _types), f"{sum(a.startswith('Yes') for a in _col('Mail Available'))} available"),
+    ("SMS and mail", _types.count("SMS, Mail"), ""),
+    ("SMS only", _types.count("SMS"), ""),
+    ("Mail only", _types.count("Mail"), ""),
+]
+
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
 
@@ -698,6 +711,9 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
             f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} communications). '
             'Content Structure shows the approved template; Actual Content shows a sample with the variables filled in.</p>'
+            + '<div class="comms-summary">' + "".join(
+                f'<div><b>{v}</b><span>{html.escape(k)}</span>' + (f'<small>{html.escape(d)}</small>' if d else '') + '</div>'
+                for k, v, d in COMMS_SUMMARY) + '</div>'
             + comms_table(COMMS, COMMS_COLS, 'sms') + CONTACT)
 
 def home_body(home, prd, journey, comms):
