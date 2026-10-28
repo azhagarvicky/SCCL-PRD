@@ -1,6 +1,6 @@
 # Generates one HTML file per screenshot. Content comes from assets/lamf.js templates,
 # so shared components stay in one place. Re-run after adding a screen: python3 tools/build_pages.py
-import os, html
+import os, html, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CUR = "LAMF.T.curated()"
 CUR75 = "LAMF.T.curated()"
@@ -449,14 +449,38 @@ MAILS = [(stage, scen, app, "Mail", "SCCL", body + MAIL_SIGN + MAIL_DISCLAIMER, 
 MAIL_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender", "Body (template)",
              "Body (sample)", "Mail Subject", "SMS Header", "Available"]
 
-# SMS ↔ mail (DISC-202): for each SMS, whether a mail is also sent at the same point; if Yes, its subject and body (template).
-SMS_MAIL = {}   # cleared on the owner's request (DISC-203) – to be filled again from the owner's list: {"SMS stage": "Mail stage"}
+# SMS table layout (DISC-204): SMS columns first, then the mail columns. A row can be SMS only, mail only
+# (Communication Type “Mail”, SMS columns “-”) or both. Mail values stay blank until the owner gives them.
+COMMS_COLS = ["S.No", "Stage", "Scenarios", "Application", "Communication Type", "Sender",
+              "SMS Content Structure", "Actual SMS Content", "SMS Header", "SMS Available", "SMS Status",
+              "Mail Subject Structure", "Mail Subject", "Mail Content Structure", "Actual Mail Content", "Mail Available", "Mail Status"]
+SMS_MAIL = {}   # {"SMS stage": "Mail stage"} – cleared on the owner's request (DISC-203); filled again from the owner's list
 _MAIL_BY_STAGE = {m[0]: m for m in MAILS}
 assert set(SMS_MAIL) <= {r[0] for r in COMMS} and set(SMS_MAIL.values()) <= set(_MAIL_BY_STAGE)
-# Values blank until the owner confirms them; a mapped SMS shows Yes + subject + content, the rest stay blank
-COMMS = [r + (("Yes", _MAIL_BY_STAGE[SMS_MAIL[r[0]]][7], _MAIL_BY_STAGE[SMS_MAIL[r[0]]][5]) if r[0] in SMS_MAIL else ("", "", ""))
-         for r in COMMS]
-COMMS_COLS = COMMS_COLS + ["Mail Communication Available", "Mail Subject Line", "Mail Content"]
+def _sms_row(r):
+    stage, scen, app, typ, sender, content, actual, _subject, header, available, status = r
+    m = _MAIL_BY_STAGE.get(SMS_MAIL.get(stage))
+    mail = (m[7], "", m[5], m[6], m[9], "Required") if m else ("", "", "", "", "", "")
+    return (stage, scen, app, typ, sender, content, actual, header, available, status) + mail
+COMMS = [_sms_row(r) for r in COMMS]
+
+# Email verification OTP mail (owner's HTML template 01_Email_Verification.html, DISC-204) – mail only, no SMS
+EMAIL_VERIFICATION_MAIL = (
+ "Email Verification",
+ "On the KYC Verification page (LOS step 9, after the Application Summary): the customer enters the email address and clicks Verify, and the OTP is sent to that email",
+ "LOS", "Mail", "SCCL", "-", "-", "-", "-", "-",
+ "XXXXXX – Your Email Verification OTP for Shriram Credit LAMF",
+ "123456 – Your Email Verification OTP for Shriram Credit LAMF",
+ "E-Mail Verification\n\nDear {{CUSTOMER_NAME}},\n\nOne-Time Password\n{{OTP}}\n\nPlease do not share the OTP with anyone.\n\n"
+ "Use the OTP above to verify your email and continue with your Shriram Credit’s Loan Against Mutual Fund application.\n\n"
+ "Warm regards,\nTeam Shriram Credit\n\nDisclaimer: This is an automated reminder. Please do not reply to this message, as the mailbox is not monitored "
+ "and you will not receive a response. Loan against Securities is only for personal use. The loan amount cannot be used for speculative activities, "
+ "capital market-related purposes, or anti-social purposes.\n\n© 2026 Shriram Credit Company Limited. All rights reserved.",
+ "", "Provided", "Required")
+EMAIL_VERIFICATION_MAIL = EMAIL_VERIFICATION_MAIL[:13] + (EMAIL_VERIFICATION_MAIL[12].replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{OTP}}", "123456"),) + EMAIL_VERIFICATION_MAIL[14:]
+_i = [r[0] for r in COMMS].index("LAN Generated") + 1     # email verification comes right after the Application Summary
+COMMS = COMMS[:_i] + [EMAIL_VERIFICATION_MAIL] + COMMS[_i:]
+assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 
 CONTACT = ('<p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, '
            'please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>')
@@ -465,10 +489,11 @@ def comms_table(rows_data, cols, prefix):
     esc = lambda t: html.escape(t, quote=False).replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>").replace("\n", "<br>")
     head = "".join(f"<th>{c}</th>" for c in cols)
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
-    avail = cols.index("Available") - 1
-    stat = cols.index("Status") - 1 if "Status" in cols else None
+    avail = cols.index("SMS Available" if "SMS Available" in cols else "Available") - 1
+    stat = cols.index("SMS Status") - 1 if "SMS Status" in cols else None
     cls = lambda r: " ".join(c for c, on in (("na", r[avail].startswith("No")), ("nr", stat is not None and r[stat] == "Not Required")) if on)
-    rows = "".join('<tr class="%s"><td>%d</td>%s</tr>' % (cls(r), k, "".join(f"<td>{esc(v)}</td>" for v in r))
+    slug = [re.sub(r"[^a-z0-9]+", "-", c.lower()).strip("-") for c in cols[1:]]     # each cell gets a class from its column (DISC-204)
+    rows = "".join('<tr class="%s"><td class="c-s-no">%d</td>%s</tr>' % (cls(r), k, "".join(f'<td class="c-{c}">{esc(v)}</td>' for c, v in zip(slug, r)))
                    for k, r in enumerate(rows_data, 1))
     return f'<div class="comms-wrap"><table class="comms {prefix}"><thead><tr>{head}</tr></thead><tbody>{rows}</tbody></table></div>'
 
