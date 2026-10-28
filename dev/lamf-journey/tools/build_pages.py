@@ -600,7 +600,30 @@ def _sample_schedule(text):      # sample: 12 monthly rows from 05-Dec-2026 (int
     return text.replace("DD-MMM-YYYY | ₹XXXXXXX\n" * 12, "\n".join(rows) + "\n").replace(
         "(13th row only when required) DD-MMM-YYYY | ₹XXXXXXX\n", "(13th row only when required – not needed in this sample)\n")
 
+# Mails not available yet – drafted by Claude for approval, to be created (DISC-247): {stage: (subject structure, sample subject, body)}
+_LIEN_DETAILS = ("LIEN REMOVAL DETAILS\nStatus: Lien removal initiated\nTimeline: 2–3 working days\n"
+                 "Confirmation: You will receive a notification from CAMS/KFintech once your units are fully unlocked.\n\n")
+DRAFT_MAILS = {
+ "Application Expired – Lien Marked": ("Your LAMF application {{LOAN_ID}} has expired", "Your LAMF application SCCLMF20261000102 has expired",
+    "Application Expired\n\nDear {{CUSTOMER_NAME}},\n\nYour Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} has expired as it was not submitted within 30 days.\n\n"
+    "Your Mutual Fund units pledged for this application remain lien-marked. We will initiate the lien removal and keep you informed of the next steps.\n\n"
+    "You are welcome to start a new application at any time.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
+ "Lien Removal Initiated": ("Lien removal initiated for your Mutual Fund units – {{LOAN_ID}}", "Lien removal initiated for your Mutual Fund units – SCCLMF20261000102",
+    "Lien Removal Initiated\n\nDear {{CUSTOMER_NAME}},\n\nWe have initiated the removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}}.\n\n"
+    + _LIEN_DETAILS + "We will update you once the lien removal is completed.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
+ "Lien Removal Successful": ("Lien removed successfully – {{LOAN_ID}}", "Lien removed successfully – SCCLMF20261000102",
+    "Lien Removal Successful\n\nDear {{CUSTOMER_NAME}},\n\nThe lien on your Mutual Fund units pledged against loan account {{LOAN_ID}} has been removed successfully. "
+    "Your units are now released from lien.\n\n" + SUPPORT + "\n\nWe thank you for choosing Shriram Credit and look forward to serving you again." + MAIL_SIGN + MAIL_DISCLAIMER),
+ "Lien Removal Failed": ("Lien removal could not be completed – {{LOAN_ID}}", "Lien removal could not be completed – SCCLMF20261000102",
+    "Lien Removal Failed\n\nDear {{CUSTOMER_NAME}},\n\nThe removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}} could not be completed "
+    "due to a processing issue. Your units remain lien-marked.\n\nOur team is reviewing it and will update you once the lien removal is completed.\n\n"
+    + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
+}
 def _with_mail(r):
+    if r[0] in DRAFT_MAILS and not r[10]:
+        subj, subj_sample, body = DRAFT_MAILS[r[0]]
+        sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY").replace("{{LOAN_ID}}", "SCCLMF20261000102")
+        return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, "No – to be created", "Required")
     if r[0] in TEXT_MAILS and not r[10]:
         subj, subj_sample, body, subs = TEXT_MAILS[r[0]]
         sample = _sample_schedule(body).replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY")
@@ -709,7 +732,8 @@ COMMS_SUMMARY = [
     ("Total scenarios", len(COMMS), ""),
     ("SMS", sum("SMS" in t for t in _types),
      f"{_sav.count('Yes')} available · {sum(a.startswith('No') for a in _sav)} to be created"),
-    ("Mail", sum("Mail" in t for t in _types), f"{sum(a.startswith('Yes') for a in _col('Mail Available'))} available"),
+    ("Mail", sum("Mail" in t for t in _types),
+     f"{sum(a.startswith('Yes') for a in _col('Mail Available'))} available · {sum(a.startswith('No') for a in _col('Mail Available'))} to be created"),
     ("SMS and mail", _types.count("SMS, Mail"), ""),
     ("SMS only", _types.count("SMS"), ""),
     ("Mail only", _types.count("Mail"), ""),
@@ -728,7 +752,8 @@ def comms_table(rows_data, cols, prefix):
     # a template that is not available yet (Available starts with “No”) is highlighted (DISC-190)
     avail = cols.index("SMS Available" if "SMS Available" in cols else "Available") - 1
     stat = cols.index("SMS Status") - 1 if "SMS Status" in cols else None
-    cls = lambda r: " ".join(c for c, on in (("na", r[avail].startswith("No")), ("nr", stat is not None and r[stat] == "Not Required")) if on)
+    mavail = cols.index("Mail Available") - 1 if "Mail Available" in cols else avail      # a mail to be created is highlighted too (DISC-247)
+    cls = lambda r: " ".join(c for c, on in (("na", r[avail].startswith("No") or r[mavail].startswith("No")), ("nr", stat is not None and r[stat] == "Not Required")) if on)
     slug = [re.sub(r"[^a-z0-9]+", "-", c.lower()).strip("-") for c in cols[1:]]     # each cell gets a class from its column (DISC-204)
     rows = "".join('<tr class="%s"><td class="c-s-no">%d</td>%s</tr>' % (cls(r), k, "".join(f'<td class="c-{c}">{esc(v)}</td>' for c, v in zip(slug, r)))
                    for k, r in enumerate(rows_data, 1))
