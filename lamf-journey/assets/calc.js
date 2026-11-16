@@ -82,7 +82,7 @@
       .map((tr) => ({ d: toDay(tr.querySelector('input[type=date]').value), a: num(tr.querySelector('input.amt').value) }))
       .filter((x) => x.d !== null && x.a > 0);
     return { start: toDay(g('start')), tenure: +g('tenure'), rate: num(g('rate')), type: g('type'), dueDay: +g('dueday') || 5,
-             product: g('product'), leap: f.querySelector('[name="leap"]').checked, withdrawals: list('calc-w'), repayments: list('calc-r') };
+             product: g('product'), ason: toDay(g('ason')), leap: f.querySelector('[name="leap"]').checked, withdrawals: list('calc-w'), repayments: list('calc-r') };
   }
 
   function check(inp) {
@@ -102,28 +102,44 @@
     const { end, rows } = schedule(inp);
     const sum = (k) => rows.reduce((s, x) => s + x[k], 0);
     const wTot = inp.withdrawals.reduce((s, w) => s + w.a, 0), rTot = inp.repayments.reduce((s, w) => s + w.a, 0);
+    // Summary (DISC-263): dues on or before the As on Date are taken as collected on their due date
+    const asOn = inp.ason === null ? Math.floor(Date.now() / DAY) : inp.ason;
+    const done = rows.filter((x) => x.due <= asOn), todo = rows.filter((x) => x.due > asOn), next = todo[0];
+    const amt = (l) => l.reduce((v, x) => v + x.principal + x.interest, 0);
+    const pOut = Math.max(0, inp.withdrawals.reduce((v, w) => v + (w.d <= asOn ? w.a : 0), 0) - inp.repayments.reduce((v, w) => v + (w.d <= asOn ? w.a : 0), 0)
+                 - done.reduce((v, x) => v + x.principal, 0));
+    const line = (k, v, cls = '') => `<li class="${cls}"><span>${k}</span><b>${v}</b></li>`;
     const seg = (x, sg) => `<tr class="seg"><td></td><td colspan="2">↳ ${money(sg.p)} × ${sg.dr.toFixed(6)} × ${sg.days} day${sg.days > 1 ? 's' : ''}${sg.why ? `<small>${sg.why}</small>` : ''}</td>
-      <td></td><td></td><td class="n">${money(sg.interest)}${x.interest !== x.accrued ? '<small>accrued</small>' : ''}</td><td>${fmtD(sg.from)}</td><td>${fmtD(sg.to)}</td><td class="c">${sg.days}</td></tr>`;
+      <td></td><td></td><td class="n">${money(sg.interest)}${x.interest !== x.accrued ? '<small>accrued</small>' : ''}</td><td>${fmtD(sg.from)}</td><td>${fmtD(sg.to)}</td><td class="c">${sg.days}</td><td></td></tr>`;
+    const stat = (x) => x.due <= asOn ? '<span class="st ok">Collected</span>' : x === next ? '<span class="st nx">Next due</span>' : '<span class="st">Upcoming</span>';
     const tr = rows.map((x) => `<tr class="main"><td class="c">${x.no}</td><td>${fmtD(x.due)}</td><td class="n">${money(x.out)}</td>
       <td class="n b">${money(x.principal + x.interest)}</td><td class="n">${money(x.principal)}</td><td class="n">${money(x.interest)}</td>
-      <td>${fmtD(x.from)}</td><td>${fmtD(x.to)}</td><td class="c">${x.days}</td></tr>`
+      <td>${fmtD(x.from)}</td><td>${fmtD(x.to)}</td><td class="c">${x.days}</td><td class="c">${stat(x)}</td></tr>`
       + (x.segs.length > 1 ? x.segs.map((sg) => seg(x, sg)).join('') : '')).join('');
     out.innerHTML = `
-      <div class="comms-summary calc-sum">
-        <div><b>${fmtD(end)}</b><span>Loan End Date</span></div>
-        <div><b>${money(wTot)}</b><span>Total withdrawals</span></div>
-        <div><b>${money(rTot)}</b><span>Total repayments</span></div>
-        <div><b>${money(sum('interest'))}</b><span>Total interest</span></div>
-        <div><b>${money(sum('principal') + sum('interest'))}</b><span>Total due</span></div>
-        <div><b>${rows.length}</b><span>Due dates</span></div>
+      <div class="calc-sumgrid">
+        <div class="calc-card"><h3>Loan</h3><ul>
+          ${line('Loan Start Date', fmtD(inp.start))}${line('Loan End Date', fmtD(end))}
+          ${line('Tenure', inp.tenure + ' months')}${line('Repayment Type', inp.type)}
+          ${line('Rate of Interest', inp.rate + '% p.a.' + (inp.leap ? ' · leap year 366' : ''))}${line('No. of dues', rows.length)}</ul></div>
+        <div class="calc-card"><h3>Amounts</h3><ul>
+          ${line('Total withdrawals', money(wTot))}${line('Total repayments (part payment)', money(rTot))}
+          ${line('Total principal due', money(sum('principal')))}${line('Total interest due', money(sum('interest')))}
+          ${line('Total due', money(sum('principal') + sum('interest')), 'tot')}</ul></div>
+        <div class="calc-card hi"><h3>As on ${fmtD(asOn)}</h3><ul>
+          ${line(`Due collected (${done.length} of ${rows.length})`, money(amt(done)), 'ok')}
+          ${line(`Due pending (${todo.length})`, money(amt(todo)), 'due')}
+          ${line('Next due', next ? `${money(next.principal + next.interest)} on ${fmtD(next.due)}` : '–')}
+          ${line('Principal outstanding', money(pOut))}
+          ${line('Interest collected', money(done.reduce((v, x) => v + x.interest, 0)))}</ul></div>
       </div>
       <div class="comms-wrap"><table class="calc-table">
         <thead><tr><th rowspan="2">Sl. No</th><th rowspan="2">Due Date</th><th rowspan="2">Outstanding Principal</th><th rowspan="2">Due Amount</th>
-          <th colspan="2">Due Amount Bifurcation</th><th colspan="3">Interest Accrual</th></tr>
+          <th colspan="2">Due Amount Bifurcation</th><th colspan="3">Interest Accrual</th><th rowspan="2">Status</th></tr>
           <tr><th>Principal</th><th>Interest</th><th>Start Date</th><th>End Date</th><th>No. of Days</th></tr></thead>
         <tbody>${tr}</tbody>
         <tfoot><tr><td></td><td>Total</td><td></td><td class="n b">${money(sum('principal') + sum('interest'))}</td><td class="n">${money(sum('principal'))}</td>
-          <td class="n">${money(sum('interest'))}</td><td></td><td></td><td class="c">${sum('days')}</td></tr></tfoot>
+          <td class="n">${money(sum('interest'))}</td><td></td><td></td><td class="c">${sum('days')}</td><td></td></tr></tfoot>
       </table></div>
       <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest = ROUND(ROI / ${inp.leap ? '365 or 366' : '365'}, 6) × Principal × Days – daily rate ${(Math.round(inp.rate / 100 / 365 * 1e6) / 1e6).toFixed(6)}${inp.leap ? ` (366 days in a leap year: ${(Math.round(inp.rate / 100 / 366 * 1e6) / 1e6).toFixed(6)})` : ' (leap-year calculation off: 365 days in every year)'}; Principal is the outstanding withdrawal balance.
       Outstanding Principal is the principal on the due date, before that due is paid. When the principal or the daily rate changes within a period, the rows marked ↳ show each part of the interest (principal × daily rate × days).${inp.type === 'Balloon' ? ' Balloon: the interest of every month is accrued and is due with the principal on the loan end date.' : ''}</p>`;
@@ -144,6 +160,7 @@
     const syncOut = () => { const i = read(f);
       f.querySelector('[name="outstanding"]').value = money(i.withdrawals.reduce((s, w) => s + w.a, 0) - i.repayments.reduce((s, w) => s + w.a, 0)); };
     addRow(f.querySelector('.calc-w tbody'), '2026-11-02', '1,00,000');
+    const ason = f.querySelector('[name="ason"]'); if (!ason.value) ason.value = toISO(Math.floor(Date.now() / DAY));
     f.addEventListener('input', () => { syncEnd(); syncOut(); });
     f.addEventListener('change', () => { syncEnd(); syncOut(); });
     f.addEventListener('click', (e) => {
