@@ -811,28 +811,32 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
             + f'<h2 id="comms-nr">Not Required ({len(COMMS_NR)})</h2><p>SMS and mail marked “Not Required” – kept for reference only; they will not be sent.</p>'
             + comms_table(COMMS_NR, COMMS_COLS, 'sms') + CONTACT)
 
-def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257)
+def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257, DISC-263)
     opt = lambda vals, sel=None: "".join(f'<option{" selected" if v == sel else ""}>{v}</option>' for v in vals)
     fld = lambda label, ctrl, cls="": f'<label class="calc-f {cls}"><span>{label}</span>{ctrl}</label>'
+    sec = lambda n, title, body, cls="": f'<section class="calc-sec {cls}"><h2><i>{n}</i>{title}</h2>{body}</section>'
     rows = lambda cls, title, btn: (f'<div class="calc-list {cls}"><h3>{title}</h3><table><thead><tr><th>Date</th><th>Amount (₹)</th><th></th></tr></thead>'
                                     f'<tbody></tbody></table><button type="button" class="calc-add" data-add="{cls}">+ {btn}</button></div>')
     return (LOGO.format(home=home) + '<h1>LAMF – Calculator</h1>'
-            '<p>Enter the loan details and click Calculate Now to see the amount due on every due date, '
+            '<p class="calc-intro">Enter the loan details and click Calculate Now to see the amount due on every due date, '
             'with the principal and interest split and the interest accrual period.</p>'
-            '<form class="calc-form" novalidate><div class="calc-grid">'
-            + fld("Product", f'<select name="product">{opt(["Loan Against Mutual Funds (LAMF)"])}</select>')
-            + fld("Lodgement Approval Date (Loan Start Date)", '<input type="date" name="start" value="2026-10-26">')
-            + fld("Tenure in Months", f'<select name="tenure">{opt(["12", "24", "36", "48", "60", "72"], "12")}</select>')
-            + fld("Loan End Date", '<input name="end" readonly tabindex="-1">', "ro")
-            + fld("Rate of Interest (% p.a.)", '<input name="rate" inputmode="decimal" value="10.50">')
-            + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon", "Interest Only"], "EMI")}</select>')
-            + fld("Due Date of Every Month", '<input name="dueday" type="number" min="1" max="28" value="5">')
-            + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1">', "ro")
-            + '<label class="calc-chk"><input type="checkbox" name="leap"><span>Leap year calculation – use 366 days for the days in a leap year '
-              '(when not ticked, 365 days are used in every year)</span></label>'
-            + '</div><div class="calc-lists">'
-            + rows("calc-w", "Withdrawals", "Add withdrawal") + rows("calc-r", "Repayments (part payment)", "Add repayment")
-            + '</div><p class="calc-err" role="alert"></p><button class="calc-go" type="submit">Calculate Now</button></form>'
+            '<form class="calc-form" novalidate>'
+            + sec(1, "Loan details", '<div class="calc-grid">'
+                  + fld("Product", f'<select name="product">{opt(["Loan Against Mutual Funds (LAMF)"])}</select>')
+                  + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon", "Interest Only"], "EMI")}</select>')
+                  + fld("Rate of Interest (% p.a.)", '<input name="rate" inputmode="decimal" value="10.50">')
+                  + fld("Tenure in Months", f'<select name="tenure">{opt(["12", "24", "36", "48", "60", "72"], "12")}</select>')
+                  + '<label class="calc-chk"><input type="checkbox" name="leap"><span>Leap year calculation – use 366 days for the days in a leap year '
+                    '(when not ticked, 365 days are used in every year)</span></label></div>')
+            + sec(2, "Loan period", '<div class="calc-grid">'
+                  + fld("Lodgement Approval Date (Loan Start Date)", '<input type="date" name="start" value="2026-10-26">')
+                  + fld("Loan End Date", '<input name="end" readonly tabindex="-1">', "ro")
+                  + fld("Due Date of Every Month", '<input name="dueday" type="number" min="1" max="28" value="5">')
+                  + fld("As on Date (for the collected / pending summary)", '<input type="date" name="ason">') + '</div>')
+            + sec(3, "Withdrawals and repayments", '<div class="calc-lists">'
+                  + rows("calc-w", "Withdrawals", "Add withdrawal") + rows("calc-r", "Repayments (part payment)", "Add repayment")
+                  + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1"><small>Withdrawals − repayments</small>', "ro") + '</div>')
+            + '<div class="calc-actions"><button class="calc-go" type="submit">Calculate Now</button><p class="calc-err" role="alert"></p></div></form>'
             '<div class="calc-out"></div>' + CONTACT)
 
 def home_body(home, prd, journey, comms, calc):
