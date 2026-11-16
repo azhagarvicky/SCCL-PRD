@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMF – BRD – Shortfall & EMI Default</title>
+<link rel="stylesheet" href="assets/lamf.css">
+</head>
+<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Shortfall &amp; EMI Default</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 17-11-2026 · EMI bounce, re-presentation, charges and the withdrawal freeze; LTV breach alerts at 90% and invocation at 75%; invocation reasons in LMS, maker-checker with OTP, and loan closure with refund of the excess.</p><div class="brd-body">
+<h2>1. Overview</h2>
+<p>This BRD covers what happens when a customer misses an EMI (EMI default) and when the value of the pledged funds falls below
+what the loan needs (shortfall, also called LTV breach). It covers the charges, the re-presentation of the EMI, the customer
+notifications, the withdrawal freeze, the invocation (sale) of the pledged units and the loan closure.</p>
+<h2>2. EMI default</h2>
+<ol class="brd-flow">
+<li>The EMI is presented on the 5th of every month. If it bounces, it is presented again on the 10th of the same month.</li>
+<li>A bounce charge of ₹1,000 + GST is levied for every bounce. Penal charges of 36% a year are levied on the unpaid interest / EMI
+from the first day of default until the dues are paid.</li>
+<li>The next EMI is presented as usual on its due date. The penal and bounce charges of the earlier default are posted to the
+customer’s ledger and, if the customer does not pay them, are collected at the time of loan closure.</li>
+<li>If the next EMI also bounces on its due date, it is presented again 5 days later (T+5).</li>
+<li>If the T+5 re-presentation also bounces, the customer has missed the EMI for two months in a row. The funds are then sold
+(invoked), the outstanding is settled, the loan is closed, and any amount left over after the sale is refunded to the customer.</li>
+<li>For a loan closed through invocation, the pending interest, the charges, the outstanding principal and the lien removal
+charges are recovered.</li>
+<li>The invocation is done manually by the team, not triggered automatically by the system.</li>
+<li>The customer gets an SMS and an email at every stage above.</li>
+</ol>
+<h2>3. Shortfall (LTV breach)</h2>
+<p><b>LTV % = (Qualified loan amount ÷ Total loan outstanding) × 100</b></p>
+<p>Qualified loan amount = sum of (latest collateral value of each fund × LTV of that fund type), where the LTV depends on whether
+the fund is debt or equity.</p>
+<table class="brd-table"><thead><tr><th>LTV %</th><th>What happens</th></tr></thead><tbody>
+<tr><td>Reaches 90%</td><td>The customer gets an SMS and an email every day asking them to pay the shortfall amount or to pledge
+more funds to cover it.</td></tr>
+<tr><td>Between 90% and 75%</td><td>No invocation. The loan stays as it is even if the customer does not pay, unless there is an
+internal decision to sell the units.</td></tr>
+<tr><td>Reaches 75%</td><td>The funds are sold to recover the shortfall amount and the lien removal charges for every invocation.
+The loan stays ACTIVE, because only the shortfall and its charges are recovered.</td></tr>
+</tbody></table>
+<ul>
+<li>To cover the shortfall by payment, the customer pays the exact shortfall amount.</li>
+<li>To cover the shortfall by pledging, the customer pledges funds worth 2 times the shortfall amount.</li>
+<li>The invocation is done manually by the team, not triggered automatically by the system.</li>
+</ul>
+<h2>4. Withdrawal rules</h2>
+<h3>4.1 During an LTV breach</h3>
+<ul><li>The Withdraw option is disabled in LOS, as the drawing power is less than the outstanding amount.</li></ul>
+<h3>4.2 During an EMI default</h3>
+<ul>
+<li>If the EMI bounces at the first presentation of any month, the account is frozen for withdrawal.</li>
+<li>If the payment is received at the re-presentation, the freeze is released and the customer can withdraw again.</li>
+<li>If the re-presentation also bounces, the customer cannot withdraw until they pay the dues.</li>
+<li>Until the overdue interest / EMI is paid, the withdrawal stays frozen, even when the defaults are not in consecutive months.</li>
+</ul>
+<table class="brd-table"><thead><tr><th>Example (July)</th><th>Withdrawal</th></tr></thead><tbody>
+<tr><td>EMI bounces on 5 July</td><td>Frozen</td></tr>
+<tr><td>Payment received at the re-presentation on 10 July</td><td>Allowed again from 11 July</td></tr>
+<tr><td>Re-presentation on 10 July also bounces</td><td>Stays frozen until the customer pays the dues</td></tr>
+</tbody></table>
+<h2>5. Invocation and revocation approval</h2>
+<p>Every invocation and revocation goes through a maker and a checker, with OTP validation.</p>
+<table class="brd-table"><thead><tr><th>Exposure</th><th>Role</th><th>Name</th><th>Email ID</th></tr></thead><tbody>
+<tr><td rowspan="2">Any amount</td><td>Maker</td><td>Richa</td><td>richajayswal@shriramcredit.in</td></tr>
+<tr><td>Checker / Approver</td><td>Satya</td><td>satyaparida@shriramcredit.in</td></tr>
+</tbody></table>
+<h2>6. Invocation reasons in LMS</h2>
+<p>On the Invoke (Sell) page in LMS, the team chooses an invocation reason. The amount to be invoked depends on the reason.</p>
+<table class="brd-table"><thead><tr><th>Invocation reason</th><th>Used when</th><th>Amount recovered</th><th>Loan after invocation</th></tr></thead><tbody>
+<tr><td>Shortfall (already available)</td><td>LTV breach reaches 75%</td><td>Shortfall amount + lien removal charges</td><td>Stays ACTIVE</td></tr>
+<tr><td>Loan Closure</td><td>Two EMIs missed in a row; or a bullet (balloon) loan where the customer cannot pay the principal at the end of the tenure</td>
+<td>Total outstanding: principal, pending interest, charges and arrears, plus lien removal charges</td><td>CLOSED after settlement</td></tr>
+<tr><td>Defaulted EMIs</td><td>An EMI default that is not in consecutive months</td><td>Interest, charges and arrears of the default</td><td>Stays ACTIVE</td></tr>
+</tbody></table>
+<h2>7. Loan closure through invocation</h2>
+<ol class="brd-flow">
+<li>The units are sold (redeemed) to recover the total outstanding amount.</li>
+<li>The amount left over after recovery is refunded to the customer. It is recorded under Refund even when it is zero.</li>
+<li>New fields under the Refund category, against the redemption details: UTR number, refund date and amount refunded.</li>
+<li>The refund (points 2 and 3) is also posted in the customer ledger.</li>
+<li>Once the total outstanding is recovered and the excess is refunded, the loan account is updated to CLOSED.</li>
+<li>A loan can come into the revocation (de-pledge) window only when the total loan outstanding is 0, or is in credit because of an
+excess payment.</li>
+</ol>
+<h2>8. System impact</h2>
+<table class="brd-table"><tbody>
+<tr><th>LMS</th><td>Presentation on the 5th and re-presentation on the 10th / T+5; bounce charge and penal charges posted to the ledger;
+LTV % worked out daily; invocation reasons Shortfall, Loan Closure and Defaulted EMIs with the right amount for each; maker and
+checker with OTP for invocation and revocation; Refund fields (UTR number, date, amount) and ledger entries; loan closed after
+settlement; revocation only when the outstanding is 0 or in credit.</td></tr>
+<tr><th>LOS</th><td>Withdraw disabled during an LTV breach; withdrawal frozen during an EMI default until the dues are paid.</td></tr>
+<tr><th>Communication</th><td>SMS and email at every EMI default stage; daily SMS and email from 90% LTV until the shortfall is covered.</td></tr>
+</tbody></table>
+</div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
+<script src="assets/review.js"></script>
+</body>
+</html>
