@@ -822,8 +822,8 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
             'with the principal and interest split and the interest accrual period.</p>'
             '<form class="calc-form" novalidate>'
             + sec(1, "Loan details", '<div class="calc-grid">'
-                  + fld("Product", f'<select name="product">{opt(["Loan Against Mutual Funds (LAMF)"])}</select>')
-                  + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon", "Interest Only"], "EMI")}</select>')
+                  + fld("Product", f'<select name="product">{opt(["Line of Credit", "Single Disbursement", "Multiple Disbursement"], "Multiple Disbursement")}</select>')
+                  + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon / Interest Only"], "EMI")}</select>')
                   + fld("Rate of Interest (% p.a.)", '<input name="rate" inputmode="decimal" value="10.50">')
                   + fld("Tenure in Months", f'<select name="tenure">{opt(["12", "24", "36", "48", "60", "72"], "12")}</select>')
                   + '<label class="calc-chk"><input type="checkbox" name="leap"><span>Leap year calculation – use 366 days for the days in a leap year '
@@ -831,11 +831,16 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
             + sec(2, "Loan period", '<div class="calc-grid">'
                   + fld("Lodgement Approval Date (Loan Start Date)", '<input type="date" name="start" value="2026-10-26">')
                   + fld("Loan End Date", '<input name="end" readonly tabindex="-1">', "ro")
-                  + fld("Due Date of Every Month", '<input name="dueday" type="number" min="1" max="28" value="5">')
+                  + fld("Due Date of Every Month", '<input name="dueday" value="5th of every month" readonly tabindex="-1">', "ro")
                   + fld("As on Date (for the collected / pending summary)", '<input type="date" name="ason">') + '</div>')
-            + sec(3, "Withdrawals and repayments", '<div class="calc-lists">'
-                  + rows("calc-w", "Withdrawals", "Add withdrawal") + rows("calc-r", "Repayments (part payment)", "Add repayment")
-                  + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1"><small>Withdrawals − repayments</small>', "ro") + '</div>')
+            + sec(3, "Withdrawals and repayments",
+                  '<div class="calc-txw"><table class="calc-tx"><thead><tr><th>Type</th><th>Date</th><th>Amount</th>'
+                  '<th class="n">Outstanding after</th><th></th></tr></thead><tbody></tbody></table>'
+                  '<p class="tx-empty">No withdrawal or repayment yet – add one below.</p>'
+                  '<div class="tx-foot"><div class="tx-add"><button type="button" class="calc-add w" data-add="w">+ Add withdrawal</button>'
+                  '<button type="button" class="calc-add r" data-add="r">+ Add repayment</button></div>'
+                  '<div class="tx-tot"><span class="tx-w">Withdrawals <b></b></span><span class="tx-r">Repayments <b></b></span>'
+                  + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1">', "ro") + '</div></div></div>')
             + '<div class="calc-actions"><button class="calc-go" type="submit">Calculate Now</button><p class="calc-err" role="alert"></p></div></form>'
             '<div class="calc-out"></div>' + CONTACT)
 
