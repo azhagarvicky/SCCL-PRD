@@ -27,19 +27,22 @@
     return Array.prototype.filter.call(t.rows, function (r) { return r.closest('table') === t; });
   }
 
-  function gripRow(t) {
-    var h = t.tHead;
-    if (h && h.rows.length) return h.rows[h.rows.length - 1];
-    return ownRows(t)[0];
+  // grips go on every header cell (all rows of <thead>, so grouped headings work too), or on the first row without a <thead>
+  function gripCells(t) {
+    var h = t.tHead, cells = [];
+    if (h && h.rows.length) Array.prototype.forEach.call(h.rows, function (r) { cells = cells.concat(Array.prototype.slice.call(r.cells)); });
+    else if (ownRows(t)[0]) cells = Array.prototype.slice.call(ownRows(t)[0].cells);
+    return cells;
   }
 
   function setup(t) {
     if (t.__cr || t.classList.contains('no-resize') || t.closest('.info-pop')) return;
-    var r = gripRow(t);
-    if (!r || r.cells.length < 2) return;
+    var cells = gripCells(t);
+    if (cells.length < 2) return;
     t.__cr = true;
-    Array.prototype.forEach.call(r.cells, function (c, i) {
-      if (i === r.cells.length - 1 && !t.tHead) return;          // nothing to the right of the last cell
+    var right = t.getBoundingClientRect().right;
+    cells.forEach(function (c) {
+      if (!t.tHead && Math.abs(c.getBoundingClientRect().right - right) < 2) return;   // nothing to the right of the last cell
       var g = document.createElement('span');
       g.className = 'col-grip';
       g.title = 'Drag to change the column width (double-click to reset)';
@@ -56,26 +59,32 @@
   // Fix every column to its current width (colgroup + fixed layout), so one column can change without moving the others.
   function freeze(t) {
     if (t.__cols) return t.__cols;
-    var rows = ownRows(t), n = 0, base = null;
-    rows.forEach(function (r) {
-      var s = 0;
-      Array.prototype.forEach.call(r.cells, function (c) { s += c.colSpan; });
-      if (s > n) n = s;
-    });
-    rows.some(function (r) {
-      var plain = Array.prototype.every.call(r.cells, function (c) { return c.colSpan === 1 && c.rowSpan === 1; });
-      if (plain && r.cells.length === n) { base = r; return true; }
-      return false;
-    });
-    var tw = t.getBoundingClientRect().width, widths = [], edges = [];
-    if (base) {
-      Array.prototype.forEach.call(base.cells, function (c) {
-        var b = c.getBoundingClientRect();
-        widths.push(b.width); edges.push(b.right);
+    // lay the cells on a grid (rowspan / colspan aware) and measure each column from a cell that spans only that column
+    var rows = ownRows(t), grid = [], widths = [], edges = [], n = 0;
+    rows.forEach(function (r, ri) {
+      grid[ri] = grid[ri] || [];
+      var ci = 0;
+      Array.prototype.forEach.call(r.cells, function (c) {
+        while (grid[ri][ci]) ci++;
+        for (var a = 0; a < c.rowSpan; a++) {
+          grid[ri + a] = grid[ri + a] || [];
+          for (var b = 0; b < c.colSpan; b++) grid[ri + a][ci + b] = true;
+        }
+        if (c.colSpan === 1 && widths[ci] === undefined) {
+          var bx = c.getBoundingClientRect();
+          widths[ci] = bx.width; edges[ci] = bx.right;
+        }
+        ci += c.colSpan;
+        if (ci > n) n = ci;
       });
-    } else {
-      var left = t.getBoundingClientRect().left;
-      for (var i = 0; i < n; i++) { widths.push(tw / n); edges.push(left + tw / n * (i + 1)); }
+    });
+    var tb = t.getBoundingClientRect(), tw = tb.width, known = 0, missing = 0;
+    for (var i = 0; i < n; i++) { if (widths[i] === undefined) missing++; else known += widths[i]; }
+    var x = tb.left;
+    for (i = 0; i < n; i++) {
+      if (widths[i] === undefined) widths[i] = Math.max(40, (tw - known) / missing);
+      x += widths[i];
+      if (edges[i] === undefined) edges[i] = x;
     }
     Array.prototype.forEach.call(t.querySelectorAll(':scope > colgroup'), function (cg) { cg.remove(); });
     var cg = document.createElement('colgroup'), cols = [];
@@ -121,7 +130,8 @@
     var cell = g.parentElement, t = cell.closest('table');
     var right = cell.getBoundingClientRect().right;
     var f = freeze(t), k = 0, best = Infinity;
-    f.edges.forEach(function (x, i) { var d = Math.abs(x - right); if (d < best) { best = d; k = i; } });
+    var x = t.getBoundingClientRect().left;                      // edges from the current widths (earlier drags move them)
+    f.cols.forEach(function (col, i) { x += parseFloat(col.style.width); var d = Math.abs(x - right); if (d < best) { best = d; k = i; } });
     var startX = e.clientX, startW = parseFloat(f.cols[k].style.width), startT = parseFloat(t.style.width);
     g.classList.add('on');
     document.body.classList.add('col-dragging');

@@ -43,22 +43,22 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
 ]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS options in the Approvals tab, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action needed. The loan moves to INACTIVE automatically after 30 days.", []),
-    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can waive all, part or none of the charges.", REJ_OUTCOMES),
-    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR], "Reject the application. Before rejecting, OPS can waive all, part or none of the charges.", REJ_OUTCOMES),
+    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.", REJ_OUTCOMES),
+    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR], "Reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.", REJ_OUTCOMES),
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF, LM, LR, SD],
-     "Reject the application. Before rejecting, OPS can waive all, part or none of the charges.", REJ_OUTCOMES),
+     "Reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.", REJ_OUTCOMES),
     (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF, LM, LR, SD],
-     "Either approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can waive all, part or none of the charges.",
+     "Either approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.",
      [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF, LM, LR, SD],
-     "Either approve the Loan Lodgement (the loan continues; OPS can waive all or part of the charges before approving), or reject the application. Before rejecting, OPS can waive all, part or none of the charges.",
+     "Either approve the Loan Lodgement (the loan continues), or reject the application. Before approving or rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.",
      [("Approved – no waive-off", "OPS approves the Loan Lodgement. The loan goes to lodgement. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage."),
       ("Approved – with waive-off", "OPS waives part or all of the charges and approves the Loan Lodgement.",
        "Existing communication.", "Not applicable – the loan continues.", "The waived charges do not go into UNO.")] + REJ_OUTCOMES),
     (7, "ACTIVE", "After the Loan Lodgement (loan account active)", ACTIVE_CH,
-     "Waive all or part of any charge on the loan. The loan cannot be rejected at this stage.",
+     "Waive the charges on the active loan: OPS can proceed with full waive-off, partial waive-off or without waive-off. The loan cannot be rejected at this stage.",
      [("No waive-off", "The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.",
        "Existing communication.", "At loan closure (existing process).", "Existing accounting process."),
       ("With waive-off (partial or full)", "OPS waives part or all of a charge. As the charge is already posted in the SOA, the SOA "
@@ -69,10 +69,18 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
 
 def _waiver_body():
     amt = dict((c, a) for c, a, _ in CHARGES)
-    summary = ("<table class='brd-table'><thead><tr><th>Sc.</th><th>LAN status</th><th>Customer dropped off</th>"
-               "<th>Charges applicable</th><th>What OPS can do</th></tr></thead><tbody>"
-               + "".join(f"<tr><td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td><td>{op}</td></tr>"
-                         for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
+    def srow(n, st, sc, ch, op):
+        lead = f"<td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
+        if not ch:
+            return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td>{op}</td></tr>"
+        r3 = lambda h: h.replace("<td", "<td rowspan='3'")
+        return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
+                "<tr><td rowspan='2' class='wo'>With waive-off</td><td class='wo'>Full waive-off</td></tr>"
+                "<tr><td class='wo'>Partial waive-off</td></tr>")
+    summary = ("<table class='brd-table brd-sum'><thead><tr><th rowspan='2'>Sc.</th><th rowspan='2'>LAN status</th>"
+               "<th rowspan='2'>Customer dropped off</th><th rowspan='2'>Charges applicable</th><th colspan='2'>Waive-off options</th>"
+               "<th rowspan='2'>What OPS can do</th></tr><tr><th>Waive-off</th><th>Type</th></tr></thead><tbody>"
+               + "".join(srow(n, st, sc, ch, op) for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
     charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody>"
                + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
 
