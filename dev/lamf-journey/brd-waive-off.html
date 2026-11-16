@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Waiver of Charges and Processing Fee</title>
-<link rel="stylesheet" href="assets/lamf.css?v=5e15762">
+<link rel="stylesheet" href="assets/lamf.css?v=c37c68c">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Waiver of Charges and Processing Fee</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 17-11-2026 · One common process to waive the charges fully, partially or not at all, collect the balance from the customer and allow the de-pledge only after Treasury confirms the payment.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -43,7 +43,10 @@ automatically. Reject is not offered for it. (Scenario 1.)</li>
 <li><b>Who can reject:</b> loan amount below ₹5 lakh – OPS L1 only; ₹5 lakh and above – OPS L2 or L3 only.</li>
 <li><b>Reason and audit:</b> OPS enters a rejection reason (free text for now; a fixed list later). The reason, user, date and
 time are recorded in the Audit tab.</li>
-<li><b>Confirmation:</b> OPS confirms in the existing pop-up. Once confirmed, the rejection is final and cannot be revoked.</li>
+<li><b>Confirmation:</b> on Reject, LMS shows the existing confirmation pop-up (already available): <b>“This action is
+irreversible. Are you sure you want to proceed?”</b> with <b>No</b> and <b>Yes</b> buttons and a close (×) icon.
+  <ul><li><b>Yes:</b> the rejection is saved. It is final and cannot be revoked.</li>
+  <li><b>No</b> or <b>×</b>: the pop-up closes and nothing changes; the loan stays as it was.</li></ul></li>
 <li><b>Status rules:</b> CLOSED is only for an ACTIVE loan (foreclosure, tenure completion or invocation); a DRAFT loan is never
 closed. De-pledge is allowed only for a REJECTED or CLOSED LAN.</li>
 <li><b>LOS after the rejection:</b> when the customer logs in, the only option on the rejected application is to pay the
@@ -92,7 +95,7 @@ after the Treasury confirmation; until then the de-pledge option stays disabled.
 <li>Templates for the rejection, payment received and Treasury mails.</li>
 <li>Roles for approving with a waive-off in scenario 6.</li></ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=5e15762"></script>
-<script src="assets/colresize.js?v=5e15762"></script>
+<script src="assets/review.js?v=c37c68c"></script>
+<script src="assets/colresize.js?v=c37c68c"></script>
 </body>
 </html>
