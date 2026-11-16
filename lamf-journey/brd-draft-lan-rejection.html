@@ -6,67 +6,89 @@
 <title>LAMF – BRD – DRAFT LAN Rejection</title>
 <link rel="stylesheet" href="assets/lamf.css">
 </head>
-<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – DRAFT LAN Rejection</h1><p class="brd-meta"><span class="brd-st">Draft</span>Last updated 16-11-2026 · Reject a loan application in DRAFT status in LMS when the mutual fund units are pledged; unpledged DRAFT LANs move to INACTIVE after 30 days.</p><div class="brd-body">
+<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – DRAFT LAN Rejection</h1><p class="brd-meta"><span class="brd-st">Draft</span>Last updated 16-11-2026 · Reject a loan application in DRAFT status in LMS when the mutual fund units are pledged (DRAFT → REJECTED, then de-pledge); unpledged DRAFT LANs move to INACTIVE after 30 days.</p><div class="brd-body">
 <h2>1. Background</h2>
 <p>Today the OPS team can reject a loan application in LMS only after it is <b>SUBMITTED</b>. A loan application in <b>DRAFT</b>
 status cannot be rejected. When the customer drops off after the mutual fund units are lien-marked (pledged) but before the
-application is submitted, the units stay lien-marked and SCCL has no way to close the application.</p>
+application is submitted, the LAN stays in DRAFT and the units stay lien-marked: the lien can be removed (de-pledged) only for a
+<b>REJECTED</b> or a <b>CLOSED</b> LAN, and a DRAFT LAN can be neither.</p>
 <h2>2. Objective</h2>
 <p>Allow the OPS team to <b>reject a DRAFT loan application in LMS</b> when the customer has pledged the mutual fund units, so that
-the application can be closed and the units de-pledged.</p>
+the LAN status becomes <b>REJECTED</b> and the units can be de-pledged.</p>
 <h2>3. Scope</h2>
 <ul><li><b>In scope:</b> DRAFT LANs where the lien marking (pledge) is successful.</li>
 <li><b>Out of scope:</b> DRAFT LANs that are not pledged – they move from DRAFT to <b>INACTIVE</b> automatically (rule below);
 SUBMITTED and later statuses – the existing rejection applies; the charges on rejection – covered by the BRD “Waiver of Charges
 and Processing Fee”.</li></ul>
-<h2>4. Eligibility</h2>
+<h2>4. LAN status rules</h2>
+<ul>
+<li><b>REJECTED</b> – the application is rejected by OPS (new: also from DRAFT).</li>
+<li><b>CLOSED</b> – only an <b>ACTIVE</b> loan account is closed (foreclosure or tenure completion): ACTIVE → CLOSED. A LAN is
+<b>never</b> closed from DRAFT.</li>
+<li><b>De-pledge (lien removal)</b> is allowed only for a REJECTED or a CLOSED LAN. So for a pledged DRAFT LAN, rejection is the only
+way to remove the lien.</li>
+<li><b>INACTIVE</b> – a DRAFT LAN that is not pledged within 30 days from the LAN generated date (automatic).</li>
+</ul>
+<h2>5. Eligibility</h2>
 <table class="brd-table"><thead><tr><th>LAN status</th><th>Pledged (lien marked)?</th><th>Can OPS reject?</th><th>What happens</th></tr></thead><tbody>
 <tr><td>DRAFT</td><td>No</td><td>No</td><td>Moves from DRAFT to <b>INACTIVE</b> automatically when the units are not pledged within <b>30 days</b> from the LAN generated date.</td></tr>
-<tr><td>DRAFT</td><td>Yes</td><td><b>Yes – new</b></td><td>OPS can reject the application: DRAFT → <b>REJECTED</b>.</td></tr>
+<tr><td>DRAFT</td><td>Yes</td><td><b>Yes – new</b></td><td>Does <b>not</b> expire automatically (the lien is marked) – stays DRAFT until OPS rejects it: DRAFT → <b>REJECTED</b>.</td></tr>
 <tr><td>SUBMITTED and later</td><td>Yes</td><td>Yes – existing</td><td>No change.</td></tr>
 </tbody></table>
-<h2>5. Business rules</h2>
+<h2>6. Business rules</h2>
 <ul>
 <li>LMS must give an <b>Approvals</b> section in the LAN details for a DRAFT LAN (today it is not available for DRAFT loans), with a
 <b>Reject</b> action.</li>
 <li>The Reject action is available <b>only for a DRAFT LAN whose units are pledged</b>. For a DRAFT LAN that is not pledged, Reject is not offered.</li>
+<li>A pledged DRAFT LAN is <b>not expired automatically</b>. OPS rejects it manually:
+  <ul><li>after 30 days from the LAN generated date, when the customer has not submitted the application; or</li>
+  <li>at any time before that, when the customer asks for the lien removal.</li></ul></li>
+<li>Any OPS user – role <b>L1, L2 or L3</b> – can reject a DRAFT LAN.</li>
+<li>A <b>rejection reason</b> must be captured, and the rejection (reason, user, date and time) is recorded in the <b>Audit</b>.</li>
 <li>Rejection needs one confirmation from the OPS user (the existing confirmation); once confirmed it is <b>final</b> and cannot be undone.</li>
-<li>On confirmation the LAN status changes from DRAFT to <b>REJECTED</b> and the LAN is listed with the rejected applications.</li>
+<li>On confirmation the LAN status changes from DRAFT to <b>REJECTED</b> and the LAN is listed with the rejected applications; the
+units can then be de-pledged.</li>
 <li>A DRAFT LAN that is not pledged within 30 days from the LAN generated date moves to <b>INACTIVE</b> automatically – no OPS action.</li>
 <li>The charges applicable on the rejection (lien marking, lien removal, and processing fee / stamp duty where incurred), their
 waive-off, the payment link and the de-pledging follow the BRD “Waiver of Charges and Processing Fee” (scenarios 2 – 4).</li>
+<li><b>Customer communication</b> on rejection: the customer is told that the loan application has been rejected and the units are
+still lien-marked (with the payable charges and payment link where applicable, as per the Waiver BRD).</li>
+<li><b>LOS:</b> when the customer logs in after the rejection, the Curated Offers page shows the product card <b>afresh</b> (start a
+new application) instead of continuing the rejected one.</li>
 </ul>
-<h2>6. Flow</h2>
+<h2>7. Flow</h2>
 <ol class="brd-flow">
 <li>The customer generates the LAN in LOS → LAN status DRAFT.</li>
 <li><b>If the units are not pledged within 30 days</b> from the LAN generated date → the system moves the LAN from DRAFT to INACTIVE.</li>
-<li><b>If the units are pledged</b> and the customer drops off before submitting → the LAN stays DRAFT.</li>
-<li>OPS opens the DRAFT LAN in LMS → Approvals → Reject.</li>
-<li>OPS confirms the rejection (final).</li>
-<li>LAN status DRAFT → REJECTED.</li>
-<li>Charges, customer communication and de-pledging as per the Waiver BRD.</li>
+<li><b>If the units are pledged</b> and the customer drops off before submitting → the LAN stays DRAFT (no automatic expiry).</li>
+<li>OPS (L1 / L2 / L3) opens the DRAFT LAN in LMS → Approvals → Reject – after 30 days, or earlier on the customer’s request for lien removal.</li>
+<li>OPS enters the rejection reason and confirms (final).</li>
+<li>LAN status DRAFT → REJECTED; the rejection is recorded in the Audit.</li>
+<li>Customer is informed: application rejected, units still lien-marked (charges and payment link as per the Waiver BRD).</li>
+<li>De-pledge of the units (after the payment, or at once when the charges are fully waived).</li>
+<li>Next login in LOS → the Curated Offers page shows the product card afresh.</li>
 </ol>
-<h2>7. Status changes</h2>
+<h2>8. Status changes</h2>
 <table class="brd-table"><thead><tr><th>From</th><th>To</th><th>When</th><th>By</th></tr></thead><tbody>
 <tr><td>DRAFT (not pledged)</td><td>INACTIVE</td><td>30 days from the LAN generated date without a pledge</td><td>System (automatic)</td></tr>
-<tr><td>DRAFT (pledged)</td><td>REJECTED</td><td>OPS rejects and confirms</td><td>OPS user – new</td></tr>
+<tr><td>DRAFT (pledged)</td><td>REJECTED</td><td>OPS rejects (after 30 days, or earlier on the customer’s request)</td><td>OPS L1 / L2 / L3 – new</td></tr>
 <tr><td>SUBMITTED</td><td>REJECTED</td><td>OPS rejects the Loan Account Opening</td><td>OPS user – existing</td></tr>
+<tr><td>ACTIVE</td><td>CLOSED</td><td>Foreclosure or tenure completion</td><td>Existing</td></tr>
 </tbody></table>
-<h2>8. System impact</h2>
+<h2>9. System impact</h2>
 <table class="brd-table"><tbody>
-<tr><th>LMS</th><td>Approvals section with Reject for a pledged DRAFT LAN; status DRAFT → REJECTED; the rejected LAN listed with the
-rejected applications; the automatic DRAFT → INACTIVE move for an unpledged LAN after 30 days.</td></tr>
-<tr><th>LOS</th><td><span class="brd-tbd">To be defined</span> (what the customer sees for a rejected or inactive application)</td></tr>
+<tr><th>LMS</th><td>Approvals section with Reject for a pledged DRAFT LAN (OPS L1 / L2 / L3); rejection reason captured and recorded in the
+Audit; status DRAFT → REJECTED; de-pledge allowed for the REJECTED LAN; no automatic expiry for a pledged DRAFT LAN; the automatic
+DRAFT → INACTIVE move for an unpledged LAN after 30 days.</td></tr>
+<tr><th>LOS</th><td>After the rejection, the Curated Offers page shows the product card afresh on the next login (no “Continue” of the rejected application).</td></tr>
 <tr><th>UNO</th><td>No accounting entry for the rejection itself; the charges are accounted as per the Waiver BRD.</td></tr>
+<tr><th>Customer communication</th><td>On rejection: loan application rejected, units still lien-marked (template to be created).</td></tr>
 </tbody></table>
-<h2>9. Open points</h2>
+<h2>10. Open points</h2>
 <ul>
-<li>A pledged DRAFT LAN that the customer does not submit: does it still expire automatically (today: application expiry on Day 31
-with the lien marked), or does it stay DRAFT until OPS rejects it?</li>
-<li>Which OPS role can reject a DRAFT LAN?</li>
-<li>Is a rejection reason to be captured, and is the rejection recorded in the Audit?</li>
-<li>Customer communication on a DRAFT rejection and on a DRAFT → INACTIVE move.</li>
-<li>What the customer sees in LOS after the rejection / inactivation.</li>
+<li>Customer communication when an unpledged DRAFT LAN moves to INACTIVE.</li>
+<li>The existing “Application Expired – Lien Marked” communication (Day 31) – to be withdrawn, as a pledged DRAFT LAN no longer expires automatically.</li>
+<li>List of rejection reasons (fixed list or free text).</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
 <script src="assets/review.js"></script>
