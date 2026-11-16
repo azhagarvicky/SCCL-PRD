@@ -84,9 +84,9 @@ def _waiver_body():
                         "not pledged within 30 days from the LAN generated date.</li>"
                         "<li><b>Customer communication:</b> none.</li>"
                         "<li><b>Accounting:</b> no entries.</li></ul>")
-        chs = ("<table class='brd-table'><thead><tr><th>Charge shown in the Approvals tab</th><th>Amount</th><th>Amount to waive</th>"
-               "<th>Payable</th></tr></thead><tbody>"
-               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Entered by OPS</td><td>Amount – waived</td></tr>" for c in ch)
+        chs = ("<table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Amount to be waived off</th>"
+               "<th>Payable Charges</th></tr></thead><tbody>"
+               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Entered by OPS</td><td>Amount of Charges – Amount to be waived off</td></tr>" for c in ch)
                + "</tbody></table>")
         out = ("<table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th>"
                "<th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody>"
@@ -105,19 +105,45 @@ customer before the units are de-pledged.</p>
 <h2>3. Common changes (apply to all scenarios)</h2>
 <h3>3.1 Approvals tab for a DRAFT loan (new)</h3>
 <ul>
-<li>Today LMS has no Approvals tab for a DRAFT loan. Add the Approvals tab in the LAN details of a DRAFT loan whose units are
-pledged (scenarios 2 to 4).</li>
-<li>It lists each charge incurred so far with its amount, an <b>Amount to waive</b> field and the <b>Payable</b> amount, and a
-<b>Reject</b> action.</li>
-<li>Rejecting a DRAFT LAN itself (status rules) is covered in the BRD DRAFT LAN Rejection.</li>
+<li>In LMS, the Approvals tab is available today in the loan details of Active, Submitted and Account Opened loans. It is
+<b>not available for a DRAFT loan</b>. Add the Approvals tab to the loan details of a DRAFT loan whose mutual fund units are
+pledged. (Applies to scenarios 2, 3 and 4.)</li>
+<li>The Approvals tab shows the charges table below, with a checkbox for each charge (and one to select all), followed by the
+existing note, file upload, Decline and Approve fields. For a DRAFT loan, the action is to reject (decline) the application.</li>
 </ul>
-<h3>3.2 Waive-off in the existing Approvals tab</h3>
+<table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
+<tr><td>Checkbox</td><td>Selects the charge to waive off</td></tr>
+<tr><td>Charges Name</td><td>Each charge incurred so far (for example, Lien Marking Charges, Lien Removal Charges)</td></tr>
+<tr><td>Amount of Charges</td><td>The charge including GST (for example, 531 and 118)</td></tr>
+<tr><td>Amount to be waived off</td><td>Entered by OPS; 0 by default; cannot be more than the Amount of Charges</td></tr>
+<tr><td>Payable Charges</td><td>Amount of Charges – Amount to be waived off</td></tr>
+</tbody></table>
+<h3>3.2 Rejecting a DRAFT loan (new)</h3>
 <ul>
-<li>SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6): the same charge list with the Amount to waive field is added next to
-the existing Approve and Reject actions.</li>
-<li>ACTIVE loans (scenario 7): an option to waive a charge already posted in the Statement of Account, with a waiver narration.</li>
+<li><b>Today:</b> OPS can reject a loan in LMS only after it is SUBMITTED. A DRAFT loan cannot be rejected, so when the customer
+drops off after pledging, the units stay lien-marked: de-pledge is allowed only for a REJECTED or CLOSED LAN.</li>
+<li><b>New:</b> OPS can reject a DRAFT loan whose units are pledged. The LAN status changes from DRAFT to <b>REJECTED</b> and the
+units can then be de-pledged as per this BRD. (Applies to scenarios 2, 3 and 4.)</li>
+<li><b>When:</b> a pledged DRAFT loan does not expire automatically. OPS rejects it after 30 days from the LAN generated date
+when the customer has not submitted the application, or earlier when the customer asks for the lien to be removed.</li>
+<li><b>Not pledged:</b> a DRAFT loan whose units are not pledged within 30 days from the LAN generated date moves to INACTIVE
+automatically. Reject is not offered for it. (Scenario 1.)</li>
+<li><b>Who can reject:</b> loan amount below ₹5 lakh – OPS L1 only; ₹5 lakh and above – OPS L2 or L3 only.</li>
+<li><b>Reason and audit:</b> OPS enters a rejection reason (free text for now; a fixed list later). The reason, user, date and
+time are recorded in the Audit tab.</li>
+<li><b>Confirmation:</b> OPS confirms in the existing pop-up. Once confirmed, the rejection is final and cannot be revoked.</li>
+<li><b>Status rules:</b> CLOSED is only for an ACTIVE loan (foreclosure, tenure completion or invocation); a DRAFT loan is never
+closed. De-pledge is allowed only for a REJECTED or CLOSED LAN.</li>
+<li><b>LOS after the rejection:</b> when the customer logs in, the only option on the rejected application is to pay the
+charges (when payable). The Curated Offers page shows a fresh product card to start a new application.</li>
 </ul>
-<h3>3.3 How the waive-off works</h3>
+<h3>3.3 Waive-off in the existing Approvals tab</h3>
+<ul>
+<li>Submitted and Account Opened loans (scenarios 5 and 6): the same charges table is added above the existing Decline and
+Approve actions.</li>
+<li>Active loans (scenario 7): an option to waive a charge already posted in the Statement of Account, with a waiver narration.</li>
+</ul>
+<h3>3.4 How the waive-off works</h3>
 <ul>
 <li><b>Payable</b> = charge – amount waived. The amount waived cannot be more than the charge.</li>
 <li><b>Type of waive-off</b> is set by the system when OPS rejects; OPS does not choose it:
@@ -126,9 +152,7 @@ the existing Approve and Reject actions.</li>
 <tr><td>Less than the charges, but not 0</td><td>Partial waive-off</td></tr>
 <tr><td>0</td><td>Full waive-off</td></tr>
 </tbody></table></li>
-<li><b>Who can reject:</b> loan amount below ₹5 lakh – OPS L1 only; ₹5 lakh and above – OPS L2 or L3 only.</li>
-<li><b>Rejection:</b> OPS enters a reason (recorded in the Audit) and confirms in the existing pop-up. It is final and cannot be
-revoked. The LAN status becomes REJECTED.</li>
+<li><b>Who can reject and how:</b> as in 3.2 (by loan amount, with a reason recorded in the Audit, final once confirmed).</li>
 <li><b>Customer communication:</b> only after the rejection – with the payment link for partial or no waive-off, without it for
 a full waive-off.</li>
 <li><b>Payment:</b> through the payment link (after OTP verification), or in LOS, where a new page shows the total charges, the
@@ -140,7 +164,7 @@ and sends it to the customer with a payment received SMS and mail.</li>
 after the Treasury confirmation; until then the de-pledge option stays disabled.</li>
 <li><b>Accounting:</b> UNO entries only for what the customer actually pays, when it is received. Waived charges never go into UNO.</li>
 </ul>
-<h3>3.4 Charges and amounts</h3>
+<h3>3.5 Charges and amounts</h3>
 {charges}
 <h2>4. Scenarios</h2>
 {scen}
