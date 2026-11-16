@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 04:12 IST
+**Last Updated:** 17-11-2026 04:15 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -331,6 +331,7 @@
 | DISC-296 | 17-11-2026 | brd-waive-off.html | Waiver BRD summary: scenarios 2–4 in the scenario 5 format | Owner: like row 5, show rows 2, 3 and 4 with Reject | Waive-off options for scenarios 2, 3 and 4 now read Reject → Without Waive-off / With Full Waive-off / With Partial Waive-off (as scenario 5, without the Approved row). Scenarios 6 and 7 unchanged. A Word copy of the BRD (BRD_Waiver_of_Charges.docx) was shared for testing; not stored in the repository. | Implemented |
 | DISC-297 | 17-11-2026 | BRD Word export | Word copy only on request | Owner: no need to generate the Word document every time; generate it only when asked | Working rule: after a BRD change, do not regenerate or send the .docx; create it only when the owner asks for it. | Agreed |
 | DISC-298 | 17-11-2026 | brd-waive-off.html | Waiver BRD scenario 6: Approve and Reject, each with three waive-off options | Owner: row 6 in the row 5 format, with Approve without waive-off, Approve with full waive-off, Approve with partial waive-off, and the same for Reject | Summary row 6 now shows Approve → Without Waive-off / With Full Waive-off / With Partial Waive-off and Reject → the same three. What OPS can do for 6 reworded to the row 5 format. Section 4.6 outcome table: “Approved – with waive-off” split into Approved – partial waive-off (waived part not in UNO) and Approved – full waive-off (waived charges not in UNO). Row 7 unchanged. | Implemented |
+| DISC-299 | 17-11-2026 | brd-waive-off.html | Waiver BRD summary: one column name for the approval / waive-off split | Owner: correct the column name; a single name like Waive-off / Approvals is fine | The “Waive-off options” group heading and its two sub-headings (Waive-off, Type) replaced by one heading “Approvals / Waive-off” over both columns; the table header is now a single row. Row 5 label “Approved” changed to “Approve” to match row 6. | Implemented |
 
 ---
 
