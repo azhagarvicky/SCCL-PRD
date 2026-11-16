@@ -811,9 +811,27 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
             + f'<h2 id="comms-nr">Not Required ({len(COMMS_NR)})</h2><p>SMS and mail marked “Not Required” – kept for reference only; they will not be sent.</p>'
             + comms_table(COMMS_NR, COMMS_COLS, 'sms') + CONTACT)
 
-def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); content to come from the owner
+def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257)
+    opt = lambda vals, sel=None: "".join(f'<option{" selected" if v == sel else ""}>{v}</option>' for v in vals)
+    fld = lambda label, ctrl, cls="": f'<label class="calc-f {cls}"><span>{label}</span>{ctrl}</label>'
+    rows = lambda cls, title, btn: (f'<div class="calc-list {cls}"><h3>{title}</h3><table><thead><tr><th>Date</th><th>Amount (₹)</th><th></th></tr></thead>'
+                                    f'<tbody></tbody></table><button type="button" class="calc-add" data-add="{cls}">+ {btn}</button></div>')
     return (LOGO.format(home=home) + '<h1>LAMF – Calculator</h1>'
-            '<p class="calc-soon">The calculator will be added here.</p>' + CONTACT)
+            '<p>Enter the loan details and click Calculate Now to see the amount due on every due date, '
+            'with the principal and interest split and the interest accrual period.</p>'
+            '<form class="calc-form" novalidate><div class="calc-grid">'
+            + fld("Product", f'<select name="product">{opt(["Loan Against Mutual Funds (LAMF)"])}</select>')
+            + fld("Lodgement Approval Date (Loan Start Date)", '<input type="date" name="start" value="2026-10-26">')
+            + fld("Tenure in Months", f'<select name="tenure">{opt(["12", "24", "36", "48", "60", "72"], "12")}</select>')
+            + fld("Loan End Date", '<input name="end" readonly tabindex="-1">', "ro")
+            + fld("Rate of Interest (% p.a.)", '<input name="rate" inputmode="decimal" value="10.50">')
+            + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon", "Interest Only"], "EMI")}</select>')
+            + fld("Due Date of Every Month", '<input name="dueday" type="number" min="1" max="28" value="5">')
+            + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1">', "ro")
+            + '</div><div class="calc-lists">'
+            + rows("calc-w", "Withdrawals", "Add withdrawal") + rows("calc-r", "Repayments (part payment)", "Add repayment")
+            + '</div><p class="calc-err" role="alert"></p><button class="calc-go" type="submit">Calculate Now</button></form>'
+            '<div class="calc-out"></div>' + CONTACT)
 
 def home_body(home, prd, journey, comms, calc):
     return (f'<header class="home-top">{LOGO.format(home=home)}</header>'
@@ -851,7 +869,7 @@ with open(os.path.join(ROOT, "index.html"), "w") as f:
     f.write(PAGE.format(title="LAMF Online Journey", cls="page-home",
                         body=home_body("index.html", "SCCL_LAMF_LOS_PRD.html", "screens.html", "communications.html", "calculator.html")))
 with open(os.path.join(ROOT, "calculator.html"), "w") as f:
-    f.write(PAGE.format(title="LAMF – Calculator", cls="page-screens page-calc", body=calc_body("index.html")))
+    f.write(PAGE.format(title="LAMF – Calculator", cls="page-screens page-calc", body=calc_body("index.html") + '<script src="assets/calc.js"></script>'))
 with open(os.path.join(ROOT, "communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
 with open(os.path.join(ROOT, "screens.html"), "w") as f:
@@ -907,6 +925,7 @@ CLOUD = """<!doctype html>
     .forEach(function (el) { document.head.appendChild(el); });
 </script>
 <script>""" + _read("assets", "lamf.js") + """</script>
+<script>""" + _read("assets", "calc.js") + """</script>
 <script>""" + _read("assets", "screens.js") + """</script>
 <script>""" + _read("assets", "prd-body.js") + """</script>
 <script>
@@ -921,7 +940,7 @@ CLOUD = """<!doctype html>
     var fn = window.SCREEN_RENDER[name];
     if (fn) { fn(); return; }
     if (name === 'SCREENS') { LAMF.render(window.SCREENS_HTML, { bodyClass: 'page-screens' }); return; }
-    if (name === 'CALC') { LAMF.render(window.CALC_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-calc'); return; }
+    if (name === 'CALC') { LAMF.render(window.CALC_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-calc'); window.LAMFCalc.init(); return; }
     if (name === 'COMMS') { LAMF.render(window.COMMS_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-comms'); return; }
     LAMF.render(window.HOME_HTML, { bodyClass: 'page-home' });
   }
