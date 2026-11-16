@@ -73,12 +73,15 @@ def _waiver_body():
         lead = f"<td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
         if not ch:
             return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td>{op}</td></tr>"
+        rej = ("<td class='wo'>Without Waive-off</td></tr><tr><td class='wo'>With Full Waive-off</td></tr>"
+               "<tr><td class='wo'>With Partial Waive-off</td></tr>")
         if n == 5:   # owner (DISC-295): Approved, Reject without waive-off, Reject with full / partial waive-off
             rs = lambda h: h.replace("<td", "<td rowspan='4'")
             return (f"<tr>{rs(lead)}<td colspan='2' class='wo'>Approved</td>{rs(f'<td>{op}</td>')}</tr>"
-                    "<tr><td rowspan='3' class='wo'>Reject</td><td class='wo'>Without Waive-off</td></tr>"
-                    "<tr><td class='wo'>With Full Waive-off</td></tr>"
-                    "<tr><td class='wo'>With Partial Waive-off</td></tr>")
+                    "<tr><td rowspan='3' class='wo'>Reject</td>" + rej)
+        if n in (2, 3, 4):   # owner (DISC-296): same format as scenario 5, Reject only
+            r3 = lambda h: h.replace("<td", "<td rowspan='3'")
+            return f"<tr>{r3(lead)}<td rowspan='3' class='wo'>Reject</td>" + rej.replace("</tr>", f"{r3(f'<td>{op}</td>')}</tr>", 1)
         r3 = lambda h: h.replace("<td", "<td rowspan='3'")
         return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
                 "<tr><td rowspan='2' class='wo'>With waive-off</td><td class='wo'>Full waive-off</td></tr>"
