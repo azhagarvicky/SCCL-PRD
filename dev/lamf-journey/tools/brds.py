@@ -5,98 +5,189 @@ empty = “content to be added”).
 """
 
 TBD = '<span class="brd-tbd">To be defined</span>'
-PROP = '<span class="brd-prop">Proposed</span>'
 
-# Waiver of Charges and Processing Fee (DISC-270): the 7 drop-off scenarios after lien marking.
-# (No, drop-off stage, how the case ends, charges incurred) – scenario list proposed by Claude, to be confirmed by the owner.
+# ---------------------------------------------------------------------------------------------------------------------------
+# BRD – Waiver of Charges and Processing Fee (DISC-270 … DISC-274)
+# Scenarios, charges, product construct and treasury remarks from the owner's LAMF_Charges_Waiver_V1.xlsx; the waiver rules
+# (full / partial / none, one confirmation) from the owner's Scenario 1 notes (DISC-271, DISC-273). Business logic only – no
+# screen detail (DISC-272).
+# ---------------------------------------------------------------------------------------------------------------------------
+CHARGES = [   # (charge, amount incl. 18% GST, when it is incurred)
+    ("Lien Marking Charge", "₹531 (₹450 + ₹81 GST)", "When the mutual fund units are pledged (lien marked)"),
+    ("Lien Removal Charge", "₹118 (₹100 + ₹18 GST)", "When the lien is removed (units de-pledged)"),
+    ("Processing Fee Charge", TBD, "From the Sanction Letter generation"),
+    ("Stamp Duty Charge", TBD, "From the Loan Agreement e-Sign"),
+    ("Bounce Charge", TBD, "Active loan – when an EMI bounces"),
+    ("Penal Charge", TBD, "Active loan – on a delay or default"),
+    ("Loan Renewal Charge", TBD, "Active loan – on renewal"),
+    ("Bank Swap Charge", TBD, "Active loan – when the repayment bank account is changed"),
+]
+LM, LR, PF, SD = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee Charge", "Stamp Duty Charge"
+ACTIVE_CH = [LM, LR, PF, SD, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Bank Swap Charge"]
+
+_REJECT_DRAFT = "LMS requires a feature to reject applications in DRAFT status – not available today."
+_NOTIFY_DRAFT = ("SCCL notifies the customer that the mutual fund units remain lien-marked; to de-pledge them the customer must pay "
+                 "the applicable charges through the payment link in the communication.")
+_TIMING_DRAFT = ("Initial communication: sent along with the marketing communication (drop-off reminders). "
+                 "Payment link: sent with the rejection SMS / mail.")
+_ACC_PAID = "Accounting entries for the applicable charges are triggered once SCCL successfully receives the payment."
+_ACC_WAIVED = "The waived-off charges do not flow into UNO books."
+_ACC_NONE = "No accounting entries are applicable at this stage."
+
+
+def _draft_options(n):
+    """Draft drop-offs (scenarios 2 – 4): without / partial / full waive-off."""
+    return [
+        (f"{n}.1", "Without waive-off", "OPS rejects the DRAFT application without any waiver – the customer pays all the charges.",
+         ["OPS rejects the DRAFT application in LMS and confirms (final).", "LAN status DRAFT → REJECTED.",
+          "Customer is informed of the rejection with the payable charges and the payment link.",
+          "Customer pays → accounting entries are posted → the units are de-pledged."],
+         [("LMS", f"{_REJECT_DRAFT} Once rejected, the mutual fund units can be de-pledged – after the customer pays."),
+          ("Customer communication", f"{_NOTIFY_DRAFT}<br><b>Timing:</b> {_TIMING_DRAFT}"),
+          ("UNO (Treasury)", _ACC_PAID)]),
+        (f"{n}.2", "With waive-off (Partial)", "OPS waives a part of the charges – the customer pays the balance.",
+         ["OPS enters the amount waived for each charge, rejects and confirms (final).", "LAN status DRAFT → REJECTED.",
+          "Payable charges = the charges minus the amount waived.",
+          "Customer is informed of the rejection with the payable charges and the payment link.",
+          "Customer pays the balance → accounting entries for the amount received → the units are de-pledged."],
+         [("LMS", f"{_REJECT_DRAFT} The units can be de-pledged after the customer pays the balance."),
+          ("Customer communication", f"{_NOTIFY_DRAFT} (payable charges after the waiver)<br><b>Timing:</b> {_TIMING_DRAFT}"),
+          ("UNO (Treasury)", f"{_ACC_PAID} {_ACC_WAIVED}")]),
+        (f"{n}.3", "With waive-off (Full)", "OPS waives all the charges – nothing is payable; SCCL bears the charges.",
+         ["OPS waives all the charges, rejects and confirms (final).", "LAN status DRAFT → REJECTED.",
+          "Customer is informed of the rejection – no payment link.", "The units are de-pledged."],
+         [("LMS", f"{_REJECT_DRAFT} Once rejected, the mutual fund units can be de-pledged."),
+          ("Customer communication", "Rejection only – no payment link."),
+          ("UNO (Treasury)", _ACC_WAIVED)]),
+    ]
+
+
+_REJ_LINK = ("SCCL notifies the customer that the application has been rejected and the mutual fund units remain lien-marked; to "
+             "de-pledge them the customer must pay the applicable charges through the payment link.<br><b>Timing:</b> immediately after the rejection in LMS.")
+_REJ_NOLINK = "SCCL notifies the customer that the application has been rejected – no payment link.<br><b>Timing:</b> immediately after the rejection in LMS."
+
+
+def _reject_options(n, status, first):
+    """Rejection by OPS of a SUBMITTED / ACCOUNT OPENED application – with or without a payment link."""
+    return [
+        (f"{n}.{first}", "Rejected – with payment link (without waive-off / partial waive-off)",
+         "OPS rejects with charges – the customer pays all the charges, or the balance after a partial waiver.",
+         ["OPS rejects the application in LMS (Rejected with Charges) and confirms (final).", f"LAN status {status} → REJECTED.",
+          "Customer is informed at once with the payable charges and the payment link.",
+          "Customer pays → accounting entries are posted → the units are de-pledged."],
+         [("LMS", "Rejection with charges; the units stay lien-marked until the customer pays."),
+          ("Customer communication", _REJ_LINK), ("UNO (Treasury)", _ACC_PAID)]),
+        (f"{n}.{first + 1}", "Rejected – without payment link (with waive-off)",
+         "OPS rejects without charges – all the charges are waived; SCCL bears them.",
+         ["OPS rejects the application in LMS (Rejected without Charges) and confirms (final).", f"LAN status {status} → REJECTED.",
+          "Customer is informed at once – no payment link.", "LMS gives the option to de-pledge the units."],
+         [("LMS", "Following the rejection, LMS provides an option to de-pledge the mutual fund units."),
+          ("Customer communication", _REJ_NOLINK), ("UNO (Treasury)", _ACC_WAIVED)]),
+    ]
+
+
+# (No, LMS LAN status, scenario, charges applicable, [(code, type, when, flow, [(system, impact)])])
 WAIVER_SCENARIOS = [
-    (1, "After lien marking – Sanction Letter not generated (Loan Application Status: DRAFT)",
-     "OPS rejects the DRAFT LAN in LMS – 1.1 without waive-off, 1.2 partial waive-off, 1.3 full waive-off", "Lien marking ₹531, Lien removal ₹118 (incl. 18% GST)"),
-    (2, "After the Sanction Letter – before the Loan Agreement e-Sign",
-     "No action for 30 days → application expires → lien removal", "Lien marking, Lien removal"),
-    (3, "After the Loan Agreement e-Sign – before / failed E-Mandate",
-     "E-Mandate not completed in 30 days → application expires → lien removal", "Lien marking, Lien removal"),
-    (4, "Customer asks to cancel the application after lien marking",
-     "Cancelled on the customer's request → lien removal", "Lien marking, Lien removal"),
-    (5, "Application submitted – Loan Account Opening rejected by OPS",
-     "OPS rejects in LMS (Rejected with Charges / Rejected without Charges) → lien removal", "Lien marking, Lien removal, Processing fee (if levied)"),
-    (6, "Account opened – Loan Lodgement rejected by OPS",
-     "OPS rejects in LMS (Rejected with Charges / Rejected without Charges) → lien removal", "Lien marking, Lien removal, Processing fee"),
-    (7, "Loan account active – no withdrawal, customer asks to close",
-     "Closure on request without any disbursement → lien removal", "Lien marking, Lien removal, Processing fee"),
+    (1, "DRAFT", "Customer drops off before pledging the mutual funds", [],
+     [("1.1", "No charges", "The customer leaves before the lien marking.",
+       ["No charge is incurred; the application stays in DRAFT (expires as per the existing rule)."],
+       [("LMS", "No charges apply at this stage."), ("UNO (Treasury)", _ACC_NONE)])]),
+    (2, "DRAFT", "Customer drops off after pledging the mutual funds", [LM, LR], _draft_options(2)),
+    (3, "DRAFT", "Customer drops off after the Sanction Letter generation (mutual funds already pledged)", [PF, LM, LR], _draft_options(3)),
+    (4, "DRAFT", "Customer drops off after the Loan Agreement e-Sign (mutual funds pledged, Sanction Letter generated and submitted)",
+     [PF, LM, LR, SD], _draft_options(4)),
+    (5, "SUBMITTED", "Customer drops off after the E-Mandate (mutual funds pledged, Sanction Letter generated, Loan Agreement e-Signed) – "
+                     "OPS decides on the Loan Account Opening", [PF, LM, LR, SD],
+     [("5.1", "Approved", "OPS approves the Loan Account Opening.",
+       ["OPS approves.", "LAN status SUBMITTED → ACCOUNT OPENED.", "No charges are collected at this stage."],
+       [("LMS", "The application moves to ACCOUNT OPENED status. No charges are collected at this stage."),
+        ("UNO (Treasury)", _ACC_NONE)])] + _reject_options(5, "SUBMITTED", 2)),
+    (6, "ACCOUNT OPENED", "Customer drops off after the Loan Account Opening – OPS decides on the Loan Lodgement", [PF, LM, LR, SD],
+     [("6.1", "Approved (without waive-off)", "OPS approves the Loan Lodgement; the charges stay applicable.",
+       ["OPS approves.", "The application proceeds to the loan lodgement (ACCOUNT OPENED → ACTIVE).", "No charges are collected at this stage."],
+       [("LMS", "The application proceeds to the loan lodgement. No charges are collected at this stage."),
+        ("UNO (Treasury)", _ACC_NONE)]),
+      ("6.2", "Approved (with waive-off)", "OPS approves the Loan Lodgement and waives the charges.",
+       ["OPS waives the charges and approves.", "The application proceeds to the loan lodgement.", "The waived charges are not collected."],
+       [("LMS", "No charges apply at this stage (waived)."), ("UNO (Treasury)", _ACC_WAIVED)])] + _reject_options(6, "ACCOUNT OPENED", 3)),
+    (7, "ACTIVE", "Customer drops off after the Loan Lodgement (loan account active)", ACTIVE_CH,
+     [("7.1", "Without waive-off", "The charges stay payable.",
+       ["All applicable charges are collected before the loan account is closed."],
+       [("LMS", "All applicable charges are collected before the loan account is closed."),
+        ("UNO (Treasury)", "The existing accounting process applies.")]),
+      ("7.2", "With waive-off", "OPS waives charges already posted to the loan account.",
+       ["OPS waives the charge in LMS.", "The Statement of Account (SOA) is updated with the waiver narration."],
+       [("LMS", "LMS requires an option to waive charges. As the charges are already posted in the Statement of Account (SOA), the SOA "
+                "must be updated with the corresponding waiver narration."),
+        ("UNO (Treasury)", _ACC_WAIVED)])]),
 ]
 
-# Scenario detail given by the owner (DISC-271) – written as business logic, rules and conditions, not screen detail (DISC-272)
-SCENARIO_DETAIL = {1: """<h4>Pre-conditions</h4>
-<ul><li>The customer has pledged the mutual fund units (lien marked).</li>
-<li>The Sanction Letter is not generated.</li>
-<li>Loan Application Status: <b>DRAFT</b>.</li></ul>
-<h4>Rules for Scenario 1</h4>
-<ul>
-<li>OPS can reject a <b>DRAFT</b> LAN in LMS and decide the charges at the same time (rejecting a DRAFT LAN is a new capability – not available today).</li>
-<li>Charges (including 18% GST): Lien Marking Charge ₹531 (₹450 + ₹81 GST) and Lien Removal Charge ₹118 (₹100 + ₹18 GST) – total ₹649.</li>
-<li>For each charge, OPS can waive the full amount, a part of it, or nothing. The amount waived cannot be more than the charge.</li>
-<li>Payable charges = the charges minus the amount waived. SCCL bears the amount waived; the customer pays the payable charges.</li>
-<li>Rejection needs one confirmation from the OPS user; once confirmed it is <b>final</b> – no second approval, and it cannot be undone.</li>
-<li>On rejection the LAN status changes from DRAFT to <b>REJECTED</b> and the customer is informed by SMS and mail (templates to be created).</li>
-</ul>
-<h4>1.1 Without waive-off</h4><p><b>When:</b> OPS waives nothing – the customer pays all the charges (₹649).</p><ol class="brd-flow"><li>OPS rejects the DRAFT LAN without any waiver and confirms.</li><li>LAN status DRAFT → REJECTED.</li><li>Customer is informed of the rejection with the payable amount (₹649) and a payment link.</li><li>Customer pays ₹649 → lien removal.</li></ol><table class="brd-table"><tbody><tr><th>Borne by SCCL</th><td>₹0</td></tr><tr><th>Paid by customer</th><td>₹649</td></tr><tr><th>Lien</th><td>Stays marked until the customer pays; removed after the payment</td></tr><tr><th>Customer communication</th><td>Rejection with the payable amount and the payment link</td></tr></tbody></table><h4>1.2 With waive-off (Partial)</h4><p><b>When:</b> OPS waives a part of the charges – e.g. ₹500 of the Lien Marking Charge (₹531).</p><ol class="brd-flow"><li>OPS enters the amount waived for each charge and rejects, and confirms.</li><li>LAN status DRAFT → REJECTED.</li><li>Payable charges = ₹649 − ₹500 = ₹149 (₹31 Lien Marking + ₹118 Lien Removal).</li><li>Customer is informed of the rejection with the payable amount (₹149) and a payment link.</li><li>Customer pays ₹149 → lien removal.</li></ol><table class="brd-table"><tbody><tr><th>Borne by SCCL</th><td>The amount waived (₹500)</td></tr><tr><th>Paid by customer</th><td>The balance (₹149)</td></tr><tr><th>Lien</th><td>Stays marked until the customer pays; removed after the payment</td></tr><tr><th>Customer communication</th><td>Rejection with the payable amount and the payment link</td></tr></tbody></table><h4>1.3 With waive-off (Full)</h4><p><b>When:</b> OPS waives all the charges – payable charges ₹0.</p><ol class="brd-flow"><li>OPS waives both charges in full and rejects, and confirms.</li><li>LAN status DRAFT → REJECTED.</li><li>SCCL bears all the charges (₹649).</li><li>Customer is informed of the rejection – no payment link.</li><li>Lien removal {TBD}.</li></ol><table class="brd-table"><tbody><tr><th>Borne by SCCL</th><td>₹649</td></tr><tr><th>Paid by customer</th><td>₹0</td></tr><tr><th>Lien</th><td>{TBD} (removed at once on rejection?)</td></tr><tr><th>Customer communication</th><td>Rejection only – no payment link</td></tr></tbody></table>
-<h4>System impact</h4>
-<table class="brd-table"><tbody>
-<tr><th>LMS</th><td>Rejection of a DRAFT LAN with the waiver for each charge; status DRAFT → REJECTED; payable charges collected by payment link; lien removal after the payment (on a full waive-off – to be defined).</td></tr>
-<tr><th>LOS</th><td>{TBD}</td></tr>
-<tr><th>UNO</th><td>{TBD} (booking of the charges, the amount waived and the amount received)</td></tr>
-</tbody></table>
-"""}
-SCENARIO_DETAIL = {k: v.replace("{TBD}", TBD) for k, v in SCENARIO_DETAIL.items()}
 
 def _waiver_body():
-    rows = "".join(f"<tr><td class='c'>{n}</td><td>{st}</td><td>{end}</td><td>{ch}</td></tr>" for n, st, end, ch in WAIVER_SCENARIOS)
-    impact = lambda n: (
-        "<table class='brd-table'><thead><tr><th>System</th><th>With waive-off (SCCL bears the charges)</th>"
-        "<th>Without waive-off (customer pays the charges)</th></tr></thead><tbody>"
-        f"<tr><th>LOS</th><td>{TBD}</td><td>{TBD}</td></tr>"
-        f"<tr><th>LMS</th><td>{TBD}</td><td>{TBD}</td></tr>"
-        f"<tr><th>UNO</th><td>{TBD}</td><td>{TBD}</td></tr>"
-        f"<tr><th>Customer communication</th><td>{TBD}</td><td>{TBD}</td></tr></tbody></table>")
-    scen = "".join(f"<h3>Scenario {n} – {st}</h3><p><b>How the case ends:</b> {end}<br><b>Charges incurred:</b> {ch}</p>"
-                   + (SCENARIO_DETAIL[n] if n in SCENARIO_DETAIL else impact(n)) for n, st, end, ch in WAIVER_SCENARIOS)
+    tick = lambda c, chs: "✓" if c in chs else ""
+    matrix = ("<table class='brd-table brd-mx'><thead><tr><th>Charge</th><th>Amount (incl. 18% GST)</th>"
+              + "".join(f"<th>Sc. {n}</th>" for n, *_ in WAIVER_SCENARIOS) + "</tr></thead><tbody>"
+              + "".join(f"<tr><td>{c}</td><td>{amt}</td>" + "".join(f"<td class='c'>{tick(c, s[3])}</td>" for s in WAIVER_SCENARIOS) + "</tr>"
+                        for c, amt, _ in CHARGES) + "</tbody></table>")
+    charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount (incl. 18% GST)</th><th>When it is incurred</th></tr></thead><tbody>"
+               + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
+    summary = ("<table class='brd-table'><thead><tr><th>#</th><th>LMS LAN status</th><th>Scenario</th><th>Charges applicable</th><th>Options</th></tr></thead><tbody>"
+               + "".join(f"<tr><td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'NA'}</td>"
+                         f"<td>{'<br>'.join(o[0] + ' ' + o[1] for o in opts)}</td></tr>" for n, st, sc, ch, opts in WAIVER_SCENARIOS)
+               + "</tbody></table>")
+
+    def opt(o):
+        code, typ, when, flow, rows = o
+        return (f"<h4>{code} {typ}</h4><p><b>When:</b> {when}</p><ol class='brd-flow'>" + "".join(f"<li>{x}</li>" for x in flow) + "</ol>"
+                "<table class='brd-table'><tbody>" + "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows) + "</tbody></table>")
+    detail = "".join(f"<h3>Scenario {n} – {sc}</h3><p><b>LMS LAN status:</b> {st}<br><b>Charges applicable:</b> {', '.join(ch) or 'None'}</p>"
+                     + "".join(opt(o) for o in opts) for n, st, sc, ch, opts in WAIVER_SCENARIOS)
     return f"""
 <h2>1. Background</h2>
-<p>In the LAMF LOS journey the customer pledges the mutual fund units (lien marking) before the loan account is opened.
-When the customer drops off after the lien marking, charges are incurred for the lien marking and the lien removal.
-Who pays these charges is not decided yet, so today <b>SCCL bears them</b>.</p>
+<p>In the LAMF journey the customer pledges the mutual fund units (lien marking) before the loan account is opened. When the
+customer drops off at a later stage, charges have already been incurred – lien marking and lien removal, and from later stages
+the processing fee and the stamp duty. Who pays these charges is not decided today, so <b>SCCL bears them</b>.</p>
 <h2>2. Objective</h2>
-<p>Define, for every drop-off scenario after the lien marking, the charges that are incurred and two options –
-<b>with waive-off</b> (SCCL bears the charges) and <b>without waive-off</b> (the charges are recovered from the customer) –
-and how each option works in <b>LOS</b>, <b>LMS</b> and <b>UNO</b>.</p>
+<p>For every stage at which the customer can drop off, define the charges that apply and how the case is closed <b>with
+waive-off</b> (SCCL bears the charges) and <b>without waive-off</b> (the customer pays) – in LMS, in the customer communication and
+in UNO (Treasury).</p>
 <h2>3. Scope</h2>
-<ul><li>In scope: drop-offs after the lien marking (pledge) – {len(WAIVER_SCENARIOS)} scenarios below; the lien marking charge,
-the lien removal charge and the processing fee; the waive-off / recovery flow in LOS, LMS and UNO; customer communication.</li>
-<li>Out of scope: drop-offs before the lien marking (no charge is incurred).</li></ul>
+<ul><li>{len(WAIVER_SCENARIOS)} scenarios by LMS LAN status – DRAFT (before pledging, after pledging, after the Sanction Letter, after the
+Loan Agreement e-Sign), SUBMITTED, ACCOUNT OPENED and ACTIVE.</li>
+<li>The charges below; the waive-off decision; the rejection of the application; the de-pledging of the units; the customer
+communication; the accounting in UNO.</li></ul>
 <h2>4. Charges</h2>
-<table class="brd-table"><thead><tr><th>Charge</th><th>When it is incurred</th><th>Amount</th><th>GST</th></tr></thead><tbody>
-<tr><td>Lien marking charge</td><td>When the units are pledged (lien marked)</td><td>₹531</td><td>Included – ₹450 + ₹81 (18%)</td></tr>
-<tr><td>Lien removal charge</td><td>When the lien is removed after a drop-off, rejection or closure</td><td>₹118</td><td>Included – ₹100 + ₹18 (18%)</td></tr>
-<tr><td>Processing fee</td><td>{TBD}</td><td>{TBD}</td><td>{TBD}</td></tr></tbody></table>
-<h2>5. Scenarios {PROP}</h2>
-<p class="brd-note">The {len(WAIVER_SCENARIOS)} scenarios below are proposed from the current LOS journey – to be confirmed.</p>
-<table class="brd-table"><thead><tr><th>#</th><th>Drop-off stage</th><th>How the case ends</th><th>Charges incurred</th></tr></thead>
-<tbody>{rows}</tbody></table>
-<h2>6. Scenario-wise flow and impact</h2>
-{scen}
-<h2>7. Open points</h2>
-<ul><li>Confirm the {len(WAIVER_SCENARIOS)} scenarios and the charges in each.</li>
-<li>Amount and GST of the processing fee, and whether it is levied before the loan account is opened.</li>
-<li>Accounting entries in UNO for the waived charges and the recovered charges.</li>
-<li>Scenario 1: whether the lien is removed at once on a full waive-off (1.3); the impact in LOS and UNO.</li>
-<li>What happens if the customer does not pay the payable charges (time limit, follow-up, lien retained)?</li>
+{charges}
+<p><b>Charges applicable by scenario</b></p>
+{matrix}
+<h2>5. Common rules</h2>
+<ul>
+<li>OPS decides the waive-off for each charge: the full amount, a part of it, or nothing. The amount waived cannot be more than the charge.</li>
+<li>Payable charges = the charges minus the amount waived. SCCL bears the amount waived; the customer pays the payable charges.</li>
+<li>A rejection needs one confirmation from the OPS user; once confirmed it is <b>final</b> – no second approval, and it cannot be undone.</li>
+<li>Nothing payable (full waive-off): the customer is informed without a payment link and the units can be de-pledged at once.</li>
+<li>Something payable: the customer is informed with the payable charges and a payment link; the units stay lien-marked until the
+customer pays, then they are de-pledged.</li>
+<li>UNO: accounting entries are posted only when SCCL receives the payment; waived charges never flow into UNO books.</li>
+<li>Communication timing – DRAFT stages: the first notice goes with the marketing communication, the payment link with the
+rejection SMS / mail. SUBMITTED / ACCOUNT OPENED: immediately after the rejection in LMS.</li>
 </ul>
+<h2>6. Scenarios</h2>
+{summary}
+<h2>7. Scenario-wise flow and impact</h2>
+{detail}
+<h2>8. Open points</h2>
+<ul><li>Amount of the processing fee, the stamp duty and the active-loan charges (bounce, penal, loan renewal, bank swap).</li>
+<li>LOS: what the customer sees in the LOS journey after a rejection (DRAFT, SUBMITTED, ACCOUNT OPENED).</li>
+<li>What happens if the customer does not pay the payable charges (time limit, follow-up; the units stay lien-marked).</li>
+<li>Scenario 6.2: which charges can be waived at the loan lodgement approval and how the waiver is recorded.</li>
+<li>Scenario 7.2: who can waive charges on an active loan, and any limit on the amount.</li></ul>
 """
+
 
 BRDS = [
     {"slug": "waive-off", "title": "Waiver of Charges and Processing Fee", "status": "Draft", "updated": "16-11-2026",
-     "summary": "Charges incurred when the customer drops off after the lien marking – with and without waive-off, "
-                "and the impact on LOS, LMS and UNO.",
+     "summary": "Charges at each drop-off stage of the LAMF journey – with and without waive-off – and the handling in LMS, "
+                "the customer communication and UNO.",
      "body": _waiver_body()},
 ]
