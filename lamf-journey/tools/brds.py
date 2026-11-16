@@ -60,12 +60,15 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
       ("Approved – full waive-off", "OPS waives all the charges and approves the Loan Lodgement. The loan goes to lodgement.",
        "Existing communication.", "Not applicable – the loan continues.", "The waived charges do not go into UNO.")] + REJ_OUTCOMES),
     (7, "ACTIVE", "After the Loan Lodgement (loan account active)", ACTIVE_CH,
-     "Waive the charges on the active loan: OPS can proceed with full waive-off, partial waive-off or without waive-off. The loan cannot be rejected at this stage.",
-     [("No waive-off", "The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.",
+     "Waive the charges on the active loan: OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off. The loan cannot be rejected at this stage.",
+     [("Without waive-off", "The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.",
        "Existing communication.", "At loan closure (existing process).", "Existing accounting process."),
-      ("With waive-off (partial or full)", "OPS waives part or all of a charge. As the charge is already posted in the SOA, the SOA "
+      ("With full waive-off", "OPS waives the full charge. As the charge is already posted in the SOA, the SOA "
        "is updated with a waiver narration.", "Existing communication.", "At loan closure (existing process).",
-       "The waived charges do not go into UNO.")]),
+       "The waived charges do not go into UNO."),
+      ("With partial waive-off", "OPS waives part of a charge; the balance is collected before the loan account is closed. "
+       "The SOA is updated with a waiver narration.", "Existing communication.", "At loan closure (existing process).",
+       "The waived part does not go into UNO; the balance follows the existing accounting process.")]),
 ]
 
 
@@ -89,10 +92,10 @@ def _waiver_body():
         if n in (2, 3, 4):   # owner (DISC-296): same format as scenario 5, Reject only
             r3 = lambda h: h.replace("<td", "<td rowspan='3'")
             return f"<tr>{r3(lead)}<td rowspan='3' class='wo'>Reject</td>" + rej.replace("</tr>", f"{r3(f'<td>{op}</td>')}</tr>", 1)
-        r3 = lambda h: h.replace("<td", "<td rowspan='3'")
-        return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
-                "<tr><td rowspan='2' class='wo'>With waive-off</td><td class='wo'>Full waive-off</td></tr>"
-                "<tr><td class='wo'>Partial waive-off</td></tr>")
+        r3 = lambda h: h.replace("<td", "<td rowspan='3'")   # scenario 7 (DISC-300): three options, no approve / reject
+        return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without Waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
+                "<tr><td colspan='2' class='wo'>With Full Waive-off</td></tr>"
+                "<tr><td colspan='2' class='wo'>With Partial Waive-off</td></tr>")
     summary = ("<table class='brd-table brd-sum'><thead><tr><th>Sc.</th><th>LAN status</th>"
                "<th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th>"
                "<th class='ops'>What OPS can do</th></tr></thead><tbody>"
