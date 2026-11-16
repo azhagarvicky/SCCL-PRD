@@ -52,10 +52,12 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
      [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF, LM, LR, SD],
-     "Either approve the Loan Lodgement (the loan continues), or reject the application. Before approving or rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.",
-     [("Approved – no waive-off", "OPS approves the Loan Lodgement. The loan goes to lodgement. No charges are collected at this stage.",
+     "Approve the Loan Lodgement (the loan continues), or reject the application. Before approving or rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.",
+     [("Approved – no waive-off", "OPS approves the Loan Lodgement without waiving any charge. The loan goes to lodgement. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage."),
-      ("Approved – with waive-off", "OPS waives part or all of the charges and approves the Loan Lodgement.",
+      ("Approved – partial waive-off", "OPS waives part of the charges and approves the Loan Lodgement. The loan goes to lodgement.",
+       "Existing communication.", "Not applicable – the loan continues.", "The waived part does not go into UNO."),
+      ("Approved – full waive-off", "OPS waives all the charges and approves the Loan Lodgement. The loan goes to lodgement.",
        "Existing communication.", "Not applicable – the loan continues.", "The waived charges do not go into UNO.")] + REJ_OUTCOMES),
     (7, "ACTIVE", "After the Loan Lodgement (loan account active)", ACTIVE_CH,
      "Waive the charges on the active loan: OPS can proceed with full waive-off, partial waive-off or without waive-off. The loan cannot be rejected at this stage.",
@@ -79,6 +81,11 @@ def _waiver_body():
             rs = lambda h: h.replace("<td", "<td rowspan='4'")
             return (f"<tr>{rs(lead)}<td colspan='2' class='wo'>Approved</td>{rs(f'<td>{op}</td>')}</tr>"
                     "<tr><td rowspan='3' class='wo'>Reject</td>" + rej)
+        if n == 6:   # owner (DISC-298): Approve and Reject, each without / with full / with partial waive-off
+            r6 = lambda h: h.replace("<td", "<td rowspan='6'")
+            return (f"<tr>{r6(lead)}<td rowspan='3' class='wo'>Approve</td>"
+                    + rej.replace("</tr>", f"{r6(f'<td>{op}</td>')}</tr>", 1)
+                    + "<tr><td rowspan='3' class='wo'>Reject</td>" + rej)
         if n in (2, 3, 4):   # owner (DISC-296): same format as scenario 5, Reject only
             r3 = lambda h: h.replace("<td", "<td rowspan='3'")
             return f"<tr>{r3(lead)}<td rowspan='3' class='wo'>Reject</td>" + rej.replace("</tr>", f"{r3(f'<td>{op}</td>')}</tr>", 1)
