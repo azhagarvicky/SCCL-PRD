@@ -812,9 +812,9 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
             + comms_table(COMMS_NR, COMMS_COLS, 'sms') + CONTACT)
 
 # Internal communications – LMS mail alerts to the OPS / Treasury teams (DISC-267); data in tools/internal_comms.py
-from internal_comms import INTERNAL
+from internal_comms import INTERNAL, NAMES, GREET_ONLY
 IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagarsamy Subburaj", "{{Customer Name}}": "Azhagarsamy Subburaj",
-             "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00", "{{User}}": "Nithin Ganga"}
+             "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
 
@@ -847,48 +847,61 @@ IC_PAGE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} – Internal mail</title>
 <style>
-body{{margin:0;background:#efeeec;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a}}
-.hdr{{max-width:900px;margin:24px auto 0;background:#fff;border-radius:10px;padding:18px 24px;box-shadow:0 1px 3px rgba(0,0,0,.08)}}
-.hdr a.back{{font-size:13px;color:#555;text-decoration:none}} .hdr h1{{font-size:20px;font-weight:400;margin:8px 0 14px}}
-.hdr table{{border-collapse:collapse;font-size:13.5px}} .hdr td{{padding:3px 12px 3px 0;vertical-align:top}} .hdr td:first-child{{color:#777;width:60px}}
-.sw{{display:flex;gap:8px;margin:0 0 12px}} .sw button{{font:inherit;font-size:13px;border:1px solid #ccc;background:#fff;border-radius:16px;padding:5px 12px;cursor:pointer}}
+body{{margin:0;background:#fff;font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:#1a1a1a}}
+.top{{padding:14px 28px 0}} .top a{{font-size:13px;color:#555;text-decoration:none}} .top a:hover{{text-decoration:underline}}
+h1.subj{{font-size:24px;font-weight:400;margin:10px 28px 14px}}
+.msg{{margin:0 22px 28px;border:1px solid #e3e3e3;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
+.mh{{display:flex;gap:14px;padding:18px 22px 14px}} .av{{flex:none;width:44px;height:44px;border-radius:50%;background:#f4c7cb;color:#a4262c;display:flex;align-items:center;justify-content:center;font-size:18px}}
+.mi{{flex:1;min-width:0;font-size:14px;line-height:21px}} .mi .fr{{font-weight:600;font-size:16px}} .mi .lb{{color:#555}}
+.dt{{flex:none;font-size:13px;color:#555;text-align:right}}
+.sw{{display:flex;flex-wrap:wrap;gap:8px;padding:0 22px 12px 80px}} .sw button{{font:inherit;font-size:12.5px;border:1px solid #ccc;background:#fff;border-radius:14px;padding:4px 12px;cursor:pointer}}
 .sw button.on{{background:#1a1a1a;color:#FFC20E;border-color:#1a1a1a}}
-.wrap{{padding:24px 12px 40px}} .mail{{width:600px;max-width:100%;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden}}
+.wrap{{background:#efeeec;margin:0 22px 22px;padding:32px 12px 40px}}
+.mail{{width:600px;max-width:100%;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden}}
 .logo{{text-align:center;padding:28px 40px 20px}} .logo img{{width:200px}} .rule{{height:5px;background:#FFC20E}}
-.band{{background:#1a1a1a;color:#FFC20E;text-align:center;font-weight:bold;font-size:20px;line-height:26px;padding:22px 40px}}
-.body{{padding:36px 48px 32px;font-size:15px;line-height:24px;color:#333;text-align:justify}} .body .dear{{font-weight:bold;color:#1a1a1a;font-size:16px;margin:0 0 18px}}
-.body b{{color:#1a1a1a}} .body .reg{{margin-top:28px}} .disc{{background:#FFC20E;padding:18px 48px;font-size:13px}}
-.foot{{background:#1a1a1a;color:#ccc;text-align:center;font-size:12px;padding:14px 40px}}
+.band{{background:#1a1a1a;color:#FFC20E;text-align:center;font-weight:bold;font-size:20px;line-height:26px;padding:22px 40px;font-family:Arial,Helvetica,sans-serif}}
+.body{{padding:36px 48px 32px;font-size:15px;line-height:24px;color:#333;text-align:justify;font-family:Arial,Helvetica,sans-serif}}
+.body .dear{{font-weight:bold;color:#1a1a1a;font-size:16px;margin:0 0 18px}} .body b{{color:#1a1a1a}} .body .reg{{margin-top:28px}}
+.disc{{background:#FFC20E;padding:18px 48px;font-size:13px;font-family:Arial,Helvetica,sans-serif}}
+.foot{{background:#1a1a1a;color:#ccc;text-align:center;font-size:12px;padding:14px 40px;font-family:Arial,Helvetica,sans-serif}}
+@media (max-width:640px){{.mh{{flex-wrap:wrap}} .dt{{width:100%;text-align:left;padding-left:58px}} .sw{{padding-left:22px}} .wrap,.msg{{margin-left:8px;margin-right:8px}} .body,.disc{{padding-left:24px;padding-right:24px}}}}
 </style></head><body>
-<div class="hdr"><a class="back" href="../internal-communications.html">← Internal communications</a>
-<h1>{subject}</h1>{switch}
-<table><tr><td>From</td><td>support.las@shriramcredit.in</td></tr><tr><td>To</td><td id="to">{to}</td></tr><tr><td>Cc</td><td id="cc">{cc}</td></tr></table></div>
+<div class="top"><a href="../internal-communications.html">← Internal communications</a></div>
+<h1 class="subj">{subject}</h1>
+<div class="msg">
+<div class="mh"><div class="av">S</div>
+<div class="mi"><div class="fr">support.las@shriramcredit.in</div><div><span class="lb">To:</span> <span id="to">{to}</span></div><div><span class="lb">Cc:</span> <span id="cc">{cc}</span></div></div>
+<div class="dt">Mon 16-11-2026 6:13 PM</div></div>{switch}
 <div class="wrap"><div class="mail">
 <div class="logo"><img src="../assets/img/shriram-logo.png" alt="Shriram Credit"></div><div class="rule"></div>
 <div class="band">{title}</div>
-<div class="body"><p class="dear">Dear {greet},</p><p>{body}</p><p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
+<div class="body"><p class="dear">Dear <span id="dear">{greet}</span>,</p><p>{body}</p><p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
 <div class="disc">This is a system-generated email. Please do not reply.</div>
 <div class="foot">© 2026 Shriram Credit Company Limited. All rights reserved.</div>
-</div></div>{script}
+</div></div></div>{script}
 </body></html>
 """
 
 def write_internal_mails():
     import json as _json
     os.makedirs(os.path.join(ROOT, "internal"), exist_ok=True)
+    name = lambda e: e if e in GREET_ONLY else NAMES.get(e, e)     # To / Cc as Outlook shows them: the name, else the address
     for n, (lan, disb, trig, subj, title, greet, body, scen) in enumerate(INTERNAL, 1):
-        rec = [{"to": "; ".join(to), "cc": "; ".join(cc)} for _, to, cc in scen]
+        # Dear {{To User Name}} – the TO person's name (DISC-268); more than one TO keeps “All”
+        rec = [{"to": "; ".join(name(e) for e in to), "cc": "; ".join(name(e) for e in cc),
+                "dear": NAMES.get(to[0], to[0]) if greet == "{{To User Name}}" and len(to) == 1 else "All"} for _, to, cc in scen]
         switch = script = ""
-        if len(scen) > 1:            # two recipient scenarios (< 5L / >= 5L): a switch changes To / Cc
+        if len(scen) > 1:            # two recipient scenarios (< 5L / >= 5L): a switch changes To / Cc / Dear
             switch = '<div class="sw">' + "".join(f'<button type="button" data-i="{i}"{" class=on" if i == 0 else ""}>{html.escape(sc)}</button>'
                                                   for i, (sc, _, _) in enumerate(scen)) + "</div>"
             script = ("<script>var R=" + _json.dumps(rec) + ";document.querySelectorAll('.sw button').forEach(function(b){b.onclick=function(){"
-                      "document.querySelectorAll('.sw button').forEach(function(x){x.classList.toggle('on',x===b)});"
-                      "document.getElementById('to').textContent=R[b.dataset.i].to;document.getElementById('cc').textContent=R[b.dataset.i].cc;};});</script>")
+                      "document.querySelectorAll('.sw button').forEach(function(x){x.classList.toggle('on',x===b)});var r=R[b.dataset.i];"
+                      "document.getElementById('to').textContent=r.to;document.getElementById('cc').textContent=r.cc;"
+                      "document.getElementById('dear').textContent=r.dear;};});</script>")
         with open(os.path.join(ROOT, IC_FILE(n)), "w") as f:
             f.write(IC_PAGE.format(title=html.escape(title), subject=ic_fill(subj, bold=False).strip(), switch=switch,
-                                   to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]),
-                                   greet=ic_fill(greet, bold=False), body=ic_fill(body), script=script))
+                                   to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]), greet=html.escape(rec[0]["dear"]),
+                                   body=ic_fill(body), script=script))
 
 def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257, DISC-263)
     opt = lambda vals, sel=None: "".join(f'<option{" selected" if v == sel else ""}>{v}</option>' for v in vals)
