@@ -3171,8 +3171,10 @@ body.prd { background: #F4F5F6; color: #111; }
 })();
 </script>
 <script>/* LAMF – Calculator (DISC-257): repayment schedule from the loan inputs.
-   Interest accrues daily on the outstanding principal (actual days / 365); a withdrawal or a repayment
-   changes the principal from its own date. Due dates fall on the chosen day of every month, the first one
+   Interest (DISC-258) = ROUND(ROI / 365 or 366 × Principal × Days, 2): ROI is the entered rate, 365 or 366 is the number of
+   days in the year the accrual days fall in (366 in a leap year), Principal is the outstanding withdrawal balance and Days
+   the interest accrual days. A period that crosses a year end or a withdrawal / repayment date is worked out in parts
+   and the period total is rounded. A withdrawal or a repayment changes the principal from its own date. Due dates fall on the chosen day of every month, the first one
    in the month after the first withdrawal; the last row is the loan end date (start date + tenure).
    EMI      – equated instalment on the outstanding principal over the remaining due dates (re-worked after
               every withdrawal or repayment); the last row clears the balance.
@@ -3202,22 +3204,24 @@ body.prd { background: #F4F5F6; color: #111; }
     for (let k = 1, d = addMonths(firstW, 1, dueDay); d < end; d = addMonths(firstW, ++k, dueDay)) dues.push(d);
     if (!dues.length || dues[dues.length - 1] !== end) dues.push(end);
 
-    const daily = rate / 100 / 365, r = rate / 1200;
+    const yearDays = (t) => { const y = new Date(t * DAY).getUTCFullYear(); return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 366 : 365; };
+    const round2 = (v) => Math.round(v * 100) / 100, r = rate / 1200;
     let P = 0, ei = 0, prev = firstW, carry = 0;   // carry: interest not yet due (Balloon)
     const rows = [];
     dues.forEach((D, i) => {
-      let interest = 0;
+      let acc = 0;                                   // Σ Principal × Days / (365 or 366) over the period
       for (let t = prev; t < D; t++) {               // day by day: events on day t apply from that day
         while (ei < events.length && events[ei].d <= t) { P = Math.max(0, P + events[ei].a); ei++; }
-        interest += P * daily;
+        acc += P / yearDays(t);
       }
+      const interest = round2(rate / 100 * acc);
       while (ei < events.length && events[ei].d <= D && D === end) { P = Math.max(0, P + events[ei].a); ei++; }
       const last = i === dues.length - 1, left = dues.length - i;
       let principal = 0, intDue = interest;
       if (last) { principal = P; intDue = interest + carry; carry = 0; }
       else if (type === 'EMI') {
         const emi = r ? P * r * Math.pow(1 + r, left) / (Math.pow(1 + r, left) - 1) : P / left;
-        principal = Math.min(P, Math.max(0, emi - interest));
+        principal = Math.min(P, Math.max(0, round2(emi - interest)));
       } else if (type === 'Balloon') { carry += interest; intDue = 0; }
       rows.push({ no: i + 1, due: D, out: P, principal, interest: intDue, accrued: interest, from: prev, to: D - 1, days: D - prev });
       P -= principal; prev = D;
@@ -3271,7 +3275,7 @@ body.prd { background: #F4F5F6; color: #111; }
         <tfoot><tr><td></td><td>Total</td><td></td><td class="n b">${money(sum('principal') + sum('interest'))}</td><td class="n">${money(sum('principal'))}</td>
           <td class="n">${money(sum('interest'))}</td><td></td><td></td><td class="c">${sum('days')}</td></tr></tfoot>
       </table></div>
-      <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest accrues daily on the outstanding principal (actual days / 365).
+      <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest = ROUND(ROI / 365 or 366 × Principal × Days, 2) – 366 for days in a leap year; Principal is the outstanding withdrawal balance.
       Outstanding Principal is the principal on the due date, before that due is paid.${inp.type === 'Balloon' ? ' Balloon: the interest of every month is accrued and is due with the principal on the loan end date.' : ''}</p>`;
   }
 
