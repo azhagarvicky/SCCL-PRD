@@ -811,6 +811,85 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
             + f'<h2 id="comms-nr">Not Required ({len(COMMS_NR)})</h2><p>SMS and mail marked “Not Required” – kept for reference only; they will not be sent.</p>'
             + comms_table(COMMS_NR, COMMS_COLS, 'sms') + CONTACT)
 
+# Internal communications – LMS mail alerts to the OPS / Treasury teams (DISC-267); data in tools/internal_comms.py
+from internal_comms import INTERNAL
+IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagarsamy Subburaj", "{{Customer Name}}": "Azhagarsamy Subburaj",
+             "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00", "{{User}}": "Nithin Ganga"}
+IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
+IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
+
+def ic_fill(text, bold=True):    # sample values in a structure; in the mail body the values and statuses are bold
+    t = html.escape(text, quote=False)
+    for k, v in IC_SAMPLE.items():
+        t = t.replace(html.escape(k, quote=False), f"<b>{v}</b>" if bold else v)
+    return re.sub(IC_STATUS, r"<b>\1</b>", t) if bold else t
+
+def internal_body(home):
+    esc = lambda t: html.escape(t, quote=False).replace("\n", "<br>")
+    rows = []
+    for n, (lan, disb, trig, subj, title, greet, body, scen) in enumerate(INTERNAL, 1):
+        content = esc(f"{title}\n\nDear {greet},\n\n{body}\n\nRegards,\nTeam Shriram Credit\nThis is a system-generated email. Please do not reply.")
+        for k, (sc, to, cc) in enumerate(scen):
+            span = f' rowspan="{len(scen)}"' if len(scen) > 1 else ""
+            first = (f'<td class="c"{span}>{n}</td><td{span}>{esc(lan)}</td><td{span}>{esc(disb)}</td><td class="trig"{span}>{esc(trig)}</td>'
+                     f'<td{span}>{esc(subj)}</td><td class="body"{span}>{content}</td>') if k == 0 else ""
+            view = f'<td class="c"{span}><a class="mail-view" href="{IC_FILE(n)}" target="_blank" rel="noopener">View</a></td>' if k == 0 else ""
+            rows.append(f'<tr>{first}<td>{esc(sc)}</td><td class="em">{"<br>".join(to)}</td><td class="em">{"<br>".join(cc)}</td>{view}</tr>')
+    n_sc = sum(len(e[7]) for e in INTERNAL)
+    head = "".join(f"<th>{h}</th>" for h in ["#", "LAN Status", "Disbursement Status", "Trigger Event", "Subject Structure", "Email Content",
+                                             "Scenario", "TO", "CC", "Mail"])
+    return (LOGO.format(home=home) + '<h1>LAMF – Internal Communications</h1>'
+            f'<p>Mail alerts sent from the LMS to the internal teams (OPS, Treasury) when the loan account or the disbursement status changes – '
+            f'{len(INTERNAL)} alerts, {n_sc} recipient scenarios. “View” opens how the mail looks.</p>'
+            f'<div class="comms-wrap"><table class="comms ic"><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table></div>' + CONTACT)
+
+IC_PAGE = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title} – Internal mail</title>
+<style>
+body{{margin:0;background:#efeeec;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a}}
+.hdr{{max-width:900px;margin:24px auto 0;background:#fff;border-radius:10px;padding:18px 24px;box-shadow:0 1px 3px rgba(0,0,0,.08)}}
+.hdr a.back{{font-size:13px;color:#555;text-decoration:none}} .hdr h1{{font-size:20px;font-weight:400;margin:8px 0 14px}}
+.hdr table{{border-collapse:collapse;font-size:13.5px}} .hdr td{{padding:3px 12px 3px 0;vertical-align:top}} .hdr td:first-child{{color:#777;width:60px}}
+.sw{{display:flex;gap:8px;margin:0 0 12px}} .sw button{{font:inherit;font-size:13px;border:1px solid #ccc;background:#fff;border-radius:16px;padding:5px 12px;cursor:pointer}}
+.sw button.on{{background:#1a1a1a;color:#FFC20E;border-color:#1a1a1a}}
+.wrap{{padding:24px 12px 40px}} .mail{{width:600px;max-width:100%;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden}}
+.logo{{text-align:center;padding:28px 40px 20px}} .logo img{{width:200px}} .rule{{height:5px;background:#FFC20E}}
+.band{{background:#1a1a1a;color:#FFC20E;text-align:center;font-weight:bold;font-size:20px;line-height:26px;padding:22px 40px}}
+.body{{padding:36px 48px 32px;font-size:15px;line-height:24px;color:#333;text-align:justify}} .body .dear{{font-weight:bold;color:#1a1a1a;font-size:16px;margin:0 0 18px}}
+.body b{{color:#1a1a1a}} .body .reg{{margin-top:28px}} .disc{{background:#FFC20E;padding:18px 48px;font-size:13px}}
+.foot{{background:#1a1a1a;color:#ccc;text-align:center;font-size:12px;padding:14px 40px}}
+</style></head><body>
+<div class="hdr"><a class="back" href="../internal-communications.html">← Internal communications</a>
+<h1>{subject}</h1>{switch}
+<table><tr><td>From</td><td>support.las@shriramcredit.in</td></tr><tr><td>To</td><td id="to">{to}</td></tr><tr><td>Cc</td><td id="cc">{cc}</td></tr></table></div>
+<div class="wrap"><div class="mail">
+<div class="logo"><img src="../assets/img/shriram-logo.png" alt="Shriram Credit"></div><div class="rule"></div>
+<div class="band">{title}</div>
+<div class="body"><p class="dear">Dear {greet},</p><p>{body}</p><p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
+<div class="disc">This is a system-generated email. Please do not reply.</div>
+<div class="foot">© 2026 Shriram Credit Company Limited. All rights reserved.</div>
+</div></div>{script}
+</body></html>
+"""
+
+def write_internal_mails():
+    import json as _json
+    os.makedirs(os.path.join(ROOT, "internal"), exist_ok=True)
+    for n, (lan, disb, trig, subj, title, greet, body, scen) in enumerate(INTERNAL, 1):
+        rec = [{"to": "; ".join(to), "cc": "; ".join(cc)} for _, to, cc in scen]
+        switch = script = ""
+        if len(scen) > 1:            # two recipient scenarios (< 5L / >= 5L): a switch changes To / Cc
+            switch = '<div class="sw">' + "".join(f'<button type="button" data-i="{i}"{" class=on" if i == 0 else ""}>{html.escape(sc)}</button>'
+                                                  for i, (sc, _, _) in enumerate(scen)) + "</div>"
+            script = ("<script>var R=" + _json.dumps(rec) + ";document.querySelectorAll('.sw button').forEach(function(b){b.onclick=function(){"
+                      "document.querySelectorAll('.sw button').forEach(function(x){x.classList.toggle('on',x===b)});"
+                      "document.getElementById('to').textContent=R[b.dataset.i].to;document.getElementById('cc').textContent=R[b.dataset.i].cc;};});</script>")
+        with open(os.path.join(ROOT, IC_FILE(n)), "w") as f:
+            f.write(IC_PAGE.format(title=html.escape(title), subject=ic_fill(subj, bold=False).strip(), switch=switch,
+                                   to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]),
+                                   greet=ic_fill(greet, bold=False), body=ic_fill(body), script=script))
+
 def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257, DISC-263)
     opt = lambda vals, sel=None: "".join(f'<option{" selected" if v == sel else ""}>{v}</option>' for v in vals)
     fld = lambda label, ctrl, cls="": f'<label class="calc-f {cls}"><span>{label}</span>{ctrl}</label>'
@@ -846,7 +925,7 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
             + '<div class="calc-actions"><button class="calc-go" type="submit">Calculate Now</button><p class="calc-err" role="alert"></p></div></form>'
             '<div class="calc-out"></div>' + CONTACT)
 
-def home_body(home, prd, journey, comms, calc):
+def home_body(home, prd, journey, comms, calc, internal):
     return (f'<header class="home-top">{LOGO.format(home=home)}</header>'
             '<main class="home">'
             '<p class="home-kicker">Shriram Credit · Loan Against Mutual Funds</p>'
@@ -857,6 +936,7 @@ def home_body(home, prd, journey, comms, calc):
             f'<a class="home-cta" href="{journey}">Start the LAMF journey →</a>'
             f'<a class="home-cta" href="{comms}">Customer communications →</a>'
             f'<a class="home-cta" href="{calc}">Calculator →</a>'
+            f'<a class="home-cta" href="{internal}">Internal communications →</a>'
             '</div>' + CONTACT + '</main>')
 
 def screens_body(home, link):
@@ -880,7 +960,11 @@ PAGE = """<!doctype html>
 """
 with open(os.path.join(ROOT, "index.html"), "w") as f:
     f.write(PAGE.format(title="LAMF Online Journey", cls="page-home",
-                        body=home_body("index.html", "SCCL_LAMF_LOS_PRD.html", "screens.html", "communications.html", "calculator.html")))
+                        body=home_body("index.html", "SCCL_LAMF_LOS_PRD.html", "screens.html", "communications.html", "calculator.html",
+                                       "internal-communications.html")))
+with open(os.path.join(ROOT, "internal-communications.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – Internal Communications", cls="page-screens page-comms page-ic", body=internal_body("index.html")))
+write_internal_mails()
 with open(os.path.join(ROOT, "calculator.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Calculator", cls="page-screens page-calc", body=calc_body("index.html") + '<script src="assets/calc.js"></script>'))
 with open(os.path.join(ROOT, "communications.html"), "w") as f:
@@ -899,9 +983,10 @@ screens_js = ["/* Generated by tools/build_pages.py – one render function per 
 for name, code in PAGES.items():
     screens_js.append(f"  {_json.dumps(name)}: function () {{ {code}; }},")
 screens_js.append("};")
-screens_js.append("window.HOME_HTML = " + _json.dumps(home_body("#", "#PRD", "#SCREENS", "#COMMS", "#CALC")) + ";")
+screens_js.append("window.HOME_HTML = " + _json.dumps(home_body("#", "#PRD", "#SCREENS", "#COMMS", "#CALC", "#INTERNAL")) + ";")
 screens_js.append("window.COMMS_HTML = " + _json.dumps(comms_body("#")) + ";")
 screens_js.append("window.CALC_HTML = " + _json.dumps(calc_body("#")) + ";")
+screens_js.append("window.INTERNAL_HTML = " + _json.dumps(internal_body("#")) + ";")
 screens_js.append("window.SCREENS_HTML = " + _json.dumps(screens_body("#", lambda n: "#" + _q(n))) + ";")
 with open(os.path.join(ROOT, "assets", "screens.js"), "w") as f:
     f.write("\n".join(screens_js) + "\n")
@@ -953,6 +1038,7 @@ CLOUD = """<!doctype html>
     var fn = window.SCREEN_RENDER[name];
     if (fn) { fn(); return; }
     if (name === 'SCREENS') { LAMF.render(window.SCREENS_HTML, { bodyClass: 'page-screens' }); return; }
+    if (name === 'INTERNAL') { LAMF.render(window.INTERNAL_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-comms', 'page-ic'); return; }
     if (name === 'CALC') { LAMF.render(window.CALC_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-calc'); window.LAMFCalc.init(); return; }
     if (name === 'COMMS') { LAMF.render(window.COMMS_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-comms'); return; }
     LAMF.render(window.HOME_HTML, { bodyClass: 'page-home' });
