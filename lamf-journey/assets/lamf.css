@@ -1240,3 +1240,12 @@ body.page-screens { padding: 40px 76px; }
 .page-calc .tx-list { columns: auto; column-count: 1; }
 .page-calc .tx-list li { border: 0; border-bottom: 1px solid #f0f1f4; border-radius: 0; margin: 0; break-inside: auto; }
 .page-calc .tx-list li:last-child { border-bottom: 0; }
+/* Internal communications table (DISC-267) */
+.page-ic table.comms.ic { min-width: 1900px; }
+.page-ic .comms.ic td { vertical-align: top; }
+.page-ic .comms.ic td.c { text-align: center; }
+.page-ic .comms.ic td.trig { min-width: 220px; } .page-ic .comms.ic td.body { min-width: 360px; }
+.page-ic .comms.ic td.em { font-size: 12.5px; white-space: nowrap; color: #333; }
+.page-home .home-ctas { max-width: 1040px; margin-left: auto; margin-right: auto; }   /* 5 CTAs: 3 + 2 (DISC-267) */
+.page-home .home-cta { min-width: 300px; }
+@media (max-width: 760px) { .page-home .home-cta { min-width: 0; } }
