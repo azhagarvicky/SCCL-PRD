@@ -12,18 +12,19 @@ TBD = '<span class="brd-tbd">To be defined</span>'
 # (full / partial / none, one confirmation) from the owner's Scenario 1 notes (DISC-271, DISC-273). Business logic only – no
 # screen detail (DISC-272).
 # ---------------------------------------------------------------------------------------------------------------------------
-CHARGES = [   # (charge, amount incl. 18% GST, when it is incurred)
-    ("Lien Marking Charge", "₹531 (₹450 + ₹81 GST)", "When the mutual fund units are pledged (lien marked)"),
-    ("Lien Removal Charge", "₹118 (₹100 + ₹18 GST)", "When the lien is removed (units de-pledged)"),
-    ("Processing Fee Charge", TBD, "From the Sanction Letter generation"),
-    ("Stamp Duty Charge", TBD, "From the Loan Agreement e-Sign"),
-    ("Bounce Charge", TBD, "Active loan, when an EMI bounces"),
-    ("Penal Charge", TBD, "Active loan, on a delay or default"),
-    ("Loan Renewal Charge", TBD, "Active loan, on renewal"),
-    ("Bank Swap Charge", TBD, "Active loan, when the repayment bank account is changed"),
+CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by the owner (DISC-289); GST at 18%
+    ("Lien Marking Charge", "₹450 + GST (₹531)", "When the mutual fund units are pledged (lien marked)"),
+    ("Lien Removal Charge", "₹100 + GST (₹118)", "When the lien is removed (units de-pledged)"),
+    ("Processing Fee Charge", "As per the sanction letter + GST", "From the Sanction Letter generation"),
+    ("Stamp Duty Charge", "₹200 + GST (₹236)", "From the Loan Agreement e-Sign"),
+    ("Bounce Charge", "₹100 + GST (₹118) per instance", "Active loan, when an EMI bounces"),
+    ("Penal Charge", "36% a year on the unpaid interest / EMI", "Active loan, on a delay or default"),
+    ("Loan Renewal Charge", "₹999 + GST (₹1,178.82)", "Active loan, on renewal"),
+    ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,178.82)", "Active loan, every year"),
+    ("Bank Swap Charge", "₹250 + GST (₹295)", "Active loan, when the repayment bank account is changed"),
 ]
 LM, LR, PF, SD = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee Charge", "Stamp Duty Charge"
-ACTIVE_CH = [LM, LR, PF, SD, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Bank Swap Charge"]
+ACTIVE_CH = [LM, LR, PF, SD, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Annual Maintenance Charge (AMC)", "Bank Swap Charge"]
 
 # The 7 scenarios from the owner's LAMF_Charges_Waiver_V1.xlsx (DISC-274); the waive-off process is common to all (DISC-280).
 # Simplified layout on the owner's request (DISC-288). (No, LMS LAN status, customer dropped off, what OPS can do)
@@ -48,7 +49,7 @@ WAIVER_SCENARIOS = [
 
 def _waiver_body():
     tick = lambda c, chs: "✓" if c in chs else ""
-    charges = ("<table class='brd-table brd-mx'><thead><tr><th>Charge</th><th>Amount (incl. 18% GST)</th>"
+    charges = ("<table class='brd-table brd-mx'><thead><tr><th>Charge</th><th>Amount (total incl. 18% GST)</th>"
                + "".join(f"<th>Sc. {n}</th>" for n, *_ in WAIVER_SCENARIOS) + "</tr></thead><tbody>"
                + "".join(f"<tr><td>{c}</td><td>{amt}</td>" + "".join(f"<td class='c'>{tick(c, s[3])}</td>" for s in WAIVER_SCENARIOS) + "</tr>"
                          for c, amt, _ in CHARGES) + "</tbody></table>")
@@ -99,8 +100,7 @@ after the customer pays and Treasury confirms the payment in LMS; until then the
 <li>The de-pledge option is enabled and OPS de-pledges the units.</li>
 </ol>
 <h2>6. Open points</h2>
-<ul><li>Amounts of the processing fee, stamp duty, bounce, penal, loan renewal and bank swap charges.</li>
-<li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
+<ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
 <li>Scenario 7: who can waive charges on an active loan, and any limit.</li>
 <li>Templates for the rejection, payment received and Treasury mails.</li></ul>
 """
@@ -532,7 +532,7 @@ notifications, the withdrawal freeze, the invocation (sale) of the pledged units
 <h2>2. EMI default</h2>
 <ol class="brd-flow">
 <li>The EMI is presented on the 5th of every month. If it bounces, it is presented again on the 10th of the same month.</li>
-<li>A bounce charge of ₹1,000 + GST is levied for every bounce. Penal charges of 36% a year are levied on the unpaid interest / EMI
+<li>A bounce charge of ₹100 + GST is levied for every bounce. Penal charges of 36% a year are levied on the unpaid interest / EMI
 from the first day of default until the dues are paid.</li>
 <li>The next EMI is presented as usual on its due date. The penal and bounce charges of the earlier default are posted to the
 customer’s ledger and, if the customer does not pay them, are collected at the time of loan closure.</li>
@@ -794,7 +794,6 @@ applicant’s signature. Organisation and existing SCCL loan details show NA.</p
 </tbody></table>
 <h2>6. Open points</h2>
 <ol class="brd-flow">
-<li>Bounce charge: both formats say ₹100 + GST per instance, while the Shortfall &amp; EMI Default BRD says ₹1,000 + GST. Which is correct?</li>
 <li>The schedule of charges heading has a fixed agreement number (MF0000000000025). Should it be the customer’s LAN?</li>
 <li>Annexure numbering: the agreement refers to the schedule of charges and notice details as Annexure-1, but the schedule is
 headed Annexure 2, and the loan application form is also headed Annexure 2.</li>
