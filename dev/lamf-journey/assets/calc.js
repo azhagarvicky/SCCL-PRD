@@ -41,23 +41,36 @@
     const yearDays = (t) => { if (!leap) return 365;   // 366 only when the leap-year option is ticked (DISC-260)
       const y = new Date(t * DAY).getUTCFullYear(); return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 366 : 365; };
     const round2 = (v) => Math.round(v * 100) / 100, round6 = (v) => Math.round(v * 1e6) / 1e6, r = rate / 1200;
-    const events = [...inp.withdrawals.map((w) => ({ d: w.d, a: w.a })), ...inp.repayments.map((x) => ({ d: x.d, a: -x.a }))];
+    const events = [...inp.withdrawals.map((w) => ({ d: w.d, a: w.a, k: 'w' })), ...inp.repayments.map((x) => ({ d: x.d, a: -x.a, k: 'r' }))];
     const P = (t) => Math.max(0, events.reduce((s, e) => s + (e.d <= t ? e.a : 0), 0));   // principal on day t (after that day's events)
     let from = firstW, carry = 0;   // carry: interest not yet due (Balloon)
     const rows = [];
     dues.forEach((D, i) => {
       const last = i === dues.length - 1, to = last ? D - 1 : monthEnd(D);
-      let acc = 0;                                   // Σ daily rate (6 decimals) × principal of the day
-      for (let t = from; t <= to; t++) acc += round6(rate / 100 / yearDays(t)) * P(t);
-      const interest = round2(acc), out = P(D), left = dues.length - i;
+      // Interest split (DISC-262): one part for every run of days with the same principal and the same daily rate;
+      // each part = principal × daily rate (6 decimals) × days, rounded to 2 decimals; the row interest is their sum.
+      const segs = [];
+      for (let t = from; t <= to; t++) {
+        const p = P(t), dr = round6(rate / 100 / yearDays(t)), sg = segs[segs.length - 1];
+        if (sg && sg.p === p && sg.dr === dr) { sg.to = t; sg.days++; continue; }
+        const why = [];
+        if (sg) {
+          events.filter((e) => e.d === t).forEach((e) => why.push(e.k === 'w' ? `Withdrawal ${money(e.a)} on ${fmtD(t)}`
+            : e.k === 'r' ? `Repayment ${money(-e.a)} on ${fmtD(t)}` : `Principal ${money(-e.a)} paid on ${fmtD(t)}`));
+          if (dr !== sg.dr) why.push(`Year ${new Date(t * DAY).getUTCFullYear()} – ${yearDays(t)} days`);
+        }
+        segs.push({ from: t, to: t, days: 1, p, dr, why: why.join(' · ') || (segs.length ? '' : 'From ' + fmtD(t)) });
+      }
+      segs.forEach((sg) => { sg.interest = round2(sg.p * sg.dr * sg.days); });
+      const interest = round2(segs.reduce((v, sg) => v + sg.interest, 0)), out = P(D), left = dues.length - i;
       let principal = 0, intDue = interest;
       if (last) { principal = out; intDue = interest + carry; carry = 0; }
       else if (type === 'EMI') {
         const emi = r ? out * r * Math.pow(1 + r, left) / (Math.pow(1 + r, left) - 1) : out / left;
         principal = Math.min(out, Math.max(0, round2(emi - interest)));
       } else if (type === 'Balloon') { carry += interest; intDue = 0; }
-      if (principal) events.push({ d: D, a: -principal });     // the principal paid on the due date reduces it from that date
-      rows.push({ no: i + 1, due: D, out, principal, interest: intDue, accrued: interest, from, to, days: to - from + 1 });
+      if (principal) events.push({ d: D, a: -principal, k: 'due' });     // the principal paid on the due date reduces it from that date
+      rows.push({ no: i + 1, due: D, out, principal, interest: intDue, accrued: interest, from, to, days: to - from + 1, segs });
       from = to + 1;
     });
     return { end, rows };
@@ -89,9 +102,12 @@
     const { end, rows } = schedule(inp);
     const sum = (k) => rows.reduce((s, x) => s + x[k], 0);
     const wTot = inp.withdrawals.reduce((s, w) => s + w.a, 0), rTot = inp.repayments.reduce((s, w) => s + w.a, 0);
-    const tr = rows.map((x) => `<tr><td class="c">${x.no}</td><td>${fmtD(x.due)}</td><td class="n">${money(x.out)}</td>
+    const seg = (x, sg) => `<tr class="seg"><td></td><td colspan="2">↳ ${money(sg.p)} × ${sg.dr.toFixed(6)} × ${sg.days} day${sg.days > 1 ? 's' : ''}${sg.why ? `<small>${sg.why}</small>` : ''}</td>
+      <td></td><td></td><td class="n">${money(sg.interest)}${x.interest !== x.accrued ? '<small>accrued</small>' : ''}</td><td>${fmtD(sg.from)}</td><td>${fmtD(sg.to)}</td><td class="c">${sg.days}</td></tr>`;
+    const tr = rows.map((x) => `<tr class="main"><td class="c">${x.no}</td><td>${fmtD(x.due)}</td><td class="n">${money(x.out)}</td>
       <td class="n b">${money(x.principal + x.interest)}</td><td class="n">${money(x.principal)}</td><td class="n">${money(x.interest)}</td>
-      <td>${fmtD(x.from)}</td><td>${fmtD(x.to)}</td><td class="c">${x.days}</td></tr>`).join('');
+      <td>${fmtD(x.from)}</td><td>${fmtD(x.to)}</td><td class="c">${x.days}</td></tr>`
+      + (x.segs.length > 1 ? x.segs.map((sg) => seg(x, sg)).join('') : '')).join('');
     out.innerHTML = `
       <div class="comms-summary calc-sum">
         <div><b>${fmtD(end)}</b><span>Loan End Date</span></div>
@@ -110,7 +126,7 @@
           <td class="n">${money(sum('interest'))}</td><td></td><td></td><td class="c">${sum('days')}</td></tr></tfoot>
       </table></div>
       <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest = ROUND(ROI / ${inp.leap ? '365 or 366' : '365'}, 6) × Principal × Days – daily rate ${(Math.round(inp.rate / 100 / 365 * 1e6) / 1e6).toFixed(6)}${inp.leap ? ` (366 days in a leap year: ${(Math.round(inp.rate / 100 / 366 * 1e6) / 1e6).toFixed(6)})` : ' (leap-year calculation off: 365 days in every year)'}; Principal is the outstanding withdrawal balance.
-      Outstanding Principal is the principal on the due date, before that due is paid.${inp.type === 'Balloon' ? ' Balloon: the interest of every month is accrued and is due with the principal on the loan end date.' : ''}</p>`;
+      Outstanding Principal is the principal on the due date, before that due is paid. When the principal or the daily rate changes within a period, the rows marked ↳ show each part of the interest (principal × daily rate × days).${inp.type === 'Balloon' ? ' Balloon: the interest of every month is accrued and is due with the principal on the loan end date.' : ''}</p>`;
   }
 
   function addRow(tbody, d, a) {

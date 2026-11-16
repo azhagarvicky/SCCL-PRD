@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 16-11-2026 21:00 IST
+**Last Updated:** 16-11-2026 21:26 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -294,6 +294,7 @@
 | DISC-259 | 16-11-2026 | calculator.html / assets/calc.js | Calculator – interest steps | Owner: step 1 – 10.5% / 365 = 0.000287671232876712; step 2 – round it to 6 digits; step 3 – multiply by o/s × days | calc.js: daily rate = ROUND(ROI / 365 or 366, 6) (10.5% → 0.000288; leap year 0.000287), Interest = daily rate × outstanding principal × accrual days (row shown to 2 decimals). Example: ₹1,00,000 × 0.000288 × 33 days = ₹950.40. Note under the table shows the daily rates used | Implemented |
 | DISC-260 | 16-11-2026 | calculator.html / assets/calc.js | Calculator – leap year option | Owner: an option to enable the leap-year calculation – when chosen, 366 is applied; when not opted, 365 is applied even in a leap year | New checkbox under the inputs: “Leap year calculation – use 366 days for the days in a leap year (when not ticked, 365 days are used in every year)”, not ticked by default. Ticked: daily rate ROUND(ROI / 366, 6) for days in a leap year (10.5% → 0.000287); not ticked: ROUND(ROI / 365, 6) for every day (0.000288). Note under the table says which applies | Implemented |
 | DISC-261 | 16-11-2026 | calculator.html / assets/calc.js | Calculator – first due date and monthly accrual | Owner: (1) first withdrawal on the 1st – 20th of a month (e.g. 19-Jan-2026) → first EMI on the 5th of the next month (05-Feb-2026); after the 20th (e.g. 21-Jan-2026) → the 5th of the month after (05-Mar-2026). (2) The due on the 5th collects the interest accrued for the whole previous month (1st – 31st Jan), posted and communicated to the customer – not up to the 4th; the current month’s interest is collected next month | calc.js: first due date by the 20th rule; interest accrual by calendar month – each due collects the previous month from the 1st to the last day (first due from the withdrawal date, e.g. 19-Jan – 31-Jan = 13 days; 21-Jan – 28-Feb = 39 days); the last row (loan end date) collects the 1st of that month to the day before, with the principal balance. The principal paid on a due date reduces the balance from that date, so it applies within the month being accrued. Table columns unchanged | Implemented |
+| DISC-262 | 16-11-2026 | calculator.html / assets/calc.js | Calculator – interest split in the RPS table | Owner: show the interest bifurcation in every RPS row where it applies – e.g. when a repayment is made after some days, the split calculation as well | calc.js: every row whose accrual period has more than one principal or daily rate gets ↳ sub-rows, one per part – principal × daily rate × days, the interest of that part, its start and end date and days, and the reason (From …, Principal paid on the due date, Withdrawal ₹… on …, Repayment ₹… on …, Year 2028 – 366 days). Each part is rounded to 2 decimals and the row interest is the sum of its parts. Rows with a single part show no sub-rows | Implemented |
 
 ---
 
