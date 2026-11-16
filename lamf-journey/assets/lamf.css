@@ -1288,3 +1288,6 @@ body.page-screens { padding: 40px 76px; }
 .page-brd .brd-flow { columns: auto; column-count: 1; list-style: decimal; } .page-brd .brd-flow ul { list-style: circle; }
 .page-brd .brd-table tbody th { width: 90px; }
 .page-brd .brd-mx td.c { text-align: center; font-weight: 700; color: #12753B; width: 56px; } .page-brd .brd-mx th { white-space: nowrap; }
+.page-brd .brd-st.st-completed { background: #E7F6EC; color: #12753B; }
+.page-brd .brd-fig.wide img { max-width: 100%; }
+.page-brd .brd-table td.c { text-align: center; }

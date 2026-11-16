@@ -943,7 +943,7 @@ from brds import BRDS
 BRD_FILE = lambda b: f"brd-{b['slug']}.html"
 
 def brd_list_body(home, link):
-    cards = "".join(f'<a class="brd-card" href="{link(b)}"><span class="brd-st">{html.escape(b["status"])}</span>'
+    cards = "".join(f'<a class="brd-card" href="{link(b)}"><span class="brd-st st-{b["status"].lower()}">{html.escape(b["status"])}</span>'
                     f'<b>{html.escape(b["title"])}</b><small>{html.escape(b["summary"])}</small>'
                     f'<i>Last updated {b["updated"]} →</i></a>' for b in BRDS)
     return (LOGO.format(home=home) + '<h1>LAMF – BRD Documents</h1>'
@@ -953,7 +953,7 @@ def brd_body(home, back, b):
     body = b["body"] or '<p class="brd-soon">The content of this BRD will be added here.</p>'
     return (LOGO.format(home=home) + f'<p class="brd-back"><a href="{back}">← All BRD documents</a></p>'
             f'<h1>BRD – {html.escape(b["title"])}</h1>'
-            f'<p class="brd-meta"><span class="brd-st">{html.escape(b["status"])}</span>Last updated {b["updated"]} · {html.escape(b["summary"])}</p>'
+            f'<p class="brd-meta"><span class="brd-st st-{b["status"].lower()}">{html.escape(b["status"])}</span>Last updated {b["updated"]} · {html.escape(b["summary"])}</p>'
             f'<div class="brd-body">{body}</div>' + CONTACT)
 
 def home_body(home, prd, journey, comms, calc, internal, brd):
