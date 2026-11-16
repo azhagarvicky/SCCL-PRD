@@ -828,6 +828,8 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
             + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon", "Interest Only"], "EMI")}</select>')
             + fld("Due Date of Every Month", '<input name="dueday" type="number" min="1" max="28" value="5">')
             + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1">', "ro")
+            + '<label class="calc-chk"><input type="checkbox" name="leap"><span>Leap year calculation – use 366 days for the days in a leap year '
+              '(when not ticked, 365 days are used in every year)</span></label>'
             + '</div><div class="calc-lists">'
             + rows("calc-w", "Withdrawals", "Add withdrawal") + rows("calc-r", "Repayments (part payment)", "Add repayment")
             + '</div><p class="calc-err" role="alert"></p><button class="calc-go" type="submit">Calculate Now</button></form>'
