@@ -43,12 +43,12 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
 ]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS options in the Approvals tab, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action needed. The loan moves to INACTIVE automatically after 30 days.", []),
-    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.", REJ_OUTCOMES),
-    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR], "Reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.", REJ_OUTCOMES),
+    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
+    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF, LM, LR, SD],
-     "Reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.", REJ_OUTCOMES),
+     "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
     (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF, LM, LR, SD],
-     "Either approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can proceed with full waive-off, partial waive-off or without waive-off.",
+     "Approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.",
      [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF, LM, LR, SD],
@@ -73,13 +73,19 @@ def _waiver_body():
         lead = f"<td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
         if not ch:
             return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td>{op}</td></tr>"
+        if n == 5:   # owner (DISC-295): Approved, Reject without waive-off, Reject with full / partial waive-off
+            rs = lambda h: h.replace("<td", "<td rowspan='4'")
+            return (f"<tr>{rs(lead)}<td colspan='2' class='wo'>Approved</td>{rs(f'<td>{op}</td>')}</tr>"
+                    "<tr><td rowspan='3' class='wo'>Reject</td><td class='wo'>Without Waive-off</td></tr>"
+                    "<tr><td class='wo'>With Full Waive-off</td></tr>"
+                    "<tr><td class='wo'>With Partial Waive-off</td></tr>")
         r3 = lambda h: h.replace("<td", "<td rowspan='3'")
         return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
                 "<tr><td rowspan='2' class='wo'>With waive-off</td><td class='wo'>Full waive-off</td></tr>"
                 "<tr><td class='wo'>Partial waive-off</td></tr>")
     summary = ("<table class='brd-table brd-sum'><thead><tr><th rowspan='2'>Sc.</th><th rowspan='2'>LAN status</th>"
                "<th rowspan='2'>Customer dropped off</th><th rowspan='2'>Charges applicable</th><th colspan='2'>Waive-off options</th>"
-               "<th rowspan='2'>What OPS can do</th></tr><tr><th>Waive-off</th><th>Type</th></tr></thead><tbody>"
+               "<th rowspan='2' class='ops'>What OPS can do</th></tr><tr><th>Waive-off</th><th>Type</th></tr></thead><tbody>"
                + "".join(srow(n, st, sc, ch, op) for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
     charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody>"
                + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
