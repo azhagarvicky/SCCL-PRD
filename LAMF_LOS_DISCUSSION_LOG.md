@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 04:20 IST
+**Last Updated:** 17-11-2026 04:29 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -333,6 +333,7 @@
 | DISC-298 | 17-11-2026 | brd-waive-off.html | Waiver BRD scenario 6: Approve and Reject, each with three waive-off options | Owner: row 6 in the row 5 format, with Approve without waive-off, Approve with full waive-off, Approve with partial waive-off, and the same for Reject | Summary row 6 now shows Approve → Without Waive-off / With Full Waive-off / With Partial Waive-off and Reject → the same three. What OPS can do for 6 reworded to the row 5 format. Section 4.6 outcome table: “Approved – with waive-off” split into Approved – partial waive-off (waived part not in UNO) and Approved – full waive-off (waived charges not in UNO). Row 7 unchanged. | Implemented |
 | DISC-299 | 17-11-2026 | brd-waive-off.html | Waiver BRD summary: one column name for the approval / waive-off split | Owner: correct the column name; a single name like Waive-off / Approvals is fine | The “Waive-off options” group heading and its two sub-headings (Waive-off, Type) replaced by one heading “Approvals / Waive-off” over both columns; the table header is now a single row. Row 5 label “Approved” changed to “Approve” to match row 6. | Implemented |
 | DISC-300 | 17-11-2026 | brd-waive-off.html | Waiver BRD scenario 7: three waive-off options | Owner: row 7 only three splits – Without waive-off, With Full Waive-off, With Partial Waive-off | Summary row 7 now lists Without Waive-off / With Full Waive-off / With Partial Waive-off (no approve / reject). What OPS can do for 7 in the same wording format. Section 4.7 outcome table split to match: Without waive-off; With full waive-off (SOA waiver narration, waived charges not in UNO); With partial waive-off (balance collected before closure, waived part not in UNO). | Implemented |
+| DISC-301 | 17-11-2026 | brd-waive-off.html | Waiver BRD 3.1: DRAFT loan Approvals tab has a Reject button only | Owner: in 3.1 second point, Decline (Reject) CTA only is enough | 3.1 second point now says the charges table is followed by the existing note and file upload fields and a Reject button only; a DRAFT loan cannot be approved, so there is no Approve button. | Implemented |
 
 ---
 

@@ -136,7 +136,8 @@ customer before the units are de-pledged.</p>
 <b>not available for a DRAFT loan</b>. Add the Approvals tab to the loan details of a DRAFT loan whose mutual fund units are
 pledged. (Applies to scenarios 2, 3 and 4.)</li>
 <li>The Approvals tab shows the charges table below, with a checkbox for each charge (and one to select all), followed by the
-existing note, file upload, Decline and Approve fields. For a DRAFT loan, the action is to reject (decline) the application.</li>
+existing note and file upload fields and a <b>Reject</b> button only. A DRAFT loan cannot be approved, so there is no Approve
+button.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
 <tr><td>Checkbox</td><td>Selects the charge to waive off</td></tr>
