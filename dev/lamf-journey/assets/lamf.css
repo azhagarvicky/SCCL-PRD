@@ -599,7 +599,7 @@ body.page-home { min-height: 100vh; }
 .page-home h1 { font-size: 36px; font-weight: 700; margin: 12px 0 10px; }
 .page-home .home-sub { font-size: 17px; color: var(--ink-2); }
 .page-home .home-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; margin-top: 40px; }
-.page-home .home-cta { min-width: 300px; background: var(--yellow); color: var(--ink); font-size: 17px; font-weight: 700; padding: 18px 32px; border-radius: 8px; transition: box-shadow .15s, transform .15s; }
+.page-home .home-cta { min-width: 260px; background: var(--yellow); color: var(--ink); font-size: 17px; font-weight: 700; padding: 18px 32px; border-radius: 8px; transition: box-shadow .15s, transform .15s; }
 .page-home .home-cta:hover { box-shadow: 0 6px 18px rgba(255, 203, 8, .45); transform: translateY(-1px); }
 .page-home .home-cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 body.page-screens { padding: 40px 76px; }
@@ -1093,3 +1093,6 @@ body.page-screens { padding: 40px 76px; }
 /* Remarks column (DISC-211) */
 .page-comms .comms td.c-remarks { min-width: 300px; color: #8C1D18; font-weight: 600; }
 .page-comms table.comms.sms { min-width: 4500px; }
+
+/* Calculator page (DISC-256) */
+.page-calc .calc-soon { margin: 24px 0 40px; padding: 18px 22px; border: 1px dashed var(--line); border-radius: 10px; color: #666; }

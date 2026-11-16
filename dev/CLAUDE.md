@@ -64,4 +64,4 @@ GitHub is the only shared memory, so these rules apply to every session, local o
   `lamf-journey/tools/build_pages.py` (screen list, and `COMMS` – the customer communications table; after changing `COMMS` also run `python3 lamf-journey/tools/export_comms_xlsx.py` to refresh `exports/LAMF_Customer_Communications.xlsx`), `lamf-journey/tools/build_prd.py` (PRD content), `lamf-journey/mails/*.html` (the owner's HTML mail templates, opened by the “View” link in Mail Available),
   `LAMF_LOS_DISCUSSION_LOG.md`, `.github/workflows/`.
 - Generated (never edit by hand): the numbered screen `.html` files, `lamf-journey/index.html`,
-  `screens.html`, `communications.html`, `cloud.html`, `assets/screens.js`, `SCCL_LAMF_LOS_PRD.html`, `assets/prd-body.js`.
+  `screens.html`, `communications.html`, `calculator.html`, `cloud.html`, `assets/screens.js`, `SCCL_LAMF_LOS_PRD.html`, `assets/prd-body.js`.
