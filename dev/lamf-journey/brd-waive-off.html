@@ -4,103 +4,57 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Waiver of Charges and Processing Fee</title>
-<link rel="stylesheet" href="assets/lamf.css?v=9a1277b">
+<link rel="stylesheet" href="assets/lamf.css?v=fec57c1">
 </head>
-<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Waiver of Charges and Processing Fee</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 16-11-2026 · One common process to waive the charges fully, partially or not at all, collect the balance from the customer and allow the de-pledge only after Treasury confirms the payment.</p><div class="brd-body">
-<h2>1. Background</h2>
-<p>In the LAMF journey the customer pledges the mutual fund units (lien marking) before the loan account is opened. If the customer
-drops off after that, some charges are already incurred: lien marking and lien removal, and at later stages the processing fee and
-the stamp duty. Today it is not decided who pays these charges, so SCCL bears them.</p>
-<h2>2. Objective</h2>
-<p>Give OPS one common way, for all the scenarios, to waive these charges fully, partially or not at all, and to collect the
-balance from the customer before the units are de-pledged.</p>
-<h2>3. Scope</h2>
-<ul><li>The 7 scenarios in section 6 (DRAFT, SUBMITTED, ACCOUNT OPENED and ACTIVE).</li>
-<li>The waive-off decision, the rejection, the customer communication, the payment by the customer, the Treasury confirmation,
-the receipt and the de-pledge.</li>
-<li>Rejecting a DRAFT LAN itself (who can reject, status rules) is in the BRD DRAFT LAN Rejection. This BRD covers the charges.</li></ul>
-<h2>4. Charges</h2>
-<table class='brd-table'><thead><tr><th>Charge</th><th>Amount (incl. 18% GST)</th><th>When it is incurred</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹531 (₹450 + ₹81 GST)</td><td>When the mutual fund units are pledged (lien marked)</td></tr><tr><td>Lien Removal Charge</td><td>₹118 (₹100 + ₹18 GST)</td><td>When the lien is removed (units de-pledged)</td></tr><tr><td>Processing Fee Charge</td><td><span class="brd-tbd">To be defined</span></td><td>From the Sanction Letter generation</td></tr><tr><td>Stamp Duty Charge</td><td><span class="brd-tbd">To be defined</span></td><td>From the Loan Agreement e-Sign</td></tr><tr><td>Bounce Charge</td><td><span class="brd-tbd">To be defined</span></td><td>Active loan, when an EMI bounces</td></tr><tr><td>Penal Charge</td><td><span class="brd-tbd">To be defined</span></td><td>Active loan, on a delay or default</td></tr><tr><td>Loan Renewal Charge</td><td><span class="brd-tbd">To be defined</span></td><td>Active loan, on renewal</td></tr><tr><td>Bank Swap Charge</td><td><span class="brd-tbd">To be defined</span></td><td>Active loan, when the repayment bank account is changed</td></tr></tbody></table>
-<p><b>Charges applicable in each scenario</b></p>
+<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Waiver of Charges and Processing Fee</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 17-11-2026 · One common process to waive the charges fully, partially or not at all, collect the balance from the customer and allow the de-pledge only after Treasury confirms the payment.</p><div class="brd-body">
+<h2>1. Purpose</h2>
+<p>When a customer drops off after pledging the mutual fund units, some charges are already incurred. Today SCCL bears them.
+This BRD gives OPS one common process to waive these charges fully, partially or not at all, and to collect the balance from the
+customer before the units are de-pledged.</p>
+<h2>2. Scenarios</h2>
+<p>The same process (sections 4 and 5) applies to every scenario. Rejecting a DRAFT LAN is covered in the BRD DRAFT LAN Rejection.</p>
+<table class='brd-table'><thead><tr><th>Sc.</th><th>LAN status</th><th>Customer dropped off</th><th>What OPS can do</th></tr></thead><tbody><tr><td class='c'>1</td><td>DRAFT</td><td>Before pledging the mutual funds</td><td>Nothing – no charges. The LAN moves to INACTIVE automatically after 30 days.</td></tr><tr><td class='c'>2</td><td>DRAFT</td><td>After pledging the mutual funds</td><td>Reject, with no, partial or full waive-off.</td></tr><tr><td class='c'>3</td><td>DRAFT</td><td>After the Sanction Letter is generated</td><td>Reject, with no, partial or full waive-off.</td></tr><tr><td class='c'>4</td><td>DRAFT</td><td>After the Loan Agreement e-Sign</td><td>Reject, with no, partial or full waive-off.</td></tr><tr><td class='c'>5</td><td>SUBMITTED</td><td>After the E-Mandate</td><td>Approve the Loan Account Opening (no charges collected now), or reject with no, partial or full waive-off.</td></tr><tr><td class='c'>6</td><td>ACCOUNT OPENED</td><td>After the Loan Account Opening</td><td>Approve the Loan Lodgement (with or without waive-off), or reject with no, partial or full waive-off.</td></tr><tr><td class='c'>7</td><td>ACTIVE</td><td>After the Loan Lodgement</td><td>Waive charges on the active loan (no, partial or full); no rejection. A waiver is shown in the Statement of Account with a waiver narration. Without a waiver, charges are collected before closure (existing process).</td></tr></tbody></table>
+<h2>3. Charges in each scenario</h2>
 <table class='brd-table brd-mx'><thead><tr><th>Charge</th><th>Amount (incl. 18% GST)</th><th>Sc. 1</th><th>Sc. 2</th><th>Sc. 3</th><th>Sc. 4</th><th>Sc. 5</th><th>Sc. 6</th><th>Sc. 7</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹531 (₹450 + ₹81 GST)</td><td class='c'></td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td></tr><tr><td>Lien Removal Charge</td><td>₹118 (₹100 + ₹18 GST)</td><td class='c'></td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td></tr><tr><td>Processing Fee Charge</td><td><span class="brd-tbd">To be defined</span></td><td class='c'></td><td class='c'></td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td></tr><tr><td>Stamp Duty Charge</td><td><span class="brd-tbd">To be defined</span></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td><td class='c'>✓</td></tr><tr><td>Bounce Charge</td><td><span class="brd-tbd">To be defined</span></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'>✓</td></tr><tr><td>Penal Charge</td><td><span class="brd-tbd">To be defined</span></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'>✓</td></tr><tr><td>Loan Renewal Charge</td><td><span class="brd-tbd">To be defined</span></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'>✓</td></tr><tr><td>Bank Swap Charge</td><td><span class="brd-tbd">To be defined</span></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'></td><td class='c'>✓</td></tr></tbody></table>
-<h2>5. Waive-off process (common for all scenarios)</h2>
-<h3>5.1 Approvals tab in LMS</h3>
-<p>In LMS, the Approvals tab under the LAN details shows the charges that apply to the LAN. For each charge, the OPS user can enter
-the amount to waive off. The payable charge is the amount of the charge minus the amount waived off. The amount waived off cannot be
-more than the charge.</p>
-<h3>5.2 Type of waive-off</h3>
-<p>The system decides the type of waive-off only when the OPS user rejects the application. The OPS user does not choose it.</p>
-<table class="brd-table"><thead><tr><th>Payable charges compared with the amount of charges</th><th>Type of waive-off</th></tr></thead><tbody>
-<tr><td>Payable charges are the same as the amount of charges</td><td>No waive-off</td></tr>
-<tr><td>Payable charges are less than the amount of charges, but not 0</td><td>Partial waive-off</td></tr>
-<tr><td>Payable charges are 0</td><td>Full waive-off</td></tr>
-</tbody></table>
-<h3>5.3 Rejection</h3>
-<ul><li>The OPS user rejects the application from the Approvals tab and enters a rejection reason.</li>
-<li>The existing pop-up asks the OPS user to confirm. Once confirmed, the rejection is final and cannot be revoked. The LAN status
-becomes REJECTED.</li>
-<li>Who can reject: if the loan amount is below ₹5 lakh, OPS L1 only. If it is ₹5 lakh or more, OPS L2 or L3 only.</li></ul>
-<h3>5.4 Customer communication</h3>
-<ul><li>The customer is told only after the application is rejected. Nothing is sent before that.</li>
-<li>Full waive-off: the SMS and mail say that the application is rejected. There is no payment link.</li>
-<li>Partial or no waive-off: the SMS and mail say that the application is rejected and give the payable charges with a payment link.</li></ul>
-<h3>5.5 Payment by the customer</h3>
-<ul><li>The customer can pay in two ways: from the payment link in the SMS or mail, or by logging in to LOS.</li>
-<li>The payment link needs OTP verification before the customer can pay.</li>
-<li>After the rejection, when the customer logs in to LOS, the only option is to pay the charges. A new LOS page is needed for this.
-It shows the total charges with the breakup of each charge, and a Pay button.</li></ul>
-<h3>5.6 After the payment</h3>
-<ul><li>As soon as the customer pays, the accounting entry is posted in UNO.</li>
-<li>At the same time an internal mail goes to the Treasury team (Natarajan K) with the LAN, the amount paid and the breakup of the charges.</li></ul>
-<h3>5.7 Treasury confirmation</h3>
-<ul><li>The Treasury team confirms the payment in LMS.</li>
-<li>Until Treasury confirms, the de-pledge option stays disabled in LMS.</li></ul>
-<h3>5.8 Receipt</h3>
-<ul><li>After Treasury confirms, the system generates a receipt.</li>
-<li>The receipt is stored in the Documents tab of the LAN in LMS.</li>
-<li>The receipt is sent to the customer with an SMS and mail saying that the payment has been received.</li></ul>
-<h3>5.9 De-pledge</h3>
-<ul><li>Full waive-off: nothing is payable, so OPS can de-pledge the units after the rejection.</li>
-<li>Partial or no waive-off: OPS can de-pledge only after the customer has paid and Treasury has confirmed the payment. Until then
-LMS shows the pending charges and does not allow OPS to de-pledge.</li>
-<li>De-pledge is allowed only for a REJECTED or a CLOSED LAN.</li></ul>
-<h3>5.10 UNO</h3>
-<ul><li>The accounting entry is posted only when the customer pays.</li>
-<li>Waived charges do not go into UNO books.</li></ul>
-<h2>6. End to end flow</h2>
+<h2>4. Rules</h2>
+<ul>
+<li><b>Waive-off amount:</b> in the LMS Approvals tab, OPS enters the amount to waive for each charge. Payable = charge – amount
+waived. The amount waived cannot be more than the charge.</li>
+<li><b>Type of waive-off:</b> decided by the system when OPS rejects; OPS does not choose it.
+<table class="brd-table"><thead><tr><th>Payable charges</th><th>Type</th></tr></thead><tbody>
+<tr><td>Same as the charges</td><td>No waive-off</td></tr>
+<tr><td>Less than the charges, but not 0</td><td>Partial waive-off</td></tr>
+<tr><td>0</td><td>Full waive-off</td></tr>
+</tbody></table></li>
+<li><b>Who can reject:</b> loan amount below ₹5 lakh – OPS L1 only; ₹5 lakh and above – OPS L2 or L3 only.</li>
+<li><b>Rejection:</b> OPS enters a reason (recorded in the Audit) and confirms in the existing pop-up. It is final and cannot be
+revoked. The LAN status becomes REJECTED.</li>
+<li><b>Customer message:</b> sent only after the rejection. Full waive-off – rejection SMS and mail only. Partial or no waive-off –
+rejection SMS and mail with the payable charges and a payment link.</li>
+<li><b>Payment:</b> through the payment link (after OTP verification), or in LOS, where a new page shows the total charges, the
+breakup and a Pay button. After the rejection, paying is the only option in LOS.</li>
+<li><b>Accounting:</b> the UNO entry is posted when the customer pays. Waived charges do not go into UNO.</li>
+<li><b>De-pledge:</b> only for a REJECTED or CLOSED LAN. Full waive-off – right after the rejection. Partial or no waive-off – only
+after the customer pays and Treasury confirms the payment in LMS; until then the de-pledge option stays disabled.</li>
+</ul>
+<h2>5. Process flow</h2>
 <ol class="brd-flow">
-<li>The OPS user opens the LAN in LMS and goes to the Approvals tab.</li>
-<li>The OPS user enters the amount to waive off for each charge, if any.</li>
-<li>The OPS user rejects the application, enters the reason and confirms. The LAN status becomes REJECTED.</li>
-<li>The system decides the type of waive-off: no, partial or full.</li>
-<li>Full waive-off: the customer gets the rejection SMS and mail without a payment link. OPS can de-pledge the units.</li>
-<li>Partial or no waive-off: the customer gets the rejection SMS and mail with the payable charges and a payment link.</li>
-<li>The customer pays through the payment link (after OTP verification) or from the new LOS payment page.</li>
-<li>The accounting entry is posted in UNO and an internal mail goes to the Treasury team (Natarajan K) with the amount and the breakup.</li>
-<li>The Treasury team confirms the payment in LMS.</li>
-<li>The system generates the receipt, stores it in the Documents tab and sends it to the customer with a payment received SMS and mail.</li>
+<li>OPS opens the LAN in LMS → Approvals tab and enters the amount to waive for each charge, if any.</li>
+<li>OPS rejects with a reason and confirms. The LAN becomes REJECTED and the system sets the type of waive-off.</li>
+<li><b>Full waive-off:</b> the customer gets the rejection SMS and mail. OPS de-pledges the units. End.</li>
+<li><b>Partial or no waive-off:</b> the customer gets the rejection SMS and mail with the payable charges and the payment link.</li>
+<li>The customer pays through the link (with OTP) or the LOS payment page.</li>
+<li>The UNO entry is posted, and an internal mail goes to Treasury (Natarajan K) with the LAN, the amount and the breakup.</li>
+<li>Treasury confirms the payment in LMS.</li>
+<li>The system generates the receipt, saves it in the LAN’s Documents tab, and sends it to the customer with a payment received SMS and mail.</li>
 <li>The de-pledge option is enabled and OPS de-pledges the units.</li>
 </ol>
-<h2>7. Scenarios</h2>
-<p>The process in section 5 applies to every scenario below. The table only shows what is different in each one.</p>
-<table class='brd-table'><thead><tr><th>#</th><th>LMS LAN status</th><th>Scenario</th><th>Charges applicable</th><th>What OPS can do</th><th>Notes</th></tr></thead><tbody><tr><td class='c'>1</td><td>DRAFT</td><td>Customer drops off before pledging the mutual funds</td><td>None</td><td>Nothing. No charges apply.</td><td>If the units are not pledged within 30 days from the LAN generated date, the LAN moves from DRAFT to INACTIVE automatically. No accounting entries.</td></tr><tr><td class='c'>2</td><td>DRAFT</td><td>Customer drops off after pledging the mutual funds</td><td>Lien Marking Charge<br>Lien Removal Charge</td><td>Reject the application, with no, partial or full waive-off.</td><td>Rejecting a DRAFT LAN is a new feature in LMS (see the BRD DRAFT LAN Rejection).</td></tr><tr><td class='c'>3</td><td>DRAFT</td><td>Customer drops off after the Sanction Letter is generated (mutual funds already pledged)</td><td>Processing Fee Charge<br>Lien Marking Charge<br>Lien Removal Charge</td><td>Reject the application, with no, partial or full waive-off.</td><td>Rejecting a DRAFT LAN is a new feature in LMS (see the BRD DRAFT LAN Rejection).</td></tr><tr><td class='c'>4</td><td>DRAFT</td><td>Customer drops off after the Loan Agreement e-Sign (mutual funds pledged, Sanction Letter generated and submitted)</td><td>Processing Fee Charge<br>Lien Marking Charge<br>Lien Removal Charge<br>Stamp Duty Charge</td><td>Reject the application, with no, partial or full waive-off.</td><td>Rejecting a DRAFT LAN is a new feature in LMS (see the BRD DRAFT LAN Rejection).</td></tr><tr><td class='c'>5</td><td>SUBMITTED</td><td>Customer drops off after the E-Mandate (mutual funds pledged, Sanction Letter generated, Loan Agreement e-Signed)</td><td>Processing Fee Charge<br>Lien Marking Charge<br>Lien Removal Charge<br>Stamp Duty Charge</td><td>Approve the Loan Account Opening, or reject it with no, partial or full waive-off.</td><td>On approval the LAN moves to ACCOUNT OPENED and no charges are collected at this stage.</td></tr><tr><td class='c'>6</td><td>ACCOUNT OPENED</td><td>Customer drops off after the Loan Account Opening</td><td>Processing Fee Charge<br>Lien Marking Charge<br>Lien Removal Charge<br>Stamp Duty Charge</td><td>Approve the Loan Lodgement (with or without waive-off), or reject it with no, partial or full waive-off.</td><td>On approval the application goes to the loan lodgement and no charges are collected at this stage. Waived charges do not go into UNO books.</td></tr><tr><td class='c'>7</td><td>ACTIVE</td><td>Customer drops off after the Loan Lodgement (loan account active)</td><td>Lien Marking Charge<br>Lien Removal Charge<br>Processing Fee Charge<br>Stamp Duty Charge<br>Bounce Charge<br>Penal Charge<br>Loan Renewal Charge<br>Bank Swap Charge</td><td>Waive charges on the active loan account (no, partial or full). There is no rejection at this stage.</td><td>Without waive-off, all charges are collected before the loan account is closed (existing accounting process). With waive-off, the charges are already posted in the Statement of Account (SOA), so the SOA must be updated with the waiver narration. Waived charges do not go into UNO books.</td></tr></tbody></table>
-<h2>8. System impact</h2>
-<table class="brd-table"><tbody>
-<tr><th>LMS</th><td>Approvals tab with the charges and the amount to waive off for each charge; the system decides the type of waive-off on
-rejection; Treasury confirmation of the payment; de-pledge only after the confirmation when something was payable; receipt stored in
-the Documents tab.</td></tr>
-<tr><th>LOS</th><td>New page shown after the rejection: total charges with the breakup and a Pay button. This is the only option for the customer.</td></tr>
-<tr><th>Payment link</th><td>Sent with the rejection SMS and mail for partial or no waive-off; OTP verification before the payment.</td></tr>
-<tr><th>UNO</th><td>Accounting entry posted as soon as the customer pays. Waived charges do not go into UNO books.</td></tr>
-<tr><th>Communication</th><td>Customer: rejection (with or without the payment link) and payment received with the receipt. Internal: payment
-details to the Treasury team (Natarajan K).</td></tr>
-</tbody></table>
-<h2>9. Open points</h2>
-<ul><li>Amount of the processing fee, the stamp duty and the active loan charges (bounce, penal, loan renewal, bank swap).</li>
-<li>What happens if the customer does not pay the payable charges (time limit, reminders). The units stay lien-marked.</li>
-<li>Scenario 7: who can waive charges on an active loan, and any limit on the amount.</li>
-<li>Templates for the rejection SMS and mail, the payment received SMS and mail, and the internal mail to Treasury.</li></ul>
+<h2>6. Open points</h2>
+<ul><li>Amounts of the processing fee, stamp duty, bounce, penal, loan renewal and bank swap charges.</li>
+<li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
+<li>Scenario 7: who can waive charges on an active loan, and any limit.</li>
+<li>Templates for the rejection, payment received and Treasury mails.</li></ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=9a1277b"></script>
+<script src="assets/review.js?v=fec57c1"></script>
 </body>
 </html>
