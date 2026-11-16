@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 04:29 IST
+**Last Updated:** 17-11-2026 04:31 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -334,6 +334,7 @@
 | DISC-299 | 17-11-2026 | brd-waive-off.html | Waiver BRD summary: one column name for the approval / waive-off split | Owner: correct the column name; a single name like Waive-off / Approvals is fine | The “Waive-off options” group heading and its two sub-headings (Waive-off, Type) replaced by one heading “Approvals / Waive-off” over both columns; the table header is now a single row. Row 5 label “Approved” changed to “Approve” to match row 6. | Implemented |
 | DISC-300 | 17-11-2026 | brd-waive-off.html | Waiver BRD scenario 7: three waive-off options | Owner: row 7 only three splits – Without waive-off, With Full Waive-off, With Partial Waive-off | Summary row 7 now lists Without Waive-off / With Full Waive-off / With Partial Waive-off (no approve / reject). What OPS can do for 7 in the same wording format. Section 4.7 outcome table split to match: Without waive-off; With full waive-off (SOA waiver narration, waived charges not in UNO); With partial waive-off (balance collected before closure, waived part not in UNO). | Implemented |
 | DISC-301 | 17-11-2026 | brd-waive-off.html | Waiver BRD 3.1: DRAFT loan Approvals tab has a Reject button only | Owner: in 3.1 second point, Decline (Reject) CTA only is enough | 3.1 second point now says the charges table is followed by the existing note and file upload fields and a Reject button only; a DRAFT loan cannot be approved, so there is no Approve button. | Implemented |
+| DISC-302 | 17-11-2026 | brd-waive-off.html | Waiver BRD: waive-off amount only after selecting the checkbox | Owner: Amount to be waived off can be entered by the OPS user only after selecting the checkbox | 3.1 column table: Checkbox – only a selected charge can be waived; Amount to be waived off – 0 by default and not editable, enabled only after the charge’s checkbox is selected, cannot exceed the Amount of Charges, unselecting resets it to 0. Scenario charge tables (4.2–4.7): “Entered by OPS after selecting the checkbox (0 by default)”. | Implemented |
 
 ---
 
