@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 04:04 IST
+**Last Updated:** 17-11-2026 04:12 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -330,6 +330,7 @@
 | DISC-295 | 17-11-2026 | brd-waive-off.html | Waiver BRD summary: wording for scenarios 2–5, wider What OPS can do | Owner: widen the What OPS can do column a little; 2 – “Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.”; 3 and 4 in the same format; 5 – Approved, Reject Without Waive-off, Reject With Full Waive-off, Reject With Partial Waive-off (same format as 2) | Scenarios 2–4 reworded exactly as given. Scenario 5: Waive-off options split into Approved, and Reject → Without Waive-off / With Full Waive-off / With Partial Waive-off; text “Approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.” (also used at the top of 4.5). What OPS can do column set to 35% of the table (CSS .brd-sum th.ops). Scenarios 6 and 7 unchanged. | Implemented |
 | DISC-296 | 17-11-2026 | brd-waive-off.html | Waiver BRD summary: scenarios 2–4 in the scenario 5 format | Owner: like row 5, show rows 2, 3 and 4 with Reject | Waive-off options for scenarios 2, 3 and 4 now read Reject → Without Waive-off / With Full Waive-off / With Partial Waive-off (as scenario 5, without the Approved row). Scenarios 6 and 7 unchanged. A Word copy of the BRD (BRD_Waiver_of_Charges.docx) was shared for testing; not stored in the repository. | Implemented |
 | DISC-297 | 17-11-2026 | BRD Word export | Word copy only on request | Owner: no need to generate the Word document every time; generate it only when asked | Working rule: after a BRD change, do not regenerate or send the .docx; create it only when the owner asks for it. | Agreed |
+| DISC-298 | 17-11-2026 | brd-waive-off.html | Waiver BRD scenario 6: Approve and Reject, each with three waive-off options | Owner: row 6 in the row 5 format, with Approve without waive-off, Approve with full waive-off, Approve with partial waive-off, and the same for Reject | Summary row 6 now shows Approve → Without Waive-off / With Full Waive-off / With Partial Waive-off and Reject → the same three. What OPS can do for 6 reworded to the row 5 format. Section 4.6 outcome table: “Approved – with waive-off” split into Approved – partial waive-off (waived part not in UNO) and Approved – full waive-off (waived charges not in UNO). Row 7 unchanged. | Implemented |
 
 ---
 
