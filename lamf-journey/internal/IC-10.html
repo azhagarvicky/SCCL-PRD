@@ -2,27 +2,36 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Disbursement Completed – Internal mail</title>
 <style>
-body{margin:0;background:#efeeec;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a}
-.hdr{max-width:900px;margin:24px auto 0;background:#fff;border-radius:10px;padding:18px 24px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.hdr a.back{font-size:13px;color:#555;text-decoration:none} .hdr h1{font-size:20px;font-weight:400;margin:8px 0 14px}
-.hdr table{border-collapse:collapse;font-size:13.5px} .hdr td{padding:3px 12px 3px 0;vertical-align:top} .hdr td:first-child{color:#777;width:60px}
-.sw{display:flex;gap:8px;margin:0 0 12px} .sw button{font:inherit;font-size:13px;border:1px solid #ccc;background:#fff;border-radius:16px;padding:5px 12px;cursor:pointer}
+body{margin:0;background:#fff;font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:#1a1a1a}
+.top{padding:14px 28px 0} .top a{font-size:13px;color:#555;text-decoration:none} .top a:hover{text-decoration:underline}
+h1.subj{font-size:24px;font-weight:400;margin:10px 28px 14px}
+.msg{margin:0 22px 28px;border:1px solid #e3e3e3;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mh{display:flex;gap:14px;padding:18px 22px 14px} .av{flex:none;width:44px;height:44px;border-radius:50%;background:#f4c7cb;color:#a4262c;display:flex;align-items:center;justify-content:center;font-size:18px}
+.mi{flex:1;min-width:0;font-size:14px;line-height:21px} .mi .fr{font-weight:600;font-size:16px} .mi .lb{color:#555}
+.dt{flex:none;font-size:13px;color:#555;text-align:right}
+.sw{display:flex;flex-wrap:wrap;gap:8px;padding:0 22px 12px 80px} .sw button{font:inherit;font-size:12.5px;border:1px solid #ccc;background:#fff;border-radius:14px;padding:4px 12px;cursor:pointer}
 .sw button.on{background:#1a1a1a;color:#FFC20E;border-color:#1a1a1a}
-.wrap{padding:24px 12px 40px} .mail{width:600px;max-width:100%;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden}
+.wrap{background:#efeeec;margin:0 22px 22px;padding:32px 12px 40px}
+.mail{width:600px;max-width:100%;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden}
 .logo{text-align:center;padding:28px 40px 20px} .logo img{width:200px} .rule{height:5px;background:#FFC20E}
-.band{background:#1a1a1a;color:#FFC20E;text-align:center;font-weight:bold;font-size:20px;line-height:26px;padding:22px 40px}
-.body{padding:36px 48px 32px;font-size:15px;line-height:24px;color:#333;text-align:justify} .body .dear{font-weight:bold;color:#1a1a1a;font-size:16px;margin:0 0 18px}
-.body b{color:#1a1a1a} .body .reg{margin-top:28px} .disc{background:#FFC20E;padding:18px 48px;font-size:13px}
-.foot{background:#1a1a1a;color:#ccc;text-align:center;font-size:12px;padding:14px 40px}
+.band{background:#1a1a1a;color:#FFC20E;text-align:center;font-weight:bold;font-size:20px;line-height:26px;padding:22px 40px;font-family:Arial,Helvetica,sans-serif}
+.body{padding:36px 48px 32px;font-size:15px;line-height:24px;color:#333;text-align:justify;font-family:Arial,Helvetica,sans-serif}
+.body .dear{font-weight:bold;color:#1a1a1a;font-size:16px;margin:0 0 18px} .body b{color:#1a1a1a} .body .reg{margin-top:28px}
+.disc{background:#FFC20E;padding:18px 48px;font-size:13px;font-family:Arial,Helvetica,sans-serif}
+.foot{background:#1a1a1a;color:#ccc;text-align:center;font-size:12px;padding:14px 40px;font-family:Arial,Helvetica,sans-serif}
+@media (max-width:640px){.mh{flex-wrap:wrap} .dt{width:100%;text-align:left;padding-left:58px} .sw{padding-left:22px} .wrap,.msg{margin-left:8px;margin-right:8px} .body,.disc{padding-left:24px;padding-right:24px}}
 </style></head><body>
-<div class="hdr"><a class="back" href="../internal-communications.html">← Internal communications</a>
-<h1>Settled | SCCLMF20261100017 | Treasury Disbursement Approved</h1><div class="sw"><button type="button" data-i="0" class=on>If withdrawal amount &lt;5L</button><button type="button" data-i="1">If withdrawal amount &gt;=5L</button></div>
-<table><tr><td>From</td><td>support.las@shriramcredit.in</td></tr><tr><td>To</td><td id="to">k.natarajan@shriramcredit.in</td></tr><tr><td>Cc</td><td id="cc">satyaparida@shriramcredit.in; richajayswal@shriramcredit.in; ashok@shriramcredit.in; vijayamr@shriramcredit.in; satyanarayan@shriramcredit.in; ganga@shriramcredit.in; lalithak@shriramcredit.in; nadanakumar@shriramcredit.in; azhagarsamy.s@shriramcredit.in; nithin.ganga@shriramcredit.in; kruthika.s@shriramcredit.in; sachin.patil@shriramcredit.in; sarathananthan.m@shriramcredit.in</td></tr></table></div>
+<div class="top"><a href="../internal-communications.html">← Internal communications</a></div>
+<h1 class="subj">Settled | SCCLMF20261100017 | Treasury Disbursement Approved</h1>
+<div class="msg">
+<div class="mh"><div class="av">S</div>
+<div class="mi"><div class="fr">support.las@shriramcredit.in</div><div><span class="lb">To:</span> <span id="to">k.natarajan@shriramcredit.in</span></div><div><span class="lb">Cc:</span> <span id="cc">satyaparida@shriramcredit.in; Richa Jayswal; Ashok; vijayamr@shriramcredit.in; satyanarayan@shriramcredit.in; ganga@shriramcredit.in; lalithak@shriramcredit.in; nadanakumar@shriramcredit.in; Azhagarsamy S; Nithin Ganga; Kruthika S; Sachin Patil; Sarathananthan M</span></div></div>
+<div class="dt">Mon 16-11-2026 6:13 PM</div></div><div class="sw"><button type="button" data-i="0" class=on>If withdrawal amount &lt;5L</button><button type="button" data-i="1">If withdrawal amount &gt;=5L</button></div>
 <div class="wrap"><div class="mail">
 <div class="logo"><img src="../assets/img/shriram-logo.png" alt="Shriram Credit"></div><div class="rule"></div>
 <div class="band">Disbursement Completed</div>
-<div class="body"><p class="dear">Dear Nithin Ganga,</p><p><b>SCCLMF20261100017</b> for customer <b>Azhagarsamy Subburaj</b> has been successfully disbursed for <b>100000.00</b>, and the UTR has been updated. The current disbursement status is <b>APPROVED</b>.</p><p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
+<div class="body"><p class="dear">Dear <span id="dear">Natarajan K</span>,</p><p><b>SCCLMF20261100017</b> for customer <b>Azhagarsamy Subburaj</b> has been successfully disbursed for <b>100000.00</b>, and the UTR has been updated. The current disbursement status is <b>APPROVED</b>.</p><p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
 <div class="disc">This is a system-generated email. Please do not reply.</div>
 <div class="foot">© 2026 Shriram Credit Company Limited. All rights reserved.</div>
-</div></div><script>var R=[{"to": "k.natarajan@shriramcredit.in", "cc": "satyaparida@shriramcredit.in; richajayswal@shriramcredit.in; ashok@shriramcredit.in; vijayamr@shriramcredit.in; satyanarayan@shriramcredit.in; ganga@shriramcredit.in; lalithak@shriramcredit.in; nadanakumar@shriramcredit.in; azhagarsamy.s@shriramcredit.in; nithin.ganga@shriramcredit.in; kruthika.s@shriramcredit.in; sachin.patil@shriramcredit.in; sarathananthan.m@shriramcredit.in"}, {"to": "nadanakumar@shriramcredit.in", "cc": "satyaparida@shriramcredit.in; richajayswal@shriramcredit.in; ashok@shriramcredit.in; vijayamr@shriramcredit.in; satyanarayan@shriramcredit.in; k.natarajan@shriramcredit.in; ganga@shriramcredit.in; lalithak@shriramcredit.in; azhagarsamy.s@shriramcredit.in; nithin.ganga@shriramcredit.in; kruthika.s@shriramcredit.in; sachin.patil@shriramcredit.in; sarathananthan.m@shriramcredit.in"}];document.querySelectorAll('.sw button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.sw button').forEach(function(x){x.classList.toggle('on',x===b)});document.getElementById('to').textContent=R[b.dataset.i].to;document.getElementById('cc').textContent=R[b.dataset.i].cc;};});</script>
+</div></div></div><script>var R=[{"to": "k.natarajan@shriramcredit.in", "cc": "satyaparida@shriramcredit.in; Richa Jayswal; Ashok; vijayamr@shriramcredit.in; satyanarayan@shriramcredit.in; ganga@shriramcredit.in; lalithak@shriramcredit.in; nadanakumar@shriramcredit.in; Azhagarsamy S; Nithin Ganga; Kruthika S; Sachin Patil; Sarathananthan M", "dear": "Natarajan K"}, {"to": "nadanakumar@shriramcredit.in", "cc": "satyaparida@shriramcredit.in; Richa Jayswal; Ashok; vijayamr@shriramcredit.in; satyanarayan@shriramcredit.in; k.natarajan@shriramcredit.in; ganga@shriramcredit.in; lalithak@shriramcredit.in; Azhagarsamy S; Nithin Ganga; Kruthika S; Sachin Patil; Sarathananthan M", "dear": "Nadanakumar"}];document.querySelectorAll('.sw button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.sw button').forEach(function(x){x.classList.toggle('on',x===b)});var r=R[b.dataset.i];document.getElementById('to').textContent=r.to;document.getElementById('cc').textContent=r.cc;document.getElementById('dear').textContent=r.dear;};});</script>
 </body></html>
