@@ -87,9 +87,7 @@
 
   function read(f) {
     const g = (n) => f.querySelector(`[name="${n}"]`).value;
-    const list = (k) => [...f.querySelectorAll(`.calc-tx tbody tr[data-k="${k}"]`)]
-      .map((tr) => ({ d: toDay(tr.querySelector('input[type=date]').value), a: num(tr.querySelector('input.amt').value) }))
-      .filter((x) => x.d !== null && x.a > 0);
+    const list = (k) => (f._tx || []).filter((x) => x.k === k).map((x) => ({ d: x.d, a: x.a }));
     return { start: toDay(g('start')), tenure: +g('tenure'), rate: num(g('rate')), type: g('type'), dueDay: 5,
              product: g('product'), ason: toDay(g('ason')), leap: f.querySelector('[name="leap"]').checked, withdrawals: list('w'), repayments: list('r') };
   }
@@ -164,39 +162,50 @@
     };
   }
 
-  function addRow(tbody, k, d, a) {                // one ledger line: withdrawal (k = 'w') or repayment (k = 'r') (DISC-264)
-    const tr = document.createElement('tr'); tr.dataset.k = k;
-    tr.innerHTML = `<td><span class="tx ${k}">${k === 'w' ? 'Withdrawal' : 'Repayment'}</span></td><td><input type="date" value="${d || ''}"></td>
-      <td><div class="amt-w"><i>₹</i><input class="amt" inputmode="decimal" placeholder="0" value="${a || ''}"></div></td><td class="n bal"></td>
-      <td><button type="button" class="calc-del" title="Remove">✕</button></td>`;
-    tbody.appendChild(tr);
-  }
+  // Withdrawals and repayments (DISC-266): pick the type, the date and the amount and click Add; the entries are listed
+  // by date as a timeline with the outstanding principal after each one, and can be removed.
+  const inr = (v) => (Math.round(v * 100) / 100).toLocaleString('en-IN', { maximumFractionDigits: 2 });
 
   function init() {
     const f = document.querySelector('.calc-form'); if (!f || f.dataset.ready) return; f.dataset.ready = '1';
-    const tb = f.querySelector('.calc-tx tbody'), endEl = f.querySelector('[name="end"]');
+    f._tx = [{ k: 'w', d: toDay('2026-11-02'), a: 100000 }];
+    const endEl = f.querySelector('[name="end"]'), list = f.querySelector('.tx-list'), msg = f.querySelector('.tx-msg');
+    const dIn = f.querySelector('[name="txd"]'), aIn = f.querySelector('[name="txa"]');
+    let kind = 'w';
+    const single = () => f.querySelector('[name="product"]').value === 'Single Disbursement';
+    const setKind = (k) => { kind = k; f.querySelectorAll('.tx-seg button').forEach((b) => b.classList.toggle('on', b.dataset.kind === k)); };
     const syncEnd = () => { const s = toDay(f.querySelector('[name="start"]').value);
       endEl.value = s === null ? '' : fmtD(loanEnd(s, +f.querySelector('[name="tenure"]').value)); };
-    const syncTx = () => {                         // running balance by date, totals, Single Disbursement = one withdrawal
-      const rowsTx = [...tb.querySelectorAll('tr')].map((tr) => ({ tr, d: toDay(tr.querySelector('input[type=date]').value),
-        a: num(tr.querySelector('input.amt').value) * (tr.dataset.k === 'w' ? 1 : -1) }));
+    const syncTx = () => {
+      f._tx.sort((x, y) => x.d - y.d || (x.k === 'w' ? -1 : 1));
       let bal = 0;
-      rowsTx.filter((x) => x.d !== null).sort((x, y) => x.d - y.d).forEach((x) => { bal = Math.max(0, bal + x.a); x.tr.querySelector('.bal').textContent = money(bal); });
-      rowsTx.filter((x) => x.d === null).forEach((x) => { x.tr.querySelector('.bal').textContent = '–'; });
-      const w = rowsTx.filter((x) => x.a > 0).reduce((v, x) => v + x.a, 0), r = -rowsTx.filter((x) => x.a < 0).reduce((v, x) => v + x.a, 0);
-      f.querySelector('.tx-w b').textContent = money(w); f.querySelector('.tx-r b').textContent = money(r);
-      f.querySelector('[name="outstanding"]').value = money(w - r);
-      const single = f.querySelector('[name="product"]').value === 'Single Disbursement';
-      f.querySelector('[data-add="w"]').hidden = single && tb.querySelectorAll('tr[data-k="w"]').length >= 1;
-      tb.closest('.calc-txw').classList.toggle('empty', !tb.children.length);
+      list.innerHTML = f._tx.map((x, i) => { bal = Math.max(0, bal + (x.k === 'w' ? x.a : -x.a));
+        return `<li class="${x.k}"><span class="ic">${x.k === 'w' ? '↓' : '↑'}</span>
+          <div class="tx-main"><b>${x.k === 'w' ? 'Withdrawal' : 'Repayment'}</b><small>${fmtD(x.d)}</small></div>
+          <div class="tx-amt"><b>${x.k === 'w' ? '+' : '−'} ${money(x.a)}</b><small>Outstanding after ${money(bal)}</small></div>
+          <button type="button" class="tx-x" data-i="${i}" title="Remove" aria-label="Remove">✕</button></li>`; }).join('');
+      const w = f._tx.filter((x) => x.k === 'w').reduce((v, x) => v + x.a, 0), r = f._tx.filter((x) => x.k === 'r').reduce((v, x) => v + x.a, 0);
+      f.querySelector('.tx-sum .sw').textContent = money(w); f.querySelector('.tx-sum .sr').textContent = money(r);
+      f.querySelector('.tx-sum .so').textContent = money(Math.max(0, w - r));
+      f.querySelector('.tx-box').classList.toggle('empty', !f._tx.length);
+      const lock = single() && f._tx.some((x) => x.k === 'w');            // Single Disbursement: one withdrawal only
+      const wb = f.querySelector('.tx-seg [data-kind="w"]'); wb.disabled = lock; if (lock && kind === 'w') setKind('r');
     };
-    addRow(tb, 'w', '2026-11-02', '1,00,000');
+    const add = () => {
+      const d = toDay(dIn.value), a = num(aIn.value);
+      if (d === null || !(a > 0)) { msg.textContent = 'Enter the date and the amount.'; return; }
+      if (kind === 'w' && single() && f._tx.some((x) => x.k === 'w')) { msg.textContent = 'Single Disbursement allows one withdrawal only.'; return; }
+      msg.textContent = ''; f._tx.push({ k: kind, d, a }); aIn.value = ''; syncTx(); aIn.focus();
+    };
     const ason = f.querySelector('[name="ason"]'); if (!ason.value) ason.value = toISO(Math.floor(Date.now() / DAY));
-    f.addEventListener('input', () => { syncEnd(); syncTx(); });
-    f.addEventListener('change', () => { syncEnd(); syncTx(); });
+    aIn.addEventListener('blur', () => { const a = num(aIn.value); aIn.value = a ? inr(a) : ''; });
+    aIn.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } });
+    f.addEventListener('input', (e) => { if (!e.target.closest('.tx-new')) syncEnd(); });
+    f.addEventListener('change', (e) => { if (!e.target.closest('.tx-new')) { syncEnd(); syncTx(); } });
     f.addEventListener('click', (e) => {
-      const add = e.target.closest('[data-add]'); if (add) { addRow(tb, add.dataset.add); syncTx(); }
-      const del = e.target.closest('.calc-del'); if (del) { del.closest('tr').remove(); syncTx(); }
+      const k = e.target.closest('.tx-seg button'); if (k && !k.disabled) setKind(k.dataset.kind);
+      if (e.target.closest('.tx-addbtn')) add();
+      const x = e.target.closest('.tx-x'); if (x) { f._tx.splice(+x.dataset.i, 1); syncTx(); }
     });
     f.addEventListener('submit', (e) => { e.preventDefault(); render(f); });
     syncEnd(); syncTx();
