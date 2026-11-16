@@ -1249,3 +1249,21 @@ body.page-screens { padding: 40px 76px; }
 .page-home .home-ctas { max-width: 1040px; margin-left: auto; margin-right: auto; }   /* 5 CTAs: 3 + 2 (DISC-267) */
 .page-home .home-cta { min-width: 300px; }
 @media (max-width: 760px) { .page-home .home-cta { min-width: 0; } }
+/* Home – Communications pop-up (DISC-269) */
+.home-pop { display: none; position: fixed; inset: 0; z-index: 50; align-items: center; justify-content: center; padding: 16px; }
+.home-pop:target, .home-pop.open { display: flex; }
+.home-pop-bg { position: absolute; inset: 0; background: rgba(17, 17, 17, .45); }
+.home-pop-box { position: relative; width: 640px; max-width: 100%; background: #fff; border-radius: 14px; padding: 28px 28px 30px; box-shadow: 0 18px 50px rgba(0,0,0,.25); text-align: center; }
+.home-pop-box h2 { margin: 0 0 6px; font-size: 22px; } .home-pop-box p { margin: 0 0 22px; color: #555; }
+.home-pop-x { position: absolute; top: 10px; right: 14px; font-size: 26px; line-height: 1; color: #666; text-decoration: none; }
+.home-pop-ctas { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+.home-pop-ctas .home-cta { width: 300px; min-width: 0; box-sizing: border-box; }
+@media (max-width: 640px) { .home-pop-ctas { flex-direction: column; } .home-pop-ctas .home-cta { min-width: 0; } }
+/* BRD documents (DISC-269) */
+.page-brd .brd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin: 18px 0 30px; }
+.page-brd .brd-card { display: flex; flex-direction: column; gap: 6px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px; background: #fff; color: inherit; text-decoration: none; transition: box-shadow .15s, border-color .15s; }
+.page-brd .brd-card:hover { border-color: var(--yellow); box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+.page-brd .brd-card b { font-size: 18px; } .page-brd .brd-card small { color: #555; font-size: 14px; } .page-brd .brd-card i { font-style: normal; font-size: 13px; color: #7a6a33; margin-top: 6px; }
+.page-brd .brd-st { align-self: flex-start; display: inline-block; padding: 2px 10px; border-radius: 12px; background: #FFF1C9; color: #7a5b00; font-size: 12px; font-weight: 700; margin-right: 8px; }
+.page-brd .brd-back a { font-size: 14px; color: #555; } .page-brd .brd-meta { color: #555; }
+.page-brd .brd-soon { margin: 20px 0 40px; padding: 18px 22px; border: 1px dashed var(--line); border-radius: 10px; color: #666; }
