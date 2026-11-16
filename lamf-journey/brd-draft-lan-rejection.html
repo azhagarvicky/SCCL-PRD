@@ -23,7 +23,7 @@ and Processing Fee”.</li></ul>
 <h2>4. LAN status rules</h2>
 <ul>
 <li><b>REJECTED</b> – the application is rejected by OPS (new: also from DRAFT).</li>
-<li><b>CLOSED</b> – only an <b>ACTIVE</b> loan account is closed (foreclosure or tenure completion): ACTIVE → CLOSED. A LAN is
+<li><b>CLOSED</b> – only an <b>ACTIVE</b> loan account is closed (foreclosure, tenure completion or invocation): ACTIVE → CLOSED. A LAN is
 <b>never</b> closed from DRAFT.</li>
 <li><b>De-pledge (lien removal)</b> is allowed only for a REJECTED or a CLOSED LAN. So for a pledged DRAFT LAN, rejection is the only
 way to remove the lien.</li>
@@ -43,9 +43,9 @@ way to remove the lien.</li>
 <li>A pledged DRAFT LAN is <b>not expired automatically</b>. OPS rejects it manually:
   <ul><li>after 30 days from the LAN generated date, when the customer has not submitted the application; or</li>
   <li>at any time before that, when the customer asks for the lien removal.</li></ul></li>
-<li>Any OPS user – role <b>L1, L2 or L3</b> – can reject a DRAFT LAN.</li>
+<li>Who can reject depends on the loan amount: <b>below ₹5 lakh – OPS L1 only</b>; <b>₹5 lakh and above – OPS L2 or L3 only</b>.</li>
 <li>A <b>rejection reason</b> must be captured – <b>free text</b> for now (a fixed list of reasons later) – and the rejection (reason, user, date and time) is recorded in the <b>Audit</b>.</li>
-<li>Rejection needs one confirmation from the OPS user (the existing confirmation); once confirmed it is <b>final</b> and cannot be undone.</li>
+<li>Rejection needs one confirmation from the OPS user (the existing pop-up confirmation); once confirmed it is <b>final</b> and cannot be revoked.</li>
 <li>On confirmation the LAN status changes from DRAFT to <b>REJECTED</b> and the LAN is listed with the rejected applications; the
 units can then be de-pledged.</li>
 <li>A DRAFT LAN that is not pledged within 30 days from the LAN generated date moves to <b>INACTIVE</b> automatically – no OPS action.</li>
@@ -53,7 +53,7 @@ units can then be de-pledged.</li>
 waive-off, the payment link and the de-pledging follow the BRD “Waiver of Charges and Processing Fee” (scenarios 2 – 4).</li>
 <li><b>Customer communication</b> on rejection: the customer is told that the loan application has been rejected and the units are
 still lien-marked (with the payable charges and payment link where applicable, as per the Waiver BRD).</li>
-<li><b>LOS:</b> when the customer logs in after the rejection, the Curated Offers page shows the product card <b>afresh</b> (start a
+<li><b>LOS:</b> when the customer logs in after the rejection, the Curated Offers page shows <b>a fresh</b> product card (start a
 new application) instead of continuing the rejected one.</li>
 </ul>
 <h2>7. Flow</h2>
@@ -61,26 +61,26 @@ new application) instead of continuing the rejected one.</li>
 <li>The customer generates the LAN in LOS → LAN status DRAFT.</li>
 <li><b>If the units are not pledged within 30 days</b> from the LAN generated date → the system moves the LAN from DRAFT to INACTIVE.</li>
 <li><b>If the units are pledged</b> and the customer drops off before submitting → the LAN stays DRAFT (no automatic expiry).</li>
-<li>OPS (L1 / L2 / L3) opens the DRAFT LAN in LMS → Approvals → Reject – after 30 days, or earlier on the customer’s request for lien removal.</li>
+<li>OPS (L1 below ₹5 lakh; L2 / L3 for ₹5 lakh and above) opens the DRAFT LAN in LMS → Approvals → Reject – after 30 days, or earlier on the customer’s request for lien removal.</li>
 <li>OPS enters the rejection reason and confirms (final).</li>
 <li>LAN status DRAFT → REJECTED; the rejection is recorded in the Audit.</li>
 <li>Customer is informed: application rejected, units still lien-marked (charges and payment link as per the Waiver BRD).</li>
 <li>De-pledge of the units (after the payment, or at once when the charges are fully waived).</li>
-<li>Next login in LOS → the Curated Offers page shows the product card afresh.</li>
+<li>Next login in LOS → the Curated Offers page shows a fresh product card.</li>
 </ol>
 <h2>8. Status changes</h2>
 <table class="brd-table"><thead><tr><th>From</th><th>To</th><th>When</th><th>By</th></tr></thead><tbody>
 <tr><td>DRAFT (not pledged)</td><td>INACTIVE</td><td>30 days from the LAN generated date without a pledge</td><td>System (automatic)</td></tr>
-<tr><td>DRAFT (pledged)</td><td>REJECTED</td><td>OPS rejects (after 30 days, or earlier on the customer’s request)</td><td>OPS L1 / L2 / L3 – new</td></tr>
+<tr><td>DRAFT (pledged)</td><td>REJECTED</td><td>OPS rejects (after 30 days, or earlier on the customer’s request)</td><td>OPS L1 (below ₹5 lakh) / L2 or L3 (₹5 lakh and above) – new</td></tr>
 <tr><td>SUBMITTED</td><td>REJECTED</td><td>OPS rejects the Loan Account Opening</td><td>OPS user – existing</td></tr>
-<tr><td>ACTIVE</td><td>CLOSED</td><td>Foreclosure or tenure completion</td><td>Existing</td></tr>
+<tr><td>ACTIVE</td><td>CLOSED</td><td>Foreclosure, tenure completion or invocation</td><td>Existing</td></tr>
 </tbody></table>
 <h2>9. System impact</h2>
 <table class="brd-table"><tbody>
-<tr><th>LMS</th><td>Approvals section with Reject for a pledged DRAFT LAN (OPS L1 / L2 / L3); rejection reason captured and recorded in the
+<tr><th>LMS</th><td>Approvals section with Reject for a pledged DRAFT LAN (OPS L1 below ₹5 lakh, L2 / L3 for ₹5 lakh and above); rejection reason captured and recorded in the
 Audit; status DRAFT → REJECTED; de-pledge allowed for the REJECTED LAN; no automatic expiry for a pledged DRAFT LAN; the automatic
 DRAFT → INACTIVE move for an unpledged LAN after 30 days.</td></tr>
-<tr><th>LOS</th><td>After the rejection, the Curated Offers page shows the product card afresh on the next login (no “Continue” of the rejected application).</td></tr>
+<tr><th>LOS</th><td>After the rejection, the Curated Offers page shows a fresh product card on the next login (no “Continue” of the rejected application).</td></tr>
 <tr><th>UNO</th><td>No accounting entry for the rejection itself; the charges are accounted as per the Waiver BRD.</td></tr>
 <tr><th>Customer communication</th><td>On rejection: loan application rejected, units still lien-marked (template to be created).</td></tr>
 </tbody></table>
