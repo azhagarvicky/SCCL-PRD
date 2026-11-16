@@ -113,7 +113,7 @@ def _waiver_body():
                         "<li><b>Accounting:</b> no entries.</li></ul>")
         chs = ("<table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Amount to be waived off</th>"
                "<th>Payable Charges</th></tr></thead><tbody>"
-               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Entered by OPS</td><td>Amount of Charges – Amount to be waived off</td></tr>" for c in ch)
+               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Amount to be waived off</td></tr>" for c in ch)
                + "</tbody></table>")
         out = ("<table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th>"
                "<th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody>"
@@ -140,10 +140,10 @@ existing note and file upload fields and a <b>Reject</b> button only. A DRAFT lo
 button.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
-<tr><td>Checkbox</td><td>Selects the charge to waive off</td></tr>
+<tr><td>Checkbox</td><td>Selects the charge to waive off. Only a selected charge can be waived.</td></tr>
 <tr><td>Charges Name</td><td>Each charge incurred so far (for example, Lien Marking Charges, Lien Removal Charges)</td></tr>
 <tr><td>Amount of Charges</td><td>The charge including GST (for example, 531 and 118)</td></tr>
-<tr><td>Amount to be waived off</td><td>Entered by OPS; 0 by default; cannot be more than the Amount of Charges</td></tr>
+<tr><td>Amount to be waived off</td><td>0 by default and not editable. OPS can enter the amount only after selecting the checkbox of that charge; it cannot be more than the Amount of Charges. Unselecting the checkbox sets it back to 0.</td></tr>
 <tr><td>Payable Charges</td><td>Amount of Charges – Amount to be waived off</td></tr>
 </tbody></table>
 <h3>3.2 Rejecting a DRAFT loan (new)</h3>
