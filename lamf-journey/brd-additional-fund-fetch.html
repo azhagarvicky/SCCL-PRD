@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMF – BRD – Additional Fund Fetch through Secondary Mobile Number</title>
+<link rel="stylesheet" href="assets/lamf.css">
+</head>
+<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Additional Fund Fetch through Secondary Mobile Number</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 17-11-2026 · Fetch more mutual funds under the same PAN using a secondary mobile number or email ID, re-work the eligibility, carry the email into KYC and pledge through the mutually inclusive contact; one mobile number can hold two PAN profiles.</p><div class="brd-body">
+<h2>1. Overview</h2>
+<p>At onboarding, the customer’s mutual funds are fetched from MF Central using the mobile number and PAN given. A customer may
+hold more funds under the same PAN that are registered with another mobile number or an email ID. This BRD covers the
+<b>additional fund fetch</b>, where the customer gives a secondary mobile number or an email ID to fetch those funds too, and how it
+flows into KYC, pledging and the loan.</p>
+<h2>2. Process flow</h2>
+<figure class="brd-fig wide"><a href="assets/img/brd/additional-fund-fetch-flow.jpg" target="_blank" rel="noopener"><img src="assets/img/brd/additional-fund-fetch-flow.jpg" alt="Additional fund fetch through a secondary mobile number or email ID – process flow"></a>
+<figcaption>Additional fund fetch through a secondary mobile number or email ID – process flow for two profiles on the same mobile number (click to open full size)</figcaption></figure>
+<h2>3. Same mobile number with two PANs</h2>
+<ul>
+<li>One validated mobile number (M1) can be used with two different PANs (P1 and P2).</li>
+<li>Each mobile number + PAN pair is a separate profile: M1P1 and M1P2.</li>
+<li>Each profile goes through its own fund fetch, additional fund fetch, KYC, pledging and loan, and gets its own LAN
+(LAN 1 for M1P1, LAN 2 for M1P2).</li>
+<li>The funds of one profile are never mixed with the funds of the other.</li>
+</ul>
+<h2>4. First fund fetch</h2>
+<ul>
+<li>The customer onboards with the mobile number (M1) and the PAN (P1).</li>
+<li>The funds are fetched from MF Central for M1 + P1 and the eligibility is worked out. Example: Funds A, B and C.</li>
+</ul>
+<h2>5. Additional fund fetch</h2>
+<p>The customer can then ask for an additional fund fetch by giving another mobile number or an email ID. The funds are fetched only
+when the contact is linked with the same PAN. The outcomes are:</p>
+<table class="brd-table"><thead><tr><th>Contact given</th><th>Linked with the PAN?</th><th>What happens</th><th>Example (profile M1P1)</th></tr></thead><tbody>
+<tr><td>Same mobile number (M1)</td><td>Yes</td><td>Nothing new is fetched; the funds are already fetched.</td><td>Funds A, B, C (no change)</td></tr>
+<tr><td>Secondary mobile number (M2)</td><td>Yes</td><td>The funds linked with M2 + P1 are fetched and the eligibility is worked out again.</td><td>Funds A, D, E</td></tr>
+<tr><td>Email ID (E1)</td><td>Yes</td><td>The funds linked with E1 + P1 are fetched and the eligibility is worked out again. Funds already fetched are not added again.</td><td>Funds A, B, C, D, E</td></tr>
+<tr><td>Mobile number (M3) or email ID (E2)</td><td>No</td><td>No funds are available for this contact and PAN. The customer continues with the funds already fetched.</td><td>No new funds</td></tr>
+</tbody></table>
+<ul>
+<li>A fund that comes back in more than one fetch (for example, Fund A) is shown only once.</li>
+<li>After every additional fund fetch, the eligibility is worked out again on the full list of funds.</li>
+<li>For profile M1P2 the same rules apply to its own funds. Example: first fetch X, Y, Z; M2 gives X, U, V; E1 gives X, Y, Z, U, V.</li>
+</ul>
+<h2>6. Dedupe check</h2>
+<table class="brd-table"><thead><tr><th>Journey</th><th>When the dedupe check runs</th></tr></thead><tbody>
+<tr><td>Organic</td><td>After onboarding, before the MF Central fund fetch.</td></tr>
+<tr><td>LSP</td><td>After the fund fetch and the additional fund fetch, before KYC.</td></tr>
+</tbody></table>
+<h2>7. KYC</h2>
+<ul>
+<li>If an email ID was used in the additional fund fetch, it is auto-filled in KYC and cannot be edited.</li>
+<li>If more than one email ID was used in the additional fund fetch, the customer is shown radio buttons to choose one.</li>
+</ul>
+<h2>8. Pledging and loan</h2>
+<ul>
+<li>The funds are pledged giving priority to the contact that covers the most funds (the mutually inclusive contact). In the
+example, this is the email ID E1, as it covers Funds A, B, C, D and E.</li>
+<li>The customer then completes the sanction letter, the e-Agreement and the mandate, and the LAN is submitted
+(LAN 1 for M1P1, LAN 2 for M1P2).</li>
+</ul>
+<h2>9. End to end flow</h2>
+<ol class="brd-flow">
+<li>The customer validates the mobile number (M1) and gives the PAN (P1 or P2).</li>
+<li>Organic journey: dedupe check.</li>
+<li>Funds are fetched from MF Central and the eligibility is worked out.</li>
+<li>The customer can do an additional fund fetch with a secondary mobile number or an email ID linked with the same PAN; the eligibility is worked out again.</li>
+<li>LSP journey: dedupe check.</li>
+<li>KYC, with the email ID from the additional fund fetch auto-filled (or chosen, if more than one).</li>
+<li>Pledging of the funds, giving priority to the mutually inclusive contact.</li>
+<li>Sanction letter, e-Agreement and mandate; the LAN is submitted.</li>
+</ol>
+<h2>10. System impact</h2>
+<table class="brd-table"><tbody>
+<tr><th>LOS</th><td>Option for an additional fund fetch with a secondary mobile number or email ID; combined fund list without duplicates;
+eligibility worked out again; email auto-filled and locked in KYC, or a radio button when there is more than one; two profiles on
+one mobile number, each with its own LAN.</td></tr>
+<tr><th>MF Central / BRE</th><td>Fund fetch for each contact + PAN; eligibility worked out again after every fetch.</td></tr>
+<tr><th>Pledging</th><td>Pledge through the mutually inclusive contact first.</td></tr>
+<tr><th>Dedupe</th><td>Before the fund fetch for Organic; before KYC for LSP.</td></tr>
+</tbody></table>
+<h2>11. Open points</h2>
+<ol class="brd-flow">
+<li>Is an OTP sent to the secondary mobile number or email ID before its funds are fetched?</li>
+<li>How many additional fund fetches can the customer do in one application?</li>
+<li>Pledging: when no single contact covers all the selected funds, are the remaining funds pledged through the other contacts?</li>
+<li>In the diagram, the “No funds available” box of profile M1P2 reads “M3/E2 &amp; P1”; it should read “M3/E2 &amp; P2”.</li>
+</ol>
+</div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
+<script src="assets/review.js"></script>
+</body>
+</html>
