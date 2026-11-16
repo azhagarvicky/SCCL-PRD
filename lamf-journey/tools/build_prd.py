@@ -1517,6 +1517,7 @@ HTML = f"""<!doctype html>
 <p class="foot">Screenshots are taken from the clickable LAMF prototype hosted locally at <code>http://localhost:8080</code>.</p>
 </main>
 <script src="assets/review.js"></script>
+<script src="assets/colresize.js"></script>
 <script>
   // Opened from the journey's "Go to PRD" button (#sl-5 etc.): bring that row into view and highlight it (DISC-153)
   (function () {{
