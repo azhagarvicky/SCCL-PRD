@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – DRAFT LAN Rejection</title>
-<link rel="stylesheet" href="assets/lamf.css?v=addf512">
+<link rel="stylesheet" href="assets/lamf.css?v=94cabea">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – DRAFT LAN Rejection</h1><p class="brd-meta"><span class="brd-st">Draft</span>Last updated 16-11-2026 · Reject a loan application in DRAFT status in LMS when the mutual fund units are pledged (DRAFT → REJECTED, then de-pledge); unpledged DRAFT LANs move to INACTIVE after 30 days.</p><div class="brd-body">
 <h2>1. Background</h2>
@@ -65,7 +65,7 @@ new application) instead of continuing the rejected one.</li>
 <li>OPS enters the rejection reason and confirms (final).</li>
 <li>LAN status DRAFT → REJECTED; the rejection is recorded in the Audit.</li>
 <li>Customer is informed: application rejected, units still lien-marked (charges and payment link as per the Waiver BRD).</li>
-<li>De-pledge of the units (after the payment, or at once when the charges are fully waived).</li>
+<li>De-pledge of the units: at once when the charges are fully waived; otherwise after the customer pays and the Treasury team confirms the payment in LMS (Waiver BRD).</li>
 <li>Next login in LOS → the Curated Offers page shows a fresh product card.</li>
 </ol>
 <h2>8. Status changes</h2>
@@ -81,7 +81,7 @@ new application) instead of continuing the rejected one.</li>
 Audit; status DRAFT → REJECTED; de-pledge allowed for the REJECTED LAN; no automatic expiry for a pledged DRAFT LAN; the automatic
 DRAFT → INACTIVE move for an unpledged LAN after 30 days.</td></tr>
 <tr><th>LOS</th><td>After the rejection, the Curated Offers page shows a fresh product card on the next login (no “Continue” of the rejected application).</td></tr>
-<tr><th>UNO</th><td>No accounting entry for the rejection itself; the charges are accounted as per the Waiver BRD.</td></tr>
+<tr><th>UNO</th><td>No accounting entry for the rejection itself. When the customer pays the charges, the entry is posted as per the Waiver BRD.</td></tr>
 <tr><th>Customer communication</th><td>On rejection: loan application rejected, units still lien-marked (template to be created).</td></tr>
 </tbody></table>
 <h2>10. Open points</h2>
@@ -91,6 +91,6 @@ DRAFT → INACTIVE move for an unpledged LAN after 30 days.</td></tr>
 <li>Rejection reasons: free text now; a fixed list of reasons in a later phase.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=addf512"></script>
+<script src="assets/review.js?v=94cabea"></script>
 </body>
 </html>
