@@ -314,6 +314,133 @@ approval; revocation in parallel; refund update with the UTR number for an exces
 </tbody></table>
 """
 
+DYNAMIC_PRICING = """
+<h2>1. Business requirement</h2>
+<p>The rate of interest (ROI) for a customer is worked out with this formula:</p>
+<p><b>Final ROI = Base interest rate + Bureau incremental rate + Equity % of portfolio incremental rate</b></p>
+<p>The system works out each part on its own, using the rules below, and shows the calculation to the customer in a simple,
+easy-to-understand way.</p>
+<h2>2. Parts of the ROI</h2>
+<h3>2.1 Base interest rate</h3>
+<p>The base interest rate depends on the sanctioned loan amount.</p>
+<table class="brd-table"><thead><tr><th>Loan amount</th><th>Base interest rate</th></tr></thead><tbody>
+<tr><td>Below ₹10 lakh</td><td class="c">10.50%</td></tr>
+<tr><td>₹10 lakh to below ₹50 lakh</td><td class="c">10.30%</td></tr>
+<tr><td>₹50 lakh to below ₹1 crore</td><td class="c">10.00%</td></tr>
+<tr><td>₹1 crore to below ₹2 crore</td><td class="c">9.75%</td></tr>
+<tr><td>₹2 crore to below ₹100 crore</td><td class="c">9.60%</td></tr>
+<tr><td>₹100 crore and above</td><td class="c">9.50%</td></tr>
+</tbody></table>
+<h3>2.2 Bureau incremental rate</h3>
+<p>An extra rate is added based on the customer’s bureau score.</p>
+<table class="brd-table"><thead><tr><th>Bureau score</th><th>Incremental rate</th></tr></thead><tbody>
+<tr><td>650 to 900</td><td class="c">0.00%</td></tr>
+<tr><td>550 to 649</td><td class="c">0.30%</td></tr>
+<tr><td>300 to 549</td><td class="c">0.40%</td></tr>
+<tr><td>Below 300</td><td class="c">0.25%</td></tr>
+<tr><td>NA (score not available)</td><td class="c">0.25%</td></tr>
+<tr><td>NH (no history / new to credit)</td><td class="c">0.25%</td></tr>
+</tbody></table>
+<p>Rules:</p>
+<ul>
+<li>The system picks up the bureau score available for the customer.</li>
+<li>The score is matched to its bucket in the table above.</li>
+<li>For NA or NH customers, the incremental rate is 0.25%.</li>
+<li>The customer is shown the bureau score (or the NA / NH status), the bucket and the incremental rate.</li>
+</ul>
+<h3>2.3 Equity % of portfolio incremental rate</h3>
+<p>The equity % of the portfolio is worked out from the collateral value of the pledged mutual funds:</p>
+<p><b>Equity % of portfolio = (Collateral value of the equity mutual funds ÷ Collateral value of all the mutual funds) × 100</b></p>
+<ul>
+<li>Top part: the total collateral value of the equity mutual funds.</li>
+<li>Bottom part: the total collateral value of all the eligible pledged mutual funds, that is equity, hybrid and debt funds.</li>
+</ul>
+<p>The percentage is then matched to this grid:</p>
+<table class="brd-table"><thead><tr><th>Equity % of portfolio</th><th>Incremental rate</th></tr></thead><tbody>
+<tr><td>0% to below 70%</td><td class="c">0.00%</td></tr>
+<tr><td>70% to below 85%</td><td class="c">0.10%</td></tr>
+<tr><td>85% to 100%</td><td class="c">0.20%</td></tr>
+</tbody></table>
+<h2>3. Approved Securities master</h2>
+<ul>
+<li>The Approved Securities list holds the type of each approved mutual fund.</li>
+<li>A new column, <b>Type of mutual fund</b>, is added in the Collateral section. The same column is added to the download template
+and to the upload.</li>
+<li>The column takes one of three values: Equity, Hybrid or Debt.</li>
+</ul>
+<table class="brd-table"><thead><tr><th>Fund</th><th>Type of mutual fund</th></tr></thead><tbody>
+<tr><td>Fund A</td><td>Equity</td></tr>
+<tr><td>Fund B</td><td>Hybrid</td></tr>
+<tr><td>Fund C</td><td>Debt</td></tr>
+</tbody></table>
+<h2>4. Example</h2>
+<p>Customer details:</p>
+<table class="brd-table"><tbody>
+<tr><th>Sanctioned loan amount</th><td>₹75 lakh</td></tr>
+<tr><th>Bureau score</th><td>620</td></tr>
+<tr><th>Total collateral value</th><td>₹1 crore</td></tr>
+<tr><th>Equity funds collateral value</th><td>₹60 lakh</td></tr>
+<tr><th>Hybrid funds collateral value</th><td>₹10 lakh</td></tr>
+<tr><th>Debt funds collateral value</th><td>₹30 lakh</td></tr>
+</tbody></table>
+<table class="brd-table"><thead><tr><th>Step</th><th>Working</th><th>Rate</th></tr></thead><tbody>
+<tr><td>1. Base interest rate</td><td>₹75 lakh falls in the ₹50 lakh to below ₹1 crore bucket.</td><td class="c">10.00%</td></tr>
+<tr><td>2. Bureau incremental rate</td><td>Score 620 falls in the 550 to 649 bucket.</td><td class="c">0.30%</td></tr>
+<tr><td>3. Equity % of portfolio</td><td>Equity + hybrid = ₹60 lakh + ₹10 lakh = ₹70 lakh. ₹70 lakh ÷ ₹1 crore × 100 = 70%,
+which falls in the 70% to below 85% bucket.</td><td class="c">0.10%</td></tr>
+<tr><td><b>4. Final ROI</b></td><td>10.00% + 0.30% + 0.10%</td><td class="c"><b>10.40%</b></td></tr>
+</tbody></table>
+<h2>5. When the BRE is called</h2>
+<p>The Business Rule Engine (BRE) is called two times in the customer journey to work out the eligibility and the ROI.</p>
+<h3>5.1 First call – after the CAMS fetch</h3>
+<ul>
+<li><b>When:</b> after the mutual fund holdings are fetched from CAMS.</li>
+<li><b>Input:</b> the mutual fund data from CAMS and the other values needed for the calculation.</li>
+<li><b>What the BRE does:</b> processes the holdings from CAMS, works out the eligible loan amount using the LTV, works out the ROI
+from the inputs available, and returns the offer and eligibility details.</li>
+<li><b>Result:</b> the output fills the Curated Offers screen / dashboard. The customer continues through the CTA “Basis the CAMS
+Output” (or the CTA set up for this step).</li>
+</ul>
+<h3>5.2 Second call – on the Funds Selection page</h3>
+<ul>
+<li><b>When:</b> on the Funds Selection page, after the customer selects the mutual funds for the loan.</li>
+<li><b>Why:</b> the funds the customer selects can be different from the holdings received from CAMS, so the eligibility and the ROI
+have to be worked out again for the final selection.</li>
+<li><b>Input:</b> the final list of selected funds and the other values needed.</li>
+<li><b>What the BRE works out again:</b> the eligible loan amount, the equity % of portfolio, the base interest rate (when the loan
+amount changes), the bureau incremental rate (as applicable) and the final ROI.</li>
+<li><b>Result:</b> the new ROI replaces the ROI from the first call wherever the inputs have changed.</li>
+</ul>
+<h2>6. Change in fund selection</h2>
+<ul><li>Any change the customer makes on the Funds Selection page that changes the mix of pledged mutual funds calls the BRE again.</li></ul>
+<h2>7. Where the ROI is used</h2>
+<p>The ROI is shown on these screens:</p>
+<ul>
+<li>Curated Offers screen</li>
+<li>Loan Application Summary screen</li>
+<li>Withdrawal screen</li>
+<li>Loan Details tab on the dashboard</li>
+<li>Key Facts Statement (KFS)</li>
+</ul>
+<p>The same ROI is used for:</p>
+<ul>
+<li>The repayment schedule</li>
+<li>The repayment worked out for each disbursement</li>
+<li>Any other repayment figure shown to the customer that needs the ROI</li>
+</ul>
+<p>The ROI shown on all these screens and the ROI used in the repayment calculations must always be the same.</p>
+<h2>8. System impact</h2>
+<table class="brd-table"><tbody>
+<tr><th>BRE</th><td>ROI worked out as base rate + bureau rate + equity % rate; called after the CAMS fetch, on the Funds Selection page,
+and again on any change in the selected funds.</td></tr>
+<tr><th>LOS</th><td>ROI and its breakup shown on Curated Offers, Loan Application Summary, Withdrawal and the Loan Details tab;
+the ROI from the second call replaces the first one where the inputs changed.</td></tr>
+<tr><th>LMS</th><td>New column “Type of mutual fund” (Equity / Hybrid / Debt) in the Collateral section of the Approved Securities
+master, and in its download template and upload.</td></tr>
+<tr><th>Documents and repayment</th><td>The same ROI in the KFS, the repayment schedule and each disbursement’s repayment.</td></tr>
+</tbody></table>
+"""
+
 BRDS = [
     {"slug": "waive-off", "title": "Waiver of Charges and Processing Fee", "status": "Draft", "updated": "16-11-2026",
      "summary": "One common process to waive the charges fully, partially or not at all, collect the balance from the customer "
@@ -327,4 +454,8 @@ BRDS = [
      "summary": "Part payment and preclosure from LOS: payment type, amount rules, apportioning and accounting, notifications and "
                 "the preclosure approval process in LMS.",
      "body": PART_PAYMENT_PRECLOSURE},
+    {"slug": "dynamic-pricing", "title": "Dynamic Pricing", "status": "Completed", "updated": "16-11-2026",
+     "summary": "Rate of interest worked out as base rate (by loan amount) + bureau rate (by score) + equity % of portfolio rate, "
+                "calculated by the BRE after the CAMS fetch and again on fund selection, and kept the same across LOS, KFS and repayment.",
+     "body": DYNAMIC_PRICING},
 ]
