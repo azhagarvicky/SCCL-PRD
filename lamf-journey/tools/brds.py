@@ -26,51 +26,101 @@ CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by t
 LM, LR, PF, SD = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee Charge", "Stamp Duty Charge"
 ACTIVE_CH = [LM, LR, PF, SD, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Annual Maintenance Charge (AMC)", "Bank Swap Charge"]
 
-# The 7 scenarios from the owner's LAMF_Charges_Waiver_V1.xlsx (DISC-274); the waive-off process is common to all (DISC-280).
-# Simplified layout on the owner's request (DISC-288). (No, LMS LAN status, customer dropped off, what OPS can do)
-WAIVER_SCENARIOS = [
-    (1, "DRAFT", "Before pledging the mutual funds", [],
-     "Nothing – no charges. The LAN moves to INACTIVE automatically after 30 days."),
-    (2, "DRAFT", "After pledging the mutual funds", [LM, LR],
-     "Reject, with no, partial or full waive-off."),
-    (3, "DRAFT", "After the Sanction Letter is generated", [PF, LM, LR],
-     "Reject, with no, partial or full waive-off."),
-    (4, "DRAFT", "After the Loan Agreement e-Sign", [PF, LM, LR, SD],
-     "Reject, with no, partial or full waive-off."),
-    (5, "SUBMITTED", "After the E-Mandate", [PF, LM, LR, SD],
-     "Approve the Loan Account Opening (no charges collected now), or reject with no, partial or full waive-off."),
+# The 7 scenarios from the owner's LAMF_Charges_Waiver_V1.xlsx (DISC-274) – outcomes, Product Construct and Treasury Remarks
+# (accounting) per scenario. Layout on the owner's request (DISC-290): Purpose → Summary of scenarios → Common changes →
+# each scenario with its accounting entries.
+_PAY = "After the customer pays and Treasury confirms the payment in LMS"
+_UNO_PAID = "Entry for the charges paid, posted in UNO once SCCL receives the payment."
+REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, accounting – UNO)
+    ("Rejected – no waive-off", "OPS rejects without waiving any charge. LAN → REJECTED.",
+     "Rejection SMS and mail with the full charges and the payment link.", _PAY, _UNO_PAID),
+    ("Rejected – partial waive-off", "OPS waives part of the charges and rejects. LAN → REJECTED.",
+     "Rejection SMS and mail with the payable (reduced) charges and the payment link.", _PAY,
+     "Entry for the amount paid, posted in UNO once SCCL receives the payment. The waived part does not go into UNO."),
+    ("Rejected – full waive-off", "OPS waives all the charges and rejects. LAN → REJECTED.",
+     "Rejection SMS and mail. No payment link.", "Right after the rejection",
+     "No entry. The waived charges do not go into UNO."),
+]
+WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS options in the Approvals tab, outcomes)
+    (1, "DRAFT", "Before pledging the mutual funds", [], "No Approvals action.", []),
+    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Waive-off per charge, Reject (new).", REJ_OUTCOMES),
+    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR], "Waive-off per charge, Reject (new).", REJ_OUTCOMES),
+    (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF, LM, LR, SD],
+     "Waive-off per charge, Reject (new).", REJ_OUTCOMES),
+    (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF, LM, LR, SD],
+     "Approve the Loan Account Opening, or waive-off per charge and Reject.",
+     [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
+       "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF, LM, LR, SD],
-     "Approve the Loan Lodgement (with or without waive-off), or reject with no, partial or full waive-off."),
-    (7, "ACTIVE", "After the Loan Lodgement", ACTIVE_CH,
-     "Waive charges on the active loan (no, partial or full); no rejection. A waiver is shown in the Statement of Account with "
-     "a waiver narration. Without a waiver, charges are collected before closure (existing process)."),
+     "Approve the Loan Lodgement (with or without waive-off), or waive-off per charge and Reject.",
+     [("Approved – no waive-off", "OPS approves the Loan Lodgement. The loan goes to lodgement. No charges are collected at this stage.",
+       "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage."),
+      ("Approved – with waive-off", "OPS waives part or all of the charges and approves the Loan Lodgement.",
+       "Existing communication.", "Not applicable – the loan continues.", "The waived charges do not go into UNO.")] + REJ_OUTCOMES),
+    (7, "ACTIVE", "After the Loan Lodgement (loan account active)", ACTIVE_CH,
+     "Waive-off per charge on the active loan. No rejection.",
+     [("No waive-off", "The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.",
+       "Existing communication.", "At loan closure (existing process).", "Existing accounting process."),
+      ("With waive-off (partial or full)", "OPS waives part or all of a charge. As the charge is already posted in the SOA, the SOA "
+       "is updated with a waiver narration.", "Existing communication.", "At loan closure (existing process).",
+       "The waived charges do not go into UNO.")]),
 ]
 
 
 def _waiver_body():
-    tick = lambda c, chs: "✓" if c in chs else ""
-    charges = ("<table class='brd-table brd-mx'><thead><tr><th>Charge</th><th>Amount (total incl. 18% GST)</th>"
-               + "".join(f"<th>Sc. {n}</th>" for n, *_ in WAIVER_SCENARIOS) + "</tr></thead><tbody>"
-               + "".join(f"<tr><td>{c}</td><td>{amt}</td>" + "".join(f"<td class='c'>{tick(c, s[3])}</td>" for s in WAIVER_SCENARIOS) + "</tr>"
-                         for c, amt, _ in CHARGES) + "</tbody></table>")
-    scen = ("<table class='brd-table'><thead><tr><th>Sc.</th><th>LAN status</th><th>Customer dropped off</th><th>What OPS can do</th></tr></thead><tbody>"
-            + "".join(f"<tr><td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{do}</td></tr>" for n, st, sc, _, do in WAIVER_SCENARIOS)
-            + "</tbody></table>")
+    amt = dict((c, a) for c, a, _ in CHARGES)
+    summary = ("<table class='brd-table'><thead><tr><th>Sc.</th><th>LAN status</th><th>Customer dropped off</th>"
+               "<th>Charges applicable</th><th>OPS options</th></tr></thead><tbody>"
+               + "".join(f"<tr><td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td><td>{op}</td></tr>"
+                         for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
+    charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody>"
+               + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
+
+    def scenario(n, st, sc, ch, op, outs):
+        h = f"<h3>4.{n} Scenario {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h3>"
+        if not ch:
+            return h + ("<ul><li><b>Charges:</b> none – the units are not pledged.</li>"
+                        "<li><b>Approvals tab:</b> no action. The LAN moves from DRAFT to INACTIVE automatically when the units are "
+                        "not pledged within 30 days from the LAN generated date.</li>"
+                        "<li><b>Customer communication:</b> none.</li>"
+                        "<li><b>Accounting:</b> no entries.</li></ul>")
+        chs = ("<table class='brd-table'><thead><tr><th>Charge shown in the Approvals tab</th><th>Amount</th><th>Amount to waive</th>"
+               "<th>Payable</th></tr></thead><tbody>"
+               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Entered by OPS</td><td>Amount – waived</td></tr>" for c in ch)
+               + "</tbody></table>")
+        out = ("<table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th>"
+               "<th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody>"
+               + "".join(f"<tr><td><b>{o}</b></td><td>{w}</td><td>{c}</td><td>{d}</td><td>{u}</td></tr>" for o, w, c, d, u in outs)
+               + "</tbody></table>")
+        return h + f"<p><b>Approvals tab:</b> {op}</p>" + chs + out
+
+    scen = "\n".join(scenario(*x) for x in WAIVER_SCENARIOS)
     return f"""
 <h2>1. Purpose</h2>
 <p>When a customer drops off after pledging the mutual fund units, some charges are already incurred. Today SCCL bears them.
 This BRD gives OPS one common process to waive these charges fully, partially or not at all, and to collect the balance from the
 customer before the units are de-pledged.</p>
-<h2>2. Scenarios</h2>
-<p>The same process (sections 4 and 5) applies to every scenario. Rejecting a DRAFT LAN is covered in the BRD DRAFT LAN Rejection.</p>
-{scen}
-<h2>3. Charges in each scenario</h2>
-{charges}
-<h2>4. Rules</h2>
+<h2>2. Summary of scenarios</h2>
+{summary}
+<h2>3. Common changes (apply to all scenarios)</h2>
+<h3>3.1 Approvals tab for a DRAFT loan (new)</h3>
 <ul>
-<li><b>Waive-off amount:</b> in the LMS Approvals tab, OPS enters the amount to waive for each charge. Payable = charge – amount
-waived. The amount waived cannot be more than the charge.</li>
-<li><b>Type of waive-off:</b> decided by the system when OPS rejects; OPS does not choose it.
+<li>Today LMS has no Approvals tab for a DRAFT loan. Add the Approvals tab in the LAN details of a DRAFT loan whose units are
+pledged (scenarios 2 to 4).</li>
+<li>It lists each charge incurred so far with its amount, an <b>Amount to waive</b> field and the <b>Payable</b> amount, and a
+<b>Reject</b> action.</li>
+<li>Rejecting a DRAFT LAN itself (status rules) is covered in the BRD DRAFT LAN Rejection.</li>
+</ul>
+<h3>3.2 Waive-off in the existing Approvals tab</h3>
+<ul>
+<li>SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6): the same charge list with the Amount to waive field is added next to
+the existing Approve and Reject actions.</li>
+<li>ACTIVE loans (scenario 7): an option to waive a charge already posted in the Statement of Account, with a waiver narration.</li>
+</ul>
+<h3>3.3 How the waive-off works</h3>
+<ul>
+<li><b>Payable</b> = charge – amount waived. The amount waived cannot be more than the charge.</li>
+<li><b>Type of waive-off</b> is set by the system when OPS rejects; OPS does not choose it:
 <table class="brd-table"><thead><tr><th>Payable charges</th><th>Type</th></tr></thead><tbody>
 <tr><td>Same as the charges</td><td>No waive-off</td></tr>
 <tr><td>Less than the charges, but not 0</td><td>Partial waive-off</td></tr>
@@ -79,30 +129,26 @@ waived. The amount waived cannot be more than the charge.</li>
 <li><b>Who can reject:</b> loan amount below ₹5 lakh – OPS L1 only; ₹5 lakh and above – OPS L2 or L3 only.</li>
 <li><b>Rejection:</b> OPS enters a reason (recorded in the Audit) and confirms in the existing pop-up. It is final and cannot be
 revoked. The LAN status becomes REJECTED.</li>
-<li><b>Customer message:</b> sent only after the rejection. Full waive-off – rejection SMS and mail only. Partial or no waive-off –
-rejection SMS and mail with the payable charges and a payment link.</li>
+<li><b>Customer communication:</b> only after the rejection – with the payment link for partial or no waive-off, without it for
+a full waive-off.</li>
 <li><b>Payment:</b> through the payment link (after OTP verification), or in LOS, where a new page shows the total charges, the
 breakup and a Pay button. After the rejection, paying is the only option in LOS.</li>
-<li><b>Accounting:</b> the UNO entry is posted when the customer pays. Waived charges do not go into UNO.</li>
+<li><b>After the payment:</b> the UNO entry is posted, and an internal mail goes to Treasury (Natarajan K) with the LAN, the amount
+and the breakup. Treasury confirms the payment in LMS. The system then generates the receipt, saves it in the LAN’s Documents tab,
+and sends it to the customer with a payment received SMS and mail.</li>
 <li><b>De-pledge:</b> only for a REJECTED or CLOSED LAN. Full waive-off – right after the rejection. Partial or no waive-off – only
-after the customer pays and Treasury confirms the payment in LMS; until then the de-pledge option stays disabled.</li>
+after the Treasury confirmation; until then the de-pledge option stays disabled.</li>
+<li><b>Accounting:</b> UNO entries only for what the customer actually pays, when it is received. Waived charges never go into UNO.</li>
 </ul>
-<h2>5. Process flow</h2>
-<ol class="brd-flow">
-<li>OPS opens the LAN in LMS → Approvals tab and enters the amount to waive for each charge, if any.</li>
-<li>OPS rejects with a reason and confirms. The LAN becomes REJECTED and the system sets the type of waive-off.</li>
-<li><b>Full waive-off:</b> the customer gets the rejection SMS and mail. OPS de-pledges the units. End.</li>
-<li><b>Partial or no waive-off:</b> the customer gets the rejection SMS and mail with the payable charges and the payment link.</li>
-<li>The customer pays through the link (with OTP) or the LOS payment page.</li>
-<li>The UNO entry is posted, and an internal mail goes to Treasury (Natarajan K) with the LAN, the amount and the breakup.</li>
-<li>Treasury confirms the payment in LMS.</li>
-<li>The system generates the receipt, saves it in the LAN’s Documents tab, and sends it to the customer with a payment received SMS and mail.</li>
-<li>The de-pledge option is enabled and OPS de-pledges the units.</li>
-</ol>
-<h2>6. Open points</h2>
+<h3>3.4 Charges and amounts</h3>
+{charges}
+<h2>4. Scenarios</h2>
+{scen}
+<h2>5. Open points</h2>
 <ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
 <li>Scenario 7: who can waive charges on an active loan, and any limit.</li>
-<li>Templates for the rejection, payment received and Treasury mails.</li></ul>
+<li>Templates for the rejection, payment received and Treasury mails.</li>
+<li>Roles for approving with a waive-off in scenario 6.</li></ul>
 """
 
 
