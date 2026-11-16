@@ -82,6 +82,7 @@ TPL = """<!doctype html>
 <script src="assets/lamf.js"></script>
 <script>{code}</script>
 <script src="assets/review.js"></script>
+<script src="assets/colresize.js"></script>
 </body>
 </html>
 """
@@ -992,6 +993,7 @@ PAGE = """<!doctype html>
 </head>
 <body class="{cls}">{body}
 <script src="assets/review.js"></script>
+<script src="assets/colresize.js"></script>
 </body>
 </html>
 """
@@ -1070,6 +1072,7 @@ CLOUD = """<!doctype html>
 <script>""" + _read("assets", "calc.js") + """</script>
 <script>""" + _read("assets", "screens.js") + """</script>
 <script>""" + _read("assets", "prd-body.js") + """</script>
+<script>""" + _read("assets", "colresize.js") + """</script>
 <script>
   function route() {
     var name = decodeURIComponent(location.hash.replace(/^#/, ''));
