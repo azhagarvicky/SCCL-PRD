@@ -834,13 +834,15 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
                   + fld("Due Date of Every Month", '<input name="dueday" value="5th of every month" readonly tabindex="-1">', "ro")
                   + fld("As on Date", '<input type="date" name="ason" title="Date for the collected / pending summary">') + '</div>')
             + sec(3, "Withdrawals and repayments",
-                  '<div class="calc-txw"><table class="calc-tx"><thead><tr><th>Type</th><th>Date</th><th>Amount</th>'
-                  '<th class="n">Outstanding after</th><th></th></tr></thead><tbody></tbody></table>'
-                  '<p class="tx-empty">No withdrawal or repayment yet – add one below.</p>'
-                  '<div class="tx-foot"><div class="tx-add"><button type="button" class="calc-add w" data-add="w">+ Add withdrawal</button>'
-                  '<button type="button" class="calc-add r" data-add="r">+ Add repayment</button></div>'
-                  '<div class="tx-tot"><span class="tx-w">Withdrawals <b></b></span><span class="tx-r">Repayments <b></b></span>'
-                  + fld("Outstanding Principal", '<input name="outstanding" readonly tabindex="-1">', "ro") + '</div></div></div>')
+                  '<div class="tx-box"><div class="tx-new">'
+                  '<div class="calc-f"><span>Type</span><div class="tx-seg"><button type="button" data-kind="w" class="on">↓ Withdrawal</button>'
+                  '<button type="button" data-kind="r">↑ Repayment</button></div></div>'
+                  + fld("Date", '<input type="date" name="txd">')
+                  + fld("Amount", '<div class="amt-w"><i>₹</i><input name="txa" inputmode="decimal" placeholder="0"></div>')
+                  + '<button type="button" class="tx-addbtn">+ Add</button></div><p class="tx-msg" role="alert"></p>'
+                  '<ol class="tx-list"></ol><p class="tx-empty">No withdrawal or repayment added yet.</p>'
+                  '<div class="tx-sum"><div><span>Total withdrawals</span><b class="sw"></b></div><div><span>Total repayments</span><b class="sr"></b></div>'
+                  '<div class="hi"><span>Outstanding principal</span><b class="so"></b></div></div></div>')
             + '<div class="calc-actions"><button class="calc-go" type="submit">Calculate Now</button><p class="calc-err" role="alert"></p></div></form>'
             '<div class="calc-out"></div>' + CONTACT)
 

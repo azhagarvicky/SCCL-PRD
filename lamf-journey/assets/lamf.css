@@ -1206,3 +1206,37 @@ body.page-screens { padding: 40px 76px; }
 .page-calc .calc-f.ro input { background: #f4f5f7; border-color: #e3e6eb; cursor: default; }
 .page-calc .calc-f.ro input:focus { box-shadow: none; border-color: #e3e6eb; }
 .page-calc .calc-f > span { font-size: 13px; color: #444; }
+/* Calculator – withdrawals and repayments composer + timeline (DISC-266) */
+.page-calc .tx-new { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr) auto; gap: 14px; align-items: end; }
+.page-calc .tx-seg { display: inline-flex; height: 46px; padding: 4px; gap: 4px; border: 1px solid #d3d8e0; border-radius: 10px; background: #f6f7f9; box-sizing: border-box; }
+.page-calc .tx-seg button { font: inherit; font-size: 14px; font-weight: 600; border: 0; border-radius: 7px; padding: 0 14px; background: none; color: #555; cursor: pointer; white-space: nowrap; }
+.page-calc .tx-seg button.on[data-kind="w"] { background: #fff; color: #1a4fa0; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.page-calc .tx-seg button.on[data-kind="r"] { background: #fff; color: #12753B; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.page-calc .tx-seg button:disabled { opacity: .4; cursor: not-allowed; }
+.page-calc .tx-new .amt-w { position: relative; } .page-calc .tx-new .amt-w i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-style: normal; color: #777; }
+.page-calc .tx-new .amt-w input { padding-left: 30px; }
+.page-calc .tx-addbtn { height: 46px; padding: 0 22px; border: 0; border-radius: 10px; background: #111; color: #fff; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+.page-calc .tx-msg { color: #B42318; font-size: 13px; min-height: 18px; margin: 6px 0 4px; }
+.page-calc .tx-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.page-calc .tx-list li { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto 36px; align-items: center; gap: 14px; padding: 12px 16px; border-bottom: 1px solid #f0f1f4; }
+.page-calc .tx-list li:last-child { border-bottom: 0; }
+.page-calc .tx-list .ic { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; }
+.page-calc .tx-list li.w .ic { background: #E8F0FE; color: #1a4fa0; } .page-calc .tx-list li.r .ic { background: #E7F6EC; color: #12753B; }
+.page-calc .tx-list .tx-main b { display: block; font-size: 15px; } .page-calc .tx-list small { display: block; color: #777; font-size: 12.5px; margin-top: 2px; }
+.page-calc .tx-list .tx-amt { text-align: right; } .page-calc .tx-list .tx-amt b { font-size: 16px; }
+.page-calc .tx-list li.w .tx-amt b { color: #1a4fa0; } .page-calc .tx-list li.r .tx-amt b { color: #12753B; }
+.page-calc .tx-x { width: 32px; height: 32px; border: 0; border-radius: 8px; background: none; color: #999; cursor: pointer; font-size: 14px; }
+.page-calc .tx-x:hover { background: #fff1f0; color: #B42318; }
+.page-calc .tx-box .tx-empty { display: none; margin: 0; padding: 18px; border: 1px dashed #d3d8e0; border-radius: 12px; color: #888; font-size: 14px; text-align: center; }
+.page-calc .tx-box.empty .tx-empty { display: block; } .page-calc .tx-box.empty .tx-list { display: none; }
+.page-calc .tx-sum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+.page-calc .tx-sum div { padding: 10px 14px; border-radius: 10px; background: #f8f9fb; }
+.page-calc .tx-sum span { display: block; font-size: 12px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: .4px; }
+.page-calc .tx-sum b { font-size: 17px; } .page-calc .tx-sum .hi { background: #FFF8E1; }
+@media (max-width: 760px) { .page-calc .tx-new { grid-template-columns: 1fr 1fr; } .page-calc .tx-new > .calc-f:first-child { grid-column: 1 / -1; }
+  .page-calc .tx-seg { width: 100%; } .page-calc .tx-seg button { flex: 1; } .page-calc .tx-addbtn { grid-column: 1 / -1; }
+  .page-calc .tx-list li { grid-template-columns: 36px minmax(0, 1fr) 32px; } .page-calc .tx-list .tx-amt { grid-column: 2 / 3; text-align: left; }
+  .page-calc .tx-sum { grid-template-columns: 1fr; } }
+.page-calc .tx-list { columns: auto; column-count: 1; }
+.page-calc .tx-list li { border: 0; border-bottom: 1px solid #f0f1f4; border-radius: 0; margin: 0; break-inside: auto; }
+.page-calc .tx-list li:last-child { border-bottom: 0; }
