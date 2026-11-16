@@ -822,9 +822,9 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
             'with the principal and interest split and the interest accrual period.</p>'
             '<form class="calc-form" novalidate>'
             + sec(1, "Loan details", '<div class="calc-grid">'
-                  + fld("Product", f'<select name="product">{opt(["Line of Credit", "Single Disbursement", "Multiple Disbursement"], "Multiple Disbursement")}</select>')
-                  + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon / Interest Only"], "EMI")}</select>')
-                  + fld("Rate of Interest (% p.a.)", '<input name="rate" inputmode="decimal" value="10.50">')
+                  + fld("Product", f'<select name="product">{opt(["Line of Credit", "Single Disbursement", "Multiple Disbursement"], "Line of Credit")}</select>')
+                  + fld("Repayment Type", f'<select name="type">{opt(["EMI", "Balloon / Interest Only"], "Balloon / Interest Only")}</select>')
+                  + fld("Rate of Interest (% p.a.)", '<input name="rate" inputmode="decimal" value="11">')
                   + fld("Tenure in Months", f'<select name="tenure">{opt(["12", "24", "36", "48", "60", "72"], "12")}</select>')
                   + '<label class="calc-chk"><input type="checkbox" name="leap"><span>Leap year calculation – use 366 days for the days in a leap year '
                     '(when not ticked, 365 days are used in every year)</span></label></div>')
@@ -832,7 +832,7 @@ def calc_body(home):          # calculator page, opened by the 4th CTA on the ho
                   + fld("Lodgement Approval Date (Loan Start Date)", '<input type="date" name="start" value="2026-10-26">')
                   + fld("Loan End Date", '<input name="end" readonly tabindex="-1">', "ro")
                   + fld("Due Date of Every Month", '<input name="dueday" value="5th of every month" readonly tabindex="-1">', "ro")
-                  + fld("As on Date (for the collected / pending summary)", '<input type="date" name="ason">') + '</div>')
+                  + fld("As on Date", '<input type="date" name="ason" title="Date for the collected / pending summary">') + '</div>')
             + sec(3, "Withdrawals and repayments",
                   '<div class="calc-txw"><table class="calc-tx"><thead><tr><th>Type</th><th>Date</th><th>Amount</th>'
                   '<th class="n">Outstanding after</th><th></th></tr></thead><tbody></tbody></table>'

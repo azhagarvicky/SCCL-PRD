@@ -7,8 +7,8 @@
    (19-Jan → 05-Feb); after the 20th → the due day of the month after next (21-Jan → 05-Mar).
    Accrual (DISC-261): interest accrues by calendar month – the due on the 5th collects the interest of the whole
    previous month (1st – last day; the first due from the withdrawal date). The days from the 1st to the end of the
-   current month are collected next month. The last row is the loan end date (start date + tenure): interest from the
-   1st of that month to the day before, with the principal balance.
+   current month are collected next month. The last row is the loan end date (start date + tenure − 1 day, DISC-265): interest from
+   the 1st of that month up to and including the end date, with the principal balance.
    A withdrawal, a repayment or the principal paid on a due date changes the principal from that date.
    EMI      – equated instalment on the outstanding principal over the remaining due dates (re-worked every due);
               the last row clears the balance.
@@ -31,9 +31,12 @@
     return Date.UTC(y, m, Math.min(want, last)) / DAY;
   };
 
+  // Loan End Date = start date + tenure − 1 day: 12-Nov-2026 + 12 months → 11-Nov-2027 (DISC-265)
+  const loanEnd = (s, months) => addMonths(s, months) - 1;
+
   function schedule(inp) {
     const { start, tenure, rate, type, dueDay, leap } = inp;
-    const end = addMonths(start, tenure);
+    const end = loanEnd(start, tenure);
     const firstW = Math.min(...inp.withdrawals.map((w) => w.d));
     const firstDue = addMonths(firstW, new Date(firstW * DAY).getUTCDate() <= 20 ? 1 : 2, dueDay);   // DISC-261
     const dues = [];
@@ -49,7 +52,7 @@
     let from = firstW;
     const rows = [];
     dues.forEach((D, i) => {
-      const last = i === dues.length - 1, to = last ? D - 1 : monthEnd(D);
+      const last = i === dues.length - 1, to = last ? D : monthEnd(D);   // last row: up to and including the loan end date
       // Interest split (DISC-262): one part for every run of days with the same principal and the same daily rate;
       // each part = principal × daily rate (6 decimals) × days, rounded to 2 decimals; the row interest is their sum.
       const segs = [];
@@ -96,8 +99,8 @@
     if (!inp.withdrawals.length) return 'Enter at least one withdrawal (date and amount).';
     if (inp.product === 'Single Disbursement' && inp.withdrawals.length > 1) return 'Single Disbursement allows one withdrawal only.';
     if (!(inp.rate > 0)) return 'Enter the Rate of Interest.';
-    const end = addMonths(inp.start, inp.tenure);
-    if (inp.withdrawals.some((w) => w.d < inp.start || w.d >= end)) return 'Each withdrawal date has to be on or after the Loan Start Date and before the Loan End Date.';
+    const end = loanEnd(inp.start, inp.tenure);
+    if (inp.withdrawals.some((w) => w.d < inp.start || w.d > end)) return 'Each withdrawal date has to be between the Loan Start Date and the Loan End Date.';
     if (inp.repayments.some((p) => p.d < inp.start || p.d > end)) return 'Each repayment date has to be between the Loan Start Date and the Loan End Date.';
     return '';
   }
@@ -173,7 +176,7 @@
     const f = document.querySelector('.calc-form'); if (!f || f.dataset.ready) return; f.dataset.ready = '1';
     const tb = f.querySelector('.calc-tx tbody'), endEl = f.querySelector('[name="end"]');
     const syncEnd = () => { const s = toDay(f.querySelector('[name="start"]').value);
-      endEl.value = s === null ? '' : fmtD(addMonths(s, +f.querySelector('[name="tenure"]').value)); };
+      endEl.value = s === null ? '' : fmtD(loanEnd(s, +f.querySelector('[name="tenure"]').value)); };
     const syncTx = () => {                         // running balance by date, totals, Single Disbursement = one withdrawal
       const rowsTx = [...tb.querySelectorAll('tr')].map((tr) => ({ tr, d: toDay(tr.querySelector('input[type=date]').value),
         a: num(tr.querySelector('input.amt').value) * (tr.dataset.k === 'w' ? 1 : -1) }));
