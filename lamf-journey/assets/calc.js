@@ -12,8 +12,11 @@
    A withdrawal, a repayment or the principal paid on a due date changes the principal from that date.
    EMI      – equated instalment on the outstanding principal over the remaining due dates (re-worked every due);
               the last row clears the balance.
-   Interest Only – interest every month, the principal on the loan end date.
-   Balloon  – nothing is due monthly; the principal and all the interest accrued are due on the loan end date. */
+   Balloon / Interest Only – interest every month, the principal on the loan end date (DISC-264).
+   Products (DISC-264): Line of Credit, Single Disbursement (one withdrawal only), Multiple Disbursement.
+   Due date fixed on the 5th of every month (DISC-264).
+   Interest split rows (DISC-262, DISC-264) are shown only for a due whose interest has a withdrawal, a repayment or a
+   365 / 366 change inside it, and can be expanded or collapsed. */
 (function () {
   const DAY = 86400000;
   const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -43,7 +46,7 @@
     const round2 = (v) => Math.round(v * 100) / 100, round6 = (v) => Math.round(v * 1e6) / 1e6, r = rate / 1200;
     const events = [...inp.withdrawals.map((w) => ({ d: w.d, a: w.a, k: 'w' })), ...inp.repayments.map((x) => ({ d: x.d, a: -x.a, k: 'r' }))];
     const P = (t) => Math.max(0, events.reduce((s, e) => s + (e.d <= t ? e.a : 0), 0));   // principal on day t (after that day's events)
-    let from = firstW, carry = 0;   // carry: interest not yet due (Balloon)
+    let from = firstW;
     const rows = [];
     dues.forEach((D, i) => {
       const last = i === dues.length - 1, to = last ? D - 1 : monthEnd(D);
@@ -53,24 +56,27 @@
       for (let t = from; t <= to; t++) {
         const p = P(t), dr = round6(rate / 100 / yearDays(t)), sg = segs[segs.length - 1];
         if (sg && sg.p === p && sg.dr === dr) { sg.to = t; sg.days++; continue; }
-        const why = [];
+        const why = [], kinds = [];
         if (sg) {
+          events.filter((e) => e.d === t).forEach((e) => kinds.push(e.k));
+          if (dr !== sg.dr) kinds.push('year');
           events.filter((e) => e.d === t).forEach((e) => why.push(e.k === 'w' ? `Withdrawal ${money(e.a)} on ${fmtD(t)}`
             : e.k === 'r' ? `Repayment ${money(-e.a)} on ${fmtD(t)}` : `Principal ${money(-e.a)} paid on ${fmtD(t)}`));
           if (dr !== sg.dr) why.push(`Year ${new Date(t * DAY).getUTCFullYear()} – ${yearDays(t)} days`);
         }
-        segs.push({ from: t, to: t, days: 1, p, dr, why: why.join(' · ') || (segs.length ? '' : 'From ' + fmtD(t)) });
+        segs.push({ from: t, to: t, days: 1, p, dr, kinds, why: why.join(' · ') || (segs.length ? '' : 'From ' + fmtD(t)) });
       }
       segs.forEach((sg) => { sg.interest = round2(sg.p * sg.dr * sg.days); });
       const interest = round2(segs.reduce((v, sg) => v + sg.interest, 0)), out = P(D), left = dues.length - i;
       let principal = 0, intDue = interest;
-      if (last) { principal = out; intDue = interest + carry; carry = 0; }
+      if (last) principal = out;
       else if (type === 'EMI') {
         const emi = r ? out * r * Math.pow(1 + r, left) / (Math.pow(1 + r, left) - 1) : out / left;
         principal = Math.min(out, Math.max(0, round2(emi - interest)));
-      } else if (type === 'Balloon') { carry += interest; intDue = 0; }
+      }
       if (principal) events.push({ d: D, a: -principal, k: 'due' });     // the principal paid on the due date reduces it from that date
-      rows.push({ no: i + 1, due: D, out, principal, interest: intDue, accrued: interest, from, to, days: to - from + 1, segs });
+      const split = segs.some((sg) => sg.kinds.some((k) => k !== 'due'));    // withdrawal, repayment or 365 / 366 change in this due
+      rows.push({ no: i + 1, due: D, out, principal, interest: intDue, accrued: interest, from, to, days: to - from + 1, segs, split });
       from = to + 1;
     });
     return { end, rows };
@@ -78,16 +84,17 @@
 
   function read(f) {
     const g = (n) => f.querySelector(`[name="${n}"]`).value;
-    const list = (cls) => [...f.querySelectorAll(`.${cls} tbody tr`)]
+    const list = (k) => [...f.querySelectorAll(`.calc-tx tbody tr[data-k="${k}"]`)]
       .map((tr) => ({ d: toDay(tr.querySelector('input[type=date]').value), a: num(tr.querySelector('input.amt').value) }))
       .filter((x) => x.d !== null && x.a > 0);
-    return { start: toDay(g('start')), tenure: +g('tenure'), rate: num(g('rate')), type: g('type'), dueDay: +g('dueday') || 5,
-             product: g('product'), ason: toDay(g('ason')), leap: f.querySelector('[name="leap"]').checked, withdrawals: list('calc-w'), repayments: list('calc-r') };
+    return { start: toDay(g('start')), tenure: +g('tenure'), rate: num(g('rate')), type: g('type'), dueDay: 5,
+             product: g('product'), ason: toDay(g('ason')), leap: f.querySelector('[name="leap"]').checked, withdrawals: list('w'), repayments: list('r') };
   }
 
   function check(inp) {
     if (inp.start === null) return 'Enter the Lodgement Approval Date (Loan Start Date).';
     if (!inp.withdrawals.length) return 'Enter at least one withdrawal (date and amount).';
+    if (inp.product === 'Single Disbursement' && inp.withdrawals.length > 1) return 'Single Disbursement allows one withdrawal only.';
     if (!(inp.rate > 0)) return 'Enter the Rate of Interest.';
     const end = addMonths(inp.start, inp.tenure);
     if (inp.withdrawals.some((w) => w.d < inp.start || w.d >= end)) return 'Each withdrawal date has to be on or after the Loan Start Date and before the Loan End Date.';
@@ -108,67 +115,88 @@
     const amt = (l) => l.reduce((v, x) => v + x.principal + x.interest, 0);
     const pOut = Math.max(0, inp.withdrawals.reduce((v, w) => v + (w.d <= asOn ? w.a : 0), 0) - inp.repayments.reduce((v, w) => v + (w.d <= asOn ? w.a : 0), 0)
                  - done.reduce((v, x) => v + x.principal, 0));
-    const line = (k, v, cls = '') => `<li class="${cls}"><span>${k}</span><b>${v}</b></li>`;
-    const seg = (x, sg) => `<tr class="seg"><td></td><td colspan="2">↳ ${money(sg.p)} × ${sg.dr.toFixed(6)} × ${sg.days} day${sg.days > 1 ? 's' : ''}${sg.why ? `<small>${sg.why}</small>` : ''}</td>
-      <td></td><td></td><td class="n">${money(sg.interest)}${x.interest !== x.accrued ? '<small>accrued</small>' : ''}</td><td>${fmtD(sg.from)}</td><td>${fmtD(sg.to)}</td><td class="c">${sg.days}</td><td></td></tr>`;
+    const tile = (cls, label, v, sub) => `<div class="kpi ${cls}"><span>${label}</span><b>${v}</b><small>${sub}</small></div>`;
+    const totDue = sum('principal') + sum('interest'), pct = totDue ? Math.round(amt(done) / totDue * 100) : 0;
+    const seg = (x, sg) => `<tr class="seg" data-of="${x.no}" hidden><td></td><td colspan="2">↳ ${money(sg.p)} × ${sg.dr.toFixed(6)} × ${sg.days} day${sg.days > 1 ? 's' : ''}${sg.why ? `<small>${sg.why}</small>` : ''}</td>
+      <td></td><td></td><td class="n">${money(sg.interest)}</td><td>${fmtD(sg.from)}</td><td>${fmtD(sg.to)}</td><td class="c">${sg.days}</td><td></td></tr>`;
     const stat = (x) => x.due <= asOn ? '<span class="st ok">Collected</span>' : x === next ? '<span class="st nx">Next due</span>' : '<span class="st">Upcoming</span>';
-    const tr = rows.map((x) => `<tr class="main"><td class="c">${x.no}</td><td>${fmtD(x.due)}</td><td class="n">${money(x.out)}</td>
-      <td class="n b">${money(x.principal + x.interest)}</td><td class="n">${money(x.principal)}</td><td class="n">${money(x.interest)}</td>
+    const nSplit = rows.filter((x) => x.split).length;
+    const tr = rows.map((x) => `<tr class="main${x.split ? ' has-split' : ''}"><td class="c">${x.no}</td><td>${fmtD(x.due)}</td><td class="n">${money(x.out)}</td>
+      <td class="n b">${money(x.principal + x.interest)}</td><td class="n">${money(x.principal)}</td>
+      <td class="n">${money(x.interest)}${x.split ? `<button type="button" class="calc-tg" data-row="${x.no}" aria-expanded="false" title="Show / hide the interest split">Split ▸</button>` : ''}</td>
       <td>${fmtD(x.from)}</td><td>${fmtD(x.to)}</td><td class="c">${x.days}</td><td class="c">${stat(x)}</td></tr>`
-      + (x.segs.length > 1 ? x.segs.map((sg) => seg(x, sg)).join('') : '')).join('');
+      + (x.split ? x.segs.map((sg) => seg(x, sg)).join('') : '')).join('');
     out.innerHTML = `
-      <div class="calc-sumgrid">
-        <div class="calc-card"><h3>Loan</h3><ul>
-          ${line('Loan Start Date', fmtD(inp.start))}${line('Loan End Date', fmtD(end))}
-          ${line('Tenure', inp.tenure + ' months')}${line('Repayment Type', inp.type)}
-          ${line('Rate of Interest', inp.rate + '% p.a.' + (inp.leap ? ' · leap year 366' : ''))}${line('No. of dues', rows.length)}</ul></div>
-        <div class="calc-card"><h3>Amounts</h3><ul>
-          ${line('Total withdrawals', money(wTot))}${line('Total repayments (part payment)', money(rTot))}
-          ${line('Total principal due', money(sum('principal')))}${line('Total interest due', money(sum('interest')))}
-          ${line('Total due', money(sum('principal') + sum('interest')), 'tot')}</ul></div>
-        <div class="calc-card hi"><h3>As on ${fmtD(asOn)}</h3><ul>
-          ${line(`Due collected (${done.length} of ${rows.length})`, money(amt(done)), 'ok')}
-          ${line(`Due pending (${todo.length})`, money(amt(todo)), 'due')}
-          ${line('Next due', next ? `${money(next.principal + next.interest)} on ${fmtD(next.due)}` : '–')}
-          ${line('Principal outstanding', money(pOut))}
-          ${line('Interest collected', money(done.reduce((v, x) => v + x.interest, 0)))}</ul></div>
+      <div class="calc-res">
+        <div class="calc-chips"><span>${inp.product}</span><span>${inp.type}</span><span>${inp.rate}% p.a.${inp.leap ? ' · leap year 366' : ''}</span>
+          <span>${inp.tenure} months</span><span>${fmtD(inp.start)} → ${fmtD(end)}</span><span>${rows.length} dues · 5th of every month</span></div>
+        <div class="calc-kpis">
+          ${tile('tot', 'Total due', money(totDue), `Principal ${money(sum('principal'))} · Interest ${money(sum('interest'))}`)}
+          ${tile('ok', 'Due collected', money(amt(done)), `${done.length} of ${rows.length} dues · as on ${fmtD(asOn)}`)}
+          ${tile('due', 'Due pending', money(amt(todo)), `${todo.length} due${todo.length === 1 ? '' : 's'} remaining`)}
+          ${tile('nx', 'Next due', next ? money(next.principal + next.interest) : '–', next ? 'on ' + fmtD(next.due) : 'All dues collected')}
+          ${tile('', 'Principal outstanding', money(pOut), 'as on ' + fmtD(asOn))}
+        </div>
+        <div class="calc-bar"><i style="width:${pct}%"></i></div>
+        <p class="calc-barl"><b>${pct}%</b> of the total due collected as on ${fmtD(asOn)} · Total withdrawals ${money(wTot)} · Total repayments ${money(rTot)} · Interest collected ${money(done.reduce((v, x) => v + x.interest, 0))}</p>
       </div>
+      ${nSplit ? `<div class="calc-tools"><span>${nSplit} due${nSplit === 1 ? ' has' : 's have'} an interest split (withdrawal, repayment or 365 / 366 change)</span>
+        <button type="button" data-all="1">Expand all</button><button type="button" data-all="0">Collapse all</button></div>` : ''}
       <div class="comms-wrap"><table class="calc-table">
         <thead><tr><th rowspan="2">Sl. No</th><th rowspan="2">Due Date</th><th rowspan="2">Outstanding Principal</th><th rowspan="2">Due Amount</th>
           <th colspan="2">Due Amount Bifurcation</th><th colspan="3">Interest Accrual</th><th rowspan="2">Status</th></tr>
           <tr><th>Principal</th><th>Interest</th><th>Start Date</th><th>End Date</th><th>No. of Days</th></tr></thead>
         <tbody>${tr}</tbody>
-        <tfoot><tr><td></td><td>Total</td><td></td><td class="n b">${money(sum('principal') + sum('interest'))}</td><td class="n">${money(sum('principal'))}</td>
+        <tfoot><tr><td></td><td>Total</td><td></td><td class="n b">${money(totDue)}</td><td class="n">${money(sum('principal'))}</td>
           <td class="n">${money(sum('interest'))}</td><td></td><td></td><td class="c">${sum('days')}</td><td></td></tr></tfoot>
       </table></div>
-      <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest = ROUND(ROI / ${inp.leap ? '365 or 366' : '365'}, 6) × Principal × Days – daily rate ${(Math.round(inp.rate / 100 / 365 * 1e6) / 1e6).toFixed(6)}${inp.leap ? ` (366 days in a leap year: ${(Math.round(inp.rate / 100 / 366 * 1e6) / 1e6).toFixed(6)})` : ' (leap-year calculation off: 365 days in every year)'}; Principal is the outstanding withdrawal balance.
-      Outstanding Principal is the principal on the due date, before that due is paid. When the principal or the daily rate changes within a period, the rows marked ↳ show each part of the interest (principal × daily rate × days).${inp.type === 'Balloon' ? ' Balloon: the interest of every month is accrued and is due with the principal on the loan end date.' : ''}</p>`;
+      <p class="calc-note">Interest = ROUND(ROI / ${inp.leap ? '365 or 366' : '365'}, 6) × Principal × Days – daily rate ${(Math.round(inp.rate / 100 / 365 * 1e6) / 1e6).toFixed(6)}${inp.leap ? ` (366 days in a leap year: ${(Math.round(inp.rate / 100 / 366 * 1e6) / 1e6).toFixed(6)})` : ' (leap-year calculation off: 365 days in every year)'}; Principal is the outstanding withdrawal balance.
+      Outstanding Principal is the principal on the due date, before that due is paid. “Split ▸” opens the interest of a due part by part (principal × daily rate × days) when a withdrawal, a repayment or a 365 / 366 change falls inside it.
+      Due collected assumes every due on or before the As on Date was paid on its due date.${inp.type !== 'EMI' ? ' Balloon / Interest Only: interest every month, the principal on the loan end date.' : ''}</p>`;
+    const toggle = (no, open) => { out.querySelectorAll(`tr.seg[data-of="${no}"]`).forEach((r) => { r.hidden = !open; });
+      const b = out.querySelector(`.calc-tg[data-row="${no}"]`); if (b) { b.setAttribute('aria-expanded', open); b.textContent = open ? 'Split ▾' : 'Split ▸'; } };
+    out.onclick = (e) => {
+      const b = e.target.closest('.calc-tg'); if (b) toggle(b.dataset.row, b.getAttribute('aria-expanded') !== 'true');
+      const a = e.target.closest('[data-all]'); if (a) rows.filter((x) => x.split).forEach((x) => toggle(x.no, a.dataset.all === '1'));
+    };
   }
 
-  function addRow(tbody, d, a) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><input type="date" value="${d || ''}"></td><td><input class="amt" inputmode="decimal" placeholder="Amount (₹)" value="${a || ''}"></td>
+  function addRow(tbody, k, d, a) {                // one ledger line: withdrawal (k = 'w') or repayment (k = 'r') (DISC-264)
+    const tr = document.createElement('tr'); tr.dataset.k = k;
+    tr.innerHTML = `<td><span class="tx ${k}">${k === 'w' ? 'Withdrawal' : 'Repayment'}</span></td><td><input type="date" value="${d || ''}"></td>
+      <td><div class="amt-w"><i>₹</i><input class="amt" inputmode="decimal" placeholder="0" value="${a || ''}"></div></td><td class="n bal"></td>
       <td><button type="button" class="calc-del" title="Remove">✕</button></td>`;
     tbody.appendChild(tr);
   }
 
   function init() {
     const f = document.querySelector('.calc-form'); if (!f || f.dataset.ready) return; f.dataset.ready = '1';
-    const endEl = f.querySelector('[name="end"]');
+    const tb = f.querySelector('.calc-tx tbody'), endEl = f.querySelector('[name="end"]');
     const syncEnd = () => { const s = toDay(f.querySelector('[name="start"]').value);
       endEl.value = s === null ? '' : fmtD(addMonths(s, +f.querySelector('[name="tenure"]').value)); };
-    const syncOut = () => { const i = read(f);
-      f.querySelector('[name="outstanding"]').value = money(i.withdrawals.reduce((s, w) => s + w.a, 0) - i.repayments.reduce((s, w) => s + w.a, 0)); };
-    addRow(f.querySelector('.calc-w tbody'), '2026-11-02', '1,00,000');
+    const syncTx = () => {                         // running balance by date, totals, Single Disbursement = one withdrawal
+      const rowsTx = [...tb.querySelectorAll('tr')].map((tr) => ({ tr, d: toDay(tr.querySelector('input[type=date]').value),
+        a: num(tr.querySelector('input.amt').value) * (tr.dataset.k === 'w' ? 1 : -1) }));
+      let bal = 0;
+      rowsTx.filter((x) => x.d !== null).sort((x, y) => x.d - y.d).forEach((x) => { bal = Math.max(0, bal + x.a); x.tr.querySelector('.bal').textContent = money(bal); });
+      rowsTx.filter((x) => x.d === null).forEach((x) => { x.tr.querySelector('.bal').textContent = '–'; });
+      const w = rowsTx.filter((x) => x.a > 0).reduce((v, x) => v + x.a, 0), r = -rowsTx.filter((x) => x.a < 0).reduce((v, x) => v + x.a, 0);
+      f.querySelector('.tx-w b').textContent = money(w); f.querySelector('.tx-r b').textContent = money(r);
+      f.querySelector('[name="outstanding"]').value = money(w - r);
+      const single = f.querySelector('[name="product"]').value === 'Single Disbursement';
+      f.querySelector('[data-add="w"]').hidden = single && tb.querySelectorAll('tr[data-k="w"]').length >= 1;
+      tb.closest('.calc-txw').classList.toggle('empty', !tb.children.length);
+    };
+    addRow(tb, 'w', '2026-11-02', '1,00,000');
     const ason = f.querySelector('[name="ason"]'); if (!ason.value) ason.value = toISO(Math.floor(Date.now() / DAY));
-    f.addEventListener('input', () => { syncEnd(); syncOut(); });
-    f.addEventListener('change', () => { syncEnd(); syncOut(); });
+    f.addEventListener('input', () => { syncEnd(); syncTx(); });
+    f.addEventListener('change', () => { syncEnd(); syncTx(); });
     f.addEventListener('click', (e) => {
-      const add = e.target.closest('[data-add]'); if (add) addRow(f.querySelector(`.${add.dataset.add} tbody`));
-      const del = e.target.closest('.calc-del'); if (del) { del.closest('tr').remove(); syncOut(); }
+      const add = e.target.closest('[data-add]'); if (add) { addRow(tb, add.dataset.add); syncTx(); }
+      const del = e.target.closest('.calc-del'); if (del) { del.closest('tr').remove(); syncTx(); }
     });
     f.addEventListener('submit', (e) => { e.preventDefault(); render(f); });
-    syncEnd(); syncOut();
+    syncEnd(); syncTx();
   }
 
   window.LAMFCalc = { init, schedule, toDay, toISO };
