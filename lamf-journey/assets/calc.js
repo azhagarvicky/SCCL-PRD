@@ -1,7 +1,7 @@
 /* LAMF – Calculator (DISC-257): repayment schedule from the loan inputs.
-   Interest (DISC-258) = ROUND(ROI / 365 or 366 × Principal × Days, 2): ROI is the entered rate, 365 or 366 is the number of
-   days in the year the accrual days fall in (366 in a leap year), Principal is the outstanding withdrawal balance and Days
-   the interest accrual days. A period that crosses a year end or a withdrawal / repayment date is worked out in parts
+   Interest (DISC-258, DISC-259): step 1 daily rate = ROI / 365 or 366 (366 for days in a leap year); step 2 round it to
+   6 decimals (10.5% / 365 = 0.000287671… → 0.000288); step 3 Interest = daily rate × Principal × Days, where Principal is
+   the outstanding withdrawal balance and Days the interest accrual days (the row total is shown to 2 decimals). A period that crosses a year end or a withdrawal / repayment date is worked out in parts
    and the period total is rounded. A withdrawal or a repayment changes the principal from its own date. Due dates fall on the chosen day of every month, the first one
    in the month after the first withdrawal; the last row is the loan end date (start date + tenure).
    EMI      – equated instalment on the outstanding principal over the remaining due dates (re-worked after
@@ -33,16 +33,16 @@
     if (!dues.length || dues[dues.length - 1] !== end) dues.push(end);
 
     const yearDays = (t) => { const y = new Date(t * DAY).getUTCFullYear(); return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 366 : 365; };
-    const round2 = (v) => Math.round(v * 100) / 100, r = rate / 1200;
+    const round2 = (v) => Math.round(v * 100) / 100, round6 = (v) => Math.round(v * 1e6) / 1e6, r = rate / 1200;
     let P = 0, ei = 0, prev = firstW, carry = 0;   // carry: interest not yet due (Balloon)
     const rows = [];
     dues.forEach((D, i) => {
-      let acc = 0;                                   // Σ Principal × Days / (365 or 366) over the period
+      let acc = 0;                                   // Σ daily rate (6 decimals) × Principal, day by day over the period
       for (let t = prev; t < D; t++) {               // day by day: events on day t apply from that day
         while (ei < events.length && events[ei].d <= t) { P = Math.max(0, P + events[ei].a); ei++; }
-        acc += P / yearDays(t);
+        acc += round6(rate / 100 / yearDays(t)) * P;
       }
-      const interest = round2(rate / 100 * acc);
+      const interest = round2(acc);
       while (ei < events.length && events[ei].d <= D && D === end) { P = Math.max(0, P + events[ei].a); ei++; }
       const last = i === dues.length - 1, left = dues.length - i;
       let principal = 0, intDue = interest;
@@ -103,7 +103,7 @@
         <tfoot><tr><td></td><td>Total</td><td></td><td class="n b">${money(sum('principal') + sum('interest'))}</td><td class="n">${money(sum('principal'))}</td>
           <td class="n">${money(sum('interest'))}</td><td></td><td></td><td class="c">${sum('days')}</td></tr></tfoot>
       </table></div>
-      <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest = ROUND(ROI / 365 or 366 × Principal × Days, 2) – 366 for days in a leap year; Principal is the outstanding withdrawal balance.
+      <p class="calc-note">${inp.product} · ${inp.type} · ${inp.rate}% p.a. · ${inp.tenure} months. Interest = ROUND(ROI / 365 or 366, 6) × Principal × Days – daily rate ${(Math.round(inp.rate / 100 / 365 * 1e6) / 1e6).toFixed(6)} (366 days in a leap year: ${(Math.round(inp.rate / 100 / 366 * 1e6) / 1e6).toFixed(6)}); Principal is the outstanding withdrawal balance.
       Outstanding Principal is the principal on the due date, before that due is paid.${inp.type === 'Balloon' ? ' Balloon: the interest of every month is accrued and is due with the principal on the loan end date.' : ''}</p>`;
   }
 
