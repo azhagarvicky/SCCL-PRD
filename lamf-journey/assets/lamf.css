@@ -1283,3 +1283,7 @@ body.page-screens { padding: 40px 76px; }
 .page-brd .brd-body h4 { font-size: 15px; margin: 16px 0 6px; color: #333; }
 .page-brd .brd-fig { margin: 8px 0 16px; } .page-brd .brd-fig img { max-width: 760px; width: 100%; border: 1px solid var(--line); border-radius: 8px; }
 .page-brd .brd-fig.sm img { max-width: 420px; } .page-brd .brd-fig figcaption { font-size: 12.5px; color: #777; margin-top: 4px; }
+.page-brd .brd-flow { padding-left: 22px; } .page-brd .brd-flow li { border: 0; margin: 6px 0; }
+.page-brd .brd-table tbody th { white-space: nowrap; }
+.page-brd .brd-flow { columns: auto; column-count: 1; list-style: decimal; } .page-brd .brd-flow ul { list-style: circle; }
+.page-brd .brd-table tbody th { width: 90px; }

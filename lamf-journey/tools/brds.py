@@ -11,7 +11,7 @@ PROP = '<span class="brd-prop">Proposed</span>'
 # (No, drop-off stage, how the case ends, charges incurred) – scenario list proposed by Claude, to be confirmed by the owner.
 WAIVER_SCENARIOS = [
     (1, "After lien marking – Sanction Letter not generated (Loan Application Status: DRAFT)",
-     "OPS rejects the DRAFT LAN in LMS (Approvals tab) with full, partial or no waive-off of the charges", "Lien marking (₹531), Lien removal (₹118)"),
+     "OPS rejects the DRAFT LAN in LMS with full, partial or no waive-off of the charges", "Lien marking (₹531), Lien removal (₹118)"),
     (2, "After the Sanction Letter – before the Loan Agreement e-Sign",
      "No action for 30 days → application expires → lien removal", "Lien marking, Lien removal"),
     (3, "After the Loan Agreement e-Sign – before / failed E-Mandate",
@@ -26,44 +26,48 @@ WAIVER_SCENARIOS = [
      "Closure on request without any disbursement → lien removal", "Lien marking, Lien removal, Processing fee"),
 ]
 
-# Scenario detail given by the owner (DISC-271)
+# Scenario detail given by the owner (DISC-271) – written as business logic, rules and conditions, not screen detail (DISC-272)
 SCENARIO_DETAIL = {1: """
-<h4>LMS – Approvals tab for a DRAFT LAN</h4>
-<ul>
-<li>In LMS, the LAN details have the tabs Overview, Approvals, Disbursement &amp; Repayments, Collateral, Transactions &amp; Reports, KYC,
-Documents, Audit, Notes. <b>Approvals is not available for a DRAFT LAN today – it has to be added</b> for the DRAFT loan section.</li>
-<li>Under Approvals, a charges table (below) and the <b>Reject</b> CTA at the bottom of the same page.</li>
-</ul>
-<table class="brd-table"><thead><tr><th>Column</th><th>Behaviour</th></tr></thead><tbody>
-<tr><th>Checkbox</th><td>Select all (header) or select each charge individually. Only a selected charge can be waived.</td></tr>
-<tr><th>Charges Name</th><td>The charges incurred for the LAN: Lien Marking Charges, Lien Removal Charges, and a Total row.</td></tr>
-<tr><th>Amount of Charges</th><td>Lien Marking ₹531, Lien Removal ₹118, Total ₹649 (read only).</td></tr>
-<tr><th>Amount to be waived off</th><td>Entered by the OPS user for a selected charge – from 0 up to the Amount of Charges (full or partial waive-off,
-e.g. ₹500 of ₹531). Default 0.</td></tr>
-<tr><th>Payable Charges</th><td>Amount of Charges − Amount to be waived off, per charge and in total (Total highlighted).</td></tr>
+<h4>Pre-conditions</h4>
+<ul><li>The customer has pledged the mutual fund units (lien marked).</li>
+<li>The Sanction Letter is not generated.</li>
+<li>Loan Application Status: <b>DRAFT</b>.</li></ul>
+<h4>Business rules</h4>
+<table class="brd-table"><tbody>
+<tr><th>BR-1.1</th><td>OPS must be able to reject a <b>DRAFT</b> LAN in LMS and decide the charges at the same time (approval for a DRAFT LAN is a new capability – not available today).</td></tr>
+<tr><th>BR-1.2</th><td>Charges applicable: Lien Marking Charge (₹531) and Lien Removal Charge (₹118) – total ₹649.</td></tr>
+<tr><th>BR-1.3</th><td>Each charge can be waived <b>fully, partially or not at all</b>. Waiver amount per charge: 0 ≤ waiver ≤ charge amount.</td></tr>
+<tr><th>BR-1.4</th><td>Payable charges = Σ (charge amount − waiver amount). SCCL bears the waived amount; the customer pays the payable charges.</td></tr>
+<tr><th>BR-1.5</th><td>A rejection is irreversible and needs the OPS user’s confirmation.</td></tr>
+<tr><th>BR-1.6</th><td><b>Payable = 0</b> (full waive-off): single-level – the LAN is rejected at once (DRAFT → REJECTED).</td></tr>
+<tr><th>BR-1.7</th><td><b>Payable &gt; 0</b> (partial or no waive-off): maker-checker – the rejection needs the approval of a <b>second OPS user</b>
+(approval type <b>Partial Waive-off Rejection</b>), who can approve or cancel it. The LAN becomes REJECTED only on approval.</td></tr>
+<tr><th>BR-1.8</th><td>When payable &gt; 0, the units stay lien-marked until the customer pays; the lien is removed after the payment.</td></tr>
+<tr><th>BR-1.9</th><td>The customer is informed by SMS and mail on rejection – without a payment link when payable = 0, with the payable amount and a payment link when payable &gt; 0 (templates to be created).</td></tr>
 </tbody></table>
-<figure class="brd-fig"><img src="assets/img/brd/waiver-charges-table.png" alt="Charges table – Checkbox, Charges Name, Amount of Charges, Amount to be waived off, Payable Charges">
-<figcaption>Charges table (reference shared by the owner)</figcaption></figure>
-<h4>Reject and confirmation</h4>
-<p>The OPS user clicks <b>Reject</b> → confirmation pop-up “This action is irreversible. Are you sure you want to proceed?” with
-<b>No</b> (closes the pop-up) and <b>Yes</b> (confirms the rejection) and a close ×.</p>
-<figure class="brd-fig sm"><img src="assets/img/brd/waiver-confirm-popup.png" alt="Confirmation pop-up – This action is irreversible. Are you sure you want to proceed? No / Yes">
-<figcaption>Confirmation pop-up (reference shared by the owner)</figcaption></figure>
-<h4>Flow after Yes</h4>
-<table class="brd-table"><thead><tr><th></th><th>Total Payable Charges = 0 (full waive-off)</th><th>Total Payable Charges &gt; 0 (partial or no waive-off)</th></tr></thead><tbody>
-<tr><th>Approval</th><td>No second approval – rejected directly.</td>
-<td>Goes for approval: shown in the same LAN’s <b>Approvals</b> tab and in the separate <b>Approvals</b> section of the hamburger menu,
-approval type <b>Partial Waive-off Rejection</b>. Another OPS user can <b>Accept Rejection</b> or <b>Cancel Rejection</b>.</td></tr>
-<tr><th>LMS – LAN status</th><td>DRAFT → <b>REJECTED</b>; the LAN moves to the <b>Rejected</b> section.</td>
-<td>Accept Rejection: DRAFT → <b>REJECTED</b>, LAN moves to the Rejected section. Cancel Rejection: {TBD} (LAN stays DRAFT?).</td></tr>
-<tr><th>Charges</th><td>Borne by SCCL (fully waived).</td><td>The customer pays the Total Payable Charges through the payment link; the waived part is borne by SCCL.</td></tr>
-<tr><th>Lien</th><td>{TBD} (lien removal triggered on rejection?)</td><td>The units stay lien-marked until the customer pays; lien removal after the payment.</td></tr>
-<tr><th>Customer communication (SMS and mail – to be created)</th>
-<td>“Dear AZHAGARSAMY, We regret that your Loan Against Mutual Fund application could not be approved. For assistance, please contact our support team - Shriram Credit”</td>
-<td>On Accept Rejection: “Dear AZHAGARSAMY, We regret that your Loan Against Mutual Fund application rejected. Your Mutual Fund units remain lien-marked.
-Please pay the applicable charges (processing fee, lien marking and lien removal) of Rs. 92,313 using this link: https://lamf.shriramcredit.in/ to Lien removal - Shriram Credit”</td></tr>
-<tr><th>LOS</th><td>{TBD}</td><td>{TBD}</td></tr>
-<tr><th>UNO</th><td>{TBD}</td><td>{TBD}</td></tr>
+<h4>Flow</h4>
+<ol class="brd-flow">
+<li>OPS selects the DRAFT LAN for rejection and reviews the charges (₹531 + ₹118).</li>
+<li>OPS decides the waiver for each charge (full / partial / none) → payable charges are worked out.</li>
+<li>OPS rejects and confirms.</li>
+<li><b>If payable = 0</b> → LAN DRAFT → REJECTED → SCCL bears all charges → customer informed (no payment link) → lien removal {TBD}.</li>
+<li><b>If payable &gt; 0</b> → rejection goes for approval (Partial Waive-off Rejection) → a second OPS user:
+  <ul><li><b>Approves</b> → LAN DRAFT → REJECTED → customer informed with the payable amount and payment link → customer pays → lien removal.
+  SCCL bears the waived part.</li>
+  <li><b>Cancels</b> → {TBD} (LAN stays DRAFT; waiver discarded?).</li></ul></li>
+</ol>
+<h4>Outcome by condition</h4>
+<table class="brd-table"><thead><tr><th>Condition</th><th>Approval</th><th>LAN status</th><th>Borne by SCCL</th><th>Paid by customer</th><th>Lien</th><th>Customer communication</th></tr></thead><tbody>
+<tr><td>Full waive-off (payable = 0)</td><td>Single level</td><td>DRAFT → REJECTED</td><td>₹649</td><td>₹0</td><td>{TBD}</td><td>Rejection, no payment link</td></tr>
+<tr><td>Partial waive-off (e.g. ₹500 of ₹531)</td><td>Maker-checker</td><td>DRAFT → REJECTED on approval</td><td>Waived amount (₹500)</td><td>Balance (₹149)</td><td>Removed after payment</td><td>Rejection with payable amount and payment link</td></tr>
+<tr><td>No waive-off (payable = ₹649)</td><td>Maker-checker</td><td>DRAFT → REJECTED on approval</td><td>₹0</td><td>₹649</td><td>Removed after payment</td><td>Rejection with payable amount and payment link</td></tr>
+<tr><td>Rejection cancelled by the second OPS user</td><td>–</td><td>{TBD}</td><td>–</td><td>–</td><td>Stays lien-marked</td><td>{TBD}</td></tr>
+</tbody></table>
+<h4>System impact</h4>
+<table class="brd-table"><tbody>
+<tr><th>LMS</th><td>Rejection of a DRAFT LAN with waiver per charge; maker-checker approval when payable &gt; 0; status DRAFT → REJECTED; payment link and lien removal after payment.</td></tr>
+<tr><th>LOS</th><td>{TBD}</td></tr>
+<tr><th>UNO</th><td>{TBD} (booking of the charges, the waived amount and the amount received)</td></tr>
 </tbody></table>
 """}
 SCENARIO_DETAIL = {k: v.replace("{TBD}", TBD) for k, v in SCENARIO_DETAIL.items()}
@@ -109,9 +113,9 @@ the lien removal charge and the processing fee; the waive-off / recovery flow in
 <li>Who decides waive-off or recovery (per case or by rule), and where it is recorded (LOS / LMS).</li>
 <li>How the charges are recovered when not waived (payment link, before the lien removal or after) and what happens if the customer does not pay.</li>
 <li>Accounting entries in UNO for the waived charges and the recovered charges.</li>
-<li>Scenario 1: what happens on Cancel Rejection; whether the lien removal starts on a full waive-off rejection; the impact in LOS
-(status shown to the customer); the payment-link SMS lists “processing fee” and Rs. 92,313 – for Scenario 1 only lien marking and
-lien removal apply (₹649 or less), so the SMS text / amount to be confirmed.</li>
+<li>Scenario 1: what happens when the second OPS user cancels the rejection; whether the lien is removed at once on a full waive-off;
+the impact in LOS and UNO; the payment-link communication has to state only the charges that apply (₹649 or less, no processing fee).</li>
+<li>What happens if the customer does not pay the payable charges (time limit, follow-up, lien retained)?</li>
 <li>Are ₹531 and ₹118 inclusive of 18% GST (₹450 and ₹100 + GST)?</li></ul>
 """
 
