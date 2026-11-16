@@ -441,6 +441,66 @@ master, and in its download template and upload.</td></tr>
 </tbody></table>
 """
 
+RISK_STAGE = """
+<h2>1. Requirement</h2>
+<p>The system puts every active loan into a risk stage. The stage depends on how the loan outstanding compares with the collateral
+value at each of the three LTV levels (L1, L2 and L3).</p>
+<ul><li>Hybrid funds are treated as equity for this classification.</li></ul>
+<h2>2. LTV levels</h2>
+<p>As per the revised regulatory directions (revision of 22-09-2026), the LTV grid is as below. The equity values have changed;
+the debt values stay the same.</p>
+<table class="brd-table"><thead><tr><th>LTV level</th><th>Equity (incl. hybrid) – revised</th><th>Equity – earlier</th><th>Debt</th></tr></thead><tbody>
+<tr><td>L1</td><td class="c"><mark>45%</mark></td><td class="c">65%</td><td class="c">75%</td></tr>
+<tr><td>L2</td><td class="c"><mark>48%</mark></td><td class="c">68%</td><td class="c">78%</td></tr>
+<tr><td>L3</td><td class="c"><mark>49%</mark></td><td class="c">73%</td><td class="c">83%</td></tr>
+</tbody></table>
+<h2>3. Collateral value at each level</h2>
+<p>For each active loan, the system works out the current collateral value at each LTV level:</p>
+<table class="brd-table"><tbody>
+<tr><th>A1</th><td>Current collateral value at L1</td></tr>
+<tr><th>A2</th><td>Current collateral value at L2</td></tr>
+<tr><th>A3</th><td>Current collateral value at L3</td></tr>
+</tbody></table>
+<ul>
+<li>Collateral value = Loan outstanding ÷ LTV of that level.</li>
+<li>When a loan has more than one fund type, the equity or debt LTV is applied to each fund as per the approved collateral
+classification and LTV logic.</li>
+</ul>
+<h2>4. Risk stage</h2>
+<p>The loan outstanding is compared with A1, A2 and A3:</p>
+<table class="brd-table"><thead><tr><th>Loan outstanding</th><th>Risk stage</th></tr></thead><tbody>
+<tr><td>Less than A1</td><td>No Risk</td></tr>
+<tr><td>A1 or more, but less than A2</td><td>Stage 1</td></tr>
+<tr><td>A2 or more, but less than A3</td><td>Stage 2</td></tr>
+<tr><td>A3 or more</td><td>Stage 3</td></tr>
+</tbody></table>
+<h2>5. Stage column in LMS</h2>
+<ul>
+<li>A new column, <b>Stage</b>, is added on the Active Loans page and the Shortfall page.</li>
+<li>The stage is worked out every time from the latest loan outstanding and the current collateral value (NAV), so it always shows
+the current position.</li>
+</ul>
+<h2>6. Shortfall and customer notification</h2>
+<ul>
+<li>Shortfall amount = Current outstanding – Collateral value at L1.</li>
+<li>When a loan is in Stage 2, the customer gets an email and an SMS every day asking them to pledge more units or pay part of the principal.</li>
+</ul>
+<h2>7. System impact</h2>
+<table class="brd-table"><tbody>
+<tr><th>LMS</th><td>LTV grid L1 / L2 / L3 for equity (incl. hybrid) and debt; A1, A2 and A3 worked out for each active loan;
+new Stage column on the Active Loans and Shortfall pages; shortfall amount against L1.</td></tr>
+<tr><th>Communication</th><td>Daily email and SMS to the customer while the loan is in Stage 2.</td></tr>
+</tbody></table>
+<h2>8. Open points</h2>
+<ol class="brd-flow">
+<li>Formula: as written, Collateral value = Loan outstanding ÷ LTV, and then the loan outstanding is compared with that value.
+Should A1, A2 and A3 instead be the loan amount allowed at each level (Current collateral value × LTV of that level), so that the
+loan outstanding can be compared with them?</li>
+<li>Communication for Stage 1 and Stage 3: is anything sent to the customer, or to Ops, at these stages?</li>
+<li>Daily Stage 2 email and SMS: the content, the time of sending, and when it stops (for example, once the loan moves back to No Risk or Stage 1).</li>
+</ol>
+"""
+
 BRDS = [
     {"slug": "waive-off", "title": "Waiver of Charges and Processing Fee", "status": "Draft", "updated": "16-11-2026",
      "summary": "One common process to waive the charges fully, partially or not at all, collect the balance from the customer "
@@ -458,4 +518,8 @@ BRDS = [
      "summary": "Rate of interest worked out as base rate (by loan amount) + bureau rate (by score) + equity % of portfolio rate, "
                 "calculated by the BRE after the CAMS fetch and again on fund selection, and kept the same across LOS, KFS and repayment.",
      "body": DYNAMIC_PRICING},
+    {"slug": "loan-risk-stage", "title": "Loan Risk Stage Classification", "status": "Draft", "updated": "17-11-2026",
+     "summary": "Every active loan is put into No Risk or Stage 1, 2 or 3 by comparing the loan outstanding with the collateral value "
+                "at the L1, L2 and L3 LTV levels (revised grid of 22-09-2026), with a Stage column in LMS and daily alerts in Stage 2.",
+     "body": RISK_STAGE},
 ]
