@@ -79,7 +79,7 @@ def _waiver_body():
                "<tr><td class='wo'>With Partial Waive-off</td></tr>")
         if n == 5:   # owner (DISC-295): Approved, Reject without waive-off, Reject with full / partial waive-off
             rs = lambda h: h.replace("<td", "<td rowspan='4'")
-            return (f"<tr>{rs(lead)}<td colspan='2' class='wo'>Approved</td>{rs(f'<td>{op}</td>')}</tr>"
+            return (f"<tr>{rs(lead)}<td colspan='2' class='wo'>Approve</td>{rs(f'<td>{op}</td>')}</tr>"
                     "<tr><td rowspan='3' class='wo'>Reject</td>" + rej)
         if n == 6:   # owner (DISC-298): Approve and Reject, each without / with full / with partial waive-off
             r6 = lambda h: h.replace("<td", "<td rowspan='6'")
@@ -93,9 +93,9 @@ def _waiver_body():
         return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
                 "<tr><td rowspan='2' class='wo'>With waive-off</td><td class='wo'>Full waive-off</td></tr>"
                 "<tr><td class='wo'>Partial waive-off</td></tr>")
-    summary = ("<table class='brd-table brd-sum'><thead><tr><th rowspan='2'>Sc.</th><th rowspan='2'>LAN status</th>"
-               "<th rowspan='2'>Customer dropped off</th><th rowspan='2'>Charges applicable</th><th colspan='2'>Waive-off options</th>"
-               "<th rowspan='2' class='ops'>What OPS can do</th></tr><tr><th>Waive-off</th><th>Type</th></tr></thead><tbody>"
+    summary = ("<table class='brd-table brd-sum'><thead><tr><th>Sc.</th><th>LAN status</th>"
+               "<th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th>"
+               "<th class='ops'>What OPS can do</th></tr></thead><tbody>"
                + "".join(srow(n, st, sc, ch, op) for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
     charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody>"
                + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
