@@ -25,7 +25,9 @@ CHARGES = [   # (charge, amount incl. 18% GST, when it is incurred)
 LM, LR, PF, SD = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee Charge", "Stamp Duty Charge"
 ACTIVE_CH = [LM, LR, PF, SD, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Bank Swap Charge"]
 
-_REJECT_DRAFT = "LMS requires a feature to reject applications in DRAFT status – not available today."
+_REJECT_DRAFT = ("LMS requires a feature to reject applications in DRAFT status – not available today; defined in the BRD "
+                 "“DRAFT LAN Rejection” (pledged DRAFT LAN only; rejection reason captured and recorded in the Audit).")
+_LOS_REJ = "On the next login the Curated Offers page shows a fresh product card (no “Continue” of the rejected application)."
 _NOTIFY_DRAFT = ("SCCL notifies the customer that the mutual fund units remain lien-marked; to de-pledge them the customer must pay "
                  "the applicable charges through the payment link in the communication.")
 _TIMING_DRAFT = ("Initial communication: sent along with the marketing communication (drop-off reminders). "
@@ -39,26 +41,26 @@ def _draft_options(n):
     """Draft drop-offs (scenarios 2 – 4): without / partial / full waive-off."""
     return [
         (f"{n}.1", "Without waive-off", "OPS rejects the DRAFT application without any waiver – the customer pays all the charges.",
-         ["OPS rejects the DRAFT application in LMS and confirms (final).", "LAN status DRAFT → REJECTED.",
+         ["OPS rejects the DRAFT application in LMS with a rejection reason and confirms (final).", "LAN status DRAFT → REJECTED.",
           "Customer is informed of the rejection with the payable charges and the payment link.",
           "Customer pays → accounting entries are posted → the units are de-pledged."],
          [("LMS", f"{_REJECT_DRAFT} Once rejected, the mutual fund units can be de-pledged – after the customer pays."),
           ("Customer communication", f"{_NOTIFY_DRAFT}<br><b>Timing:</b> {_TIMING_DRAFT}"),
-          ("UNO (Treasury)", _ACC_PAID)]),
+          ("UNO (Treasury)", _ACC_PAID), ("LOS", _LOS_REJ)]),
         (f"{n}.2", "With waive-off (Partial)", "OPS waives a part of the charges – the customer pays the balance.",
-         ["OPS enters the amount waived for each charge, rejects and confirms (final).", "LAN status DRAFT → REJECTED.",
+         ["OPS enters the amount waived for each charge, rejects with a rejection reason and confirms (final).", "LAN status DRAFT → REJECTED.",
           "Payable charges = the charges minus the amount waived.",
           "Customer is informed of the rejection with the payable charges and the payment link.",
           "Customer pays the balance → accounting entries for the amount received → the units are de-pledged."],
          [("LMS", f"{_REJECT_DRAFT} The units can be de-pledged after the customer pays the balance."),
           ("Customer communication", f"{_NOTIFY_DRAFT} (payable charges after the waiver)<br><b>Timing:</b> {_TIMING_DRAFT}"),
-          ("UNO (Treasury)", f"{_ACC_PAID} {_ACC_WAIVED}")]),
+          ("UNO (Treasury)", f"{_ACC_PAID} {_ACC_WAIVED}"), ("LOS", _LOS_REJ)]),
         (f"{n}.3", "With waive-off (Full)", "OPS waives all the charges – nothing is payable; SCCL bears the charges.",
-         ["OPS waives all the charges, rejects and confirms (final).", "LAN status DRAFT → REJECTED.",
+         ["OPS waives all the charges, rejects with a rejection reason and confirms (final).", "LAN status DRAFT → REJECTED.",
           "Customer is informed of the rejection – no payment link.", "The units are de-pledged."],
          [("LMS", f"{_REJECT_DRAFT} Once rejected, the mutual fund units can be de-pledged."),
           ("Customer communication", "Rejection only – no payment link."),
-          ("UNO (Treasury)", _ACC_WAIVED)]),
+          ("UNO (Treasury)", _ACC_WAIVED), ("LOS", _LOS_REJ)]),
     ]
 
 
@@ -72,17 +74,17 @@ def _reject_options(n, status, first):
     return [
         (f"{n}.{first}", "Rejected – with payment link (without waive-off / partial waive-off)",
          "OPS rejects with charges – the customer pays all the charges, or the balance after a partial waiver.",
-         ["OPS rejects the application in LMS (Rejected with Charges) and confirms (final).", f"LAN status {status} → REJECTED.",
+         ["OPS rejects the application in LMS (Rejected with Charges) with a rejection reason and confirms (final).", f"LAN status {status} → REJECTED.",
           "Customer is informed at once with the payable charges and the payment link.",
           "Customer pays → accounting entries are posted → the units are de-pledged."],
          [("LMS", "Rejection with charges; the units stay lien-marked until the customer pays."),
-          ("Customer communication", _REJ_LINK), ("UNO (Treasury)", _ACC_PAID)]),
+          ("Customer communication", _REJ_LINK), ("UNO (Treasury)", _ACC_PAID), ("LOS", _LOS_REJ)]),
         (f"{n}.{first + 1}", "Rejected – without payment link (with waive-off)",
          "OPS rejects without charges – all the charges are waived; SCCL bears them.",
-         ["OPS rejects the application in LMS (Rejected without Charges) and confirms (final).", f"LAN status {status} → REJECTED.",
+         ["OPS rejects the application in LMS (Rejected without Charges) with a rejection reason and confirms (final).", f"LAN status {status} → REJECTED.",
           "Customer is informed at once – no payment link.", "LMS gives the option to de-pledge the units."],
          [("LMS", "Following the rejection, LMS provides an option to de-pledge the mutual fund units."),
-          ("Customer communication", _REJ_NOLINK), ("UNO (Treasury)", _ACC_WAIVED)]),
+          ("Customer communication", _REJ_NOLINK), ("UNO (Treasury)", _ACC_WAIVED), ("LOS", _LOS_REJ)]),
     ]
 
 
@@ -90,8 +92,8 @@ def _reject_options(n, status, first):
 WAIVER_SCENARIOS = [
     (1, "DRAFT", "Customer drops off before pledging the mutual funds", [],
      [("1.1", "No charges", "The customer leaves before the lien marking.",
-       ["No charge is incurred; the application stays in DRAFT (expires as per the existing rule)."],
-       [("LMS", "No charges apply at this stage."), ("UNO (Treasury)", _ACC_NONE)])]),
+       ["No charge is incurred.", "If the units are not pledged within 30 days from the LAN generated date, the LAN moves from DRAFT to INACTIVE automatically (no OPS action)."],
+       [("LMS", "No charges apply at this stage. DRAFT → INACTIVE automatically after 30 days without a pledge (no rejection)."), ("UNO (Treasury)", _ACC_NONE)])]),
     (2, "DRAFT", "Customer drops off after pledging the mutual funds", [LM, LR], _draft_options(2)),
     (3, "DRAFT", "Customer drops off after the Sanction Letter generation (mutual funds already pledged)", [PF, LM, LR], _draft_options(3)),
     (4, "DRAFT", "Customer drops off after the Loan Agreement e-Sign (mutual funds pledged, Sanction Letter generated and submitted)",
@@ -148,14 +150,16 @@ def _waiver_body():
 customer drops off at a later stage, charges have already been incurred – lien marking and lien removal, and from later stages
 the processing fee and the stamp duty. Who pays these charges is not decided today, so <b>SCCL bears them</b>.</p>
 <h2>2. Objective</h2>
-<p>For every stage at which the customer can drop off, define the charges that apply and how the case is closed <b>with
+<p>For every stage at which the customer can drop off, define the charges that apply and how the application is approved or rejected <b>with
 waive-off</b> (SCCL bears the charges) and <b>without waive-off</b> (the customer pays) – in LMS, in the customer communication and
 in UNO (Treasury).</p>
 <h2>3. Scope</h2>
 <ul><li>{len(WAIVER_SCENARIOS)} scenarios by LMS LAN status – DRAFT (before pledging, after pledging, after the Sanction Letter, after the
 Loan Agreement e-Sign), SUBMITTED, ACCOUNT OPENED and ACTIVE.</li>
 <li>The charges below; the waive-off decision; the rejection of the application; the de-pledging of the units; the customer
-communication; the accounting in UNO.</li></ul>
+communication; the accounting in UNO.</li>
+<li>The rejection of a DRAFT LAN itself (eligibility, roles, status rules) is defined in the BRD “DRAFT LAN Rejection”; this BRD
+covers the charges on that rejection.</li></ul>
 <h2>4. Charges</h2>
 {charges}
 <p><b>Charges applicable by scenario</b></p>
@@ -164,13 +168,23 @@ communication; the accounting in UNO.</li></ul>
 <ul>
 <li>OPS decides the waive-off for each charge: the full amount, a part of it, or nothing. The amount waived cannot be more than the charge.</li>
 <li>Payable charges = the charges minus the amount waived. SCCL bears the amount waived; the customer pays the payable charges.</li>
-<li>A rejection needs one confirmation from the OPS user; once confirmed it is <b>final</b> – no second approval, and it cannot be undone.</li>
+<li>Rejection needs one confirmation from the OPS user (the existing pop-up confirmation); once confirmed it is <b>final</b> – no
+second approval, and it cannot be revoked. On rejection the LAN status becomes <b>REJECTED</b>.</li>
+<li>Who can reject (and decide the waive-off with it) depends on the loan amount: <b>below ₹5 lakh – OPS L1 only</b>; <b>₹5 lakh and
+above – OPS L2 or L3 only</b>.</li>
+<li>A <b>rejection reason</b> is captured (free text for now, a fixed list later) and recorded in the <b>Audit</b> with the user, date and time.</li>
+<li>De-pledge (lien removal) is allowed only for a <b>REJECTED</b> or a <b>CLOSED</b> LAN. CLOSED applies only to an ACTIVE loan
+(foreclosure, tenure completion or invocation) – a LAN is never closed from DRAFT.</li>
+<li>A pledged DRAFT LAN does <b>not</b> expire automatically – OPS rejects it after 30 days from the LAN generated date, or earlier when
+the customer asks for the lien removal (BRD “DRAFT LAN Rejection”). An unpledged DRAFT LAN moves to INACTIVE automatically after 30 days.</li>
 <li>Nothing payable (full waive-off): the customer is informed without a payment link and the units can be de-pledged at once.</li>
 <li>Something payable: the customer is informed with the payable charges and a payment link; the units stay lien-marked until the
 customer pays, then they are de-pledged.</li>
 <li>UNO: accounting entries are posted only when SCCL receives the payment; waived charges never flow into UNO books.</li>
-<li>Communication timing – DRAFT stages: the first notice goes with the marketing communication, the payment link with the
-rejection SMS / mail. SUBMITTED / ACCOUNT OPENED: immediately after the rejection in LMS.</li>
+<li>Communication: the customer is told that the loan application has been rejected and the units are still lien-marked (with the
+payable charges and the payment link when something is payable). Timing – DRAFT stages: the first notice goes with the marketing
+communication, the payment link with the rejection SMS / mail; SUBMITTED / ACCOUNT OPENED: immediately after the rejection in LMS.</li>
+<li>LOS: after a rejection, the Curated Offers page shows a fresh product card on the next login.</li>
 </ul>
 <h2>6. Scenarios</h2>
 {summary}
@@ -178,7 +192,6 @@ rejection SMS / mail. SUBMITTED / ACCOUNT OPENED: immediately after the rejectio
 {detail}
 <h2>8. Open points</h2>
 <ul><li>Amount of the processing fee, the stamp duty and the active-loan charges (bounce, penal, loan renewal, bank swap).</li>
-<li>LOS: what the customer sees in the LOS journey after a rejection (DRAFT, SUBMITTED, ACCOUNT OPENED).</li>
 <li>What happens if the customer does not pay the payable charges (time limit, follow-up; the units stay lien-marked).</li>
 <li>Scenario 6.2: which charges can be waived at the loan lodgement approval and how the waiver is recorded.</li>
 <li>Scenario 7.2: who can waive charges on an active loan, and any limit on the amount.</li></ul>
