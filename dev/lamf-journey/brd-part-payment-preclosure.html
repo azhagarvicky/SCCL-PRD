@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMF – BRD – Part Payment & Preclosure</title>
+<link rel="stylesheet" href="assets/lamf.css?v=7f70eda">
+</head>
+<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Part Payment &amp; Preclosure</h1><p class="brd-meta"><span class="brd-st st-completed">Completed</span>Last updated 16-11-2026 · Part payment and preclosure from LOS: payment type, amount rules, apportioning and accounting, notifications and the preclosure approval process in LMS.</p><div class="brd-body">
+<h2>1. Overview</h2>
+<p>The customer can pay towards the loan in LOS in two ways: a part payment or a preclosure. This BRD covers the changes in LOS,
+the apportioning and accounting, the email notification, and the preclosure process in LMS.</p>
+<h2>2. Process flow</h2>
+<figure class="brd-fig wide"><img src="assets/img/brd/part-payment-preclosure-flow.jpg" alt="Part payment and preclosure process flow in LOS and LMS">
+<figcaption>Part payment and preclosure – process flow in LOS and LMS</figcaption></figure>
+<h2>3. Changes in LOS</h2>
+<ul>
+<li>A new field called Payment type is given to the customer with two options to choose from: Part payment and Preclosure.</li>
+<li><b>Part payment:</b> the customer enters the amount to pay. The amount cannot be more than the sum of the overdue interest,
+overdue charges, due interest, due charges and O/S principal.</li>
+<li><b>Preclosure:</b> the amount to pay is prefilled and cannot be edited. It is the sum of the overdue interest, overdue charges,
+due interest, due charges, O/S principal and accrued interest.</li>
+</ul>
+<table class="brd-table"><thead><tr><th>Amount made up of</th><th>Part payment (editable, up to the total)</th><th>Preclosure (prefilled, not editable)</th></tr></thead><tbody>
+<tr><td>Overdue interest</td><td class="c">✓</td><td class="c">✓</td></tr>
+<tr><td>Overdue charges</td><td class="c">✓</td><td class="c">✓</td></tr>
+<tr><td>Due interest</td><td class="c">✓</td><td class="c">✓</td></tr>
+<tr><td>Due charges</td><td class="c">✓</td><td class="c">✓</td></tr>
+<tr><td>O/S principal</td><td class="c">✓</td><td class="c">✓</td></tr>
+<tr><td>Accrued interest</td><td class="c">–</td><td class="c">✓</td></tr>
+</tbody></table>
+<h2>4. Apportioning logic and accounting</h2>
+<ul>
+<li>The apportioning logic stays the same and is applied on the payment made.</li>
+<li><b>Part payment:</b> the accrued interest is not included in the amount the customer pays. It is posted separately on the 1st of the month.</li>
+<li><b>Preclosure:</b> the accrued interest collected is settled directly to the Interest Income GL code, as this amount is not yet
+posted to the customer’s account.</li>
+<li>Any excess payment is settled to the Preclosure Liability GL code and is refunded to the customer. Normally this does not happen,
+as both payment types restrict the amount.</li>
+</ul>
+<h2>5. Email notification</h2>
+<ul><li>An email goes to the Ops and Accounts teams whenever the customer makes a part payment or a preclosure.</li></ul>
+<h2>6. After a part payment</h2>
+<ul><li>The loan account stays ACTIVE.</li></ul>
+<h2>7. Preclosure process in LMS</h2>
+<ol class="brd-flow">
+<li>Ops L1 starts the preclosure process after receiving the email about the preclosure payment, and only when the pending dues are 0.</li>
+<li>If the pending dues are more than 0, the customer has to pay the remaining amount before the closure can go ahead.</li>
+<li>If the pending dues are less than 0 (excess payment), the Accounts team is told about the excess payment so that it can be refunded.
+Once Accounts refunds it, the refund is updated in LMS with the UTR number to clear the excess payment.</li>
+<li>The preclosure request started by Ops L1 goes to the Accounts team (L1, L2 and L3) for review and approval.</li>
+<li>After the Accounts approval, the final approval goes to Ops L2 and L3. The revocation (de-pledge) of the units is started at the same time.</li>
+<li>After the final approval, the loan closure email and the NOC are sent to the customer.</li>
+</ol>
+<h2>8. System impact</h2>
+<table class="brd-table"><tbody>
+<tr><th>LOS</th><td>Payment type field (Part payment / Preclosure); editable amount up to the total for a part payment; prefilled, non-editable amount for a preclosure.</td></tr>
+<tr><th>LMS</th><td>Apportioning of the payment; Ops L1 preclosure start when dues are 0; Accounts L1 / L2 / L3 review and approval; Ops L2 / L3 final
+approval; revocation in parallel; refund update with the UTR number for an excess payment.</td></tr>
+<tr><th>Accounting</th><td>Accrued interest on preclosure to the Interest Income GL; excess payment to the Preclosure Liability GL and refunded.</td></tr>
+<tr><th>Communication</th><td>Email to Ops and Accounts on every part payment and preclosure; loan closure email and NOC to the customer after the final approval.</td></tr>
+</tbody></table>
+</div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
+<script src="assets/review.js?v=7f70eda"></script>
+</body>
+</html>
