@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 17:05 IST
+**Last Updated:** 17-11-2026 17:17 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -350,6 +350,7 @@
 | DISC-315 | 17-11-2026 | new-mails.html, new-mails/03b_Application_Rejected_Pay_Processing_Fee.html | Application Rejected – Pay Charges in two versions | Owner: two versions of the Application Rejected (pay charges) mail – the current one, and one without the lien marking, lien removal and stamp duty charges | Version 1 (03, unchanged): processing fee, lien marking, lien removal, stamp duty and total. Version 2 (new 03b): same mail with only Processing Fee and Total Amount Payable in the charges box; same subject, link, “or”, Pay Charges → and closing text. List page numbers now follow the file name (1, 2, 3, 3b, 4, 5) and the Note column says Version 1 / Version 2. | Implemented |
 | DISC-316 | 17-11-2026 | new-mails/03b (and 03) | Charges box: no total in version 2, “Amount” column heading | Owner: in 03b the “Total Amount Payable ₹{{TOTAL_AMOUNT}} + GST” row is not needed; in the “Charges Payable” header row, show “Amount” on the right instead of blank | 03b charges box now has only Processing Fee (placeholder {{TOTAL_AMOUNT}} dropped from 03b). The header row of the charges box reads CHARGES PAYABLE | AMOUNT in both 03 and 03b (details() takes an optional right-hand heading). 03 keeps its total row. | Implemented |
 | DISC-317 | 17-11-2026 | new-mails/03b | Processing fee marked all-inclusive | Owner: show “Processing Fee*” with the note “*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty and GST” | 03b charges row reads “Processing Fee*  ₹{{PROCESSING_FEE}}” (the “+ GST” removed, since the fee includes GST) and the note is shown in small grey text just below the charges box. List-page note updated. | Implemented |
+| DISC-318 | 17-11-2026 | new-mails.html | Note removed for mail 3 | Owner: remove “Version 1 – all charges. Sample: Processing Fee ₹999 + GST (differs by sanction amount), Total ₹1,749 + GST – as per the reviewer notes in the sheet.” | Note column for mail 3 on the New Customer Mails page now shows “–”. The mail itself is unchanged. | Implemented |
 
 ---
 
