@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 13:28 IST
+**Last Updated:** 17-11-2026 13:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -343,6 +343,7 @@
 | DISC-308 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header phone numbers stacked | Owner: show the two numbers one below the other instead of side by side | +91 898-100-3538 on top and 1800 410 5988 below it, each with the phone icon, left-aligned, next to the Login button (.site-right .phones). | Implemented |
 | DISC-309 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header phone numbers aligned | Owner: the alignment of the two stacked numbers is not good | Each number is now a two-column row (16px icon column + number) with the icon centred on the text line, equal 20px rows, 6px gap, and both numbers starting at the same left edge (tabular digits). | Implemented |
 | DISC-310 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header numbers: original font, toll-free first | Owner: only the alignment was to be fixed – the font style changed; the toll-free number has to come on top | Removed the tabular-digits setting added in DISC-309 (the numbers use the normal Satoshi digits again; icon / row alignment kept). Order swapped: 1800 410 5988 on top, +91 898-100-3538 below. | Implemented |
+| DISC-311 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header numbers moved into a call icon pop-up | Owner (reference: another site’s call pop-up): no email; add a call icon, and on click show the two numbers separately, each in its own card | Header right side is now Login + a round call icon button. Click opens a pop-up under the icon with two separate cards: “Toll-free 1800 410 5988” (top) and “Phone +91 898 100 3538”, each with the phone icon; tapping a card dials the number (tel:18004105988 / tel:+918981003538). Outside click or Esc closes the pop-up. The stacked numbers (DISC-308–310) are removed. Number shown without hyphens, as discussed. | Implemented |
 
 ---
 

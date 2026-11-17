@@ -72,10 +72,18 @@ img { display: block; }
 .site-nav { display: flex; gap: 32px; margin-left: 40px; margin-right: auto; font-size: 13.5px; font-weight: 500; }
 .site-right { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
 .site-right .phone { display: flex; align-items: center; gap: 8px; }
-.site-right .phones { display: flex; flex-direction: column; gap: 6px; }   /* two numbers one below the other (DISC-308) */
-.site-right .phones .phone { display: grid; grid-template-columns: 16px auto; column-gap: 10px; align-items: center; height: 20px; line-height: 20px; }   /* icon and number on one centre line (DISC-309) */
-.site-right .phones .phone > span { display: flex !important; align-items: center; justify-content: center; width: 16px !important; height: 16px !important; }
-.site-right .phones .phone svg { display: block; width: 16px; height: 16px; }
+.call-wrap { position: relative; }   /* call icon + pop-up with one card per number (DISC-311) */
+.call-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #D9D9D9; background: #fff; display: flex; align-items: center; justify-content: center; color: #1a1a1a; }
+.call-btn svg { width: 18px; height: 18px; display: block; }
+.call-btn:hover, .call-btn.on { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(255, 203, 8, .25); }
+.call-pop { position: absolute; right: 0; top: calc(100% + 14px); width: 290px; background: #fff; border-radius: 16px; box-shadow: 0 10px 34px rgba(0,0,0,.14); padding: 20px; display: grid; gap: 14px; z-index: 20; }
+.call-pop[hidden] { display: none; }
+.call-card { display: flex; align-items: center; gap: 14px; border: 1px solid #3a3a3a; border-radius: 8px; padding: 12px 16px; color: #1a1a1a; text-decoration: none; }
+.call-card:hover { border-color: var(--yellow); background: #FFFBEA; }
+.call-card .ci { width: 20px; height: 20px; flex: none; display: flex; }
+.call-card .ci svg { width: 20px; height: 20px; display: block; }
+.call-card small { display: block; font-size: 11px; font-weight: 500; color: #8C8C8C; line-height: 1.2; }
+.call-card > span:last-child { font-size: 16px; font-weight: 700; line-height: 1.3; }
 .site-right .contact { color: var(--yellow); }
 .site-right .site-login { height: 38px; padding: 0 28px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer; }   /* Login button (DISC-305) */
 
@@ -1595,7 +1603,7 @@ body.prd { background: #F4F5F6; color: #111; }
       <header class="hdr site">
         ${logoLink(img('shriram-logo.png'))}
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
-        <div class="site-right"><div class="phones"><a class="phone" href="tel:18004105988"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>1800 410 5988</a><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a></div><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
+        <div class="site-right"><a class="btn btn-primary site-login" data-cta="login">Login</a><div class="call-wrap"><button class="call-btn" type="button" data-call aria-label="Call us" aria-expanded="false">${ICON.phone}</button><div class="call-pop" role="dialog" aria-label="Call us" hidden><a class="call-card" href="tel:18004105988"><span class="ci">${ICON.phone}</span><span><small>Toll-free</small>1800 410 5988</span></a><a class="call-card" href="tel:+918981003538"><span class="ci">${ICON.phone}</span><span><small>Phone</small>+91 898 100 3538</span></a></div></div></div>
       </header>`;
     const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
       : `<a data-credit title="Credit score" style="cursor:pointer">${ICON.gauge}</a><a data-profile title="Profile" style="cursor:pointer">${ICON.user}</a>`;
@@ -3334,6 +3342,14 @@ body.prd { background: #F4F5F6; color: #111; }
     wireFlow();
     wireBehaviour();
     document.querySelectorAll('[data-logout]').forEach((a) => { a.onclick = () => go('01) LAMF Landing Page'); });   // logout ends the journey
+    // landing header: call icon opens the two numbers in separate cards; outside click or Esc closes it (DISC-311)
+    document.querySelectorAll('[data-call]').forEach((btn) => {
+      const pop = btn.nextElementSibling;
+      const show = (on) => { pop.hidden = !on; btn.setAttribute('aria-expanded', on); btn.classList.toggle('on', on); };
+      btn.onclick = (e) => { e.stopPropagation(); show(pop.hidden); };
+      document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target)) show(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') show(false); });
+    });
     document.querySelectorAll('[data-credit]').forEach((a) => { a.onclick = creditPopup; });
     document.querySelectorAll('[data-profile]').forEach((a) => { a.onclick = profilePopup; });
     if (opts.scrollTo) requestAnimationFrame(() => { const t = document.querySelector(opts.scrollTo); if (t) window.scrollTo(0, t.getBoundingClientRect().top + scrollY - (opts.offset || 0)); });
