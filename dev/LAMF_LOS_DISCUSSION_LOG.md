@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 13:21 IST
+**Last Updated:** 17-11-2026 13:25 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -341,6 +341,7 @@
 | DISC-306 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Landing page matched to the live lamf.shriramcredit.in page | Owner (screenshot of https://lamf.shriramcredit.in): match the exact design | CSS only (assets/lamf.css), sizes taken from the live page: header 75px with logo 45px; hero 594px tall, content and the steps / footer aligned to the live side margins (about 6% of the width) instead of a centred 1358px box; headline 56px bold; tagline, description (wider), feature list (12.5px, wider first column), “100% Safe and Compliant” pill, CTA and existing-customer line enlarged to the live proportions; hero image moved and slightly larger; “How to Apply” heading semi-bold; footer columns spread to the full width. PRD Sl. No 1 not changed (Completed). | Implemented |
 | DISC-307 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Second phone number in the header | Owner: next to +91 898-100-3538 add another number, 1800 410 5988 | Landing page header now shows both numbers, each with the phone icon and a tap-to-call link (tel:+918981003538, tel:18004105988), before the Login button. PRD Sl. No 1 not changed (Completed). | Implemented |
 | DISC-308 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header phone numbers stacked | Owner: show the two numbers one below the other instead of side by side | +91 898-100-3538 on top and 1800 410 5988 below it, each with the phone icon, left-aligned, next to the Login button (.site-right .phones). | Implemented |
+| DISC-309 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header phone numbers aligned | Owner: the alignment of the two stacked numbers is not good | Each number is now a two-column row (16px icon column + number) with the icon centred on the text line, equal 20px rows, 6px gap, and both numbers starting at the same left edge (tabular digits). | Implemented |
 
 ---
 
