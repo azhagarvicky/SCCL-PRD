@@ -97,7 +97,7 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
       para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
       SUPPORT],
-     "Version 1 – all charges. Sample: Processing Fee ₹999 + GST (differs by sanction amount), Total ₹1,749 + GST – as per the reviewer notes in the sheet."),
+     ""),
     ("03b_Application_Rejected_Pay_Processing_Fee", "Application Rejected &ndash; Payment of Charges",     # version 2 (DISC-315)
      "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges.",
