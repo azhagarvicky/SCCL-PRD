@@ -524,6 +524,9 @@ MAIL_TEMPLATES = {
  "Loan Agreement e-Sign": ("04_Loan_Agreement.html",
     "SCCL Loan Agreement – << Full Name of the customer >>", "SCCL Loan Agreement – AZHAGARSAMY SUBBURAJ",
     "To: Customer Email ID\nCC: loandocuments@shriramcredit.in\nAttachment: Digitally signed Loan Agreement PDF\n\n", {"{{LOAN_ID}}": "SCCLMF20261000102"}),
+ # owner's HTML (DISC-321); Mail Available keeps “No – to be created” with the View link (see MAIL_STATUS_KEEP)
+ "Lien Removal Successful": ("27_Lien_Removal_Successful.html",
+    "Lien Removed: Your Mutual Fund Units Are Unpledged", "Lien Removed: Your Mutual Fund Units Are Unpledged", "", {}),
  # two rows share the stage “Withdrawal”, so this one is keyed by its scenario (DISC-209)
  "When the customer initiates a withdrawal from the loan account, an OTP is sent to confirm the withdrawal": ("06_Withdrawal_Verification.html",
     "{{OTP}} – Your Withdrawal Verification OTP for Shriram Credit LAMF", "123456 – Your Withdrawal Verification OTP for Shriram Credit LAMF",
@@ -614,9 +617,6 @@ DRAFT_MAILS = {
  "Lien Removal Initiated": ("Lien removal initiated for your Mutual Fund units – {{LOAN_ID}}", "Lien removal initiated for your Mutual Fund units – SCCLMF20261000102",
     "Lien Removal Initiated\n\nDear {{CUSTOMER_NAME}},\n\nWe have initiated the removal of the lien on the Mutual Fund units pledged against loan account {{LOAN_ID}}.\n\n"
     + _LIEN_DETAILS + "We will update you once the lien removal is completed.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
- "Lien Removal Successful": ("Lien removed successfully – {{LOAN_ID}}", "Lien removed successfully – SCCLMF20261000102",
-    "Lien Removal Successful\n\nDear {{CUSTOMER_NAME}},\n\nThe lien on your Mutual Fund units pledged against loan account {{LOAN_ID}} has been removed successfully. "
-    "Your units are now released from lien.\n\n" + SUPPORT + "\n\nWe thank you for choosing Shriram Credit and look forward to serving you again." + MAIL_SIGN + MAIL_DISCLAIMER),
  "LAMF Application Submit": ("Your LAMF application {{LOAN_ID}} has been submitted successfully",
     "Your LAMF application SCCLMF20261000102 has been submitted successfully",
     "Application Submitted\n\nDear {{CUSTOMER_NAME}},\n\nThank you for completing the E-Mandate. Your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} "
@@ -684,6 +684,9 @@ def _with_mail(r):
     return r[:3] + ("SMS, Mail",) + r[4:10] + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required")
 assert set(MAIL_TEMPLATES) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}
 COMMS = [_with_mail(r) for r in COMMS]
+# Mail HTML attached but the mail is still to be created in the system: keep the status, add the View link below it (DISC-321)
+MAIL_STATUS_KEEP = {"Lien Removal Successful": "No – to be created"}
+COMMS = [r[:14] + (MAIL_STATUS_KEEP[r[0]] + r[14][3:],) + r[15:] if r[0] in MAIL_STATUS_KEEP and r[14].startswith("Yes") else r for r in COMMS]
 
 # Mail-only rows from HTML templates (no SMS): inserted after the given stage (DISC-216)
 MAIL_ONLY = [
