@@ -64,7 +64,7 @@ img { display: block; }
 .site-right { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
 .site-right .phone { display: flex; align-items: center; gap: 8px; }
 .site-right .phones { display: flex; flex-direction: column; gap: 6px; }   /* two numbers one below the other (DISC-308) */
-.site-right .phones .phone { display: grid; grid-template-columns: 16px auto; column-gap: 10px; align-items: center; height: 20px; line-height: 20px; font-variant-numeric: tabular-nums; }   /* icon and number on one centre line (DISC-309) */
+.site-right .phones .phone { display: grid; grid-template-columns: 16px auto; column-gap: 10px; align-items: center; height: 20px; line-height: 20px; }   /* icon and number on one centre line (DISC-309) */
 .site-right .phones .phone > span { display: flex !important; align-items: center; justify-content: center; width: 16px !important; height: 16px !important; }
 .site-right .phones .phone svg { display: block; width: 16px; height: 16px; }
 .site-right .contact { color: var(--yellow); }
