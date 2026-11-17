@@ -106,14 +106,16 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       para("After review, we regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
            "Company Limited (SCCL) could not be taken forward.", pad="22px 48px 0 48px"),
       para("As per the applicable terms, the following charges are payable:"),
-      details("Charges Payable", [("Processing Fee", "&#8377;{{PROCESSING_FEE}} + GST")], right="Amount"),   # no total row (DISC-316)
+      details("Charges Payable", [("Processing Fee*", "&#8377;{{PROCESSING_FEE}}")], right="Amount"),   # no total row (DISC-316); fee is all-inclusive (DISC-317)
+      f'<tr><td class="px" style="padding:8px 48px 0 48px;"><p style="margin:0;{FONT}font-size:12px;line-height:18px;color:#777777;">'
+      '*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty and GST</p></td></tr>',
       para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
       para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),
       para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
       button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
       para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
       SUPPORT],
-     "Version 2 – processing fee only (no lien marking, lien removal or stamp duty charges). Sample: Processing Fee ₹999 + GST."),
+     "Version 2 – one-time processing fee only, inclusive of lien marking, lien removal, stamp duty and GST (shown with a * note)."),
     ("04_Application_Rejected", "Application Rejected",
      "Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved.",
