@@ -72,6 +72,10 @@ img { display: block; }
 .site-nav { display: flex; gap: 32px; margin-left: 40px; margin-right: auto; font-size: 13.5px; font-weight: 500; }
 .site-right { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
 .site-right .phone { display: flex; align-items: center; gap: 8px; }
+.site-right .phones { display: flex; flex-direction: column; gap: 6px; }   /* toll-free on top, mobile below (DISC-325) */
+.site-right .phones .phone { display: grid; grid-template-columns: 16px auto; column-gap: 10px; align-items: center; height: 20px; line-height: 20px; }
+.site-right .phones .phone > span { display: flex !important; align-items: center; justify-content: center; width: 16px !important; height: 16px !important; }
+.site-right .phones .phone svg { display: block; width: 16px; height: 16px; }
 .call-wrap { position: relative; }   /* call icon + pop-up with one card per number (DISC-311) */
 .call-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #D9D9D9; background: #fff; display: flex; align-items: center; justify-content: center; color: #1a1a1a; }
 .call-btn svg { width: 18px; height: 18px; display: block; }
@@ -1603,7 +1607,7 @@ body.prd { background: #F4F5F6; color: #111; }
       <header class="hdr site">
         ${logoLink(img('shriram-logo.png'))}
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
-        <div class="site-right"><div class="call-wrap"><button class="call-btn" type="button" data-call aria-label="Call us" aria-expanded="false">${ICON.phone}</button><div class="call-pop" role="dialog" aria-label="Call us" hidden><a class="call-card" href="tel:18004105988"><span class="ci">${ICON.phone}</span><span><small>Toll-free</small>1800 410 5988</span></a><a class="call-card" href="tel:+918981003538"><span class="ci">${ICON.phone}</span><span><small>Phone</small>+91 898 100 3538</span></a></div></div><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
+        <div class="site-right"><div class="phones"><a class="phone" href="tel:18004105988"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>1800 410 5988</a><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a></div><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
       </header>`;
     const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
       : `<a data-credit title="Credit score" style="cursor:pointer">${ICON.gauge}</a><a data-profile title="Profile" style="cursor:pointer">${ICON.user}</a>`;

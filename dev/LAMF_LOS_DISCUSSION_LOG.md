@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 18:02 IST
+**Last Updated:** 17-11-2026 18:15 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -357,6 +357,7 @@
 | DISC-322 | 17-11-2026 | communications.html row 14 – Loan Account Opening / Loan Lodgement Rejection (with payment link); mails/28_Application_Rejected_Pay_Charges.html | Row 14 mail from the owner’s HTML | Owner (attached 03_Application_Rejected_Pay_Charges.html): this is for row 14 – same treatment as row 8 | Saved as mails/28_Application_Rejected_Pay_Charges.html. Row 14: subject “Action Required: Application Rejected – Pay Charges {{LOAN_ID}}” (actual: … SCCLMF20261000102); Mail Content Structure / Actual Mail Content from the HTML (sample Processing Fee ₹999 + GST); Mail Available stays “No – to be created” with a View link below it. The earlier drafted text mail for row 14 removed. SMS columns and row 15 unchanged. xlsx regenerated. | Implemented |
 | DISC-323 | 17-11-2026 | communications.html row 15 – Loan Account Opening / Loan Lodgement Rejection (without payment link); mails/29_Application_Rejected.html | Row 15 mail from the owner’s HTML | Owner (attached 04_Application_Rejected.html): this is for row 15 – same treatment as rows 8 and 14 | Saved as mails/29_Application_Rejected.html. Row 15: subject “Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}”; Mail Content Structure / Actual Mail Content from the HTML (rejection notice + Lien Removal Process box); Mail Available stays “No – to be created” with a View link below it. Earlier drafted text mail removed. SMS columns unchanged. xlsx regenerated. | Implemented |
 | DISC-324 | 17-11-2026 | communications.html row 18 – Withdrawal Rejected; mails/30_Withdrawal_Request_Rejected.html | Row 18 mail from the owner’s HTML | Owner (attached 05_Withdrawal_Request_Rejected.html): this is for row 18 – same treatment as rows 8, 14 and 15 | Saved as mails/30_Withdrawal_Request_Rejected.html. Row 18: subject “Update: Your Withdrawal Request Was Rejected {{LOAN_ID}}”; Mail Content Structure / Actual Mail Content from the HTML (sample amount ₹10,000); Mail Available stays “No – to be created” with a View link below it. Earlier drafted text mail removed. SMS columns unchanged. xlsx regenerated. | Implemented |
+| DISC-325 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header back to stacked numbers (toll-free first) | Owner (header screenshot): use this layout – two numbers one below the other next to Login – with 1800 410 5988 first and +91 898-100-3538 second | Call icon pop-up (DISC-311/312) removed from the header; the two numbers are shown stacked before the Login button, each with the phone icon, icon centred on its line and both numbers starting at the same left edge (normal digits). Mobile number shown as “+91 898-100-3538” again. Tap-to-call links kept. | Implemented |
 
 ---
 
