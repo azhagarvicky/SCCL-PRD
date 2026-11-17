@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 16:41 IST
+**Last Updated:** 17-11-2026 16:50 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -347,6 +347,7 @@
 | DISC-312 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Call icon before Login | Owner: the call logo has to come before the Login CTA | Header right side order is now call icon, then Login. The pop-up still opens under the call icon. | Implemented |
 | DISC-313 | 17-11-2026 | Customer mails (mails/*.html, new-mails, Customer Communications, exports xlsx) | One disclaimer text in every customer mail | Owner: update all customer communication mail disclaimers to “Disclaimer: This is an automated reminder. Please do not reply to this message, as the mailbox is not monitored and you will not receive a response. Loan against Securities is only for personal use. The loan amount cannot be used for speculative activities, capital market-related purposes, or anti-social purposes.” | Updated the 8 owner mail templates that had the older wording (06, 11 bounce 1A, 12, 18, 22 – also “this mailbox” → “the mailbox”, 24 LTV breach, 25, 26), the shared MAIL_DISCLAIMER in build_pages.py (text mails in the Communications table) and the 5 new mails (tools/new_mails.py). All 22 mails/*.html and 5 new-mails now carry the exact text. Communications page, cloud.html and exports/LAMF_Customer_Communications.xlsx regenerated. Internal LMS alerts not changed (not customer mails). | Implemented |
 | DISC-314 | 17-11-2026 | new-mails/03_Application_Rejected_Pay_Charges.html | Payment link before the Pay Charges CTA | Owner: in mail 03 the link https://lamf.shriramcredit.in/user/loans/ has to come before the Pay Charges → CTA, then “or”, then the CTA | Order under “Please use the below link to make the payment.” is now: the link (centred), “or”, then the Pay Charges → button. The “or visit:” line after the button is removed. | Implemented |
+| DISC-315 | 17-11-2026 | new-mails.html, new-mails/03b_Application_Rejected_Pay_Processing_Fee.html | Application Rejected – Pay Charges in two versions | Owner: two versions of the Application Rejected (pay charges) mail – the current one, and one without the lien marking, lien removal and stamp duty charges | Version 1 (03, unchanged): processing fee, lien marking, lien removal, stamp duty and total. Version 2 (new 03b): same mail with only Processing Fee and Total Amount Payable in the charges box; same subject, link, “or”, Pay Charges → and closing text. List page numbers now follow the file name (1, 2, 3, 3b, 4, 5) and the Note column says Version 1 / Version 2. | Implemented |
 
 ---
 

@@ -94,7 +94,24 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
       para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
       SUPPORT],
-     "Sample: Processing Fee ₹999 + GST (differs by sanction amount), Total ₹1,749 + GST – as per the reviewer notes in the sheet."),
+     "Version 1 – all charges. Sample: Processing Fee ₹999 + GST (differs by sanction amount), Total ₹1,749 + GST – as per the reviewer notes in the sheet."),
+    ("03b_Application_Rejected_Pay_Processing_Fee", "Application Rejected &ndash; Payment of Charges",     # version 2 (DISC-315)
+     "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}",
+     "Your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges.",
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{PROCESSING_FEE}}", "{{TOTAL_AMOUNT}}", "{{PAYMENT_LINK}}"],
+     [badge("Your Loan Against Mutual Fund application could not be approved", "warn"),
+      para("After review, we regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
+           "Company Limited (SCCL) could not be taken forward.", pad="22px 48px 0 48px"),
+      para("As per the applicable terms, the following charges are payable:"),
+      details("Charges Payable", [("Processing Fee", "&#8377;{{PROCESSING_FEE}} + GST"),
+                                  ("Total Amount Payable", "&#8377;{{TOTAL_AMOUNT}} + GST")]),
+      para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
+      para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),
+      para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
+      button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
+      para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
+      SUPPORT],
+     "Version 2 – processing fee only (no lien marking, lien removal or stamp duty charges). Sample: Processing Fee ₹999 + GST; Total = the processing fee."),
     ("04_Application_Rejected", "Application Rejected",
      "Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved.",
@@ -175,10 +192,10 @@ def list_body(logo, back):
         f'<tr><td class="c">{i}</td><td>{title}</td><td>{_h.escape(subject)}</td><td>{_h.escape(note) or "–"}</td>'
         f'<td class="nm-cta"><a class="nm-view" href="new-mails/{fname}.html" target="_blank" rel="noopener">View mail →</a>'
         f'<a class="nm-dl" href="new-mails/{fname}.html" download="{fname}.html">Download</a></td></tr>'
-        for i, (fname, title, subject, _, _, _, note) in enumerate(NEW_MAILS, 1))
+        for fname, title, subject, _, _, _, note in NEW_MAILS for i in [fname.split('_')[0].lstrip('0')])   # 3, 3b, 4 … from the file name
     return (logo + f'<p class="brd-back"><a href="{back}">← Customer Communications</a></p>'
             '<h1>New Customer Mails</h1>'
-            f'<p>{len(NEW_MAILS)} mail templates from the additional scenarios sheet (LAMF_Customer_Communications_Additional_Scenarios). '
+            f'<p>{len(NEW_MAILS)} mail templates (mail 3 in two versions) from the additional scenarios sheet (LAMF_Customer_Communications_Additional_Scenarios). '
             'Kept separate from the Customer Communications table. View opens the mail; Download saves the HTML file.</p>'
             '<table class="brd-table nm-table"><thead><tr><th>#</th><th>Mail</th><th>Subject line</th><th>Note</th><th>Mail</th></tr></thead>'
             f'<tbody>{rows}</tbody></table>')
