@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 13:18 IST
+**Last Updated:** 17-11-2026 13:21 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -340,6 +340,7 @@
 | DISC-305 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Landing page recreated to the owner’s new design | Owner (full-page design screenshot): recreate this design on the LAMF landing page | Prototype only (assets/lamf.js, lamf.css): header “Contact Us” link replaced by a yellow “Login” button; “Check your eligibility in 2 minutes” CTA on one line with rounded corners; new line under it “Are you an existing customer? Login / Resume your application” (blue link); hero made taller for the new line; “Start Your Application” CTA rounded. Login and “Login / Resume your application” open the mobile number pop-up (FLOW login → 02), as an existing customer signs in with the mobile OTP. PRD Sl. No 1 is Completed (frozen) and not changed – waiting for the owner to say whether this design is live (update the row) or upcoming (change request). | Implemented |
 | DISC-306 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Landing page matched to the live lamf.shriramcredit.in page | Owner (screenshot of https://lamf.shriramcredit.in): match the exact design | CSS only (assets/lamf.css), sizes taken from the live page: header 75px with logo 45px; hero 594px tall, content and the steps / footer aligned to the live side margins (about 6% of the width) instead of a centred 1358px box; headline 56px bold; tagline, description (wider), feature list (12.5px, wider first column), “100% Safe and Compliant” pill, CTA and existing-customer line enlarged to the live proportions; hero image moved and slightly larger; “How to Apply” heading semi-bold; footer columns spread to the full width. PRD Sl. No 1 not changed (Completed). | Implemented |
 | DISC-307 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Second phone number in the header | Owner: next to +91 898-100-3538 add another number, 1800 410 5988 | Landing page header now shows both numbers, each with the phone icon and a tap-to-call link (tel:+918981003538, tel:18004105988), before the Login button. PRD Sl. No 1 not changed (Completed). | Implemented |
+| DISC-308 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header phone numbers stacked | Owner: show the two numbers one below the other instead of side by side | +91 898-100-3538 on top and 1800 410 5988 below it, each with the phone icon, left-aligned, next to the Login button (.site-right .phones). | Implemented |
 
 ---
 

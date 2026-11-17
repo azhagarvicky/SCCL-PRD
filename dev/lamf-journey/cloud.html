@@ -72,6 +72,7 @@ img { display: block; }
 .site-nav { display: flex; gap: 32px; margin-left: 40px; margin-right: auto; font-size: 13.5px; font-weight: 500; }
 .site-right { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
 .site-right .phone { display: flex; align-items: center; gap: 8px; }
+.site-right .phones { display: flex; flex-direction: column; gap: 4px; line-height: 1.2; }   /* two numbers one below the other (DISC-308) */
 .site-right .contact { color: var(--yellow); }
 .site-right .site-login { height: 38px; padding: 0 28px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer; }   /* Login button (DISC-305) */
 
@@ -1591,7 +1592,7 @@ body.prd { background: #F4F5F6; color: #111; }
       <header class="hdr site">
         ${logoLink(img('shriram-logo.png'))}
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
-        <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="phone" href="tel:18004105988"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>1800 410 5988</a><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
+        <div class="site-right"><div class="phones"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="phone" href="tel:18004105988"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>1800 410 5988</a></div><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
       </header>`;
     const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
       : `<a data-credit title="Credit score" style="cursor:pointer">${ICON.gauge}</a><a data-profile title="Profile" style="cursor:pointer">${ICON.user}</a>`;
