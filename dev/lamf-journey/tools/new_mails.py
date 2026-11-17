@@ -22,14 +22,17 @@ def badge(text, kind):
             f'style="padding:18px 24px;"><p style="margin:0;{FONT}font-size:16px;line-height:24px;color:{color};font-weight:bold;">'
             f'{icon}&nbsp; {text}</p></td></tr></table></td></tr>')
 
-def details(title, rows):
+def details(title, rows, right=""):   # right: optional heading over the value column, e.g. "Amount" (DISC-316)
     body = "".join(f'<tr><td style="padding:9px 16px;{FONT}font-size:14px;line-height:20px;color:#555555;border-top:1px solid #ececec;'
                    f'width:45%;">{k}</td><td style="padding:9px 16px;{FONT}font-size:14px;line-height:20px;color:#1a1a1a;font-weight:bold;'
                    f'border-top:1px solid #ececec;">{v}</td></tr>' for k, v in rows)
     return (f'<tr><td class="px" style="padding:22px 48px 0 48px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" '
-            f'width="100%" style="background-color:#FAFAF8;border:1px solid #e2e2e2;border-radius:8px;"><tr><td colspan="2" '
+            f'width="100%" style="background-color:#FAFAF8;border:1px solid #e2e2e2;border-radius:8px;"><tr><td colspan="{1 if right else 2}" '
             f'style="padding:12px 16px;{FONT}font-size:13px;line-height:18px;font-weight:bold;letter-spacing:.5px;color:#1a1a1a;'
-            f'text-transform:uppercase;">{title}</td></tr>{body}</table></td></tr>')
+            f'text-transform:uppercase;">{title}</td>'
+            + (f'<td style="padding:12px 16px;{FONT}font-size:13px;line-height:18px;font-weight:bold;letter-spacing:.5px;color:#1a1a1a;'
+               f'text-transform:uppercase;">{right}</td>' if right else '')
+            + f'</tr>{body}</table></td></tr>')
 
 def bullets(title, items):
     li = "".join(f'<tr><td valign="top" style="padding:4px 10px 4px 0;{FONT}font-size:15px;line-height:24px;color:#333333;">&bull;</td>'
@@ -87,7 +90,7 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       para("As per the applicable terms, the following charges are payable:"),
       details("Charges Payable", [("Processing Fee", "&#8377;{{PROCESSING_FEE}} + GST"), ("Lien Marking Charges", "&#8377;450 + GST"),
                                   ("Lien Removal Charges", "&#8377;100 + GST"), ("Stamp Duty Charges", "&#8377;200 + GST"),
-                                  ("Total Amount Payable", "&#8377;{{TOTAL_AMOUNT}} + GST")]),
+                                  ("Total Amount Payable", "&#8377;{{TOTAL_AMOUNT}} + GST")], right="Amount"),
       para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
       para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),   # link first, then “or”, then the CTA (DISC-314)
       para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
@@ -98,20 +101,19 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
     ("03b_Application_Rejected_Pay_Processing_Fee", "Application Rejected &ndash; Payment of Charges",     # version 2 (DISC-315)
      "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges.",
-     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{PROCESSING_FEE}}", "{{TOTAL_AMOUNT}}", "{{PAYMENT_LINK}}"],
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{PROCESSING_FEE}}", "{{PAYMENT_LINK}}"],
      [badge("Your Loan Against Mutual Fund application could not be approved", "warn"),
       para("After review, we regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
            "Company Limited (SCCL) could not be taken forward.", pad="22px 48px 0 48px"),
       para("As per the applicable terms, the following charges are payable:"),
-      details("Charges Payable", [("Processing Fee", "&#8377;{{PROCESSING_FEE}} + GST"),
-                                  ("Total Amount Payable", "&#8377;{{TOTAL_AMOUNT}} + GST")]),
+      details("Charges Payable", [("Processing Fee", "&#8377;{{PROCESSING_FEE}} + GST")], right="Amount"),   # no total row (DISC-316)
       para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
       para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),
       para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
       button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
       para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
       SUPPORT],
-     "Version 2 – processing fee only (no lien marking, lien removal or stamp duty charges). Sample: Processing Fee ₹999 + GST; Total = the processing fee."),
+     "Version 2 – processing fee only (no lien marking, lien removal or stamp duty charges). Sample: Processing Fee ₹999 + GST."),
     ("04_Application_Rejected", "Application Rejected",
      "Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved.",
