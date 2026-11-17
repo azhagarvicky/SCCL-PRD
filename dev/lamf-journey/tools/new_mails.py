@@ -89,8 +89,9 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
                                   ("Lien Removal Charges", "&#8377;100 + GST"), ("Stamp Duty Charges", "&#8377;200 + GST"),
                                   ("Total Amount Payable", "&#8377;{{TOTAL_AMOUNT}} + GST")]),
       para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
+      para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),   # link first, then “or”, then the CTA (DISC-314)
+      para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
       button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
-      para("or visit: " + link("https://lamf.shriramcredit.in/user/loans/"), align="center", color="#555555"),
       para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
       SUPPORT],
      "Sample: Processing Fee ₹999 + GST (differs by sanction amount), Total ₹1,749 + GST – as per the reviewer notes in the sheet."),

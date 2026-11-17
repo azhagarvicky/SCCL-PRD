@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 16:34 IST
+**Last Updated:** 17-11-2026 16:41 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -346,6 +346,7 @@
 | DISC-311 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header numbers moved into a call icon pop-up | Owner (reference: another site’s call pop-up): no email; add a call icon, and on click show the two numbers separately, each in its own card | Header right side is now Login + a round call icon button. Click opens a pop-up under the icon with two separate cards: “Toll-free 1800 410 5988” (top) and “Phone +91 898 100 3538”, each with the phone icon; tapping a card dials the number (tel:18004105988 / tel:+918981003538). Outside click or Esc closes the pop-up. The stacked numbers (DISC-308–310) are removed. Number shown without hyphens, as discussed. | Implemented |
 | DISC-312 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Call icon before Login | Owner: the call logo has to come before the Login CTA | Header right side order is now call icon, then Login. The pop-up still opens under the call icon. | Implemented |
 | DISC-313 | 17-11-2026 | Customer mails (mails/*.html, new-mails, Customer Communications, exports xlsx) | One disclaimer text in every customer mail | Owner: update all customer communication mail disclaimers to “Disclaimer: This is an automated reminder. Please do not reply to this message, as the mailbox is not monitored and you will not receive a response. Loan against Securities is only for personal use. The loan amount cannot be used for speculative activities, capital market-related purposes, or anti-social purposes.” | Updated the 8 owner mail templates that had the older wording (06, 11 bounce 1A, 12, 18, 22 – also “this mailbox” → “the mailbox”, 24 LTV breach, 25, 26), the shared MAIL_DISCLAIMER in build_pages.py (text mails in the Communications table) and the 5 new mails (tools/new_mails.py). All 22 mails/*.html and 5 new-mails now carry the exact text. Communications page, cloud.html and exports/LAMF_Customer_Communications.xlsx regenerated. Internal LMS alerts not changed (not customer mails). | Implemented |
+| DISC-314 | 17-11-2026 | new-mails/03_Application_Rejected_Pay_Charges.html | Payment link before the Pay Charges CTA | Owner: in mail 03 the link https://lamf.shriramcredit.in/user/loans/ has to come before the Pay Charges → CTA, then “or”, then the CTA | Order under “Please use the below link to make the payment.” is now: the link (centred), “or”, then the Pay Charges → button. The “or visit:” line after the button is removed. | Implemented |
 
 ---
 
