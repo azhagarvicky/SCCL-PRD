@@ -525,6 +525,9 @@ MAIL_TEMPLATES = {
     "SCCL Loan Agreement – << Full Name of the customer >>", "SCCL Loan Agreement – AZHAGARSAMY SUBBURAJ",
     "To: Customer Email ID\nCC: loandocuments@shriramcredit.in\nAttachment: Digitally signed Loan Agreement PDF\n\n", {"{{LOAN_ID}}": "SCCLMF20261000102"}),
  # owner's HTML (DISC-321); Mail Available keeps “No – to be created” with the View link (see MAIL_STATUS_KEEP)
+ "Loan Account Opening / Loan Lodgement Rejection (with payment link)": ("28_Application_Rejected_Pay_Charges.html",   # owner's HTML (DISC-322)
+    "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}", "Action Required: Application Rejected – Pay Charges SCCLMF20261000102", "",
+    {"{{LOAN_ID}}": "SCCLMF20261000102", "{{PROCESSING_FEE}}": "999"}),
  "Lien Removal Successful": ("27_Lien_Removal_Successful.html",
     "Lien Removed: Your Mutual Fund Units Are Unpledged", "Lien Removed: Your Mutual Fund Units Are Unpledged", "", {}),
  # two rows share the stage “Withdrawal”, so this one is keyed by its scenario (DISC-209)
@@ -622,12 +625,6 @@ DRAFT_MAILS = {
     "Application Submitted\n\nDear {{CUSTOMER_NAME}},\n\nThank you for completing the E-Mandate. Your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} "
     "has been submitted successfully.\n\nOur team will now review your application, and you will be notified once your loan account is opened.\n\n"
     + SUPPORT + "\n\n" + THANKS + MAIL_SIGN + MAIL_DISCLAIMER),
- "Loan Account Opening / Loan Lodgement Rejection (with payment link)": ("Your LAMF application {{LOAN_ID}} could not be approved",
-    "Your LAMF application SCCLMF20261000102 could not be approved",
-    "Application Not Approved\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} could not be approved after our review.\n\n" "CHARGES PAYABLE\nProcessing fee, lien marking and lien removal charges: ₹{{CHARGES_AMOUNT}}\n\n"
-    "Please pay the applicable charges using the link below.\n\n[Make Payment →] ({{PAYMENT_LINK}})\n\n"
-    "Once the payment is received, the lien on your Mutual Fund units will be removed.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
-    {"{{CHARGES_AMOUNT}}": "92,313", "{{PAYMENT_LINK}}": "https://lamf.shriramcredit.in/"}),
  "Loan Account Opening / Loan Lodgement Rejection (without payment link)": ("Your LAMF application {{LOAN_ID}} could not be approved",
     "Your LAMF application SCCLMF20261000102 could not be approved",
     "Application Not Approved\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} could not be approved after our review.\n\n" "The applicable charges for this application have been waived, so no payment is required from you.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER),
@@ -685,7 +682,8 @@ def _with_mail(r):
 assert set(MAIL_TEMPLATES) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}
 COMMS = [_with_mail(r) for r in COMMS]
 # Mail HTML attached but the mail is still to be created in the system: keep the status, add the View link below it (DISC-321)
-MAIL_STATUS_KEEP = {"Lien Removal Successful": "No – to be created"}
+MAIL_STATUS_KEEP = {"Lien Removal Successful": "No – to be created",
+                    "Loan Account Opening / Loan Lodgement Rejection (with payment link)": "No – to be created"}
 COMMS = [r[:14] + (MAIL_STATUS_KEEP[r[0]] + r[14][3:],) + r[15:] if r[0] in MAIL_STATUS_KEEP and r[14].startswith("Yes") else r for r in COMMS]
 
 # Mail-only rows from HTML templates (no SMS): inserted after the given stage (DISC-216)
