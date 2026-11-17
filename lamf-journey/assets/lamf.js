@@ -154,7 +154,7 @@
       <header class="hdr site">
         ${logoLink(img('shriram-logo.png'))}
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
-        <div class="site-right"><div class="phones"><a class="phone" href="tel:18004105988"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>1800 410 5988</a><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a></div><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
+        <div class="site-right"><a class="btn btn-primary site-login" data-cta="login">Login</a><div class="call-wrap"><button class="call-btn" type="button" data-call aria-label="Call us" aria-expanded="false">${ICON.phone}</button><div class="call-pop" role="dialog" aria-label="Call us" hidden><a class="call-card" href="tel:18004105988"><span class="ci">${ICON.phone}</span><span><small>Toll-free</small>1800 410 5988</span></a><a class="call-card" href="tel:+918981003538"><span class="ci">${ICON.phone}</span><span><small>Phone</small>+91 898 100 3538</span></a></div></div></div>
       </header>`;
     const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
       : `<a data-credit title="Credit score" style="cursor:pointer">${ICON.gauge}</a><a data-profile title="Profile" style="cursor:pointer">${ICON.user}</a>`;
@@ -1893,6 +1893,14 @@
     wireFlow();
     wireBehaviour();
     document.querySelectorAll('[data-logout]').forEach((a) => { a.onclick = () => go('01) LAMF Landing Page'); });   // logout ends the journey
+    // landing header: call icon opens the two numbers in separate cards; outside click or Esc closes it (DISC-311)
+    document.querySelectorAll('[data-call]').forEach((btn) => {
+      const pop = btn.nextElementSibling;
+      const show = (on) => { pop.hidden = !on; btn.setAttribute('aria-expanded', on); btn.classList.toggle('on', on); };
+      btn.onclick = (e) => { e.stopPropagation(); show(pop.hidden); };
+      document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target)) show(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') show(false); });
+    });
     document.querySelectorAll('[data-credit]').forEach((a) => { a.onclick = creditPopup; });
     document.querySelectorAll('[data-profile]').forEach((a) => { a.onclick = profilePopup; });
     if (opts.scrollTo) requestAnimationFrame(() => { const t = document.querySelector(opts.scrollTo); if (t) window.scrollTo(0, t.getBoundingClientRect().top + scrollY - (opts.offset || 0)); });
