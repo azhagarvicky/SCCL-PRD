@@ -154,7 +154,7 @@
       <header class="hdr site">
         ${logoLink(img('shriram-logo.png'))}
         <nav class="site-nav"><a>About Us</a><a>Product &amp; Services</a><a>Investors</a><a>Learning Lounge</a><a>Careers</a></nav>
-        <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="contact" href="https://www.shriramcredit.in/contact-us">Contact Us</a></div>
+        <div class="site-right"><a class="phone" href="tel:+918981003538"><span style="width:15px;height:15px;display:inline-block">${ICON.phone}</span>+91 898-100-3538</a><a class="btn btn-primary site-login" data-cta="login">Login</a></div>
       </header>`;
     const right = type === 'logout' ? `<a class="logout" data-logout title="Logout" style="width:22px;height:22px;display:block;cursor:pointer">${ICON.logout}</a>`
       : `<a data-credit title="Credit score" style="cursor:pointer">${ICON.gauge}</a><a data-profile title="Profile" style="cursor:pointer">${ICON.user}</a>`;
@@ -243,6 +243,7 @@
           <li>${ICON.tick}Instant loan approval</li><li>${ICON.tick}RBI regulated NBFC with 25+ years of legacy</li>
         </ul>
         <a class="btn btn-primary hero-cta" data-cta="check-eligibility">Check your eligibility in 2 minutes</a>
+        <p class="hero-existing">Are you an existing customer? <a data-cta="login">Login / Resume your application</a></p>
       </div>
       <div class="hero-r">${img('hero-person.png', 'hero-img')}</div>
     </div></section>
@@ -1013,6 +1014,8 @@
       // Both landing CTAs start the LAMF journey at the mobile number step
       'check-eligibility': '02) Enter MF linked Mobile Number',
       'start-application': '02) Enter MF linked Mobile Number',
+      // Login (header) and “Login / Resume your application” – an existing customer signs in with the mobile number OTP (DISC-305)
+      'login': '02) Enter MF linked Mobile Number',
     },
   };
 

@@ -64,6 +64,7 @@ img { display: block; }
 .site-right { display: flex; align-items: center; gap: 28px; font-size: 13.5px; font-weight: 500; }
 .site-right .phone { display: flex; align-items: center; gap: 8px; }
 .site-right .contact { color: var(--yellow); }
+.site-right .site-login { height: 38px; padding: 0 28px; font-size: 15px; font-weight: 700; border-radius: 6px; cursor: pointer; }   /* Login button (DISC-305) */
 
 /* ---------- Stepper ---------- */
 .stepper { display: flex; align-items: flex-start; justify-content: space-between; padding: 14px 60px 20px; border-bottom: 1px solid var(--line); background: #fff; position: relative; z-index: 4; }
@@ -190,7 +191,7 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
    ========================================================== */
 
 /* ---- 01 Landing ---- */
-.hero { background: linear-gradient(100deg, #fff 30%, var(--hero-cream) 75%); height: 513px; }
+.hero { background: linear-gradient(100deg, #fff 30%, var(--hero-cream) 75%); height: 548px; }
 .hero-in { max-width: 1358px; margin: 0 auto; padding: 40px 85px 0; display: flex; justify-content: space-between; position: relative; height: 100%; }
 .hero-l { width: 650px; }
 .safe-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #E5E5E5; background: #fff; border-radius: 20px; padding: 6px 14px 6px 16px; font-size: 11px; font-weight: 500; }
@@ -202,7 +203,9 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
 .feat { list-style: none; display: grid; grid-template-columns: 354px 1fr; row-gap: 11px; font-size: 11.5px; font-weight: 500; }
 .feat li { display: flex; gap: 8px; align-items: center; }
 .feat svg { width: 14px; height: 14px; flex: none; }
-.hero-cta { margin-top: 28px; width: 286px; height: 47px; font-size: 14.5px; border-radius: 4px; }
+.hero-cta { margin-top: 28px; height: 50px; padding: 0 38px; font-size: 14.5px; border-radius: 6px; white-space: nowrap; }
+.hero-existing { margin-top: 14px; font-size: 12.5px; color: #1a1a1a; }
+.hero-existing a { color: #1F4BD8; cursor: pointer; }   /* existing customer line (DISC-305) */
 .hero-r { position: absolute; right: 108px; top: 52px; }
 .hero-img { width: 400px; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 14%), linear-gradient(to bottom, transparent 0, #000 10%); -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent 0, #000 14%), linear-gradient(to bottom, transparent 0, #000 10%); mask-composite: intersect; }
 .how { max-width: 1358px; margin: 0 auto; padding: 60px 85px 58px; }
@@ -216,7 +219,7 @@ html.modal-open, body.modal-open { overflow: hidden; height: 100%; }
 .sc-ico { width: 26px; height: 26px; display: block; color: var(--yellow); margin-bottom: 36px; }
 .step-card b { font-size: 14px; font-weight: 700; display: block; margin-bottom: 10px; }
 .step-card p { font-size: 13px; line-height: 1.55; color: #333; }
-.start-app { height: 46px; width: 208px; font-size: 14px; border-radius: 4px; }
+.start-app { height: 50px; width: 230px; font-size: 14px; border-radius: 6px; }
 .site-foot { background: var(--footer-bg); padding: 60px 0 56px; }
 .foot-in { max-width: 1358px; margin: 0 auto; padding: 0 85px; display: grid; grid-template-columns: 345px 293px 293px 1fr; }
 .site-foot h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
