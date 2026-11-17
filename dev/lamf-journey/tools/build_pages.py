@@ -531,6 +531,9 @@ MAIL_TEMPLATES = {
  "Loan Account Opening / Loan Lodgement Rejection (without payment link)": ("29_Application_Rejected.html",   # owner's HTML (DISC-323)
     "Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}", "Update: Your Shriram Credit LAMF Application Is Rejected SCCLMF20261000102", "",
     {"{{LOAN_ID}}": "SCCLMF20261000102"}),
+ "Withdrawal Rejected": ("30_Withdrawal_Request_Rejected.html",   # owner's HTML (DISC-324)
+    "Update: Your Withdrawal Request Was Rejected {{LOAN_ID}}", "Update: Your Withdrawal Request Was Rejected SCCLMF20261000102", "",
+    {"{{LOAN_ID}}": "SCCLMF20261000102", "{{WITHDRAWAL_AMOUNT}}": "10,000"}),
  "Lien Removal Successful": ("27_Lien_Removal_Successful.html",
     "Lien Removed: Your Mutual Fund Units Are Unpledged", "Lien Removed: Your Mutual Fund Units Are Unpledged", "", {}),
  # two rows share the stage “Withdrawal”, so this one is keyed by its scenario (DISC-209)
@@ -628,13 +631,6 @@ DRAFT_MAILS = {
     "Application Submitted\n\nDear {{CUSTOMER_NAME}},\n\nThank you for completing the E-Mandate. Your Loan Against Mutual Fund (LAMF) application {{LOAN_ID}} "
     "has been submitted successfully.\n\nOur team will now review your application, and you will be notified once your loan account is opened.\n\n"
     + SUPPORT + "\n\n" + THANKS + MAIL_SIGN + MAIL_DISCLAIMER),
- "Withdrawal Rejected": ("Your withdrawal request for loan account {{LOAN_ID}} has been rejected",
-    "Your withdrawal request for loan account SCCLMF20261000102 has been rejected",
-    "Withdrawal Request Rejected\n\nDear {{CUSTOMER_NAME}},\n\nWe regret to inform you that your withdrawal request of ₹{{WITHDRAWAL_AMOUNT}} "
-    "for loan account {{LOAN_ID}} has been rejected after our review. No amount has been disbursed against this request.\n\n"
-    "WITHDRAWAL DETAILS\nLoan Account ID: {{LOAN_ID}}\nWithdrawal Amount: ₹{{WITHDRAWAL_AMOUNT}}\nRequest Date: {{REQUEST_DATE}}\nStatus: Rejected\n\n"
-    "You may place a new withdrawal request at any time, subject to your available balance.\n\n" + SUPPORT + MAIL_SIGN + MAIL_DISCLAIMER,
-    {"{{WITHDRAWAL_AMOUNT}}": "10,000", "{{REQUEST_DATE}}": "02-11-2026"}),
  "EMI Resubmission Success": ("Your re-presented EMI of ₹{{EMI_AMOUNT}} has been successfully deducted",
     "Your re-presented EMI of ₹10,000 has been successfully deducted",
     "EMI Payment Confirmed\n\nDear {{CUSTOMER_NAME}},\n\nWe are writing to confirm that your EMI of ₹{{EMI_AMOUNT}} for the loan account {{LOAN_ID}}, "
@@ -684,7 +680,8 @@ COMMS = [_with_mail(r) for r in COMMS]
 # Mail HTML attached but the mail is still to be created in the system: keep the status, add the View link below it (DISC-321)
 MAIL_STATUS_KEEP = {"Lien Removal Successful": "No – to be created",
                     "Loan Account Opening / Loan Lodgement Rejection (with payment link)": "No – to be created",
-                    "Loan Account Opening / Loan Lodgement Rejection (without payment link)": "No – to be created"}
+                    "Loan Account Opening / Loan Lodgement Rejection (without payment link)": "No – to be created",
+                    "Withdrawal Rejected": "No – to be created"}
 COMMS = [r[:14] + (MAIL_STATUS_KEEP[r[0]] + r[14][3:],) + r[15:] if r[0] in MAIL_STATUS_KEEP and r[14].startswith("Yes") else r for r in COMMS]
 
 # Mail-only rows from HTML templates (no SMS): inserted after the given stage (DISC-216)
