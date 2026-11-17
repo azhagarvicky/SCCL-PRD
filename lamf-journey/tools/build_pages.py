@@ -344,8 +344,8 @@ COMMS = [r + ("Not Required" if r[0] in SMS_NOT_REQUIRED else "Required",) for r
 # Body text keeps the document wording; “\n” is a line break. Actual Content = the body with sample values.
 MAIL_SIGN = "\n\nWarm regards,\nTeam Shriram Credit"
 MAIL_DISCLAIMER = ("\n\nDisclaimer:\nThis is an automated reminder. Please do not reply to this message, as the mailbox is not monitored "
-                   "and you will not receive a response. Loan against Securities is for personal use only and cannot be used for speculative "
-                   "activities, capital market-related purposes, or anti-social purposes.")
+                   "and you will not receive a response. Loan against Securities is only for personal use. The loan amount cannot be used for "
+                   "speculative activities, capital market-related purposes, or anti-social purposes.")
 SUPPORT = "Should you have any questions, require clarification, or assistance, please feel free to reach out to our customer support at lassupport@shriramcredit.in. Our team will be happy to assist you."
 THANKS = "Thank you for choosing Shriram Credit as your trusted financial partner. We look forward to supporting you throughout your loan journey."
 CLOSED_BODY = ("We have received the final payment and are pleased to confirm that your loan account has been closed in our records. We appreciate your commitment to timely repayment and hope this facility served your financial needs effectively.\n\n"
