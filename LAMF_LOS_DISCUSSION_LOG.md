@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 17:19 IST
+**Last Updated:** 17-11-2026 17:23 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -352,6 +352,7 @@
 | DISC-317 | 17-11-2026 | new-mails/03b | Processing fee marked all-inclusive | Owner: show “Processing Fee*” with the note “*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty and GST” | 03b charges row reads “Processing Fee*  ₹{{PROCESSING_FEE}}” (the “+ GST” removed, since the fee includes GST) and the note is shown in small grey text just below the charges box. List-page note updated. | Implemented |
 | DISC-318 | 17-11-2026 | new-mails.html | Note removed for mail 3 | Owner: remove “Version 1 – all charges. Sample: Processing Fee ₹999 + GST (differs by sanction amount), Total ₹1,749 + GST – as per the reviewer notes in the sheet.” | Note column for mail 3 on the New Customer Mails page now shows “–”. The mail itself is unchanged. | Implemented |
 | DISC-319 | 17-11-2026 | new-mails.html, new-mails/03_Application_Rejected_Pay_Charges.html | Version 1 of the pay-charges mail removed | Owner: remove version 1 fully (not only its note) | The all-charges version (lien marking, lien removal, stamp duty, total) is deleted. The processing-fee-only version (Processing Fee* with the all-inclusive note) is now mail 3 and takes the file name 03_Application_Rejected_Pay_Charges.html; 03b file removed. List page shows 5 mails (1–5), no version notes. | Implemented |
+| DISC-320 | 17-11-2026 | new-mails/03_Application_Rejected_Pay_Charges.html | Processing fee amount shows “+ GST” | Owner: “₹{{PROCESSING_FEE}} + GST” | The Processing Fee* amount reads ₹{{PROCESSING_FEE}} + GST again (reverting the DISC-317 removal). The * note is unchanged. | Implemented |
 
 ---
 
