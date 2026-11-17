@@ -88,7 +88,7 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       para("After review, we regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
            "Company Limited (SCCL) could not be taken forward.", pad="22px 48px 0 48px"),
       para("As per the applicable terms, the following charges are payable:"),
-      details("Charges Payable", [("Processing Fee*", "&#8377;{{PROCESSING_FEE}}")], right="Amount"),   # no total row (DISC-316); fee is all-inclusive (DISC-317)
+      details("Charges Payable", [("Processing Fee*", "&#8377;{{PROCESSING_FEE}} + GST")], right="Amount"),   # no total row (DISC-316); fee is all-inclusive (DISC-317)
       f'<tr><td class="px" style="padding:8px 48px 0 48px;"><p style="margin:0;{FONT}font-size:12px;line-height:18px;color:#777777;">'
       '*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty and GST</p></td></tr>',
       para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
