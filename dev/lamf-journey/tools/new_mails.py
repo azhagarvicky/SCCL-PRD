@@ -80,25 +80,7 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       SUPPORT,
       para("Thank you for choosing Shriram Credit. We look forward to serving you again.")],
      ""),
-    ("03_Application_Rejected_Pay_Charges", "Application Rejected &ndash; Payment of Charges",
-     "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}",
-     "Your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges.",
-     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{PROCESSING_FEE}}", "{{TOTAL_AMOUNT}}", "{{PAYMENT_LINK}}"],
-     [badge("Your Loan Against Mutual Fund application could not be approved", "warn"),
-      para("After review, we regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
-           "Company Limited (SCCL) could not be taken forward.", pad="22px 48px 0 48px"),
-      para("As per the applicable terms, the following charges are payable:"),
-      details("Charges Payable", [("Processing Fee", "&#8377;{{PROCESSING_FEE}} + GST"), ("Lien Marking Charges", "&#8377;450 + GST"),
-                                  ("Lien Removal Charges", "&#8377;100 + GST"), ("Stamp Duty Charges", "&#8377;200 + GST"),
-                                  ("Total Amount Payable", "&#8377;{{TOTAL_AMOUNT}} + GST")], right="Amount"),
-      para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
-      para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),   # link first, then “or”, then the CTA (DISC-314)
-      para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
-      button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
-      para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
-      SUPPORT],
-     ""),
-    ("03b_Application_Rejected_Pay_Processing_Fee", "Application Rejected &ndash; Payment of Charges",     # version 2 (DISC-315)
+    ("03_Application_Rejected_Pay_Charges", "Application Rejected &ndash; Payment of Charges",     # processing fee only; the all-charges version removed (DISC-319)
      "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved. Please pay the applicable charges.",
      ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{PROCESSING_FEE}}", "{{PAYMENT_LINK}}"],
@@ -115,7 +97,7 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
       para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
       SUPPORT],
-     "Version 2 – one-time processing fee only, inclusive of lien marking, lien removal, stamp duty and GST (shown with a * note)."),
+     ""),
     ("04_Application_Rejected", "Application Rejected",
      "Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application could not be approved.",
@@ -199,7 +181,7 @@ def list_body(logo, back):
         for fname, title, subject, _, _, _, note in NEW_MAILS for i in [fname.split('_')[0].lstrip('0')])   # 3, 3b, 4 … from the file name
     return (logo + f'<p class="brd-back"><a href="{back}">← Customer Communications</a></p>'
             '<h1>New Customer Mails</h1>'
-            f'<p>{len(NEW_MAILS)} mail templates (mail 3 in two versions) from the additional scenarios sheet (LAMF_Customer_Communications_Additional_Scenarios). '
+            f'<p>{len(NEW_MAILS)} mail templates from the additional scenarios sheet (LAMF_Customer_Communications_Additional_Scenarios). '
             'Kept separate from the Customer Communications table. View opens the mail; Download saves the HTML file.</p>'
             '<table class="brd-table nm-table"><thead><tr><th>#</th><th>Mail</th><th>Subject line</th><th>Note</th><th>Mail</th></tr></thead>'
             f'<tbody>{rows}</tbody></table>')
