@@ -803,6 +803,7 @@ def comms_table(rows_data, cols, prefix):
 
 def comms_body(home):          # one table: SMS and mail together; the separate Mail table was removed (DISC-240)
     return (LOGO.format(home=home) + '<h1>LAMF – Customer Communications</h1>'
+            '<p class="nm-cta-top"><a class="home-cta" href="new-mails.html">New Customer Mails (temporary) →</a></p>'   # DISC-304
             f'<p>SMS and mail sent to the customer during the LAMF journey ({len(COMMS)} communications; {len(COMMS_NR)} not required, in the table below). '
             'Content Structure shows the approved template; Actual Content shows a sample with the variables filled in.</p>'
             + '<div class="comms-summary">' + "".join(
@@ -1013,6 +1014,15 @@ with open(os.path.join(ROOT, "calculator.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Calculator", cls="page-screens page-calc", body=calc_body("index.html") + '<script src="assets/calc.js"></script>'))
 with open(os.path.join(ROOT, "communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
+# New customer mails from the additional scenarios sheet – separate list page + one HTML per mail (DISC-304)
+from new_mails import NEW_MAILS, mail_html, list_body as new_mails_body
+os.makedirs(os.path.join(ROOT, "new-mails"), exist_ok=True)
+for _m in NEW_MAILS:
+    with open(os.path.join(ROOT, "new-mails", _m[0] + ".html"), "w") as f:
+        f.write(mail_html(_m))
+with open(os.path.join(ROOT, "new-mails.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – New Customer Mails", cls="page-screens page-brd page-nm",
+                        body=new_mails_body(LOGO.format(home="index.html"), "communications.html")))
 with open(os.path.join(ROOT, "screens.html"), "w") as f:
     f.write(PAGE.format(title="LAMF Online Journey – Screens", cls="page-screens",
                         body=screens_body("index.html", lambda n: quote(n + ".html"))))
