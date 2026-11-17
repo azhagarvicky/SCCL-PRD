@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 17-11-2026 17:55 IST
+**Last Updated:** 17-11-2026 18:01 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -354,6 +354,7 @@
 | DISC-319 | 17-11-2026 | new-mails.html, new-mails/03_Application_Rejected_Pay_Charges.html | Version 1 of the pay-charges mail removed | Owner: remove version 1 fully (not only its note) | The all-charges version (lien marking, lien removal, stamp duty, total) is deleted. The processing-fee-only version (Processing Fee* with the all-inclusive note) is now mail 3 and takes the file name 03_Application_Rejected_Pay_Charges.html; 03b file removed. List page shows 5 mails (1–5), no version notes. | Implemented |
 | DISC-320 | 17-11-2026 | new-mails/03_Application_Rejected_Pay_Charges.html | Processing fee amount shows “+ GST” | Owner: “₹{{PROCESSING_FEE}} + GST” | The Processing Fee* amount reads ₹{{PROCESSING_FEE}} + GST again (reverting the DISC-317 removal). The * note is unchanged. | Implemented |
 | DISC-321 | 17-11-2026 | communications.html row 8 – Lien Removal Successful; mails/27_Lien_Removal_Successful.html | Row 8 mail from the owner’s HTML | Owner (attached 02_Lien_Removal_Successful.html): in row 8 keep the Mail Available status “to be created” and add a link below it to the attached HTML; update Mail Content Structure and Actual Mail Content from the file; subject “Lien Removed: Your Mutual Fund Units Are Unpledged” | Owner’s HTML saved as mails/27_Lien_Removal_Successful.html (source). Row 8 now uses it (MAIL_TEMPLATES): Mail Subject Structure and Actual Mail Subject = “Lien Removed: Your Mutual Fund Units Are Unpledged”; Mail Content Structure = text of the HTML with {{CUSTOMER_NAME}}; Actual Mail Content = same with the sample name. Mail Available stays “No – to be created” with a View link below it (MAIL_STATUS_KEEP), so the summary counts are unchanged. The earlier drafted text mail for this row is removed. exports/LAMF_Customer_Communications.xlsx regenerated. | Implemented |
+| DISC-322 | 17-11-2026 | communications.html row 14 – Loan Account Opening / Loan Lodgement Rejection (with payment link); mails/28_Application_Rejected_Pay_Charges.html | Row 14 mail from the owner’s HTML | Owner (attached 03_Application_Rejected_Pay_Charges.html): this is for row 14 – same treatment as row 8 | Saved as mails/28_Application_Rejected_Pay_Charges.html. Row 14: subject “Action Required: Application Rejected – Pay Charges {{LOAN_ID}}” (actual: … SCCLMF20261000102); Mail Content Structure / Actual Mail Content from the HTML (sample Processing Fee ₹999 + GST); Mail Available stays “No – to be created” with a View link below it. The earlier drafted text mail for row 14 removed. SMS columns and row 15 unchanged. xlsx regenerated. | Implemented |
 
 ---
 
