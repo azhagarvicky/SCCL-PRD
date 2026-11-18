@@ -124,17 +124,27 @@ def lan_detail(view, r):
         ("Application Start Date", r["Generated"]), ("Application Submitted Date", r["Generated"] if view not in ("draft", "inactive") else "-"),
         ("Loan Start Date", r["Start Date"]), ("Loan End Date", r["End Date"]),
     ]
+    if view == "draft":   # as in the LMS draft loan page (DISC-330): nothing sanctioned yet
+        D = dict(fields)
+        for k in ("Sanctioned Amount", "Drawing Power", "Disbursed Amount", "Repaid Amount", "Principal Outstanding",
+                  "Available for Disbursement", "Utilized Drawing Power", "Repayments", "Processing Fee",
+                  "Application Submitted Date", "Loan Start Date", "Loan End Date"):
+            D[k] = "-"
+        D["Disbursement Type"], D["Tenure"] = "Multiple", "12 months"
+        fields = list(D.items())
+    fields = [(k, v + ' <i class="lms-i" title="Breakup">ⓘ</i>' if k == "Processing Fee" else v) for k, v in fields]
     grid = "".join(f'<div><span>{k}</span><b>{v}</b></div>' for k, v in fields)
     coll = "".join(f'<div><span>{k}</span><b>Collected: {c}<br>Due: ₹0<br>Overdue: ₹0</b></div>'
                    for k, c in [("Interest", "₹0"), ("Principal", "₹0"), ("Charges", _rs(amt * 0.0187, True) if (live and amt) else "₹0")])
     status = r.get("Status") or "Rejected"
     risk = f'<span class="lms-risk">{r["Risk Level"]}</span>' if view == "active" else ""
     tid = f'{view}-{r["LAN"]}'
+    tab_list = [t for t in TABS if not (view == "draft" and t == "Approvals")]   # no Approvals tab for a DRAFT loan today (DISC-330)
     tabs = "".join(f'<input type="radio" name="t-{tid}" id="t-{tid}-{k}"{" checked" if k == 0 else ""}>'
-                   f'<label for="t-{tid}-{k}">{t}</label>' for k, t in enumerate(TABS))
+                   f'<label for="t-{tid}-{k}">{t}</label>' for k, t in enumerate(tab_list))
     panes = ('<div class="lms-pane p0"><div class="lms-card2"><h3>Loan Details</h3><div class="lms-grid">' + grid + '</div></div>'
              '<div class="lms-card2"><h3>Collection Details</h3><div class="lms-grid g3">' + coll + '</div></div></div>'
-             + "".join(f'<div class="lms-pane p{k}">{TBA}</div>' for k in range(1, len(TABS))))
+             + "".join(f'<div class="lms-pane p{k}">{TBA}</div>' for k in range(1, len(tab_list))))
     return (f'<section id="lan-{tid}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" href="#m-loans-{view}" '
             f'title="Back to the list">←</a><h2>LAN Number: {r["LAN"]}</h2><span class="lms-st st-{status.lower()}">{status}</span>{risk}'
             f'<span class="lms-vs">View status</span></div><div class="lms-tabs">{tabs}{panes}</div>'
