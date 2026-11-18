@@ -36,13 +36,16 @@ _AMT = ["₹1,25,000", "₹59,300", "₹19,300", "₹1,06,000", "₹32,500", "�
 _ROI = ["10.49%", "11%", "10.49%", "10.49%", "11%", "11%", "10.49%", "10.49%", "10.49%", "10.49%"]
 
 
+START = {"active": 99, "inactive": 89, "draft": 79, "submitted": 69, "closed": 59, "rejected": 49}   # unique sample LANs per list
+
+
 def _rows(view):
     n = {"active": 10, "inactive": 10, "draft": 10, "submitted": 5, "closed": 2, "rejected": 2}[view]
     status = {"active": "Active", "inactive": "Inactive", "draft": "Draft", "submitted": "Submitted", "closed": "Foreclosed"}.get(view)
     out = []
     for k in range(n):
         d = 17 - k // 2
-        r = {"LAN": f"SCCLMF202611000{60 - k:02d}", "Product Id": _PROD[k], "Client Name": _NAMES[k], "Status": status,
+        r = {"LAN": f"SCCLMF202611000{START[view] - k:02d}", "Product Id": _PROD[k], "Client Name": _NAMES[k], "Status": status,
              "PAN": f"ABCPX{1000 + k * 7}A", "Generated": f"{d:02d}/11/2026", "Source": _SRC[k],
              "Risk Level": ["No Risk", "No Risk", "No Risk", "L1", "L1", "L1", "L1", "L1", "No Risk", "No Risk"][k]}
         has_amt = view in ("active", "closed", "rejected") or k % 3 == 0
@@ -67,6 +70,8 @@ def loan_view(view):
         v = r[c]
         if c == "Status":
             return f'<td><span class="lms-st st-{v.lower()}">{_h.escape(v)}</span></td>'
+        if c == "LAN":
+            return f'<td><a class="lms-lan" href="#lan-{view}-{v}">{_h.escape(v)}</a></td>'
         return f'<td class="{"num" if c in NUM else ""}">{_h.escape(v)}</td>'
     chips = ('<span class="lms-chip on">All</span><span class="lms-chip">Shortfall</span><span class="lms-chip">In Default</span>'
              if view == "active" else "")
@@ -81,6 +86,61 @@ def loan_view(view):
             '<p class="lms-sample">Sample data for the prototype – not real customers.</p>')
 
 
+# ---- LAN detail (DISC-329) – opened by clicking a LAN in any loan list; layout as in the LMS loan page (Overview tab).
+TABS = ["Overview", "Approvals", "Disbursement &amp; Repayments", "Collateral", "Transactions &amp; Reports", "KYC", "Documents",
+        "Audit", "Notes"]
+
+
+def _num(v):
+    return int(v.replace("₹", "").replace(",", "")) if v not in ("-", None) else None
+
+
+def _rs(n, dec=False):
+    if n is None:
+        return "-"
+    s = f"{n:,.2f}" if dec else f"{int(n):,}"
+    whole, _, frac = s.partition(".")
+    whole = whole.replace(",", "")
+    head, tail = whole[:-3], whole[-3:]
+    head = ",".join([head[max(0, i - 2):i] for i in range(len(head), 0, -2)][::-1]) if head else ""
+    return "₹" + (head + "," if head else "") + tail + ("." + frac if frac else "")
+
+
+def lan_detail(view, r):
+    amt = _num(r["Sanction Amount"])
+    live = view in ("active", "closed")
+    disb = round(amt * 0.48 / 100) * 100 if (amt and live) else None
+    dp = amt * 1.0003 if amt else None
+    fields = [
+        ("LSP", r["Source"]), ("Sanctioned Amount", _rs(amt)), ("Drawing Power", _rs(dp, True) if dp else "-"),
+        ("Disbursed Amount", _rs(disb) if live else "-"),
+        ("Repaid Amount", "₹0" if live else "-"), ("Principal Outstanding", _rs(disb) if live else "-"),
+        ("Available for Disbursement", _rs(amt - disb) if (live and amt) else "-"),
+        ("Utilized Drawing Power", f'<span class="ok">{disb / dp * 100:.2f}% ▲</span>' if (live and amt) else "-"),
+        ("Repayments", '<span class="ok">On time</span>' if view == "active" else "-"), ("Deduction Date", "5th, Monthly"),
+        ("Repayment Type", "Interest Only"), ("Disbursement Type", "Revolving"),
+        ("Rate of Interest", r["Rate of Interest"]), ("Processing Fee", _rs(amt * 0.0187, True) if amt else "-"),
+        ("Tenure", "36 months"), ("Product Name", f'<span class="lnk">{r["Product Id"]}</span>'),
+        ("Application Start Date", r["Generated"]), ("Application Submitted Date", r["Generated"] if view not in ("draft", "inactive") else "-"),
+        ("Loan Start Date", r["Start Date"]), ("Loan End Date", r["End Date"]),
+    ]
+    grid = "".join(f'<div><span>{k}</span><b>{v}</b></div>' for k, v in fields)
+    coll = "".join(f'<div><span>{k}</span><b>Collected: {c}<br>Due: ₹0<br>Overdue: ₹0</b></div>'
+                   for k, c in [("Interest", "₹0"), ("Principal", "₹0"), ("Charges", _rs(amt * 0.0187, True) if (live and amt) else "₹0")])
+    status = r.get("Status") or "Rejected"
+    risk = f'<span class="lms-risk">{r["Risk Level"]}</span>' if view == "active" else ""
+    tid = f'{view}-{r["LAN"]}'
+    tabs = "".join(f'<input type="radio" name="t-{tid}" id="t-{tid}-{k}"{" checked" if k == 0 else ""}>'
+                   f'<label for="t-{tid}-{k}">{t}</label>' for k, t in enumerate(TABS))
+    panes = ('<div class="lms-pane p0"><div class="lms-card2"><h3>Loan Details</h3><div class="lms-grid">' + grid + '</div></div>'
+             '<div class="lms-card2"><h3>Collection Details</h3><div class="lms-grid g3">' + coll + '</div></div></div>'
+             + "".join(f'<div class="lms-pane p{k}">{TBA}</div>' for k in range(1, len(TABS))))
+    return (f'<section id="lan-{tid}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" href="#m-loans-{view}" '
+            f'title="Back to the list">←</a><h2>LAN Number: {r["LAN"]}</h2><span class="lms-st st-{status.lower()}">{status}</span>{risk}'
+            f'<span class="lms-vs">View status</span></div><div class="lms-tabs">{tabs}{panes}</div>'
+            '<p class="lms-sample">Sample data for the prototype – not real customers.</p></section>')
+
+
 def lms_body(logo, home):
     nav, secs = [], []
     for mid, name, subs, desc in LMS_MODULES:
@@ -91,6 +151,9 @@ def lms_body(logo, home):
         secs.append(f'<section id="m-{mid}" class="lms-sec"><h2>{_h.escape(name)}</h2>{desc or TBA}{subs_html}</section>')
         secs += [f'<section id="m-{mid}-{sid}" class="lms-sec lms-list"><p class="lms-crumb">{_h.escape(name)} › {_h.escape(s)}</p>'
                  + (loan_view(sid) if mid == "loans" else f'<h2>{_h.escape(name)} – {_h.escape(s)}</h2>{TBA}') + '</section>' for sid, s in subs]
+    # one detail section per sample LAN in every list (DISC-329)
+    for v in ("active", "inactive", "draft", "submitted", "closed", "rejected"):
+        secs += [lan_detail(v, r) for r in _rows(v)]
     intro = ('<section class="lms-intro"><h2>LMS – Loan Management System</h2>'
              '<p>The modules of the LMS, as in the left menu of the LMS. Choose a module to open it.</p>'
              '<div class="lms-cards">' + "".join(f'<a class="lms-card" href="#m-{mid}"><b>{_h.escape(n)}</b>'
