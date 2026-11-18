@@ -316,9 +316,10 @@ COMMS = [
  ("Foreclosure Completed",
   "When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed. Template drafted by Claude for approval; to be created and registered",
   "LMS", "SMS", "SCCL",
-  "Dear {#alphanumeric#}, Your Loan Against Mutual Fund account {#alphanumeric#} has been foreclosed successfully. Your MF units will be released from lien in 2-3 working days - Shriram Credit",
-  "Dear AZHAGARSAMY, Your Loan Against Mutual Fund account SCCLMF20261000102 has been foreclosed successfully. Your MF units will be released from lien in 2-3 working days - Shriram Credit",
-  "-", "SGRCDT-T", "No – to be created"),
+  # owner's created SMS template (DISC-331); status kept, “(Created)” added
+  "Dear {#alp#}, Your Rs.{#alp#} payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit",
+  "Dear Ram, Your Rs.10000 payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit",
+  "-", "SGRCDT-T", "No – to be created (Created)"),
  ("Successful Loan Tenure Completion",
   "When the customer completes all the EMI instalments (loan fully repaid)",
   "LOS", "SMS", "SCCL",
