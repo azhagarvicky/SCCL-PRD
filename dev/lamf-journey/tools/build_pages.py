@@ -242,8 +242,8 @@ COMMS = [
  ('Withdrawal Rejected',
   'The withdrawal status changes to Rejected after the Operations or Treasury team rejects it',
   "LMS", "SMS", "SCCL",
-  'Dear {#alphanumeric#}, Your withdrawal request of Rs. {#alphanumeric#} for loan account {#alphanumeric#} has been rejected. For assistance, please contact our support team - Shriram Credit',
-  'Dear AZHAGARSAMY, Your withdrawal request of Rs. 10,000 for loan account SCCLMF20261000102 has been rejected. For assistance, please contact our support team - Shriram Credit',
+  'Dear {#alp#}, Your withdrawal request of Rs. {#alp#} has been rejected. For assistance, contact our support team - Shriram Credit',   # owner's SMS (DISC-333)
+  'Dear AZHAGARSAMY, Your withdrawal request of Rs. 5000 has been rejected. For assistance, contact our support team - Shriram Credit',
   "-", "SGRCDT-T", "No – to be created"),
  ("Loan Disbursed (First Disbursement)",
   "When the loan is disbursed for the first time (first disbursement) – notifying the customer that the amount is credited to the bank account. Each subsequent withdrawal is the row below (same SMS, different mail)",
@@ -318,7 +318,7 @@ COMMS = [
   "LMS", "SMS", "SCCL",
   # owner's created SMS template (DISC-331); status kept, “(Created)” added
   "Dear {#alp#}, Your Rs.{#alp#} payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit",
-  "Dear Ram, Your Rs.10000 payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit",
+  "Dear AZHAGARSAMY, Your Rs.10000 payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit",
   "-", "SGRCDT-T", "No – to be created (Created)"),
  ("Successful Loan Tenure Completion",
   "When the customer completes all the EMI instalments (loan fully repaid)",
