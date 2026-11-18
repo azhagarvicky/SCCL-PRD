@@ -314,7 +314,7 @@ COMMS = [
   "Dear AZHAGARSAMY, As the outstanding principal is still unpaid, we are initiating liquidation for recovery of outstanding dues - Shriram Credit",
   "-", "SGRCDT-T", "Yes"),
  ("Foreclosure Completed",
-  "When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed. Template drafted by Claude for approval; to be created and registered",
+  "When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed.",
   "LMS", "SMS", "SCCL",
   # owner's created SMS template (DISC-331); status kept, “(Created)” added
   "Dear {#alp#}, Your Rs.{#alp#} payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit",
