@@ -1321,3 +1321,31 @@ body.page-screens { padding: 40px 76px; }
 .page-nm .nm-table td.nm-cta { white-space: nowrap; }
 .page-nm .nm-table a.nm-view { display: inline-block; padding: 7px 14px; border-radius: 6px; background: #1a1a1a; color: #FFC20E; font-weight: 700; text-decoration: none; margin-right: 10px; }
 .page-nm .nm-table a.nm-dl { font-size: 14px; color: #0b5ed7; }
+
+/* LMS modules page (DISC-327) – left menu like the LMS, one section per module (CSS :target) */
+body.page-lms { margin: 0; background: #F6F7F9; }
+.lms { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+.lms-side { background: #fff; border-right: 1px solid #E6E8EC; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.lms-logo { padding: 22px 22px 14px; border-bottom: 1px solid #E6E8EC; } .lms-logo img { height: 44px; display: block; }
+.lms-home { display: block; padding: 12px 22px; font-size: 13px; color: #555; }
+.lms-side nav { display: flex; flex-direction: column; padding-bottom: 20px; }
+.lms-side nav a { color: #111; text-decoration: none; }
+.lms-nav-m { padding: 13px 22px; font-size: 16px; font-weight: 500; border-top: 1px solid #F0F1F3; }
+.lms-nav-s { padding: 10px 22px 10px 48px; font-size: 15px; }
+.lms-side nav a:hover { background: #F2F4FA; }
+.lms-main { padding: 36px 44px; }
+.lms-main h2 { font-size: 26px; margin: 0 0 12px; }
+.lms-sec { display: none; background: #fff; border: 1px solid #E6E8EC; border-radius: 12px; padding: 26px 28px; }
+.lms-sec:target { display: block; }
+.lms-main:has(.lms-sec:target) .lms-intro { display: none; }
+.lms-crumb { color: #777; font-size: 13px; margin: 0 0 6px; }
+.lms-tba { color: #7a6a33; background: #FFF8DD; border: 1px dashed #E8CF6A; border-radius: 8px; padding: 12px 14px; display: inline-block; }
+.lms-subs { margin: 16px 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.lms-subs a, .lms-card { text-decoration: none; color: #111; }
+.lms-subs a { display: inline-block; padding: 8px 14px; border: 1px solid #D9DCE3; border-radius: 8px; background: #fff; }
+.lms-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 22px; }
+.lms-card { display: flex; flex-direction: column; gap: 6px; background: #fff; border: 1px solid #E6E8EC; border-radius: 12px; padding: 18px 20px; }
+.lms-card:hover, .lms-subs a:hover { border-color: var(--yellow); box-shadow: 0 6px 16px rgba(0,0,0,.06); }
+.lms-card b { font-size: 17px; } .lms-card small { color: #666; font-size: 13px; line-height: 1.5; }
+.lms-side nav a.on { background: #0B2D9A; color: #fff; }
+@media (max-width: 760px) { .lms { grid-template-columns: 1fr; } .lms-side { position: static; height: auto; } .lms-main { padding: 20px 16px; } }
