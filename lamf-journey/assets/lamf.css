@@ -1324,7 +1324,7 @@ body.page-screens { padding: 40px 76px; }
 
 /* LMS modules page (DISC-327) – left menu like the LMS, one section per module (CSS :target) */
 body.page-lms { margin: 0; background: #F6F7F9; }
-.lms { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+.lms { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
 .lms-side { background: #fff; border-right: 1px solid #E6E8EC; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .lms-logo { padding: 22px 22px 14px; border-bottom: 1px solid #E6E8EC; } .lms-logo img { height: 44px; display: block; }
 .lms-home { display: block; padding: 12px 22px; font-size: 13px; color: #555; }
@@ -1333,7 +1333,7 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .lms-nav-m { padding: 13px 22px; font-size: 16px; font-weight: 500; border-top: 1px solid #F0F1F3; }
 .lms-nav-s { padding: 10px 22px 10px 48px; font-size: 15px; }
 .lms-side nav a:hover { background: #F2F4FA; }
-.lms-main { padding: 36px 44px; }
+.lms-main { padding: 24px 24px; min-width: 0; }
 .lms-main h2 { font-size: 26px; margin: 0 0 12px; }
 .lms-sec { display: none; background: #fff; border: 1px solid #E6E8EC; border-radius: 12px; padding: 26px 28px; }
 .lms-sec:target { display: block; }
@@ -1349,3 +1349,26 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .lms-card b { font-size: 17px; } .lms-card small { color: #666; font-size: 13px; line-height: 1.5; }
 .lms-side nav a.on { background: #0B2D9A; color: #fff; }
 @media (max-width: 760px) { .lms { grid-template-columns: 1fr; } .lms-side { position: static; height: auto; } .lms-main { padding: 20px 16px; } }
+
+/* LMS Loans list views (DISC-328) */
+.lms-list { padding: 22px 24px; }
+.lms-filters { display: flex; align-items: center; gap: 14px; margin: 6px 0 18px; flex-wrap: wrap; }
+.lms-select { display: inline-flex; align-items: center; gap: 14px; border: 1px solid #E3E5EA; border-radius: 6px; padding: 10px 14px; color: #888; background: #fff; font-size: 15px; }
+.lms-select i { font-style: normal; color: #333; }
+.lms-chip { border: 1px solid #DADDE3; border-radius: 22px; padding: 8px 18px; font-size: 15px; font-weight: 600; color: #777; background: #fff; }
+.lms-chip.on { border-color: #2F5BEA; color: #2F5BEA; background: #F2F6FF; }
+.lms-tablewrap { overflow-x: auto; }
+.lms-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.lms-table th { background: #F5F6F8; text-align: left; font-weight: 600; padding: 13px 9px; white-space: nowrap; color: #222; }
+.lms-table td { padding: 14px 9px; border-bottom: 1px solid #ECEEF1; white-space: nowrap; color: #222; }
+.lms-table .num { text-align: right; }
+.lms-st { display: inline-block; padding: 3px 9px; border-radius: 6px; font-size: 12.5px; font-weight: 600; }
+.lms-st.st-active { color: #1E9E4A; background: #EAF8EF; }
+.lms-st.st-inactive, .lms-st.st-foreclosed { color: #444; background: #EFEFEF; }
+.lms-st.st-draft { color: #2F5BEA; background: #EEF3FF; }
+.lms-st.st-submitted { color: #B26A00; background: #FFF4E0; }
+.lms-pager { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 15px; }
+.lms-pp { display: inline-flex; align-items: center; gap: 10px; }
+.lms-pg { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 8px; background: #F5F6F8; color: #888; }
+.lms-sample, .lms-note { font-size: 12px; color: #8a7a3a; margin: 12px 0 0; }
+.lms-note { margin: 0 0 12px; }
