@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 18-11-2026 14:50 IST
+**Last Updated:** 18-11-2026 14:57 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -365,6 +365,7 @@
 | DISC-330 | 18-11-2026 | lms.html – Draft LAN page | Draft loan page as in the LMS | Owner (screenshot of a Draft LAN page): for Draft these are the LAN details tabs | Draft LAN page: no Approvals tab (Overview, Disbursement &amp; Repayments, Collateral, Transactions &amp; Reports, KYC, Documents, Audit, Notes); Loan Details show “-” for Sanctioned Amount, Drawing Power, Disbursed / Repaid Amount, Principal Outstanding, Available for Disbursement, Utilized Drawing Power, Repayments, Processing Fee, Application Submitted Date, Loan Start / End Date; Deduction Date 5th, Monthly; Repayment Type Interest Only; Disbursement Type Multiple; Tenure 12 months; Rate of Interest, Product Name, LSP and Application Start Date shown; Collection Details all ₹0. Processing Fee has the ⓘ icon on every LAN page. (The Waiver BRD adds the Approvals tab for a pledged Draft loan – not shown here, as this page shows the current LMS.) | Implemented |
 | DISC-331 | 18-11-2026 | communications.html row 33 – Foreclosure Completed | Created SMS template for foreclosure | Owner: update row 33 SMS Content Structure and Actual SMS Content with the created template; keep the SMS Available status and add “(Created)” | SMS Content Structure: “Dear {#alp#}, Your Rs.{#alp#} payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit”. Actual SMS Content: “Dear Ram, Your Rs.10000 payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit”. SMS Available: “No – to be created (Created)”. Mail columns unchanged; summary counts unchanged. xlsx regenerated. | Implemented |
 | DISC-332 | 18-11-2026 | communications.html row 33 – Foreclosure Completed | Draft note removed from the scenario | Owner: remove “Template drafted by Claude for approval; to be created and registered” | Scenarios column now reads only “When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed.” xlsx regenerated. | Implemented |
+| DISC-333 | 18-11-2026 | communications.html rows 18 and 33 | Withdrawal Rejected SMS; sample name AZHAGARSAMY | Owner: row 18 SMS “Dear {#alp#}, Your withdrawal request of Rs. {#alp#} has been rejected. For assistance, contact our support team - Shriram Credit” / “Dear AZHAGARSAMY, Your withdrawal request of Rs. 5000 has been rejected. …” – use the name AZHAGARSAMY only | Row 18 SMS Content Structure and Actual SMS Content replaced (SMS Available unchanged: No – to be created). Row 33 actual SMS sample name changed from Ram to AZHAGARSAMY. xlsx regenerated. | Implemented |
 
 ---
 
