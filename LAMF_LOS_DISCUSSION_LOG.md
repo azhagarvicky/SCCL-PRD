@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 18-11-2026 14:57 IST
+**Last Updated:** 18-11-2026 15:00 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -366,6 +366,7 @@
 | DISC-331 | 18-11-2026 | communications.html row 33 – Foreclosure Completed | Created SMS template for foreclosure | Owner: update row 33 SMS Content Structure and Actual SMS Content with the created template; keep the SMS Available status and add “(Created)” | SMS Content Structure: “Dear {#alp#}, Your Rs.{#alp#} payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit”. Actual SMS Content: “Dear Ram, Your Rs.10000 payment towards LAMF foreclosure has been received successfully. Loan closure will be processed shortly - Shriram Credit”. SMS Available: “No – to be created (Created)”. Mail columns unchanged; summary counts unchanged. xlsx regenerated. | Implemented |
 | DISC-332 | 18-11-2026 | communications.html row 33 – Foreclosure Completed | Draft note removed from the scenario | Owner: remove “Template drafted by Claude for approval; to be created and registered” | Scenarios column now reads only “When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed.” xlsx regenerated. | Implemented |
 | DISC-333 | 18-11-2026 | communications.html rows 18 and 33 | Withdrawal Rejected SMS; sample name AZHAGARSAMY | Owner: row 18 SMS “Dear {#alp#}, Your withdrawal request of Rs. {#alp#} has been rejected. For assistance, contact our support team - Shriram Credit” / “Dear AZHAGARSAMY, Your withdrawal request of Rs. 5000 has been rejected. …” – use the name AZHAGARSAMY only | Row 18 SMS Content Structure and Actual SMS Content replaced (SMS Available unchanged: No – to be created). Row 33 actual SMS sample name changed from Ram to AZHAGARSAMY. xlsx regenerated. | Implemented |
+| DISC-334 | 18-11-2026 | communications.html row 18 | SMS Available “(Created)” | Owner: the SMS Available column of row 18 also needs “(Created)” | Row 18 SMS Available now reads “No – to be created (Created)”, as row 33. | Implemented |
 
 ---
 

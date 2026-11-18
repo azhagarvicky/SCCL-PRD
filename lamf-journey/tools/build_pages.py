@@ -244,7 +244,7 @@ COMMS = [
   "LMS", "SMS", "SCCL",
   'Dear {#alp#}, Your withdrawal request of Rs. {#alp#} has been rejected. For assistance, contact our support team - Shriram Credit',   # owner's SMS (DISC-333)
   'Dear AZHAGARSAMY, Your withdrawal request of Rs. 5000 has been rejected. For assistance, contact our support team - Shriram Credit',
-  "-", "SGRCDT-T", "No – to be created"),
+  "-", "SGRCDT-T", "No – to be created (Created)"),
  ("Loan Disbursed (First Disbursement)",
   "When the loan is disbursed for the first time (first disbursement) – notifying the customer that the amount is credited to the bank account. Each subsequent withdrawal is the row below (same SMS, different mail)",
   "LOS", "SMS", "SCCL",
