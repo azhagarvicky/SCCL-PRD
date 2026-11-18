@@ -1372,3 +1372,29 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .lms-pg { display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 8px; background: #F5F6F8; color: #888; }
 .lms-sample, .lms-note { font-size: 12px; color: #8a7a3a; margin: 12px 0 0; }
 .lms-note { margin: 0 0 12px; }
+
+/* LAN detail page (DISC-329) – header, tabs (radio + label, no script), Loan / Collection details */
+.lms-lanpage { padding: 22px 26px; }
+.lms-lanhead { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+.lms-lanhead h2 { margin: 0; font-size: 24px; }
+.lms-back { font-size: 24px; text-decoration: none; color: #111; margin-right: 6px; }
+.lms-risk { background: #EFEFEF; border-radius: 6px; padding: 3px 9px; font-size: 13px; font-weight: 600; }
+.lms-vs { color: #2F5BEA; font-weight: 600; font-size: 18px; }
+.lms-lan { color: #111; text-decoration: none; border-bottom: 1px dashed #9aa6c9; }
+.lms-lan:hover { color: #2F5BEA; }
+.lms-tabs { display: flex; flex-wrap: wrap; align-items: flex-end; }
+.lms-tabs > input { position: absolute; opacity: 0; pointer-events: none; }
+.lms-tabs > label { padding: 14px 14px; font-size: 15.5px; font-weight: 500; color: #666; cursor: pointer; border-bottom: 3px solid transparent; }
+.lms-tabs > input:checked + label { color: #2F5BEA; border-bottom-color: #2F5BEA; }
+.lms-pane { display: none; width: 100%; order: 99; padding-top: 22px; }
+.lms-tabs > input:nth-of-type(1):checked ~ .p0, .lms-tabs > input:nth-of-type(2):checked ~ .p1, .lms-tabs > input:nth-of-type(3):checked ~ .p2,
+.lms-tabs > input:nth-of-type(4):checked ~ .p3, .lms-tabs > input:nth-of-type(5):checked ~ .p4, .lms-tabs > input:nth-of-type(6):checked ~ .p5,
+.lms-tabs > input:nth-of-type(7):checked ~ .p6, .lms-tabs > input:nth-of-type(8):checked ~ .p7, .lms-tabs > input:nth-of-type(9):checked ~ .p8 { display: block; }
+.lms-card2 { border: 1px solid #ECEEF1; border-radius: 12px; background: #FCFCFD; padding: 20px 26px; margin-bottom: 18px; }
+.lms-card2 h3 { font-size: 17px; font-weight: 500; margin: 0 0 16px; padding-bottom: 16px; border-bottom: 1px solid #ECEEF1; }
+.lms-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px 20px; }
+.lms-grid.g3 { grid-template-columns: repeat(4, 1fr); }
+.lms-grid span { display: block; color: #777; font-size: 15px; margin-bottom: 6px; }
+.lms-grid b { font-weight: 500; font-size: 16px; color: #111; line-height: 1.6; }
+.lms-grid .ok { color: #1E9E4A; } .lms-grid .lnk { color: #2F5BEA; text-decoration: underline; }
+@media (max-width: 900px) { .lms-grid, .lms-grid.g3 { grid-template-columns: 1fr 1fr; } }
