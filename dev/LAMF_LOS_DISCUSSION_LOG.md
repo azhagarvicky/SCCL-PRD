@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 18-11-2026 10:24 IST
+**Last Updated:** 18-11-2026 11:06 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -360,6 +360,7 @@
 | DISC-325 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Header back to stacked numbers (toll-free first) | Owner (header screenshot): use this layout – two numbers one below the other next to Login – with 1800 410 5988 first and +91 898-100-3538 second | Call icon pop-up (DISC-311/312) removed from the header; the two numbers are shown stacked before the Login button, each with the phone icon, icon centred on its line and both numbers starting at the same left edge (normal digits). Mobile number shown as “+91 898-100-3538” again. Tap-to-call links kept. | Implemented |
 | DISC-326 | 17-11-2026 | 01) LAMF Landing Page (prototype) | Toll-free number with hyphens | Owner: show it as 1800-410-5988 | Header toll-free number now reads 1800-410-5988 (tap-to-call link unchanged). | Implemented |
 | DISC-327 | 18-11-2026 | index.html → lms.html | LMS CTA and LMS modules page | Owner (screenshots of the UAT LMS left menu): on the home page add one CTA for the LMS, with the LMS modules | Home page: sixth CTA “LMS →” (3 + 3 layout; also in cloud.html, linking to lms.html). New page lms.html (source tools/lms.py): left menu as in the LMS – Dashboard, Products, Loans (Active, Inactive, Draft, Submitted, Closed, Rejected), Collaterals, Clients, Approvals, Disbursement Management, Reports, Settings; landing view shows a card per module; each module / sub-module opens its own section (CSS :target) with “Screens and requirements for this module will be added here”. The customer data in the screenshots is not copied. CLAUDE.md source / generated lists updated. | Implemented |
+| DISC-328 | 18-11-2026 | lms.html – Loans › Active / Inactive / Draft / Submitted / Closed / Rejected | Loan category list views | Owner (screenshots of the live LMS loan lists): after clicking each loan category, show its details | Each Loans sub-module now opens a list like the LMS: “Select a value” dropdown; Active also has the All / Shortfall / In Default chips and a Risk Level column; columns LAN, Product Id, Client Name, Status, PAN, Sanction Amount, Rate of Interest, Start Date, End Date, Generated, Source (Rejected: LAN, Product Id, Client Name, PAN, Sanction Amount, Rate of Interest, Generated, Source); status badges (Active green, Inactive / Foreclosed grey, Draft blue); pager “Showing 1 – n items”, 10 rows/page, ‹ ›. Rows are made-up sample data (no real customer names / PANs from the screenshots). Submitted columns assumed same as Draft (no screenshot yet). UAT shows the last column as “LSP”, production as “Source” – production used. Static prototype: chips, dropdown and pager do not filter. | Implemented |
 
 ---
 
