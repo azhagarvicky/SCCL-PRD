@@ -679,9 +679,10 @@ def _with_mail(r):
 assert set(MAIL_TEMPLATES) <= {r[0] for r in COMMS} | {r[1] for r in COMMS}
 COMMS = [_with_mail(r) for r in COMMS]
 # Mail HTML attached but the mail is still to be created in the system: keep the status, add the View link below it (DISC-321)
-MAIL_STATUS_KEEP = {"Lien Removal Successful": "No – to be created",
-                    "Loan Account Opening / Loan Lodgement Rejection (with payment link)": "No – to be created",
-                    "Loan Account Opening / Loan Lodgement Rejection (without payment link)": "No – to be created",
+# rows 8, 14, 15: owner’s HTML received – “(Created)” added (DISC-335)
+MAIL_STATUS_KEEP = {"Lien Removal Successful": "No – to be created (Created)",
+                    "Loan Account Opening / Loan Lodgement Rejection (with payment link)": "No – to be created (Created)",
+                    "Loan Account Opening / Loan Lodgement Rejection (without payment link)": "No – to be created (Created)",
                     "Withdrawal Rejected": "No – to be created"}
 COMMS = [r[:14] + (MAIL_STATUS_KEEP[r[0]] + r[14][3:],) + r[15:] if r[0] in MAIL_STATUS_KEEP and r[14].startswith("Yes") else r for r in COMMS]
 

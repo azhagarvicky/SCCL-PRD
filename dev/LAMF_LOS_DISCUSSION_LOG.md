@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 18-11-2026 15:00 IST
+**Last Updated:** 19-11-2026 18:33 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -367,6 +367,7 @@
 | DISC-332 | 18-11-2026 | communications.html row 33 – Foreclosure Completed | Draft note removed from the scenario | Owner: remove “Template drafted by Claude for approval; to be created and registered” | Scenarios column now reads only “When the customer forecloses (pre-closes) the loan before the end of the tenure and the foreclosure is completed.” xlsx regenerated. | Implemented |
 | DISC-333 | 18-11-2026 | communications.html rows 18 and 33 | Withdrawal Rejected SMS; sample name AZHAGARSAMY | Owner: row 18 SMS “Dear {#alp#}, Your withdrawal request of Rs. {#alp#} has been rejected. For assistance, contact our support team - Shriram Credit” / “Dear AZHAGARSAMY, Your withdrawal request of Rs. 5000 has been rejected. …” – use the name AZHAGARSAMY only | Row 18 SMS Content Structure and Actual SMS Content replaced (SMS Available unchanged: No – to be created). Row 33 actual SMS sample name changed from Ram to AZHAGARSAMY. xlsx regenerated. | Implemented |
 | DISC-334 | 18-11-2026 | communications.html row 18 | SMS Available “(Created)” | Owner: the SMS Available column of row 18 also needs “(Created)” | Row 18 SMS Available now reads “No – to be created (Created)”, as row 33. | Implemented |
+| DISC-335 | 19-11-2026 | communications.html rows 8, 14, 15 | Mail Available “(Created)” | Owner: “14, 15, 8 ?” – add “(Created)” there too | Mail Available for rows 8 (Lien Removal Successful), 14 and 15 (rejection with / without payment link) now reads “No – to be created (Created)” with the View link below. Summary counts unchanged. Row 18 mail left as “No – to be created” (owner to confirm). xlsx regenerated. | Implemented |
 
 ---
 
