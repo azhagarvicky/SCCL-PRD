@@ -122,18 +122,19 @@ def draft_approvals(r, tid):
     note, file upload and a Reject button only at the bottom, with the existing reconfirmation pop-up."""
     k = START["draft"] - int(r["LAN"][-2:])
     sc = 2 if k < 4 else 3 if k < 7 else 4
-    rows = "".join(f'<tr><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td><td class="num">₹{_amt(a)}</td>'
+    rows = "".join(f'<tr data-name="{n}"><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td><td class="num wv-chg">₹{_amt(a)}</td>'
                    f'<td><input class="wv-amt" type="number" min="0" step="0.01" value="0" data-max="{a}" disabled></td>'
                    f'<td class="num wv-pay">₹{_amt(a)}</td></tr>' for n, a in DRAFT_CHARGES[sc])
     total = sum(a for _, a in DRAFT_CHARGES[sc])
     pop = lambda cls, body: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{body}</div></div>'
-    return (f'<div class="wv" data-tid="{tid}"><p class="lms-new">New – as per the Waiver BRD (Waiver BRD scenario {sc}). '
+    return (f'<div class="wv" data-tid="{tid}" data-orig="{total}"><p class="lms-new">New – as per the Waiver BRD (Waiver BRD scenario {sc}). '
             'Not in the live LMS yet.</p>'
             '<div class="wv-head"><h3>Waive-off charges</h3><button type="button" class="wv-waive" disabled>Waive-off</button></div>'
             '<table class="lms-table wv-table"><thead><tr><th><input type="checkbox" class="wv-all" aria-label="Select all"></th>'
             '<th>Charges Name</th><th class="num">Amount of Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
-            f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b>₹{_amt(total)}</b></td>'
+            f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b class="wv-ctot">₹{_amt(total)}</b></td>'
             f'<td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
+            '<p class="wv-allgone" hidden>All charges have been waived off – nothing is payable.</p>'
             '<p class="wv-type">Type of waive-off: <b>No waive-off</b></p>'
             '<label class="wv-lbl">Add a note <span>(rejection reason – recorded in the Audit)</span></label>'
             '<textarea class="wv-note" rows="2" placeholder="Add a note"></textarea><p class="wv-err"></p>'
@@ -149,31 +150,50 @@ def draft_approvals(r, tid):
             + '</div>')
 
 
+DRAFT_AUDIT = ('<p class="lms-new">New – waive-off and rejection entries (Waiver BRD). Not in the live LMS yet.</p>'
+               '<table class="lms-table wv-audit"><thead><tr><th>Date &amp; Time</th><th>Action</th><th>Charges Name</th>'
+               '<th class="num">Amount waived</th><th class="num">Balance</th><th>Note</th><th>By</th></tr></thead>'
+               '<tbody><tr class="wv-a-empty"><td colspan="7">No waive-off or rejection yet.</td></tr></tbody></table>')
+
+
 WAIVER_JS = """<script>
-/* Draft loan Approvals tab (DISC-338). Tick a charge → enter the amount to waive (≤ charge) → Waive-off → “Are you sure…?” →
-   Yes, waive-off → success; waived rows are locked. Reject (reason required) → “This action is irreversible…” → Yes → Rejected. */
+/* Draft loan Approvals tab (DISC-339). Tick a charge → amount to waive (≤ balance) → Waive-off → confirm → success.
+   After a waive-off only the balance stays: a fully waived charge leaves the table, a partly waived one shows its balance.
+   Each waive-off and the rejection are written to the Audit tab. Reject needs the reason (note) and the reconfirmation. */
 (function () {
   var r2 = function (v) { return Math.round(v * 100) / 100; };
   var f = function (v) { return '₹' + r2(v).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+  var now = function () { var d = new Date(), p = function (x) { return String(x).padStart(2, '0'); };
+    return p(d.getDate()) + '-' + p(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); };
   function calc(w) {
-    var tw = 0, tp = 0, pend = 0;
+    var tw = 0, bal = 0, pend = 0;
     w.querySelectorAll('tbody tr').forEach(function (tr) {
       var a = tr.querySelector('.wv-amt'), max = +a.dataset.max, v = +a.value || 0;
       if (v > max) { a.value = max; v = max; } if (v < 0) { a.value = 0; v = 0; }
-      tw += v; tp += max - v; tr.querySelector('.wv-pay').textContent = f(max - v);
-      if (!tr.classList.contains('waived') && tr.querySelector('.wv-chk').checked && v > 0) pend++;
+      tw += v; bal += max; tr.querySelector('.wv-pay').textContent = f(max - v);
+      if (tr.querySelector('.wv-chk').checked && v > 0) pend++;
     });
-    w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(tp);
-    var t = tp <= 0 ? 'Full waive-off' : tw > 0 ? 'Partial waive-off' : 'No waive-off';
+    var after = bal - tw, orig = +w.dataset.orig;
+    w.querySelector('.wv-ctot').textContent = f(bal); w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(after);
+    var t = after <= 0 ? 'Full waive-off' : after < orig ? 'Partial waive-off' : 'No waive-off';
     w.querySelector('.wv-type b').textContent = t;
     w.querySelector('.wv-waive').disabled = !pend || w.classList.contains('closed');
-    return { tw: tw, tp: tp, type: t };
+    w.querySelector('.wv-allgone').hidden = !!w.querySelector('tbody tr');
+    w.querySelector('.wv-table').hidden = !w.querySelector('tbody tr');
+    return { tw: tw, tp: after, type: t };
+  }
+  function audit(w, cells) {
+    var tb = w.closest('.lms-lanpage').querySelector('.wv-audit tbody'); if (!tb) return;
+    var e = tb.querySelector('.wv-a-empty'); if (e) e.remove();
+    var tr = document.createElement('tr');
+    tr.innerHTML = cells.map(function (c, i) { return '<td' + (i === 3 || i === 4 ? ' class="num"' : '') + '></td>'; }).join('');
+    cells.forEach(function (c, i) { tr.children[i].textContent = c; }); tb.prepend(tr);
   }
   var show = function (w, c, on) { w.querySelector(c).hidden = !on; };
   document.addEventListener('change', function (e) {
     var w = e.target.closest('.wv'); if (!w) return;
     if (e.target.classList.contains('wv-all'))
-      w.querySelectorAll('tbody tr:not(.waived) .wv-chk').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
+      w.querySelectorAll('tbody .wv-chk').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
     if (e.target.classList.contains('wv-chk')) { var a = e.target.closest('tr').querySelector('.wv-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
     calc(w);
   });
@@ -183,15 +203,20 @@ WAIVER_JS = """<script>
     if (c.contains('wv-x') || c.contains('wv-no') || c.contains('wv-ok')) e.target.closest('.wv-pop').hidden = true;
     if (c.contains('wv-waive')) show(w, '.wv-pw', true);
     if (c.contains('wv-yes-w')) {
-      show(w, '.wv-pw', false); var r = calc(w), n = 0;
+      show(w, '.wv-pw', false); var n = 0, tot = 0, when = now(), note = w.querySelector('.wv-note').value.trim();
       w.querySelectorAll('tbody tr').forEach(function (tr) {
-        var a = tr.querySelector('.wv-amt');
-        if (!tr.classList.contains('waived') && tr.querySelector('.wv-chk').checked && +a.value > 0) {
-          tr.classList.add('waived'); a.disabled = true; tr.querySelector('.wv-chk').disabled = true; n++;
-        }
+        var a = tr.querySelector('.wv-amt'), chk = tr.querySelector('.wv-chk'), max = +a.dataset.max, v = Math.min(+a.value || 0, max);
+        if (!chk.checked || v <= 0) return;
+        var left = r2(max - v); n++; tot += v;
+        audit(w, [when, left > 0 ? 'Partial waive-off' : 'Full waive-off', tr.dataset.name, f(v), f(left), note || '–', 'OPS user']);
+        if (left <= 0) { tr.remove(); return; }                       // fully waived – not shown again
+        a.dataset.max = left; a.value = 0; a.disabled = true; chk.checked = false;
+        tr.querySelector('.wv-chg').textContent = f(left);            // partly waived – only the balance is shown
       });
-      w.querySelector('.wv-ps-txt').textContent = n + ' charge(s) waived off. Total waived ' + f(r.tw) + ' · Payable charges ' + f(r.tp) + ' (' + r.type + ').';
-      show(w, '.wv-ps', true); calc(w);
+      w.querySelector('.wv-all').checked = false;
+      var r = calc(w);
+      w.querySelector('.wv-ps-txt').textContent = n + ' charge(s) waived off – ' + f(tot) + '. Balance payable ' + f(r.tp) + '. Recorded in the Audit tab.';
+      show(w, '.wv-ps', true);
     }
     if (c.contains('wv-reject')) {
       var err = w.querySelector('.wv-err');
@@ -199,8 +224,11 @@ WAIVER_JS = """<script>
       err.textContent = ''; show(w, '.wv-pr', true);
     }
     if (c.contains('wv-yes-r')) {
-      show(w, '.wv-pr', false); var q = calc(w); w.classList.add('closed');
+      show(w, '.wv-pr', false);
+      w.querySelectorAll('tbody tr').forEach(function (tr) { tr.querySelector('.wv-chk').checked = false; tr.querySelector('.wv-amt').value = 0; });
+      var q = calc(w); w.classList.add('closed');
       w.querySelectorAll('input, textarea, .wv-reject, .wv-waive').forEach(function (x) { x.disabled = true; });
+      audit(w, [now(), 'Rejected', '–', '–', f(q.tp), w.querySelector('.wv-note').value.trim(), 'OPS user']);
       var d = w.querySelector('.wv-done'); d.hidden = false;
       d.innerHTML = '<b>Application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + q.type + '</b>. ' +
         (q.tp > 0 ? 'Payable charges ' + f(q.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
@@ -250,7 +278,7 @@ def lan_detail(view, r):
                    f'<label for="t-{tid}-{k}">{t}</label>' for k, t in enumerate(tab_list))
     panes = ('<div class="lms-pane p0"><div class="lms-card2"><h3>Loan Details</h3><div class="lms-grid">' + grid + '</div></div>'
              '<div class="lms-card2"><h3>Collection Details</h3><div class="lms-grid g3">' + coll + '</div></div></div>'
-             + "".join(f'<div class="lms-pane p{k}">{draft_approvals(r, tid) if (view == "draft" and k == 1) else TBA}</div>'
+             + "".join(f'<div class="lms-pane p{k}">{draft_approvals(r, tid) if (view == "draft" and k == 1) else DRAFT_AUDIT if (view == "draft" and tab_list[k] == "Audit") else TBA}</div>'
                        for k in range(1, len(tab_list))))
     return (f'<section id="lan-{tid}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" href="#m-loans-{view}" '
             f'title="Back to the list">←</a><h2>LAN Number: {r["LAN"]}</h2><span class="lms-st st-{status.lower()}">{status}</span>{risk}'
