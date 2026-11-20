@@ -1409,6 +1409,32 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 @media (max-width: 900px) { .lms-grid, .lms-grid.g3 { grid-template-columns: 1fr 1fr; } }
 .lms-i { font-style: normal; font-size: 15px; color: #444; margin-left: 4px; }   /* processing fee info icon (DISC-330) */
 
+/* Draft loan Approvals tab – waive-off (DISC-337) */
+.lms-new { display: inline-block; background: #FFF8DD; border: 1px dashed #E8CF6A; color: #7a6a33; border-radius: 8px; padding: 6px 12px; font-size: 13px; margin: 0 0 14px; }
+.wv-table input[type=checkbox] { width: 18px; height: 18px; accent-color: #2F5BEA; }
+.wv-amt { width: 130px; padding: 7px 9px; border: 1px solid #D9DCE3; border-radius: 6px; font: inherit; }
+.wv-amt:disabled { background: #F3F4F6; color: #999; }
+.wv-table tfoot td { border-bottom: 0; }
+.wv-type { margin: 14px 0 0; font-size: 15px; } .wv-type b { color: #2F5BEA; }
+.wv-lbl { display: block; font-size: 16px; color: #555; margin: 18px 0 8px; } .wv-lbl span { font-size: 13px; color: #888; }
+.wv-note { width: 100%; box-sizing: border-box; background: #F5F6F8; border: 1px solid #E6E8EC; border-radius: 8px; padding: 12px 14px; font: inherit; }
+.wv-err { color: #C0392B; font-size: 13px; margin: 6px 0 0; min-height: 0; }
+.wv-drop { border: 1.5px dashed #C9CDD6; border-radius: 8px; padding: 18px; text-align: center; color: #666; }
+.wv-hint { font-size: 12.5px; color: #777; margin: 6px 0 0; }
+.wv-ctas { margin-top: 20px; }
+.wv-reject { background: #C0392B; color: #fff; font-weight: 700; border-radius: 6px; padding: 11px 28px; font-size: 15px; }
+.wv-reject:disabled { background: #ccc; cursor: default; }
+.wv-done { margin-top: 16px; background: #FFF5F5; border: 1px solid #E6B0AA; border-radius: 8px; padding: 12px 14px; color: #6b1d16; line-height: 1.5; }
+.lms-st.st-rejected { color: #C0392B; background: #FDECEA; }
+.wv-pop { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.wv-pop[hidden] { display: none; }
+.wv-box { position: relative; background: #F7F7F7; border-radius: 16px; width: min(520px, 92vw); padding: 44px 34px 34px; text-align: center; }
+.wv-box h3 { font-size: 22px; line-height: 1.35; margin: 0 0 30px; }
+.wv-x { position: absolute; top: 12px; right: 14px; width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid #999; color: #777; font-size: 18px; line-height: 1; }
+.wv-pbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.wv-no { color: #2F5BEA; font-weight: 600; font-size: 16px; padding: 12px; }
+.wv-yes { background: #2F5BEA; color: #fff; font-weight: 600; font-size: 16px; border-radius: 8px; padding: 12px; }
+
 /* Styles for the generated PRD document (SCCL_LAMF_LOS_PRD.html) */
 body.prd { background: #F4F5F6; color: #111; }
 
