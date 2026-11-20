@@ -1453,6 +1453,17 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .wv-allgone { background: #F3FBF5; border: 1px solid #BFE5CB; color: #1a6633; border-radius: 8px; padding: 12px 14px; }   /* DISC-339 */
 .wv-a-empty td { color: #888; }
 
+/* Audit tab – LMS style list (DISC-340) */
+.aud-list { border-top: 1px solid #ECEEF1; }
+.aud { border-bottom: 1px solid #ECEEF1; padding: 16px 4px; }
+.aud summary { list-style: none; display: flex; gap: 18px; align-items: baseline; cursor: pointer; font-size: 16px; color: #111; }
+.aud summary::-webkit-details-marker { display: none; }
+.aud summary::before { content: "▶"; order: 1; font-size: 11px; color: #222; }
+.aud[open] summary::before { content: "▼"; }
+.aud-t { order: 0; min-width: 190px; } .aud-m { order: 2; }
+.aud p { margin: 10px 0 0 226px; color: #777; font-size: 15px; }
+.aud.new { background: #FFFBEA; }
+
 /* Styles for the generated PRD document (SCCL_LAMF_LOS_PRD.html) */
 body.prd { background: #F4F5F6; color: #111; }
 
