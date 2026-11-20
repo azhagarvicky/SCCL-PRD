@@ -118,68 +118,92 @@ def _amt(v):
 
 
 def draft_approvals(r, tid):
+    """Draft loan Approvals tab (DISC-338): waive-off table with its own Waive-off button, confirmation and success pop-ups;
+    note, file upload and a Reject button only at the bottom, with the existing reconfirmation pop-up."""
     k = START["draft"] - int(r["LAN"][-2:])
     sc = 2 if k < 4 else 3 if k < 7 else 4
-    rows = "".join(f'<tr><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td><td class="num">{_amt(a)}</td>'
+    rows = "".join(f'<tr><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td><td class="num">₹{_amt(a)}</td>'
                    f'<td><input class="wv-amt" type="number" min="0" step="0.01" value="0" data-max="{a}" disabled></td>'
-                   f'<td class="num wv-pay">{_amt(a)}</td></tr>' for n, a in DRAFT_CHARGES[sc])
+                   f'<td class="num wv-pay">₹{_amt(a)}</td></tr>' for n, a in DRAFT_CHARGES[sc])
     total = sum(a for _, a in DRAFT_CHARGES[sc])
+    pop = lambda cls, body: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{body}</div></div>'
     return (f'<div class="wv" data-tid="{tid}"><p class="lms-new">New – as per the Waiver BRD (Waiver BRD scenario {sc}). '
             'Not in the live LMS yet.</p>'
-            '<div class="lms-card2"><table class="lms-table wv-table"><thead><tr><th><input type="checkbox" class="wv-all" aria-label="Select all"></th>'
+            '<div class="wv-head"><h3>Waive-off charges</h3><button type="button" class="wv-waive" disabled>Waive-off</button></div>'
+            '<table class="lms-table wv-table"><thead><tr><th><input type="checkbox" class="wv-all" aria-label="Select all"></th>'
             '<th>Charges Name</th><th class="num">Amount of Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
-            f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b>{_amt(total)}</b></td>'
-            f'<td class="wv-wtot">0</td><td class="num"><b class="wv-ptot">{_amt(total)}</b></td></tr></tfoot></table>'
-            '<p class="wv-type">Type of waive-off on rejection: <b>No waive-off</b></p></div>'
-            '<label class="wv-lbl">Please add a note <span>(rejection reason – recorded in the Audit)</span></label>'
-            '<textarea class="wv-note" rows="3" placeholder="Type here"></textarea><p class="wv-err"></p>'
+            f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b>₹{_amt(total)}</b></td>'
+            f'<td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
+            '<p class="wv-type">Type of waive-off: <b>No waive-off</b></p>'
+            '<label class="wv-lbl">Add a note <span>(rejection reason – recorded in the Audit)</span></label>'
+            '<textarea class="wv-note" rows="2" placeholder="Add a note"></textarea><p class="wv-err"></p>'
             '<label class="wv-lbl">Upload a file</label><div class="wv-drop">Drop files here or <u>click</u></div>'
             '<p class="wv-hint">PDF, PNG or JPG. Max 5MB</p>'
             '<div class="wv-ctas"><button type="button" class="wv-reject">Reject</button></div><div class="wv-done" hidden></div>'
-            '<div class="wv-pop" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>'
-            '<h3>This action is irreversible. Are you sure you want to proceed?</h3>'
-            '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes">Yes</button></div></div></div></div>')
+            + pop('wv-pw', '<h3>Are you sure you want to waive-off selected charges?</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No, don’t</button><button type="button" class="wv-yes-w">Yes, waive-off</button></div>')
+            + pop('wv-ps', '<div class="wv-tick">✓</div><h3>Charges waived off successfully</h3><p class="wv-ps-txt"></p>'
+                  '<div class="wv-pbtns one"><button type="button" class="wv-ok">OK</button></div>')
+            + pop('wv-pr', '<h3>This action is irreversible. Are you sure you want to proceed?</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes</button></div>')
+            + '</div>')
 
 
 WAIVER_JS = """<script>
-/* Draft loan Approvals tab (DISC-337): tick a charge to enter the amount to waive; payable and type update; Reject → reason →
-   existing confirmation pop-up (No / × closes, Yes rejects – final). Prototype only. */
+/* Draft loan Approvals tab (DISC-338). Tick a charge → enter the amount to waive (≤ charge) → Waive-off → “Are you sure…?” →
+   Yes, waive-off → success; waived rows are locked. Reject (reason required) → “This action is irreversible…” → Yes → Rejected. */
 (function () {
-  var n = function (v) { return Math.round(v * 100) / 100; };
-  var f = function (v) { return n(v).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+  var r2 = function (v) { return Math.round(v * 100) / 100; };
+  var f = function (v) { return '₹' + r2(v).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
   function calc(w) {
-    var tw = 0, tp = 0, tc = 0;
+    var tw = 0, tp = 0, pend = 0;
     w.querySelectorAll('tbody tr').forEach(function (tr) {
-      var a = tr.querySelector('.wv-amt'), max = +a.dataset.max, v = Math.min(Math.max(+a.value || 0, 0), max);
-      if (+a.value > max) a.value = max;
-      tw += v; tc += max; tp += max - v; tr.querySelector('.wv-pay').textContent = f(max - v);
+      var a = tr.querySelector('.wv-amt'), max = +a.dataset.max, v = +a.value || 0;
+      if (v > max) { a.value = max; v = max; } if (v < 0) { a.value = 0; v = 0; }
+      tw += v; tp += max - v; tr.querySelector('.wv-pay').textContent = f(max - v);
+      if (!tr.classList.contains('waived') && tr.querySelector('.wv-chk').checked && v > 0) pend++;
     });
     w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(tp);
-    w.querySelector('.wv-type b').textContent = tp <= 0 ? 'Full waive-off' : tw > 0 ? 'Partial waive-off' : 'No waive-off';
-    return { tp: tp, type: w.querySelector('.wv-type b').textContent };
+    var t = tp <= 0 ? 'Full waive-off' : tw > 0 ? 'Partial waive-off' : 'No waive-off';
+    w.querySelector('.wv-type b').textContent = t;
+    w.querySelector('.wv-waive').disabled = !pend || w.classList.contains('closed');
+    return { tw: tw, tp: tp, type: t };
   }
+  var show = function (w, c, on) { w.querySelector(c).hidden = !on; };
   document.addEventListener('change', function (e) {
     var w = e.target.closest('.wv'); if (!w) return;
-    if (e.target.classList.contains('wv-all')) w.querySelectorAll('.wv-chk').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
+    if (e.target.classList.contains('wv-all'))
+      w.querySelectorAll('tbody tr:not(.waived) .wv-chk').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
     if (e.target.classList.contains('wv-chk')) { var a = e.target.closest('tr').querySelector('.wv-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
     calc(w);
   });
   document.addEventListener('input', function (e) { var w = e.target.closest('.wv'); if (w && e.target.classList.contains('wv-amt')) calc(w); });
   document.addEventListener('click', function (e) {
-    var w = e.target.closest('.wv'); if (!w) return;
-    var pop = w.querySelector('.wv-pop');
-    if (e.target.classList.contains('wv-reject')) {
-      var err = w.querySelector('.wv-err');
-      if (!w.querySelector('.wv-note').value.trim()) { err.textContent = 'Please add the rejection reason.'; return; }
-      err.textContent = ''; pop.hidden = false;
+    var w = e.target.closest('.wv'), c = e.target.classList; if (!w) return;
+    if (c.contains('wv-x') || c.contains('wv-no') || c.contains('wv-ok')) e.target.closest('.wv-pop').hidden = true;
+    if (c.contains('wv-waive')) show(w, '.wv-pw', true);
+    if (c.contains('wv-yes-w')) {
+      show(w, '.wv-pw', false); var r = calc(w), n = 0;
+      w.querySelectorAll('tbody tr').forEach(function (tr) {
+        var a = tr.querySelector('.wv-amt');
+        if (!tr.classList.contains('waived') && tr.querySelector('.wv-chk').checked && +a.value > 0) {
+          tr.classList.add('waived'); a.disabled = true; tr.querySelector('.wv-chk').disabled = true; n++;
+        }
+      });
+      w.querySelector('.wv-ps-txt').textContent = n + ' charge(s) waived off. Total waived ' + f(r.tw) + ' · Payable charges ' + f(r.tp) + ' (' + r.type + ').';
+      show(w, '.wv-ps', true); calc(w);
     }
-    if (e.target.classList.contains('wv-no') || e.target.classList.contains('wv-x')) pop.hidden = true;
-    if (e.target.classList.contains('wv-yes')) {
-      var r = calc(w); pop.hidden = true;
-      w.querySelectorAll('input, textarea, .wv-reject').forEach(function (x) { x.disabled = true; });
+    if (c.contains('wv-reject')) {
+      var err = w.querySelector('.wv-err');
+      if (!w.querySelector('.wv-note').value.trim()) { err.textContent = 'Please add the rejection reason in the note.'; return; }
+      err.textContent = ''; show(w, '.wv-pr', true);
+    }
+    if (c.contains('wv-yes-r')) {
+      show(w, '.wv-pr', false); var q = calc(w); w.classList.add('closed');
+      w.querySelectorAll('input, textarea, .wv-reject, .wv-waive').forEach(function (x) { x.disabled = true; });
       var d = w.querySelector('.wv-done'); d.hidden = false;
-      d.innerHTML = '<b>Application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + r.type + '</b>. ' +
-        (r.tp > 0 ? 'Payable charges ₹' + f(r.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
+      d.innerHTML = '<b>Application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + q.type + '</b>. ' +
+        (q.tp > 0 ? 'Payable charges ' + f(q.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
                   : 'Nothing payable – rejection SMS and mail sent without a payment link; the units can be de-pledged now.');
       var st = w.closest('.lms-lanpage').querySelector('.lms-lanhead .lms-st'); st.textContent = 'Rejected'; st.className = 'lms-st st-rejected';
     }
