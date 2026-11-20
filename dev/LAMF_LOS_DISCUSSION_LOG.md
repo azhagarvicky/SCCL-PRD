@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 19-11-2026 18:37 IST
+**Last Updated:** 20-11-2026 12:29 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -369,6 +369,7 @@
 | DISC-334 | 18-11-2026 | communications.html row 18 | SMS Available “(Created)” | Owner: the SMS Available column of row 18 also needs “(Created)” | Row 18 SMS Available now reads “No – to be created (Created)”, as row 33. | Implemented |
 | DISC-335 | 19-11-2026 | communications.html rows 8, 14, 15 | Mail Available “(Created)” | Owner: “14, 15, 8 ?” – add “(Created)” there too | Mail Available for rows 8 (Lien Removal Successful), 14 and 15 (rejection with / without payment link) now reads “No – to be created (Created)” with the View link below. Summary counts unchanged. Row 18 mail left as “No – to be created” (owner to confirm). xlsx regenerated. | Implemented |
 | DISC-336 | 19-11-2026 | communications.html rows 8, 14, 15 | Created SMS templates for lien removal and rejection | Owner: SMS templates for row 15 (rejection without payment link), row 14 (with payment link) and row 8 (Lien Removal Successful) | SMS Content Structure / Actual SMS Content replaced with the owner’s text for rows 8, 14 and 15 (actual samples use the name AZHAGARSAMY as agreed; row 14 sample Rs. 5000 and https://lamf.shriramcredit.in/user/loans/). SMS Available “No – to be created (Created)” for all three. The “Template drafted by Claude for approval; to be created and registered” note removed from the row 14 and 15 scenarios. xlsx regenerated. | Implemented |
+| DISC-337 | 20-11-2026 | lms.html – Draft LAN page, Approvals tab | Approvals tab for a DRAFT loan (Waiver BRD) | Owner: in the LMS DRAFT loan page, create the Approval tab after Overview | Draft LAN pages now have the Approvals tab right after Overview, built from the Waiver BRD 3.1 / 3.2 and marked “New – as per the Waiver BRD … Not in the live LMS yet”. Charges table (select-all + checkbox per charge, Charges Name, Amount of Charges, Amount to be waived off, Payable Charges, totals); charges follow BRD scenarios 2–4 across the sample loans (lien marking 531, lien removal 118, + processing fee 1,178.82, + stamp duty 236). The amount box is disabled (0) until the charge is ticked, cannot exceed the charge, and resets to 0 when unticked; payable and “Type of waive-off on rejection” (No / Partial / Full) update live. Note (rejection reason, required), Upload a file, Reject button only. Reject opens the existing pop-up “This action is irreversible. Are you sure you want to proceed?” (No / × close; Yes rejects): status badge → Rejected and a summary with the waive-off type, payable amount and the next step (payment link and Treasury confirmation, or de-pledge now). Prototype script in lms.html (tools/lms.py). DISC-330’s “no Approvals tab for Draft” replaced for this page. | Implemented |
 
 ---
 

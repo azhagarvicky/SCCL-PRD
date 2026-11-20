@@ -106,6 +106,88 @@ def _rs(n, dec=False):
     return "₹" + (head + "," if head else "") + tail + ("." + frac if frac else "")
 
 
+# ---- Approvals tab for a DRAFT loan (DISC-337) – new, as per the Waiver BRD 3.1 / 3.2 (not in the live LMS yet).
+# Charges depend on how far the customer went (Waiver BRD scenarios 2 – 4); amounts include 18% GST.
+DRAFT_CHARGES = {2: [("Lien Marking Charges", 531), ("Lien Removal Charges", 118)],
+                 3: [("Processing Fee", 1178.82), ("Lien Marking Charges", 531), ("Lien Removal Charges", 118)],
+                 4: [("Processing Fee", 1178.82), ("Lien Marking Charges", 531), ("Lien Removal Charges", 118), ("Stamp Duty Charges", 236)]}
+
+
+def _amt(v):
+    return f"{v:,.2f}".rstrip("0").rstrip(".") if v % 1 else f"{int(v):,}"
+
+
+def draft_approvals(r, tid):
+    k = START["draft"] - int(r["LAN"][-2:])
+    sc = 2 if k < 4 else 3 if k < 7 else 4
+    rows = "".join(f'<tr><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td><td class="num">{_amt(a)}</td>'
+                   f'<td><input class="wv-amt" type="number" min="0" step="0.01" value="0" data-max="{a}" disabled></td>'
+                   f'<td class="num wv-pay">{_amt(a)}</td></tr>' for n, a in DRAFT_CHARGES[sc])
+    total = sum(a for _, a in DRAFT_CHARGES[sc])
+    return (f'<div class="wv" data-tid="{tid}"><p class="lms-new">New – as per the Waiver BRD (Waiver BRD scenario {sc}). '
+            'Not in the live LMS yet.</p>'
+            '<div class="lms-card2"><table class="lms-table wv-table"><thead><tr><th><input type="checkbox" class="wv-all" aria-label="Select all"></th>'
+            '<th>Charges Name</th><th class="num">Amount of Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
+            f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b>{_amt(total)}</b></td>'
+            f'<td class="wv-wtot">0</td><td class="num"><b class="wv-ptot">{_amt(total)}</b></td></tr></tfoot></table>'
+            '<p class="wv-type">Type of waive-off on rejection: <b>No waive-off</b></p></div>'
+            '<label class="wv-lbl">Please add a note <span>(rejection reason – recorded in the Audit)</span></label>'
+            '<textarea class="wv-note" rows="3" placeholder="Type here"></textarea><p class="wv-err"></p>'
+            '<label class="wv-lbl">Upload a file</label><div class="wv-drop">Drop files here or <u>click</u></div>'
+            '<p class="wv-hint">PDF, PNG or JPG. Max 5MB</p>'
+            '<div class="wv-ctas"><button type="button" class="wv-reject">Reject</button></div><div class="wv-done" hidden></div>'
+            '<div class="wv-pop" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>'
+            '<h3>This action is irreversible. Are you sure you want to proceed?</h3>'
+            '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes">Yes</button></div></div></div></div>')
+
+
+WAIVER_JS = """<script>
+/* Draft loan Approvals tab (DISC-337): tick a charge to enter the amount to waive; payable and type update; Reject → reason →
+   existing confirmation pop-up (No / × closes, Yes rejects – final). Prototype only. */
+(function () {
+  var n = function (v) { return Math.round(v * 100) / 100; };
+  var f = function (v) { return n(v).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+  function calc(w) {
+    var tw = 0, tp = 0, tc = 0;
+    w.querySelectorAll('tbody tr').forEach(function (tr) {
+      var a = tr.querySelector('.wv-amt'), max = +a.dataset.max, v = Math.min(Math.max(+a.value || 0, 0), max);
+      if (+a.value > max) a.value = max;
+      tw += v; tc += max; tp += max - v; tr.querySelector('.wv-pay').textContent = f(max - v);
+    });
+    w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(tp);
+    w.querySelector('.wv-type b').textContent = tp <= 0 ? 'Full waive-off' : tw > 0 ? 'Partial waive-off' : 'No waive-off';
+    return { tp: tp, type: w.querySelector('.wv-type b').textContent };
+  }
+  document.addEventListener('change', function (e) {
+    var w = e.target.closest('.wv'); if (!w) return;
+    if (e.target.classList.contains('wv-all')) w.querySelectorAll('.wv-chk').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
+    if (e.target.classList.contains('wv-chk')) { var a = e.target.closest('tr').querySelector('.wv-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
+    calc(w);
+  });
+  document.addEventListener('input', function (e) { var w = e.target.closest('.wv'); if (w && e.target.classList.contains('wv-amt')) calc(w); });
+  document.addEventListener('click', function (e) {
+    var w = e.target.closest('.wv'); if (!w) return;
+    var pop = w.querySelector('.wv-pop');
+    if (e.target.classList.contains('wv-reject')) {
+      var err = w.querySelector('.wv-err');
+      if (!w.querySelector('.wv-note').value.trim()) { err.textContent = 'Please add the rejection reason.'; return; }
+      err.textContent = ''; pop.hidden = false;
+    }
+    if (e.target.classList.contains('wv-no') || e.target.classList.contains('wv-x')) pop.hidden = true;
+    if (e.target.classList.contains('wv-yes')) {
+      var r = calc(w); pop.hidden = true;
+      w.querySelectorAll('input, textarea, .wv-reject').forEach(function (x) { x.disabled = true; });
+      var d = w.querySelector('.wv-done'); d.hidden = false;
+      d.innerHTML = '<b>Application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + r.type + '</b>. ' +
+        (r.tp > 0 ? 'Payable charges ₹' + f(r.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
+                  : 'Nothing payable – rejection SMS and mail sent without a payment link; the units can be de-pledged now.');
+      var st = w.closest('.lms-lanpage').querySelector('.lms-lanhead .lms-st'); st.textContent = 'Rejected'; st.className = 'lms-st st-rejected';
+    }
+  });
+})();
+</script>"""
+
+
 def lan_detail(view, r):
     amt = _num(r["Sanction Amount"])
     live = view in ("active", "closed")
@@ -139,12 +221,13 @@ def lan_detail(view, r):
     status = r.get("Status") or "Rejected"
     risk = f'<span class="lms-risk">{r["Risk Level"]}</span>' if view == "active" else ""
     tid = f'{view}-{r["LAN"]}'
-    tab_list = [t for t in TABS if not (view == "draft" and t == "Approvals")]   # no Approvals tab for a DRAFT loan today (DISC-330)
+    tab_list = TABS   # Draft: Approvals tab after Overview, as per the Waiver BRD (DISC-337, replaces DISC-330)
     tabs = "".join(f'<input type="radio" name="t-{tid}" id="t-{tid}-{k}"{" checked" if k == 0 else ""}>'
                    f'<label for="t-{tid}-{k}">{t}</label>' for k, t in enumerate(tab_list))
     panes = ('<div class="lms-pane p0"><div class="lms-card2"><h3>Loan Details</h3><div class="lms-grid">' + grid + '</div></div>'
              '<div class="lms-card2"><h3>Collection Details</h3><div class="lms-grid g3">' + coll + '</div></div></div>'
-             + "".join(f'<div class="lms-pane p{k}">{TBA}</div>' for k in range(1, len(tab_list))))
+             + "".join(f'<div class="lms-pane p{k}">{draft_approvals(r, tid) if (view == "draft" and k == 1) else TBA}</div>'
+                       for k in range(1, len(tab_list))))
     return (f'<section id="lan-{tid}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" href="#m-loans-{view}" '
             f'title="Back to the list">←</a><h2>LAN Number: {r["LAN"]}</h2><span class="lms-st st-{status.lower()}">{status}</span>{risk}'
             f'<span class="lms-vs">View status</span></div><div class="lms-tabs">{tabs}{panes}</div>'
@@ -171,4 +254,4 @@ def lms_body(logo, home):
                                                  for mid, n, subs, _ in LMS_MODULES) + '</div></section>')
     return (f'<div class="lms"><aside class="lms-side"><div class="lms-logo">{logo}</div>'
             f'<a class="lms-home" href="{home}">← Home</a><nav>{"".join(nav)}</nav></aside>'
-            f'<main class="lms-main">{intro}{"".join(secs)}</main></div>')
+            f'<main class="lms-main">{intro}{"".join(secs)}</main></div>' + WAIVER_JS)
