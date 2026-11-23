@@ -204,6 +204,10 @@ and payable amounts.</li>
 <li>Reject is new for DRAFT loans. It is needed so the pledged units can be de-pledged.</li>
 <li>When to reject a DRAFT loan: after 30 days if the customer has not submitted, or earlier if the customer asks for lien
 removal.</li>
+<li>Day 30 from LAN creation (pledged, not submitted): SMS and mail to the customer – “Your application will be rejected tomorrow.
+Complete it now.” <a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">View</a> (row 40)</li>
+<li>Day 31: mail to OPS – “30 days completed. Initiate the rejection.”
+<a href="internal/IC-21.html" target="_blank" rel="noopener">View</a> (alert 21)</li>
 <li>Maker selects the charges to waive (or none), adds a note, uploads a file and clicks Reject (or Approve).</li>
 <li>OPS can reject even if the payable amount is not zero.</li>
 <li>Pop-up: “Are you sure you want to reject the application with the selected waive-off?” It shows the waive-off type, the amount
@@ -326,8 +330,8 @@ rules.</li>
 <h2>11. Scenarios</h2>
 {scen}
 <h2>12. Open points</h2>
-<ul><li>Confirm the recipients of internal mails 16 – 20.</li>
-<li>Approve and register the new SMS (rows 38 and 39).</li></ul>
+<ul><li>Confirm the recipients of internal mails 16 – 21.</li>
+<li>Approve and register the new SMS (rows 38, 39 and 40).</li></ul>
 """
 
 

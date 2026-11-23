@@ -206,6 +206,20 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       para("Once the payment is received, the lien removal of your Mutual Fund units will be initiated.", pad="22px 48px 0 48px"),
       SUPPORT],
      "Sent once a month until the customer pays the charges (Waiver BRD section 9)."),
+    # DISC-381 – day 30 from the LAN creation, units pledged, journey not completed: the application will be rejected tomorrow.
+    ("10_Application_Rejection_Tomorrow", "Complete Your Application Today",
+     "Action Required: Your LAMF Application Will Be Rejected Tomorrow {{LOAN_ID}}",
+     "Your Loan Against Mutual Fund application is not complete. It will be rejected tomorrow.",
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{JOURNEY_LINK}}"],
+     [badge("Your application will be rejected tomorrow", "warn"),
+      para("Your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit Company Limited (SCCL) is not complete. "
+           "Your Mutual Fund units are already pledged.", pad="22px 48px 0 48px"),
+      para("If the application is not completed today, it will be rejected tomorrow. After the rejection, the applicable charges have "
+           "to be paid before your units are unpledged."),
+      para("Complete your application now:", pad="22px 48px 0 48px"),
+      button("Complete Application &rarr;", "{{JOURNEY_LINK}}"),
+      SUPPORT],
+     "Sent on day 30 from the LAN creation when the units are pledged and the journey is not completed (Waiver BRD)."),
 ]
 
 
