@@ -1529,3 +1529,12 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .wv-drop { cursor: pointer; display: block; }
 .wv-ptype { font-size: 15px; line-height: 1.6; margin: 10px 0 4px; text-align: center; } .wv-ptype b { color: #1D4ED8; }
 .wv-ptype { margin-bottom: 12px !important; } .wv-ptype + .wv-ps-txt { margin-top: 0; }
+/* LMS active loan – ≡ menu and Waive-off page (DISC-366) */
+.lms-sim { margin-left: auto; color: #2F5BEA; font-weight: 600; font-size: 18px; }
+.lms-menu { position: relative; } .lms-menu summary { list-style: none; cursor: pointer; font-size: 22px; border: 1px solid #ccc; border-radius: 6px; padding: 0 8px; line-height: 34px; }
+.lms-menu summary::-webkit-details-marker { display: none; }
+.lms-menu-list { position: absolute; right: 0; top: 42px; z-index: 20; background: #fff; border: 1px solid #E6E8EC; border-radius: 8px; box-shadow: 0 6px 20px rgba(0,0,0,.12); min-width: 220px; padding: 6px 0; }
+.lms-mi { display: block; padding: 10px 18px; font-size: 16px; color: #1a1a1a; } .lms-mi.off { color: #bbb; } a.lms-mi:hover { background: #F3F4F6; }
+.wa .wv-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.wa-table .wa-amt { width: 100%; max-width: 320px; box-sizing: border-box; border: 1px solid #E6E8EC; border-radius: 6px; padding: 8px 10px; font: inherit; }
+.wv-yes-k, .wv-yes-a, .wv-yes-d, .wv-yes-c, .wa-yes { background: #1F47D6; color: #fff; font-weight: 600; font-size: 16px; border-radius: 8px; padding: 12px; }

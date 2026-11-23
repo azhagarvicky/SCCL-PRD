@@ -374,17 +374,34 @@ format</a> (Internal communications, alert 15).</li>
 {fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
 <h2>10. Waive-off for Submitted, Account Opened and Active loans:</h2>
 <ul>
-<li>Submitted and Account Opened loans (scenarios 5 and 6): the same Waive-off charges table, with the same maker → checker →
-Treasury approval, is added above the existing Decline and Approve actions in the Approvals tab (section 4.1).</li>
-<li>Active loans (scenario 7): an option to waive a charge already posted in the Statement of Account, with a waiver narration.</li>
+<li><b>DRAFT, SUBMITTED and ACCOUNT OPENED loans:</b> the waive-off is done under the <b>Approvals</b> tab of the LAN (section 4.1) –
+for SUBMITTED and ACCOUNT OPENED loans the same Waive-off charges table, with the same maker → checker → Treasury approval, is added
+above the existing Decline and Approve actions.</li>
+<li><b>ACTIVE loans</b> (scenario 7): the waive-off is done from the <b>≡ menu</b> at the top right of the LAN page (next to “Go to
+Simulator”). The menu has Disbursal, Repayment, Soft Freeze, Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI,
+Foreclose, <b>Waive-off</b> and Add Credit Note. <b>Waive-off</b> navigates to the next page, <b>Waive-off</b>, for that LAN:
+  <ul><li>a table with a checkbox (and select all), <b>Charge Type</b> (for example, Processing fee, Pledge, Stamp duty, Collateral
+  release), <b>Date</b>, <b>From</b>, <b>To</b>, <b>Amount</b> and <b>Amount to be waived off</b>;</li>
+  <li>the <b>Waive-off</b> button at the top right, enabled once a charge is selected with an amount; the amount cannot be more than
+  the charge;</li>
+  <li>the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off / Yes, Waive Off / ×);</li>
+  <li>the waived amount is posted in the Statement of Account with a waiver narration; the Amount shows the balance, and a fully
+  waived charge cannot be selected again.</li></ul></li>
 </ul>
+<p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active LAN → ≡ → Waive-off).</p>
+{fig('22_active_menu.png', 'Active LAN – ≡ menu with Waive-off')}
+{fig('23_active_waive.png', 'Active LAN – Waive-off page')}
+<div class="brd-figs">
+{fig('24_active_pop.png', 'Active LAN – waive-off reconfirmation pop-up', 'sm')}
+</div>
 <h3>Charges and amounts</h3>
 {charges}
 <h2>11. Scenarios</h2>
 {scen}
 <h2>12. Open points</h2>
 <ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
-<li>Scenario 7: who can waive charges on an active loan, and any limit.</li>
+<li>Active loans (scenario 7): does the same maker → checker → Treasury approval apply to the waive-off from the ≡ menu, and are
+the notes / file needed there?</li>
 <li>Roles for approving with a waive-off in scenario 6.</li>
 <li>Does the same maker → checker → Treasury approval apply to the waive-off with a rejection of SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6)?</li>
 <li>Should the maker get a mail when the checker or Treasury declines (today: Audit entry only)?</li></ul>
