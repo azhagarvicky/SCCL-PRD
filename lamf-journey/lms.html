@@ -119,7 +119,7 @@
     if (c.contains('wv-confirm')) show(w, '.wv-pc', true);
     if (c.contains('wv-yes-c')) {
       show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box');
-      pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment confirmed by Treasury</b> on ' + stamp() + '. De-pledge can be initiated.');
+      pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment confirmed by Treasury</b> on ' + stamp() + '. Mail sent to OPS to initiate the de-pledge (Charges Received – Initiate De-pledge).');
       pb3.querySelector('.wv-pay-st').innerHTML = pb3.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
       pb3.querySelector('.wv-confirm').hidden = true; pb3.querySelector('.wv-depledge').disabled = false; pb3.querySelector('.wv-dp-hint').hidden = true;
       audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' confirmed by Treasury', '-');
