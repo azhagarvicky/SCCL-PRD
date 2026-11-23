@@ -737,7 +737,7 @@ DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, samp
 for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges Payment Received",
   "When the customer pays the charges in the LOS through the payment link after the DRAFT LAN is rejected (payment successful) – the receipt is generated, stored in the LMS Documents tab and attached to the mail. Waiver BRD.",
   "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{AMOUNT_PAID}}": "1,268.82", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
-                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/000149"})]:   # added at the end so the existing row numbers stay
+                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/11/000149"})]:   # added at the end so the existing row numbers stay
     base = next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
         # SMS drafted by Claude for approval – to be created and registered (DISC-351)
         "Dear {#alp#}, We have received your payment of Rs. {#alp#} for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
@@ -856,7 +856,7 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              # DRAFT Application Rejected alert (DISC-348)
              "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM",
              # Charges Payment Received alert (DISC-351)
-             "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/000149"}
+             "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/000149"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
 

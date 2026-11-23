@@ -295,13 +295,13 @@ WAIVER_JS = """<script>
     if (c.contains('wv-sim')) {          /* the customer pays in the LOS – LMS gets the payment, receipt and UNO entries */
       var pb2 = w.querySelector('.wv-pay-box'), amt = f2(+w.dataset.due), ts = stamp();
       pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
-        'Receipt RCPT/LAMF/2026/000149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
+        'Receipt RCPT/LAMF/2026/11/000149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
       e.target.hidden = true; pb2.querySelector('.wv-confirm').hidden = false;
-      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/000149 generated', '-');
+      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/000149 generated', '-');
       var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
       if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
         var tr = document.createElement('tr'); tr.className = 'doc-new';
-        tr.innerHTML = '<td>Charges Payment Receipt</td><td>RCPT/LAMF/2026/000149</td><td></td><td>System</td>' +
+        tr.innerHTML = '<td>Charges Payment Receipt</td><td>RCPT/LAMF/2026/11/000149</td><td></td><td>System</td>' +
           '<td><a href="charges-receipt.html" target="_blank" rel="noopener">View</a></td>';
         tr.children[2].textContent = ts; docs.prepend(tr); }
     }

@@ -14,7 +14,7 @@ INCL = "*Inclusive of Lien Marking, Lien Removal and Stamp Duty"   # DISC-356
 TOTAL = sum(a for _, a, _ in CHARGES)
 WAIVED = sum(w for _, _, w in CHARGES)
 PAYABLE = round(TOTAL - WAIVED, 2)
-TXN, RCPT, PAID_ON = "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/000149", "23-11-2026 11:42 AM"
+TXN, RCPT, PAID_ON = "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/11/000149", "23-11-2026 11:42 AM"
 
 
 def rs(v):
@@ -121,6 +121,6 @@ tfoot td{{font-weight:bold}} .w{{margin:14px 0 0;font-size:14px}} .n{{margin:18p
 <p class="w">Amount received in words: <b>Rupees One Thousand Two Hundred Sixty-Eight and Paise Eighty-Two Only</b></p>
 <p class="n">{INCL}. This is a system-generated receipt and does not need a signature. The lien on your Mutual Fund
 units will be removed after the payment is confirmed.</p></div>
-<div class="f">Sample receipt for the prototype (Waiver BRD) – generated on payment, stored in the LMS Documents tab and sent to the customer.</div>
+<div class="f">Sample receipt for the prototype (Waiver BRD) – generated on payment, stored in the LMS Documents tab and sent to the customer. Receipt No. format: <b>RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts}}}}</b> (DISC-357).</div>
 </div></body></html>
 """
