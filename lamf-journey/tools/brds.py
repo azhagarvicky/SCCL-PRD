@@ -222,7 +222,11 @@ rejection reason, who rejected it and when. <a href="internal/IC-13.html" target
 <li>After the rejection, the communication is sent to the customer automatically:
   <ul><li><b>Payable Charges equal to zero (Full waive-off):</b> the communication is sent <b>without</b> a payment link.</li>
   <li><b>Payable Charges not equal to zero (Partial waive-off or No waive-off):</b> the communication is sent <b>with</b> a payment
-  link, and the customer has to pay the charges using that link.</li></ul></li>
+  link, and the customer has to pay the charges using that link.</li></ul>
+  The SMS is the same as for the existing rejection; the mails are new:
+  <a href="new-mails/06_Draft_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">mail with the payment link</a> and
+  <a href="new-mails/07_Draft_Application_Rejected.html" target="_blank" rel="noopener">mail without the payment link</a>
+  (Customer Communications, rows 36 and 37).</li>
 </ul>
 {fig('07_reject_block.png', 'Bottom of the Approvals tab – Add a note (reason), Upload a file and Reject')}
 <div class="brd-figs">
