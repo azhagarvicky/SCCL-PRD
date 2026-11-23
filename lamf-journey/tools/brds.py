@@ -169,11 +169,14 @@ or CLOSED LAN.</li>
 <h2>3. Approvals Tab:</h2>
 <ul>
 <li>Need approvals tab in the DRAFT LOAN section, which is currently available in the ACTIVE, SUBMITTED and ACCOUNT OPENED LOANS.</li>
-<li>Show it after the Overview tab, only for a DRAFT loan whose mutual fund units are pledged (scenarios 2, 3 and 4).</li>
 <li>The tab has two parts: <b>Waive-off charges</b> at the top, and <b>Add a note</b>, <b>Upload a file</b> and the <b>Reject</b>
 button at the bottom. A DRAFT loan cannot be approved, so there is no Approve button.</li>
-<li><b>Waive-off and rejection are one event.</b> The OPS maker enters the amounts to be waived off together with the rejection, and
-the request goes to the OPS checker for approval and then to Treasury for the final approval.</li>
+<li><b>Until the LAN status is ACTIVE, the waive-off is not a separate event:</b> it goes with the <b>Reject</b> (DRAFT, SUBMITTED,
+ACCOUNT OPENED) or with the <b>Approve</b> (SUBMITTED, ACCOUNT OPENED) as one event. The OPS maker enters the amounts to be waived
+off together with the reject or approve, and the request goes to the OPS checker for approval and then to Treasury for the final
+approval.</li>
+<li><b>Once the LAN status is ACTIVE, the waive-off is a standalone event</b> – there is no approve or reject of the loan; it is done
+from the ≡ menu → Waive-off page (section 10).</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Sanction loan amount</th><th>Maker</th><th>Checker</th><th>Final approval</th></tr></thead><tbody>
 <tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2 or OPS L3</td><td>Treasury L1, L2 or L3</td></tr>
@@ -196,7 +199,6 @@ the final approval is required from the Treasury team, also based on the sanctio
   Treasury.</li></ul></li>
 <li><b>The same maker → checker → Treasury approval applies to every event</b> – the DRAFT rejection, the SUBMITTED approval or
 rejection, the ACCOUNT OPENED approval or rejection (with or without a waive-off) and the ACTIVE loan waive-off (DISC-373).</li>
-<li><b>Treasury</b> is the same team as <b>Accounts</b> in the LMS SOP (Accounts L1 / L2 / L3); this BRD uses the name Treasury throughout.</li>
 </ul>
 <p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT LAN, Approvals tab).</p>
 {fig('01_tabs.png', 'DRAFT LAN – Approvals tab after the Overview tab')}
