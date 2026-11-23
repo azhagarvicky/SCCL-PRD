@@ -192,6 +192,7 @@ the final approval is required from the Treasury team, also based on the sanctio
   <ul><li>below ₹5 lakh – only <b>Treasury L1</b>;</li>
   <li>₹5 lakh and above – only <b>Treasury L2 or Treasury L3</b>.</li>
   <li>The Treasury team can only <b>approve or reject</b> the waive-off and rejection request; it cannot change the amounts.</li></ul></li>
+<li><b>Treasury</b> is the same team as <b>Accounts</b> in the LMS SOP (Accounts L1 / L2 / L3); this BRD uses the name Treasury throughout.</li>
 </ul>
 <p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT LAN, Approvals tab).</p>
 {fig('01_tabs.png', 'DRAFT LAN – Approvals tab after the Overview tab')}
