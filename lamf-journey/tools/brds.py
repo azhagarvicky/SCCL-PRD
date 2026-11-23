@@ -136,8 +136,7 @@ marking, lien removal, stamp duty or processing fee). Today SCCL bears these cha
 <ul>
 <li><b>DRAFT → INACTIVE:</b> When the MF units are not pledged, the LAN moves to INACTIVE automatically after 30 days from the LAN
 created date. There are no charges and OPS does not need to do anything. The customer receives a communication on the 30th day.</li>
-<li><b>DRAFT → SUBMITTED:</b> When the MF units are pledged and the customer completes the journey, the LAN moves to SUBMITTED
-automatically.</li>
+<li><b>DRAFT → SUBMITTED:</b> When the customer completes the journey, the LAN status moves to SUBMITTED automatically.</li>
 <li><b>DRAFT → REJECTED:</b> When the MF units are pledged and the customer does not complete the journey, OPS rejects the LAN after 30
 days from the LAN created date (or earlier, if the customer asks to remove the lien). The customer receives a communication on the 30th
 day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE.</li>
