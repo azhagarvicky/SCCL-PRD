@@ -77,7 +77,12 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
 def _waiver_body():
     amt = dict((c, a) for c, a, _ in CHARGES)
     def srow(n, st, sc, ch, op):   # S codes as given by the owner (DISC-370): S 2.1 Reject Without Waive-off …
-        lead = f"<td class='c'>S {n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
+        nxt = {1: "INACTIVE (after 30 days)", 2: "REJECTED (OPS rejects)<br>SUBMITTED (customer completes the journey)",
+               3: "REJECTED (OPS rejects)<br>SUBMITTED (customer completes the journey)",
+               4: "REJECTED (OPS rejects)<br>SUBMITTED (customer completes the E-Mandate)",
+               5: "ACCOUNT OPENED (approve)<br>REJECTED (reject)", 6: "ACTIVE (approve)<br>REJECTED (reject)",
+               7: "CLOSED (foreclosure, tenure completion or invocation)"}[n]   # DISC-375
+        lead = f"<td class='c'>S {n}</td><td>{st}</td><td>{nxt}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
         three = lambda k0, verb: [f"<td class='wo'>S {n}.{k0 + i} – {verb}{x}</td>" for i, x in
                                   enumerate(("Without Waive-off", "With Full Waive-off", "With Partial Waive-off"))]
         rs = lambda k, h: h.replace("<td", f"<td rowspan='{k}'")
@@ -98,7 +103,7 @@ def _waiver_body():
         r7 = three(1, "")
         return (f"<tr>{rs(3, lead)}<td colspan='2' class='wo'>{r7[0][15:-5]}</td>{rs(3, f'<td>{op}</td>')}</tr>"
                 f"<tr><td colspan='2' class='wo'>{r7[1][15:-5]}</td></tr><tr><td colspan='2' class='wo'>{r7[2][15:-5]}</td></tr>")
-    summary = ("<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th>"
+    summary = ("<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th><th>LAN status can change to</th>"
                "<th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th>"
                "<th class='ops'>What OPS can do</th></tr></thead><tbody>"
                + "".join(srow(n, st, sc, ch, op) for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
