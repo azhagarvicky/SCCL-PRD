@@ -148,6 +148,22 @@ waived off together with the rejection, and the request needs <b>two OPS approva
 <tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2</td><td>Treasury L1</td></tr>
 <tr><td>₹5 lakh and above</td><td>OPS L2</td><td>OPS L3</td><td>Treasury L2</td></tr>
 </tbody></table>
+<p><b>Approval rules</b> (DISC-364)</p>
+<ul>
+<li><b>Waive-off by the OPS team (maker and checker):</b>
+  <ul><li>For a sanction loan amount below ₹5 lakh, only <b>OPS L1</b> can initiate the waive-off (maker) and <b>OPS L2</b> approves it
+  (checker).</li>
+  <li>For a sanction loan amount of ₹5 lakh and above, only <b>OPS L2</b> can initiate the waive-off (maker) and <b>OPS L3</b> approves
+  it (checker).</li>
+  <li>For the maker, <b>Add a note</b> and <b>Upload a file</b> are mandatory.</li>
+  <li>The checker can modify the request (the amounts to be waived off). If the checker changes the request, <b>Add a note</b> and
+  <b>Upload a file</b> are mandatory for the checker.</li></ul></li>
+<li><b>Final approval by the Treasury team:</b> once the OPS team (maker and checker) has approved the waive-off, the final approval
+is required from the Treasury team, also based on the sanction loan amount:
+  <ul><li>below ₹5 lakh – only <b>Treasury L1</b>;</li>
+  <li>₹5 lakh and above – only <b>Treasury L2</b>.</li>
+  <li>The Treasury team can only <b>approve or reject</b> the waive-off and rejection request; it cannot change the amounts.</li></ul></li>
+</ul>
 {fig('01_tabs.png', 'DRAFT LAN – Approvals tab after the Overview tab')}
 <h2>4. Waive-off charges:</h2>
 <ul>
