@@ -820,7 +820,9 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00",
              # Charges Waived Off alert (DISC-343) – same sample as the LMS prototype (Lien Marking 531 + Lien Removal 118, 500 waived)
              "{{Waived Amount}}": "500.00", "{{Waive-off Type}}": "Partial waive-off", "{{OPS User Name}}": "OPS user",
-             "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "149.00"}
+             "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "149.00",
+             # DRAFT Application Rejected alert (DISC-348)
+             "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
 

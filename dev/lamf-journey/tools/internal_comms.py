@@ -352,4 +352,29 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])]),
+ # DISC-348 – Waiver BRD: a pledged DRAFT LAN rejected by OPS (after “Yes” on the reconfirmation pop-up) – mail to the OPS team,
+ # same To / Cc as the SUBMITTED→REJECTED alert.
+ ('DRAFT→REJECTED',
+  'NA',
+  'OPS rejects a pledged DRAFT LAN in the Approvals tab (after “Yes” on the reconfirmation pop-up)',
+  'Rejected | {{LAN}} | DRAFT Application',
+  'DRAFT Application Rejected',
+  '{{To User Name}}',
+  '{{LAN}} for customer {{Customer Name}} has been REJECTED in DRAFT status (mutual fund units pledged). Type of waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
+  '| Lien Marking Charges | 531.00 | 500.00 | 31.00\n'
+  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
+  '| Total | 649.00 | 500.00 | 149.00\n'
+  'Rejection reason: {{Rejection Reason}}\n'
+  'Rejected by {{OPS User Name}} on {{Rejection Date & Time}}. The rejection SMS and mail with the payment link for {{Balance Payable}} '
+  'have been sent to the customer. The units will be de-pledged after the customer pays and Treasury confirms the payment.',
+  [('Any Sanction amount',
+    ['richajayswal@shriramcredit.in'],
+    ['satyaparida@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])])]
