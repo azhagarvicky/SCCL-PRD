@@ -471,34 +471,85 @@ def active_menu(r):
 
 
 def active_waive(r):
+    """Active LAN Waive-off page (DISC-366 / DISC-367): opened from the ≡ menu; the existing columns (Charge Type, Date, From, To,
+    Amount, Amount to be waived off); same functionality as the Approvals-tab waive-off – maker (note + file) → checker (note; file
+    if changed) → Treasury (approve or decline only). On the Treasury approval the waiver is posted in the SOA; no rejection."""
     amt = _num(r["Sanction Amount"]) or 0
+    big = amt >= 500000
+    mk, ck, tr = ("OPS L2 / OPS L3", "OPS L3 / OPS L2", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2", "Treasury L1")
     end = r["End Date"].replace("/", "-")
-    rows = [("Processing fee", round(amt * 0.0187)), ("Pledge", 531), ("Stamp duty", 236),
-            ("Collateral release", 118)]
-    body = "".join(f'<tr data-amt="{a}"><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
-                   f'<td>-</td><td>-</td><td class="num">{_rs(a)}</td><td><input class="wa-amt" type="number" min="0" step="0.01" value="0" '
+    rows = [("Processing fee", round(amt * 0.0187)), ("Pledge", 531), ("Stamp duty", 236), ("Collateral release", 118)]
+    body = "".join(f'<tr><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
+                   f'<td>-</td><td>-</td><td class="num wa-bal">{_rs(a)}</td><td><input class="wa-amt" type="number" min="0" step="0.01" value="0" '
                    f'data-max="{a}" disabled></td></tr>' for n, a in rows)
     pop = lambda cls, b: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{b}</div></div>'
+    upload = lambda cls: (f'<label class="wv-drop">Drop files here or <u>click</u><input type="file" class="{cls}" hidden></label><p class="wv-fname"></p>')
     return (f'<section id="waive-active-{r["LAN"]}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" '
             f'href="#lan-active-{r["LAN"]}" title="Back to the LAN">←</a><h2>Waive-off</h2></div>'
-            '<div class="wa"><div class="wv-head"><span></span><button type="button" class="wv-waive wa-btn" disabled>Waive-off</button></div>'
+            f'<div class="wa" data-mk="{mk}" data-ck="{ck}" data-tr="{tr}"><p class="lms-new">Waive-off with maker → checker → Treasury approval '
+            '(Waiver BRD) – not in the live LMS yet.</p>'
+            '<div class="wv-head"><span></span><button type="button" class="wv-waive wa-btn" disabled>Waive-off</button></div>'
             '<table class="lms-table wa-table"><thead><tr><th><input type="checkbox" class="wa-all" aria-label="Select all"></th><th>Charge Type</th>'
             '<th>Date</th><th>From</th><th>To</th><th class="num">Amount</th><th>Amount to be waived off</th></tr></thead>'
-            f'<tbody>{body}</tbody></table><div class="wv-done wa-done" hidden></div>'
+            f'<tbody>{body}</tbody></table>'
+            f'<p class="wv-role">Maker: <b>{mk}</b> → Checker: <b>{ck}</b> → <b>{tr}</b> (sanctioned amount {"₹5 lakh and above" if big else "below ₹5 lakh"})</p>'
+            '<label class="wv-lbl">Add a note <span>(required – reason for the waive-off)</span></label>'
+            '<textarea class="wv-note wa-note" rows="2" placeholder="Add a note"></textarea>'
+            '<label class="wv-lbl">Upload a file <span>(required)</span></label>' + upload("wa-file") + '<p class="wv-err wa-err"></p>'
+            f'<div class="wv-ck wa-ck" hidden><h3>Waive-off – pending {ck} (Checker) approval</h3><p class="wv-ck-st wa-ck-st"></p>'
+            '<p class="wv-hint">The checker can change the amounts to be waived off in the table above. If anything is changed, the note and a '
+            'file are required; otherwise only the note.</p>'
+            '<label class="wv-lbl">Checker note <span>(required)</span></label><textarea class="wv-cnote wa-cnote" rows="2" placeholder="Add a note"></textarea>'
+            '<label class="wv-lbl">Upload a file <span>(required if changed)</span></label>' + upload("wa-cfile") +
+            '<p class="wv-cerr wa-cerr"></p><div class="wv-appr-ctas"><button type="button" class="wv-ck-dec wa-ck-dec">Decline</button>'
+            f'<button type="button" class="wv-ck-app wa-ck-app">Approve</button></div><p class="wv-hint">{ck} only.</p></div>'
+            f'<div class="wv-appr wa-tr" hidden><h3>Waive-off – pending {tr} approval</h3><p class="wv-appr-st wa-tr-st"></p>'
+            '<label class="wv-lbl">Treasury remark <span>(required to decline)</span></label>'
+            '<textarea class="wv-tnote wa-tnote" rows="2" placeholder="Add a remark"></textarea><p class="wv-terr wa-terr"></p>'
+            '<div class="wv-appr-ctas"><button type="button" class="wv-decline wa-dec">Decline</button><button type="button" class="wv-approve wa-app">Approve</button></div>'
+            f'<p class="wv-hint">{tr} only – Treasury can only approve or decline; the amounts cannot be changed.</p></div>'
+            '<div class="wv-done wa-done" hidden></div>'
             + pop('wa-pw', '<h3>Are you sure you want to waive off the selected charges?</h3><p class="wv-ptype"></p>'
+                  f'<p class="wv-ps-txt">The request will be sent to {ck} (Checker) for approval.</p>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No, Don’t Waive Off</button><button type="button" class="wa-yes">Yes, Waive Off</button></div>')
-            + '</div><p class="lms-sample">Sample data for the prototype – not real customers. Layout as in the LMS UAT Waive-off page.</p></section>')
+            + pop('wa-pk', '<h3>Are you sure you want to approve the waive-off?</h3><p class="wv-ptype"></p>'
+                  f'<p class="wv-ps-txt">The request will be sent to {tr} for approval.</p>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-k wa-yes-k">Yes, approve</button></div>')
+            + pop('wa-pa', '<h3>This action is irreversible. Are you sure you want to proceed?</h3><p class="wv-ptype"></p>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-a wa-yes-a">Yes</button></div>')
+            + pop('wa-pd', '<h3>Are you sure you want to decline? The waive-off request will be cancelled.</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-d wa-yes-d">Yes, decline</button></div>')
+            + '</div><p class="lms-sample">Sample data for the prototype – not real customers. Columns as in the LMS UAT Waive-off page.</p></section>')
 
 
 WAIVE_ACTIVE_JS = """<script>
-/* Active loan Waive-off page (DISC-366): tick a charge → amount to waive (≤ the amount) → Waive-off → reconfirmation → done. */
+/* Active loan Waive-off page (DISC-367): same functionality as the Approvals-tab waive-off – maker (note + file) → checker (note;
+   file if the amounts are changed) → Treasury (approve or decline). Decline by the checker or Treasury cancels the request. */
 (function () {
-  var f = function (v) { return '₹' + (Math.round(v * 100) / 100).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
-  function calc(w) { var tw = 0, n = 0;
+  var r2 = function (v) { return Math.round(v * 100) / 100; };
+  var f = function (v) { return '₹' + r2(v).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+  var Q = function (w, c) { return w.querySelector(c); };
+  function calc(w) { var tw = 0, n = 0, bal = 0;
     w.querySelectorAll('tbody tr').forEach(function (tr) { var a = tr.querySelector('.wa-amt'), mx = +a.dataset.max, v = +a.value || 0;
-      if (v > mx) { a.value = mx; v = mx; } if (v < 0) { a.value = 0; v = 0; } if (tr.querySelector('.wa-chk').checked && v > 0) { tw += v; n++; } });
-    w.querySelector('.wa-btn').disabled = !n; return { tw: tw, n: n }; }
+      if (v > mx) { a.value = mx; v = mx; } if (v < 0) { a.value = 0; v = 0; } bal += mx; if (tr.querySelector('.wa-chk').checked && v > 0) { tw += v; n++; } });
+    Q(w, '.wa-btn').disabled = !n || w.dataset.stage === 'ck' || w.dataset.stage === 'tr';
+    var t = !tw ? 'No waive-off' : tw >= bal ? 'Full waive-off' : 'Partial waive-off';
+    return { tw: tw, n: n, tp: bal - tw, type: t }; }
+  var amts = function (w) { return Array.prototype.map.call(w.querySelectorAll('tbody .wa-amt'), function (x) { return (+x.value || 0).toFixed(2); }).join('|'); };
+  function pop(w, c) { var p = Q(w, c), q = calc(w), ty = p.querySelector('.wv-ptype');
+    if (ty) ty.innerHTML = 'Type of waive-off: <b>' + q.type + '</b><br>' + q.n + ' charge(s) – amount to be waived off: <b>' + f(q.tw) + '</b>';
+    p.hidden = false; }
+  function reset(w, msg) {
+    w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wa-chk'), a = tr.querySelector('.wa-amt');
+      ck.checked = false; ck.disabled = +a.dataset.max <= 0; a.value = 0; a.disabled = true; });
+    Q(w, '.wa-all').checked = false; Q(w, '.wa-all').disabled = false;
+    w.querySelectorAll('.wa-note, .wa-file, .wa-cnote, .wa-cfile, .wa-tnote').forEach(function (x) { x.disabled = false; x.value = ''; });
+    w.querySelectorAll('.wv-fname').forEach(function (x) { x.textContent = ''; });
+    Q(w, '.wa-ck').hidden = true; Q(w, '.wa-tr').hidden = true; w.dataset.stage = ''; calc(w);
+    var d = Q(w, '.wa-done'); d.hidden = false; d.className = 'wv-done wa-done wv-cancel'; d.innerHTML = msg; }
   document.addEventListener('change', function (e) { var w = e.target.closest('.wa'); if (!w) return;
+    if (e.target.classList.contains('wa-file') || e.target.classList.contains('wa-cfile')) {
+      e.target.closest('.wv-drop').nextElementSibling.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : ''; return; }
     if (e.target.classList.contains('wa-all')) w.querySelectorAll('tbody .wa-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked;
       var a = c.closest('tr').querySelector('.wa-amt'); a.disabled = !c.checked; if (!c.checked) a.value = 0; });
     if (e.target.classList.contains('wa-chk')) { var a = e.target.closest('tr').querySelector('.wa-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
@@ -506,15 +557,39 @@ WAIVE_ACTIVE_JS = """<script>
   document.addEventListener('input', function (e) { var w = e.target.closest('.wa'); if (w && e.target.classList.contains('wa-amt')) calc(w); });
   document.addEventListener('click', function (e) { var w = e.target.closest('.wa'), c = e.target.classList; if (!w) return;
     if (c.contains('wv-x') || c.contains('wv-no')) e.target.closest('.wv-pop').hidden = true;
-    if (c.contains('wa-btn')) { var q = calc(w); w.querySelector('.wa-pw .wv-ptype').innerHTML = q.n + ' charge(s) – amount to be waived off: <b>' + f(q.tw) + '</b>';
-      w.querySelector('.wa-pw').hidden = false; }
-    if (c.contains('wa-yes')) { w.querySelector('.wa-pw').hidden = true; var q2 = calc(w);
+    if (c.contains('wa-btn')) { var m = [];                       /* maker – note and file required */
+      if (!Q(w, '.wa-note').value.trim()) m.push('add the note'); if (!Q(w, '.wa-file').files.length) m.push('upload a file');
+      if (m.length) { Q(w, '.wa-err').textContent = 'Please ' + m.join(' and ') + '.'; return; }
+      Q(w, '.wa-err').textContent = ''; Q(w, '.wa-done').hidden = true; pop(w, '.wa-pw'); }
+    if (c.contains('wa-yes')) { Q(w, '.wa-pw').hidden = true; var q = calc(w);
+      w.dataset.stage = 'ck'; w.dataset.mkAmts = amts(w); Q(w, '.wa-btn').disabled = true;
+      w.querySelectorAll('.wa-note, .wa-file').forEach(function (x) { x.disabled = true; });
+      Q(w, '.wa-ck').hidden = false; Q(w, '.wa-cerr').textContent = '';
+      Q(w, '.wa-ck-st').innerHTML = 'Submitted by <b>' + w.dataset.mk + ' (Maker)</b>. Type of waive-off: <b>' + q.type + '</b>. Amount to be waived off: <b>' +
+        f(q.tw) + '</b>.<br>Mail sent to ' + w.dataset.ck + ': <i>Checker Approval Required – Waive-off</i>.'; }
+    if (c.contains('wa-ck-app')) { var changed = amts(w) !== w.dataset.mkAmts, m2 = [];
+      if (!Q(w, '.wa-cnote').value.trim()) m2.push('add the note'); if (changed && !Q(w, '.wa-cfile').files.length) m2.push('upload a file');
+      if (m2.length) { Q(w, '.wa-cerr').textContent = (changed ? 'The amounts were changed – please ' : 'Please ') + m2.join(' and ') + '.'; return; }
+      Q(w, '.wa-cerr').textContent = ''; w.dataset.changed = changed ? '1' : ''; pop(w, '.wa-pk'); }
+    if (c.contains('wa-yes-k')) { Q(w, '.wa-pk').hidden = true; var q2 = calc(w);
+      w.dataset.stage = 'tr'; w.querySelectorAll('.wa-table input, .wa-cnote, .wa-cfile').forEach(function (x) { x.disabled = true; });
+      Q(w, '.wa-ck').hidden = true; Q(w, '.wa-tr').hidden = false; Q(w, '.wa-terr').textContent = '';
+      Q(w, '.wa-tr-st').innerHTML = 'Maker: <b>' + w.dataset.mk + '</b>. Approved by <b>' + w.dataset.ck + ' (Checker)</b>' +
+        (w.dataset.changed ? ' – <b>amounts changed by the checker</b>' : '') + '. Type of waive-off: <b>' + q2.type + '</b>. Amount to be waived off: <b>' +
+        f(q2.tw) + '</b>.<br>Mail sent to ' + w.dataset.tr + ': <i>Approval Required – Waive-off</i>.'; }
+    if (c.contains('wa-ck-dec')) { if (!Q(w, '.wa-cnote').value.trim()) { Q(w, '.wa-cerr').textContent = 'Please add the note to decline.'; return; }
+      w.dataset.dec = w.dataset.ck + ' (Checker)'; Q(w, '.wa-pd').hidden = false; }
+    if (c.contains('wa-dec')) { if (!Q(w, '.wa-tnote').value.trim()) { Q(w, '.wa-terr').textContent = 'Please add the remark to decline.'; return; }
+      w.dataset.dec = w.dataset.tr; Q(w, '.wa-pd').hidden = false; }
+    if (c.contains('wa-yes-d')) { Q(w, '.wa-pd').hidden = true;
+      reset(w, '<b>Waive-off request declined by ' + w.dataset.dec + ' – cancelled.</b> Nothing is waived. The maker can submit a new request.'); }
+    if (c.contains('wa-app')) pop(w, '.wa-pa');
+    if (c.contains('wa-yes-a')) { Q(w, '.wa-pa').hidden = true; var q3 = calc(w);
       w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wa-chk'), a = tr.querySelector('.wa-amt'), v = +a.value || 0;
-        if (!ck.checked || v <= 0) return; var left = +a.dataset.max - v; a.dataset.max = left;
-        tr.children[5].textContent = f(left); a.value = 0; a.disabled = true; ck.checked = false; if (left <= 0) ck.disabled = true; });
-      w.querySelector('.wa-all').checked = false; calc(w);
-      var d = w.querySelector('.wa-done'); d.hidden = false; d.className = 'wv-done wa-done wv-cancel';
-      d.innerHTML = '<b>' + f(q2.tw) + ' waived off.</b> The Amount column shows the balance; the waiver is posted in the Statement of Account with a waiver narration.'; }
+        if (!ck.checked || v <= 0) return; var left = r2(+a.dataset.max - v); a.dataset.max = left; tr.querySelector('.wa-bal').textContent = f(left); });
+      reset(w, '<b>Approved by ' + w.dataset.ck + ' (Checker) and ' + w.dataset.tr + ' – ' + f(q3.tw) + ' waived off (' + q3.type.toLowerCase() + ').</b> ' +
+        'The waiver is posted in the Statement of Account with a waiver narration; the Amount column shows the balance.');
+      Q(w, '.wa-done').className = 'wv-done wa-done'; }
   });
 })();
 </script>"""

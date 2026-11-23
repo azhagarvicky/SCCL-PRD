@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=85ba7ff">
+<link rel="stylesheet" href="assets/lamf.css?v=8c1fc19">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 23-11-2026 · One common process to waive the charges fully, partially or not at all, collect the balance from the customer and allow the de-pledge only after Treasury confirms the payment.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -256,22 +256,26 @@ format</a> (Internal communications, alert 15).</li>
 <li><b>DRAFT, SUBMITTED and ACCOUNT OPENED loans:</b> the waive-off is done under the <b>Approvals</b> tab of the LAN (section 4.1) –
 for SUBMITTED and ACCOUNT OPENED loans the same Waive-off charges table, with the same maker → checker → Treasury approval, is added
 above the existing Decline and Approve actions.</li>
-<li><b>ACTIVE loans</b> (scenario 7): the waive-off is done from the <b>≡ menu</b> at the top right of the LAN page (next to “Go to
-Simulator”). The menu has Disbursal, Repayment, Soft Freeze, Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI,
-Foreclose, <b>Waive-off</b> and Add Credit Note. <b>Waive-off</b> navigates to the next page, <b>Waive-off</b>, for that LAN:
-  <ul><li>a table with a checkbox (and select all), <b>Charge Type</b> (for example, Processing fee, Pledge, Stamp duty, Collateral
-  release), <b>Date</b>, <b>From</b>, <b>To</b>, <b>Amount</b> and <b>Amount to be waived off</b>;</li>
-  <li>the <b>Waive-off</b> button at the top right, enabled once a charge is selected with an amount; the amount cannot be more than
-  the charge;</li>
-  <li>the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off / Yes, Waive Off / ×);</li>
-  <li>the waived amount is posted in the Statement of Account with a waiver narration; the Amount shows the balance, and a fully
-  waived charge cannot be selected again.</li></ul></li>
+<li><b>ACTIVE loans</b> (scenario 7): <b>the only difference is where the option is</b> – the same waive-off is on a separate page.
+It is opened from the <b>≡ menu</b> at the top right of the LAN page (next to “Go to Simulator”: Disbursal, Repayment, Soft Freeze,
+Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI, Foreclose, <b>Waive-off</b>, Add Credit Note). <b>Waive-off</b>
+navigates to the <b>Waive-off</b> page of that LAN:
+  <ul><li>the existing columns are kept: a checkbox (and select all), <b>Charge Type</b> (for example, Processing fee, Pledge, Stamp duty,
+  Collateral release), <b>Date</b>, <b>From</b>, <b>To</b>, <b>Amount</b> and <b>Amount to be waived off</b>, with the <b>Waive-off</b>
+  button at the top right;</li>
+  <li><b>the rest of the functionality is the same as in section 4.1</b>: single / multiple selection, the three waive-off types, no
+  amount above the charge, the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off /
+  Yes, Waive Off / ×) with the type of waive-off, and the <b>maker → checker → Treasury</b> approval by the sanction loan amount (maker:
+  note and file mandatory; checker: note mandatory, file too if the amounts are changed; Treasury: approve or decline only; a decline
+  cancels the request), with the internal mails and the Audit;</li>
+  <li>there is no rejection for an active loan: on the Treasury approval the waived amount is posted in the Statement of Account with a
+  waiver narration and the Amount shows the balance; a fully waived charge cannot be selected again.</li></ul></li>
 </ul>
 <p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active LAN → ≡ → Waive-off).</p>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/22_active_menu.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/22_active_menu.png' alt='Active LAN – ≡ menu with Waive-off' loading='lazy'></a><figcaption>Active LAN – ≡ menu with Waive-off</figcaption></figure>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/23_active_waive.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/23_active_waive.png' alt='Active LAN – Waive-off page' loading='lazy'></a><figcaption>Active LAN – Waive-off page</figcaption></figure>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/24_active_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/24_active_pop.png' alt='Active LAN – waive-off reconfirmation pop-up' loading='lazy'></a><figcaption>Active LAN – waive-off reconfirmation pop-up</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/24_active_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/24_active_pop.png' alt='Active LAN – maker’s reconfirmation pop-up (goes to the checker)' loading='lazy'></a><figcaption>Active LAN – maker’s reconfirmation pop-up (goes to the checker)</figcaption></figure>
 </div>
 <h3>Charges and amounts</h3>
 <table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹450 + GST (₹531)</td><td>When the mutual fund units are pledged – charged on its own only in scenario 2 (before the Sanction Letter)</td></tr><tr><td>Lien Removal Charge</td><td>₹100 + GST (₹118)</td><td>When the lien is removed – charged on its own only in scenario 2 (before the Sanction Letter)</td></tr><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>From the Sanction Letter generation</td></tr><tr><td>Bounce Charge</td><td>₹100 + GST (₹118) per instance</td><td>Active loan, when an EMI bounces</td></tr><tr><td>Penal Charge</td><td>36% a year on the unpaid interest / EMI</td><td>Active loan, on a delay or default</td></tr><tr><td>Loan Renewal Charge</td><td>₹999 + GST (₹1,768.82)</td><td>Active loan, on renewal</td></tr><tr><td>Annual Maintenance Charge (AMC)</td><td>₹999 + GST (₹1,768.82)</td><td>Active loan, every year</td></tr><tr><td>Bank Swap Charge</td><td>₹250 + GST (₹295)</td><td>Active loan, when the repayment bank account is changed</td></tr></tbody></table>
@@ -285,13 +289,12 @@ Foreclose, <b>Waive-off</b> and Add Credit Note. <b>Waive-off</b> navigates to t
 <h3>11.7 Scenario 7 – ACTIVE: customer dropped off after the Loan Lodgement (loan account active)</h3><p><b>What OPS can do:</b> Waive the charges on the active loan: OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off. The loan cannot be rejected at this stage.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Bounce Charge</td><td>₹100 + GST (₹118) per instance</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Penal Charge</td><td>36% a year on the unpaid interest / EMI</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Loan Renewal Charge</td><td>₹999 + GST (₹1,768.82)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Annual Maintenance Charge (AMC)</td><td>₹999 + GST (₹1,768.82)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Bank Swap Charge</td><td>₹250 + GST (₹295)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>Without waive-off</b></td><td>The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.</td><td>Existing communication.</td><td>At loan closure (existing process).</td><td>Existing accounting process.</td></tr><tr><td><b>With full waive-off</b></td><td>OPS waives the full charge. As the charge is already posted in the SOA, the SOA is updated with a waiver narration.</td><td>Existing communication.</td><td>At loan closure (existing process).</td><td>The waived charges do not go into UNO.</td></tr><tr><td><b>With partial waive-off</b></td><td>OPS waives part of a charge; the balance is collected before the loan account is closed. The SOA is updated with a waiver narration.</td><td>Existing communication.</td><td>At loan closure (existing process).</td><td>The waived part does not go into UNO; the balance follows the existing accounting process.</td></tr></tbody></table>
 <h2>12. Open points</h2>
 <ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
-<li>Active loans (scenario 7): does the same maker → checker → Treasury approval apply to the waive-off from the ≡ menu, and are
-the notes / file needed there?</li>
+<li>Active loans: the internal mail templates for the active waive-off (checker / Treasury approval required, approved).</li>
 <li>Roles for approving with a waive-off in scenario 6.</li>
 <li>Does the same maker → checker → Treasury approval apply to the waive-off with a rejection of SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6)?</li>
 <li>Should the maker get a mail when the checker or Treasury declines (today: Audit entry only)?</li></ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=85ba7ff"></script>
-<script src="assets/colresize.js?v=85ba7ff"></script>
+<script src="assets/review.js?v=8c1fc19"></script>
+<script src="assets/colresize.js?v=8c1fc19"></script>
 </body>
 </html>
