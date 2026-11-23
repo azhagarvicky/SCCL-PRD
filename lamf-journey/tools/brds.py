@@ -214,6 +214,10 @@ proceed?”</b> with <b>No</b>, <b>Yes</b> and a close (×) icon. <b>Yes</b> sav
 <b>No</b> or <b>×</b> closes it and nothing changes.</li>
 <li>The LAN status changes from DRAFT to <b>REJECTED</b>. The type of waive-off is fixed from the balance payable at this time.</li>
 <li>CLOSED is only for an ACTIVE loan; a DRAFT loan is never closed.</li>
+<li><b>Internal mail:</b> after the rejection, LMS sends the internal mail <b>“DRAFT Application Rejected”</b> to the OPS team: the
+LAN, customer name, type of waive-off, the charges breakup (Amount of Charges, Waived off Charges, Payable Charges, Total), the
+rejection reason, who rejected it and when. <a href="internal/IC-13.html" target="_blank" rel="noopener">View the mail format</a>
+(Internal communications, alert 13).</li>
 </ul>
 {fig('07_reject_block.png', 'Bottom of the Approvals tab – Add a note (reason), Upload a file and Reject')}
 <div class="brd-figs">
