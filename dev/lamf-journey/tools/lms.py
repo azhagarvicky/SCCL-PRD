@@ -454,8 +454,70 @@ def lan_detail(view, r):
                        for k in range(1, len(tab_list))))
     return (f'<section id="lan-{tid}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" href="#m-loans-{view}" '
             f'title="Back to the list">←</a><h2>LAN Number: {r["LAN"]}</h2><span class="lms-st st-{status.lower()}">{status}</span>{risk}'
-            f'<span class="lms-vs">View status</span></div><div class="lms-tabs">{tabs}{panes}</div>'
+            f'<span class="lms-vs">View status</span>{active_menu(r) if view == "active" else ""}</div><div class="lms-tabs">{tabs}{panes}</div>'
             '<p class="lms-sample">Sample data for the prototype – not real customers.</p></section>')
+
+
+# ---- Active loan: ≡ menu at the top right of the LAN page → Waive-off page (DISC-366) – as in the LMS UAT screens
+MENU = ["Disbursal", "Repayment", "Soft Freeze", "Hard Freeze", "Unfreeze", "De-Pledge Assets", "Liquidate Assets", "Change ROI",
+        "Foreclose", "Waive-off", "Add Credit Note"]
+
+
+def active_menu(r):
+    items = "".join(f'<a class="lms-mi" href="#waive-active-{r["LAN"]}">{m}</a>' if m == "Waive-off"
+                    else f'<span class="lms-mi{" off" if m == "Unfreeze" else ""}">{m}</span>' for m in MENU)
+    return ('<span class="lms-sim">Go to Simulator</span><details class="lms-menu"><summary title="Menu">☰</summary>'
+            f'<div class="lms-menu-list">{items}</div></details>')
+
+
+def active_waive(r):
+    amt = _num(r["Sanction Amount"]) or 0
+    end = r["End Date"].replace("/", "-")
+    rows = [("Processing fee", round(amt * 0.0187)), ("Pledge", 531), ("Stamp duty", 236),
+            ("Collateral release", 118)]
+    body = "".join(f'<tr data-amt="{a}"><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
+                   f'<td>-</td><td>-</td><td class="num">{_rs(a)}</td><td><input class="wa-amt" type="number" min="0" step="0.01" value="0" '
+                   f'data-max="{a}" disabled></td></tr>' for n, a in rows)
+    pop = lambda cls, b: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{b}</div></div>'
+    return (f'<section id="waive-active-{r["LAN"]}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" '
+            f'href="#lan-active-{r["LAN"]}" title="Back to the LAN">←</a><h2>Waive-off</h2></div>'
+            '<div class="wa"><div class="wv-head"><span></span><button type="button" class="wv-waive wa-btn" disabled>Waive-off</button></div>'
+            '<table class="lms-table wa-table"><thead><tr><th><input type="checkbox" class="wa-all" aria-label="Select all"></th><th>Charge Type</th>'
+            '<th>Date</th><th>From</th><th>To</th><th class="num">Amount</th><th>Amount to be waived off</th></tr></thead>'
+            f'<tbody>{body}</tbody></table><div class="wv-done wa-done" hidden></div>'
+            + pop('wa-pw', '<h3>Are you sure you want to waive off the selected charges?</h3><p class="wv-ptype"></p>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No, Don’t Waive Off</button><button type="button" class="wa-yes">Yes, Waive Off</button></div>')
+            + '</div><p class="lms-sample">Sample data for the prototype – not real customers. Layout as in the LMS UAT Waive-off page.</p></section>')
+
+
+WAIVE_ACTIVE_JS = """<script>
+/* Active loan Waive-off page (DISC-366): tick a charge → amount to waive (≤ the amount) → Waive-off → reconfirmation → done. */
+(function () {
+  var f = function (v) { return '₹' + (Math.round(v * 100) / 100).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
+  function calc(w) { var tw = 0, n = 0;
+    w.querySelectorAll('tbody tr').forEach(function (tr) { var a = tr.querySelector('.wa-amt'), mx = +a.dataset.max, v = +a.value || 0;
+      if (v > mx) { a.value = mx; v = mx; } if (v < 0) { a.value = 0; v = 0; } if (tr.querySelector('.wa-chk').checked && v > 0) { tw += v; n++; } });
+    w.querySelector('.wa-btn').disabled = !n; return { tw: tw, n: n }; }
+  document.addEventListener('change', function (e) { var w = e.target.closest('.wa'); if (!w) return;
+    if (e.target.classList.contains('wa-all')) w.querySelectorAll('tbody .wa-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked;
+      var a = c.closest('tr').querySelector('.wa-amt'); a.disabled = !c.checked; if (!c.checked) a.value = 0; });
+    if (e.target.classList.contains('wa-chk')) { var a = e.target.closest('tr').querySelector('.wa-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
+    calc(w); });
+  document.addEventListener('input', function (e) { var w = e.target.closest('.wa'); if (w && e.target.classList.contains('wa-amt')) calc(w); });
+  document.addEventListener('click', function (e) { var w = e.target.closest('.wa'), c = e.target.classList; if (!w) return;
+    if (c.contains('wv-x') || c.contains('wv-no')) e.target.closest('.wv-pop').hidden = true;
+    if (c.contains('wa-btn')) { var q = calc(w); w.querySelector('.wa-pw .wv-ptype').innerHTML = q.n + ' charge(s) – amount to be waived off: <b>' + f(q.tw) + '</b>';
+      w.querySelector('.wa-pw').hidden = false; }
+    if (c.contains('wa-yes')) { w.querySelector('.wa-pw').hidden = true; var q2 = calc(w);
+      w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wa-chk'), a = tr.querySelector('.wa-amt'), v = +a.value || 0;
+        if (!ck.checked || v <= 0) return; var left = +a.dataset.max - v; a.dataset.max = left;
+        tr.children[5].textContent = f(left); a.value = 0; a.disabled = true; ck.checked = false; if (left <= 0) ck.disabled = true; });
+      w.querySelector('.wa-all').checked = false; calc(w);
+      var d = w.querySelector('.wa-done'); d.hidden = false; d.className = 'wv-done wa-done wv-cancel';
+      d.innerHTML = '<b>' + f(q2.tw) + ' waived off.</b> The Amount column shows the balance; the waiver is posted in the Statement of Account with a waiver narration.'; }
+  });
+})();
+</script>"""
 
 
 def lms_body(logo, home):
@@ -471,6 +533,7 @@ def lms_body(logo, home):
     # one detail section per sample LAN in every list (DISC-329)
     for v in ("active", "inactive", "draft", "submitted", "closed", "rejected"):
         secs += [lan_detail(v, r) for r in _rows(v)]
+    secs += [active_waive(r) for r in _rows("active")]   # Active loan Waive-off pages (DISC-366)
     intro = ('<section class="lms-intro"><h2>LMS – Loan Management System</h2>'
              '<p>The modules of the LMS, as in the left menu of the LMS. Choose a module to open it.</p>'
              '<div class="lms-cards">' + "".join(f'<a class="lms-card" href="#m-{mid}"><b>{_h.escape(n)}</b>'
@@ -478,4 +541,4 @@ def lms_body(logo, home):
                                                  for mid, n, subs, _ in LMS_MODULES) + '</div></section>')
     return (f'<div class="lms"><aside class="lms-side"><div class="lms-logo">{logo}</div>'
             f'<a class="lms-home" href="{home}">← Home</a><nav>{"".join(nav)}</nav></aside>'
-            f'<main class="lms-main">{intro}{"".join(secs)}</main></div>' + WAIVER_JS)
+            f'<main class="lms-main">{intro}{"".join(secs)}</main></div>' + WAIVER_JS + WAIVE_ACTIVE_JS)
