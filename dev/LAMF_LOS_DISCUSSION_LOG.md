@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-11-2026 11:18 IST
+**Last Updated:** 23-11-2026 11:39 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -381,6 +381,7 @@
 | DISC-346 | 23-11-2026 | lms.html, brd-waive-off.html | Fully waived charge stays in the table | Owner (screenshots): “once charges waived instead of removed just keep like this.” | A charge waived in full is no longer removed: it stays with the full amount in Waived off Charges, Payable Charges ₹0 and its checkbox disabled (select all skips it). When every charge is waived, the table stays and “All charges have been waived off – nothing is payable.” shows below it. Waiver BRD section 6 updated, with a new screenshot (06b). Replaces the removal rule of DISC-339 / DISC-341. | Implemented |
 | DISC-347 | 23-11-2026 | internal-communications.html, internal/IC-12.html | Charges Waived Off mail – recipients confirmed | Owner gave To and Cc | To: k.natarajan@shriramcredit.in. Cc: satyaparida, Richa Jayswal, Ashok, vijayamr, satyanarayan, ganga, lalithak, nadanakumar, Azhagarsamy S, Nithin Ganga, Kruthika S, Sachin Patil, Sarathananthan M (added vijayamr, satyanarayan, ganga, lalithak). | Implemented |
 | DISC-348 | 23-11-2026 | internal-communications.html, internal/IC-13.html, brd-waive-off.html | Internal mail for DRAFT → REJECTED | Owner: “DRAFT to rejection internal communication has to be send to OPS team” | New internal alert 13 “DRAFT Application Rejected” (DRAFT→REJECTED): subject “Rejected | {{LAN}} | DRAFT Application”; body – LAN, customer, type of waive-off, charges breakup (Amount of Charges / Waived off Charges / Payable Charges / Total), rejection reason, rejected by and when, payment link sent, de-pledge after payment and Treasury confirmation. To Richa Jayswal, Cc satyaparida, Ashok, Azhagarsamy S, Nithin Ganga, Kruthika S, Sachin Patil, Sarathananthan M (same OPS team as SUBMITTED→REJECTED) – to be confirmed. Waiver BRD section 7 links to it. | Implemented |
+| DISC-349 | 23-11-2026 | brd-waive-off.html | Waiver BRD section 7 Reject – owner's points | Owner gave the Rejection points to refer and correct; confirmed OPS can reject at any Payable Charges (the “only when Payable Charges is zero” line dropped) | Section 7 rewritten from the owner's points in corrected English: reject option for a pledged DRAFT loan; reason in Add a note, upload optional; OPS L1 below ₹5 lakh, OPS L2 / L3 at ₹5 lakh and above; existing conditions on Reject (pop-up, Audit, note), status DRAFT → REJECTED; internal auto mail for DRAFT → REJECTED (alert 13); a DRAFT loan is never closed – only Rejected or Submitted; reject allowed whether Payable Charges is zero or not; customer communication without a payment link when Payable Charges is zero (full waive-off), with a payment link otherwise (partial / no waive-off). The “When” bullet kept; the “type of waive-off is fixed” line removed. | Implemented |
 
 ---
 
