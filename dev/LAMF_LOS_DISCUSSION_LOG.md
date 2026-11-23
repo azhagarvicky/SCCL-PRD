@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-11-2026 15:48 IST
+**Last Updated:** 23-11-2026 16:11 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -392,6 +392,7 @@
 | DISC-357 | 23-11-2026 | charges-receipt.html, charges-payment.html, lms.html, internal/IC-14.html, communications.html, brd-waive-off.html | Receipt number format | Owner: receipt number as RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts}} | Sample receipt number now RCPT/LAMF/2026/11/000149 everywhere (receipt, LOS success page, LMS payment box / Documents / Audit, internal mail 14, customer mail 08 sample); the format is written on the receipt (prototype note) and in Waiver BRD section 9. Screenshots retaken. | Implemented |
 | DISC-358 | 23-11-2026 | new-mails/08_Charges_Payment_Received.html, communications.html, xlsx | Payment Received mail – attachment notice | Owner: the attachment in mail 08 has to look like the Sanction Letter mail (mails/03_Loan_Sanction_Letter.html) | The line “Your payment receipt is attached to this email.” replaced by the same yellow attachment box as the Sanction Letter mail: “📄 Payment Receipt attached — please find the receipt for your payment, with the receipt number, transaction ID and the charges paid.” Header comment of the HTML carries “Attachment: Payment Receipt PDF”. | Implemented |
 | DISC-359 | 23-11-2026 | internal-communications.html, internal/IC-15.html, lms.html, brd-waive-off.html | Treasury → OPS mail to initiate the de-pledge | Owner: after Treasury confirms the payment in LMS, once the payment is transacted in UNO, a communication that the charges are received from the customer so OPS can de-pledge – Treasury to OPS | New internal alert 15 “Charges Received – Initiate De-pledge” (REJECTED; trigger – Treasury confirms the payment in LMS after the UNO transaction): subject “Action Required | {{{{LAN}}}} | Charges Received – Initiate De-pledge”; body – amount paid, charges table with Processing Fee* and footnote, transaction ID, receipt no., confirmed by / on, ask OPS to initiate the de-pledge in LMS. To Richa Jayswal (OPS), Cc Natarajan K (Treasury) and the OPS / product team – to be confirmed. LMS prototype: after Confirm Payment the box says the mail is sent to OPS. Waiver BRD section 9 bullet with the link. | Implemented |
+| DISC-360 | 23-11-2026 | internal-communications.html, internal/IC-15.html | Charges Received – Initiate De-pledge mail – recipients confirmed | Owner gave To and Cc | To: Richa Jayswal. Cc: satyaparida, Ashok, vijayamr, satyanarayan, ganga, lalithak, nadanakumar, Azhagarsamy S, Nithin Ganga, Kruthika S, Sachin Patil, Sarathananthan M, k.natarajan (added vijayamr, satyanarayan, ganga, lalithak, nadanakumar; Natarajan K moved to the end). | Implemented |
 
 ---
 

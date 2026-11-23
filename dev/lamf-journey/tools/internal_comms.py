@@ -411,7 +411,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])]),
  # DISC-359 – Waiver BRD: Treasury confirms the customer's charges payment in LMS (after the UNO transaction) – mail to OPS to
- # initiate the de-pledge. To OPS (same as DRAFT→REJECTED, alert 13), Cc Treasury.
+ # initiate the de-pledge. To / Cc as given by the owner (DISC-360).
  ('REJECTED',
   'NA',
   'Treasury confirms the customer’s charges payment in LMS (Approvals tab → Confirm Payment), after the payment is transacted in UNO',
@@ -428,11 +428,16 @@ INTERNAL = [('DRAFT→SUBMITTED',
   'Please initiate the de-pledge of the pledged Mutual Fund units in LMS (Approvals tab of the LAN → Initiate De-pledge).',
   [('Any Sanction amount',
     ['richajayswal@shriramcredit.in'],
-    ['k.natarajan@shriramcredit.in',
-     'satyaparida@shriramcredit.in',
+    ['satyaparida@shriramcredit.in',
      'ashok@shriramcredit.in',
+     'vijayamr@shriramcredit.in',
+     'satyanarayan@shriramcredit.in',
+     'ganga@shriramcredit.in',
+     'lalithak@shriramcredit.in',
+     'nadanakumar@shriramcredit.in',
      'azhagarsamy.s@shriramcredit.in',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
-     'sarathananthan.m@shriramcredit.in'])])]
+     'sarathananthan.m@shriramcredit.in',
+     'k.natarajan@shriramcredit.in'])])]
