@@ -337,7 +337,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
   '| Total | 649.00 | 500.00 | 149.00\n'
   'Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} '
-  'will be collected from the customer after the rejection, before the units are de-pledged.',
+  'will be collected from the customer before the units are de-pledged.',
   [('Any Sanction amount',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
