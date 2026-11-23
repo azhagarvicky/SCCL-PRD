@@ -128,7 +128,7 @@ def draft_approvals(r, tid):
     sc = 2 if k < 4 else 3 if k < 7 else 4
     # DISC-362: maker → checker → Treasury by the sanctioned amount (a draft with no sanctioned amount yet is taken as below ₹5 lakh)
     big = (_num(r["Sanction Amount"]) or 0) >= 500000
-    mk, ck, tr = ("OPS L2 / OPS L3", "OPS L3 / OPS L2", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2", "Treasury L1")   # DISC-365
+    mk, ck, tr = ("OPS L2", "OPS L3", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3")   # DISC-373   # DISC-365
     # DISC-345: “Waived off Charges” column – what is already waived; Amount of Charges stays the original charge
     rows = "".join(f'<tr data-name="{n}" data-chg="{a}" data-done="0"><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td>'
                    f'<td class="num wv-chg">₹{_amt(a)}</td><td class="num wv-done-amt">₹0</td>'
@@ -165,8 +165,8 @@ def draft_approvals(r, tid):
             f'<button type="button" class="wv-ck-app">Approve</button></div><p class="wv-hint">{ck} only.</p></div>'
             # DISC-361 / 362: Treasury – approve or decline only, no change to the amounts
             f'<div class="wv-appr" hidden><h3>Waive-off &amp; Rejection – pending {tr} approval</h3><p class="wv-appr-st"></p>'
-            '<label class="wv-lbl">Treasury remark <span>(required to decline)</span></label>'
-            '<textarea class="wv-tnote" rows="2" placeholder="Add a remark"></textarea><p class="wv-terr"></p>'
+            '<label class="wv-lbl">Treasury note <span>(required)</span></label>'
+            '<textarea class="wv-tnote" rows="2" placeholder="Add a note"></textarea><p class="wv-terr"></p>'
             '<div class="wv-appr-ctas"><button type="button" class="wv-decline">Decline</button><button type="button" class="wv-approve">Approve</button></div>'
             f'<p class="wv-hint">{tr} only – Treasury can only approve or decline; the amounts cannot be changed.</p></div>'
             '<div class="wv-done" hidden></div>'
@@ -331,7 +331,7 @@ WAIVER_JS = """<script>
     }
     if (c.contains('wv-decline')) {
       var te = w.querySelector('.wv-terr');
-      if (!w.querySelector('.wv-tnote').value.trim()) { te.textContent = 'Please add the remark to decline.'; return; }
+      if (!w.querySelector('.wv-tnote').value.trim()) { te.textContent = 'Please add the note to decline.'; return; }
       te.textContent = ''; w.dataset.dec = 'tr'; show(w, '.wv-pd', true);
     }
     if (c.contains('wv-yes-d')) {          /* checker or Treasury declines – the request is cancelled, the LAN stays DRAFT */
@@ -349,7 +349,9 @@ WAIVER_JS = """<script>
       var d0 = w.querySelector('.wv-done'); d0.hidden = false; d0.className = 'wv-done wv-cancel';
       d0.innerHTML = '<b>Request declined by ' + who + ' – cancelled.</b> LAN status stays DRAFT; nothing is waived. Mail sent to the maker: <i>Waive-off Request Declined</i>. The maker can submit a new request.';
     }
-    if (c.contains('wv-approve')) show(w, '.wv-pa', true);
+    if (c.contains('wv-approve')) {          /* DISC-373: the Treasury note is mandatory to approve too */
+      if (!w.querySelector('.wv-tnote').value.trim()) { w.querySelector('.wv-terr').textContent = 'Please add the note.'; return; }
+      show(w, '.wv-pa', true); }
     if (c.contains('wv-yes-a')) {          /* Treasury approves – waive-off and rejection applied together */
       show(w, '.wv-pa', false); var note2 = w.querySelector('.wv-note').value.trim();
       w.querySelectorAll('tbody tr').forEach(function (tr) {
@@ -477,7 +479,7 @@ def active_waive(r):
     if changed) → Treasury (approve or decline only). On the Treasury approval the waiver is posted in the SOA; no rejection."""
     amt = _num(r["Sanction Amount"]) or 0
     big = amt >= 500000
-    mk, ck, tr = ("OPS L2 / OPS L3", "OPS L3 / OPS L2", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2", "Treasury L1")
+    mk, ck, tr = ("OPS L2", "OPS L3", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3")   # DISC-373
     end = r["End Date"].replace("/", "-")
     rows = [("Processing fee", round(amt * 0.0187)), ("Pledge", 531), ("Stamp duty", 236), ("Collateral release", 118)]
     body = "".join(f'<tr><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
@@ -505,8 +507,8 @@ def active_waive(r):
             '<p class="wv-cerr wa-cerr"></p><div class="wv-appr-ctas"><button type="button" class="wv-ck-dec wa-ck-dec">Decline</button>'
             f'<button type="button" class="wv-ck-app wa-ck-app">Approve</button></div><p class="wv-hint">{ck} only.</p></div>'
             f'<div class="wv-appr wa-tr" hidden><h3>Waive-off – pending {tr} approval</h3><p class="wv-appr-st wa-tr-st"></p>'
-            '<label class="wv-lbl">Treasury remark <span>(required to decline)</span></label>'
-            '<textarea class="wv-tnote wa-tnote" rows="2" placeholder="Add a remark"></textarea><p class="wv-terr wa-terr"></p>'
+            '<label class="wv-lbl">Treasury note <span>(required)</span></label>'
+            '<textarea class="wv-tnote wa-tnote" rows="2" placeholder="Add a note"></textarea><p class="wv-terr wa-terr"></p>'
             '<div class="wv-appr-ctas"><button type="button" class="wv-decline wa-dec">Decline</button><button type="button" class="wv-approve wa-app">Approve</button></div>'
             f'<p class="wv-hint">{tr} only – Treasury can only approve or decline; the amounts cannot be changed.</p></div>'
             '<div class="wv-done wa-done" hidden></div>'
@@ -584,11 +586,11 @@ WAIVE_ACTIVE_JS = """<script>
         f(q2.tw) + '</b>.<br>Mail sent to ' + w.dataset.tr + ': <i>Approval Required – Waive-off</i>.'; }
     if (c.contains('wa-ck-dec')) { if (!Q(w, '.wa-cnote').value.trim()) { Q(w, '.wa-cerr').textContent = 'Please add the note to decline.'; return; }
       w.dataset.dec = w.dataset.ck + ' (Checker)'; Q(w, '.wa-pd').hidden = false; }
-    if (c.contains('wa-dec')) { if (!Q(w, '.wa-tnote').value.trim()) { Q(w, '.wa-terr').textContent = 'Please add the remark to decline.'; return; }
+    if (c.contains('wa-dec')) { if (!Q(w, '.wa-tnote').value.trim()) { Q(w, '.wa-terr').textContent = 'Please add the note to decline.'; return; }
       w.dataset.dec = w.dataset.tr; Q(w, '.wa-pd').hidden = false; }
     if (c.contains('wa-yes-d')) { Q(w, '.wa-pd').hidden = true;
       reset(w, '<b>Waive-off request declined by ' + w.dataset.dec + ' – cancelled.</b> Nothing is waived. Mail sent to the maker: <i>Waive-off Request Declined</i>. The maker can submit a new request.'); }
-    if (c.contains('wa-app')) pop(w, '.wa-pa');
+    if (c.contains('wa-app')) { if (!Q(w, '.wa-tnote').value.trim()) { Q(w, '.wa-terr').textContent = 'Please add the note.'; return; } pop(w, '.wa-pa'); }
     if (c.contains('wa-yes-a')) { Q(w, '.wa-pa').hidden = true; var q3 = calc(w);
       w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wa-chk'), a = tr.querySelector('.wa-amt'), v = +a.value || 0;
         if (!ck.checked || v <= 0) return; var left = r2(+a.dataset.max - v); a.dataset.max = left; tr.querySelector('.wa-bal').textContent = f(left); });

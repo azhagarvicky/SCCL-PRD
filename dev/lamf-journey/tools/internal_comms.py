@@ -342,7 +342,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   'Maker: {{OPS Maker Name}} on {{Submitted Date & Time}}. Checker: {{OPS Checker Name}} on {{Checker Approval Date & Time}}. '
   'Please approve or decline the request in LMS (Approvals tab of the LAN). On approval, the waive-off is applied and the LAN is rejected; '
   'on decline, the request is cancelled and the LAN stays in DRAFT.',
-  [('If Sanction amount <5L (Treasury L1)',
+  [('If Sanction amount <5L (Treasury L1 / L2 / L3)',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
      'richajayswal@shriramcredit.in',
@@ -483,7 +483,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   'Rejection reason: {{Rejection Reason}}\n'
   'Please review the request in LMS (Approvals tab of the LAN): approve it (it then goes to Treasury), change the amounts (the note and a '
   'file are required) or decline it (the request is cancelled).',
-  [('If Sanction amount <5L (OPS L2)',
+  [('If Sanction amount <5L (OPS L2 / L3)',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
      'ashok@shriramcredit.in',
@@ -618,7 +618,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   'Reason: {{Waive-off Reason}}\n'
   'Maker: {{OPS Maker Name}}. Checker: {{OPS Checker Name}} on {{Checker Approval Date & Time}}. Please approve or decline the request in LMS '
   '(LAN → ≡ → Waive-off). On approval, the waiver is posted in the Statement of Account; on decline, the request is cancelled.',
-  [('If Sanction amount <5L (Treasury L1)',
+  [('If Sanction amount <5L (Treasury L1 / L2 / L3)',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
      'richajayswal@shriramcredit.in',
