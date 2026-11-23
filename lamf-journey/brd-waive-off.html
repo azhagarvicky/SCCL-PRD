@@ -45,23 +45,26 @@ button at the bottom. A DRAFT loan cannot be approved, so there is no Approve bu
 the request goes to the OPS checker for approval and then to Treasury for the final approval.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Sanction loan amount</th><th>Maker</th><th>Checker</th><th>Final approval</th></tr></thead><tbody>
-<tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2</td><td>Treasury L1</td></tr>
-<tr><td>₹5 lakh and above</td><td>OPS L2 or OPS L3</td><td>OPS L3 or OPS L2 (the other level – the maker cannot check their own request)</td><td>Treasury L2 or Treasury L3</td></tr>
+<tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2 or OPS L3</td><td>Treasury L1, L2 or L3</td></tr>
+<tr><td>₹5 lakh and above</td><td>OPS L2</td><td>OPS L3</td><td>Treasury L2 or L3 (not Treasury L1)</td></tr>
 </tbody></table>
 <ul>
 <li><b>Waive-off by the OPS team (maker and checker):</b>
-  <ul><li>For a sanction loan amount below ₹5 lakh, only <b>OPS L1</b> can initiate the waive-off (maker) and <b>OPS L2</b> approves it
+  <ul><li>For a sanction loan amount below ₹5 lakh, <b>OPS L1</b> initiates (maker) and <b>OPS L2 or OPS L3</b> reviews and approves it
   (checker).</li>
-  <li>For a sanction loan amount of ₹5 lakh and above, <b>OPS L2 or OPS L3</b> can initiate the waive-off (maker) and the other level –
-  <b>OPS L3 or OPS L2</b> – approves it (checker).</li>
+  <li>For a sanction loan amount of ₹5 lakh and above, <b>OPS L2</b> initiates (maker) and <b>OPS L3</b> reviews and approves it
+  (checker).</li>
   <li>For the maker, <b>Add a note</b> and <b>Upload a file</b> are mandatory.</li>
   <li>The checker can modify the request (the amounts to be waived off). If the checker changes the request, <b>Add a note</b> and
   <b>Upload a file</b> are mandatory for the checker; otherwise only <b>Add a note</b> is mandatory.</li></ul></li>
 <li><b>Final approval by the Treasury team:</b> once the OPS team (maker and checker) has approved the waive-off with the rejection,
 the final approval is required from the Treasury team, also based on the sanction loan amount:
-  <ul><li>below ₹5 lakh – only <b>Treasury L1</b>;</li>
-  <li>₹5 lakh and above – only <b>Treasury L2 or Treasury L3</b>.</li>
-  <li>The Treasury team can only <b>approve or reject</b> the waive-off and rejection request; it cannot change the amounts.</li></ul></li>
+  <ul><li>below ₹5 lakh – <b>Treasury L1, L2 or L3</b>;</li>
+  <li>₹5 lakh and above – <b>Treasury L2 or L3</b> only (Treasury L1 cannot).</li>
+  <li>The Treasury team can only <b>approve or reject</b> the request; it cannot change the amounts. <b>Add a note</b> is mandatory for
+  Treasury.</li></ul></li>
+<li><b>The same maker → checker → Treasury approval applies to every event</b> – the DRAFT rejection, the SUBMITTED approval or
+rejection, the ACCOUNT OPENED approval or rejection (with or without a waive-off) and the ACTIVE loan waive-off (DISC-373).</li>
 <li><b>Treasury</b> is the same team as <b>Accounts</b> in the LMS SOP (Accounts L1 / L2 / L3); this BRD uses the name Treasury throughout.</li>
 </ul>
 <p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT LAN, Approvals tab).</p>
@@ -80,11 +83,11 @@ DRAFT loan the waive-off goes with the rejection, so this reconfirmation is show
 amounts (section 5).</li>
 <li>Every waive-off needs a <b>maker and a checker</b> (OPS) and the <b>Treasury approval</b>, as per the sanction loan amount
 (section 3):
-  <ul><li>below ₹5 lakh – OPS L1 (maker) → OPS L2 (checker) → Treasury L1;</li>
-  <li>₹5 lakh and above – OPS L2 / OPS L3 (maker) → OPS L3 / OPS L2 (checker) → Treasury L2 / Treasury L3.</li>
+  <ul><li>below ₹5 lakh – OPS L1 (maker) → OPS L2 or L3 (checker) → Treasury L1, L2 or L3;</li>
+  <li>₹5 lakh and above – OPS L2 (maker) → OPS L3 (checker) → Treasury L2 or L3.</li>
   <li>Add a note and Upload a file are mandatory for the maker. The checker can modify the request; if modified, Add a note and
   Upload a file are mandatory, otherwise only Add a note.</li>
-  <li>Treasury can only approve or reject the request.</li></ul></li>
+  <li>Treasury can only approve or reject the request; Add a note is mandatory for Treasury.</li></ul></li>
 <li>Users can see both the <b>Waived off Charges</b> and the <b>Payable Charges</b> in the Waive-off charges table before proceeding
 with the waiver action.</li>
 <li><b>After the waive-off</b> (once approved):
@@ -144,7 +147,7 @@ that charge; it cannot be more than the Amount of Charges. Unselecting the check
 <ul>
 <li>Today, OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so
 that the units can be de-pledged (de-pledge is allowed only for a REJECTED or CLOSED LAN).</li>
-<li>The <b>maker</b> (OPS L1 below ₹5 lakh / OPS L2 or OPS L3 at ₹5 lakh and above) selects the charges to waive off (or none), enters the
+<li>The <b>maker</b> (OPS L1 below ₹5 lakh / OPS L2 at ₹5 lakh and above) selects the charges to waive off (or none), enters the
 rejection reason in <b>Add a note</b> and uploads a file in <b>Upload a file</b> – <b>both are mandatory</b> for the maker – and clicks
 <b>Reject</b>. Without them LMS shows “Please add the note and upload a file.”</li>
 <li><b>When:</b> after 30 days from the LAN generated date when the customer has not submitted the application, or earlier when
@@ -152,12 +155,12 @@ the customer asks for the lien to be removed. A DRAFT loan whose units are not p
 automatically, and Reject is not offered for it (scenario 1).</li>
 <li>OPS can reject whether the Payable Charges are zero or not.</li>
 <li>On <b>Reject</b>, a pop-up asks <b>“Are you sure you want to reject the application with the selected waive-off?”</b> – <i>The
-request will be sent to OPS L2 / OPS L3 (Checker) for approval</i> – showing the <b>Type of waive-off</b> (No / Partial / Full
+request will be sent to the checker (OPS L2 or L3 / OPS L3) for approval</i> – showing the <b>Type of waive-off</b> (No / Partial / Full
 waive-off), the amount to be waived off and the payable charges – with <b>No</b>, <b>Yes, submit</b> and a close (×) icon. The checker’s
 approve pop-up and the Treasury’s irreversible pop-up show the same type of waive-off and amounts.</li>
 <li>On <b>Yes, submit</b>: the request is pending the checker, the maker’s note and file are locked, the LAN stays in DRAFT (shown as
 “Draft – Pending OPS L2 approval”), nothing is waived yet, and the Audit is updated.</li>
-<li>Internal mail <b>“Checker Approval Required – Waive-off &amp; Rejection”</b> goes to the checker (OPS L2 below ₹5 lakh / OPS L3 at
+<li>Internal mail <b>“Checker Approval Required – Waive-off &amp; Rejection”</b> goes to the checker (OPS L2 or L3 below ₹5 lakh / OPS L3 at
 ₹5 lakh and above). <a href="internal/IC-16.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 16).</li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/07_reject_block.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/07_reject_block.png' alt='Maker – roles, Add a note and Upload a file (both mandatory) and Reject' loading='lazy'></a><figcaption>Maker – roles, Add a note and Upload a file (both mandatory) and Reject</figcaption></figure>
@@ -165,7 +168,7 @@ approve pop-up and the Treasury’s irreversible pop-up show the same type of wa
 <figure class='brd-fig sm'><a href='assets/img/brd/waiver/04_pop_submit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/04_pop_submit.png' alt='Submit pop-up – the request goes to the checker' loading='lazy'></a><figcaption>Submit pop-up – the request goes to the checker</figcaption></figure>
 </div>
 <h2>6. Checker (OPS) and Treasury approval:</h2>
-<p><b>Checker (OPS L2 below ₹5 lakh / OPS L3 or OPS L2 at ₹5 lakh and above)</b></p>
+<p><b>Checker (OPS L2 or L3 below ₹5 lakh / OPS L3 at ₹5 lakh and above)</b></p>
 <ul>
 <li>The checker sees the request (maker, type of waive-off, amounts, reason) with <b>Approve</b> and <b>Decline</b>.</li>
 <li>The checker can <b>change the amounts to be waived off</b> in the table. <b>If anything is changed, the checker note and an uploaded
@@ -173,14 +176,14 @@ file are mandatory</b> (“The amounts were changed – please add the note and 
 mandatory.</li>
 <li><b>Approve:</b> pop-up “Are you sure you want to approve the waive-off and rejection? The request will be sent to Treasury L1 /
 Treasury L2 for approval.” On <b>Yes, approve</b>, the amounts are locked, the LAN shows “Draft – Pending Treasury L1 approval”, the
-Audit is updated, and internal mail <b>“Approval Required – Waive-off &amp; Rejection”</b> goes to Treasury L1 (below ₹5 lakh) /
-Treasury L2 (₹5 lakh and above). <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (alert 12).</li>
+Audit is updated, and internal mail <b>“Approval Required – Waive-off &amp; Rejection”</b> goes to Treasury (L1, L2 or L3 below ₹5 lakh /
+L2 or L3 at ₹5 lakh and above). <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (alert 12).</li>
 <li><b>Decline:</b> the checker note is required; on confirmation the request is <b>cancelled</b> (see below).</li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – pending OPS L2 approval, note and file required if the amounts are changed' loading='lazy'></a><figcaption>Checker – pending OPS L2 approval, note and file required if the amounts are changed</figcaption></figure>
-<p><b>Treasury (Treasury L1 below ₹5 lakh / Treasury L2 or Treasury L3 at ₹5 lakh and above)</b></p>
+<p><b>Treasury (Treasury L1, L2 or L3 below ₹5 lakh / Treasury L2 or L3 at ₹5 lakh and above)</b></p>
 <ul>
-<li>Treasury can <b>only approve or decline</b> the request – the amounts cannot be changed.</li>
+<li>Treasury can <b>only approve or decline</b> the request – the amounts cannot be changed. The Treasury note is mandatory for both.</li>
 <li><b>Approve:</b> the existing pop-up <b>“This action is irreversible. Are you sure you want to proceed?”</b> (No / Yes / ×). On
 <b>Yes</b>, the waive-off and the rejection are applied together and cannot be revoked:
   <ul><li>the amounts move to <b>Waived off Charges</b> and <b>Payable Charges</b> shows the balance;</li>
@@ -292,7 +295,7 @@ navigates to the <b>Waive-off</b> page of that LAN:
   <li><b>the rest of the functionality is the same as in section 4.1</b>: single / multiple selection, the three waive-off types, no
   amount above the charge, the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off /
   Yes, Waive Off / ×) with the type of waive-off, and the <b>maker → checker → Treasury</b> approval by the sanction loan amount (maker:
-  note and file mandatory; checker: note mandatory, file too if the amounts are changed; Treasury: approve or decline only; a decline
+  note and file mandatory; checker: note mandatory, file too if the amounts are changed; Treasury: note mandatory, approve or decline only; a decline
   cancels the request), with the Audit and the internal mails
   <a href="internal/IC-18.html" target="_blank" rel="noopener">Checker Approval Required – Waive-off</a> (alert 18),
   <a href="internal/IC-19.html" target="_blank" rel="noopener">Approval Required – Waive-off</a> (alert 19),
