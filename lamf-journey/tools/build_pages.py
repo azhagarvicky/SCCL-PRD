@@ -728,20 +728,20 @@ DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, samp
  ("Loan Account Opening / Loan Lodgement Rejection (with payment link)", "DRAFT Application Rejection (with payment link)",
   "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are not equal to zero (partial waive-off or no waive-off) – the communication carries the payment link and the customer pays the charges using that link. Waiver BRD.",
   "06_Draft_Application_Rejected_Pay_Charges",
-  {"{{LOAN_ID}}": "SCCLMF20261100079", "{{CHARGE_NAME}}": "Lien Marking Charges", "{{CHARGE_AMOUNT}}": "531", "{{WAIVED_AMOUNT}}": "500",
-   "{{PAYABLE_AMOUNT}}": "31", "{{TOTAL_CHARGES}}": "531", "{{TOTAL_WAIVED}}": "500", "{{TOTAL_PAYABLE}}": "31"}),
+  {"{{LOAN_ID}}": "SCCLMF20261100079", "{{CHARGE_NAME}}": "Processing Fee*", "{{CHARGE_AMOUNT}}": "1,178.82", "{{WAIVED_AMOUNT}}": "500",
+   "{{PAYABLE_AMOUNT}}": "678.82", "{{TOTAL_CHARGES}}": "1,178.82", "{{TOTAL_WAIVED}}": "500", "{{TOTAL_PAYABLE}}": "678.82"}),
  ("Loan Account Opening / Loan Lodgement Rejection (without payment link)", "DRAFT Application Rejection (without payment link)",
   "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are equal to zero (full waive-off) – the communication has no payment link; the units are de-pledged. Waiver BRD.",
   "07_Draft_Application_Rejected", {"{{LOAN_ID}}": "SCCLMF20261100079"}),
 ]
 for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges Payment Received",
   "When the customer pays the charges in the LOS through the payment link after the DRAFT LAN is rejected (payment successful) – the receipt is generated, stored in the LMS Documents tab and attached to the mail. Waiver BRD.",
-  "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100079", "{{AMOUNT_PAID}}": "149", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
+  "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100079", "{{AMOUNT_PAID}}": "678.82", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
                                   "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/000149"})]:   # added at the end so the existing row numbers stay
     base = next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
         # SMS drafted by Claude for approval – to be created and registered (DISC-351)
         "Dear {#alp#}, We have received your payment of Rs. {#alp#} for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
-        "Dear AZHAGARSAMY, We have received your payment of Rs. 149 for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
+        "Dear AZHAGARSAMY, We have received your payment of Rs. 678.82 for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
         "SGRCDT-T", "No – to be created", "Required")
     m = next(x for x in _NM if x[0] == fname)
     body = _nm_text(fname)
@@ -850,13 +850,13 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
 from internal_comms import INTERNAL, NAMES, GREET_ONLY
 IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagarsamy Subburaj", "{{Customer Name}}": "Azhagarsamy Subburaj",
              "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00",
-             # Charges Waived Off alert (DISC-343) – same sample as the LMS prototype (Lien Marking 531 + Lien Removal 118, 500 waived)
+             # Charges Waived Off alert (DISC-343) – same sample as the LMS prototype (Processing Fee 1,178.82, 500 waived – DISC-354)
              "{{Waived Amount}}": "500.00", "{{Waive-off Type}}": "Partial waive-off", "{{OPS User Name}}": "OPS user",
-             "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "149.00",
+             "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "678.82",
              # DRAFT Application Rejected alert (DISC-348)
              "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM",
              # Charges Payment Received alert (DISC-351)
-             "{{Amount Paid}}": "149.00", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/000149"}
+             "{{Amount Paid}}": "678.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/000149"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
 

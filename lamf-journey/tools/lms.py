@@ -108,9 +108,8 @@ def _rs(n, dec=False):
 
 # ---- Approvals tab for a DRAFT loan (DISC-337) – new, as per the Waiver BRD 3.1 / 3.2 (not in the live LMS yet).
 # Charges depend on how far the customer went (Waiver BRD scenarios 2 – 4); amounts include 18% GST.
-DRAFT_CHARGES = {2: [("Lien Marking Charges", 531), ("Lien Removal Charges", 118)],
-                 3: [("Processing Fee", 1178.82), ("Lien Marking Charges", 531), ("Lien Removal Charges", 118)],
-                 4: [("Processing Fee", 1178.82), ("Lien Marking Charges", 531), ("Lien Removal Charges", 118), ("Stamp Duty Charges", 236)]}
+# DISC-354: Lien Marking, Lien Removal and Stamp Duty are included in the Processing Fee – one charge only (sample ₹999 + GST)
+DRAFT_CHARGES = {2: [("Processing Fee", 1178.82)], 3: [("Processing Fee", 1178.82)], 4: [("Processing Fee", 1178.82)]}
 
 
 def _amt(v):
@@ -136,6 +135,7 @@ def draft_approvals(r, tid):
             '<th>Charges Name</th><th class="num">Amount of Charges</th><th class="num">Waived off Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
             f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b class="wv-ctot">₹{_amt(total)}</b></td>'
             f'<td class="num"><b class="wv-dtot">₹0</b></td><td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
+            '<p class="wv-hint">Processing Fee is inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.</p>'
             '<p class="wv-allgone" hidden>All charges have been waived off – nothing is payable.</p>'
             '<p class="wv-type">Type of waive-off: <b>No waive-off</b></p>'
             '<label class="wv-lbl">Add a note <span>(rejection reason – recorded in the Audit)</span></label>'
