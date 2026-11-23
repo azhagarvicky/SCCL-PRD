@@ -1454,3 +1454,6 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .aud-t { order: 0; min-width: 190px; } .aud-m { order: 2; }
 .aud p { margin: 10px 0 0 226px; color: #777; font-size: 15px; }
 .aud.new { background: #FFFBEA; }
+/* Waiver BRD – screenshots side by side (DISC-342) */
+.page-brd .brd-figs { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+.page-brd .brd-figs .brd-fig { flex: 0 1 420px; }
