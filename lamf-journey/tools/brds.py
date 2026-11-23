@@ -21,8 +21,8 @@ CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by t
      "From the Sanction Letter generation"),
     ("Bounce Charge", "₹100 + GST (₹118) per instance", "Active loan, when an EMI bounces"),
     ("Penal Charge", "36% a year on the unpaid interest / EMI", "Active loan, on a delay or default"),
-    ("Loan Renewal Charge", "₹999 + GST (₹1,768.82)", "Active loan, on renewal"),
-    ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,768.82)", "Active loan, every year"),
+    ("Loan Renewal Charge", "₹999 + GST (₹1,178.82)", "Active loan, on renewal"),
+    ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,178.82)", "Active loan, every year"),
     ("Bank Swap Charge", "₹250 + GST (₹295)", "Active loan, when the repayment bank account is changed"),
 ]
 LM, LR, PF = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee* Charge"
@@ -45,30 +45,30 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
 ]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS options in the Approvals tab, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action needed. The loan moves to INACTIVE automatically after 30 days.", []),
-    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
-    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
+    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.", REJ_OUTCOMES),
+    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF], "Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.", REJ_OUTCOMES),
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF],
-     "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
+     "Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.", REJ_OUTCOMES),
     (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF],
-     "Approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.",
+     "Approve the Loan Account Opening (the loan continues), or reject the application with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).",
      [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF],
-     "Approve the Loan Lodgement (the loan continues), or reject the application. Before approving or rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.",
+     "Approve the Loan Lodgement (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).",
      [("Approved – no waive-off", "OPS approves the Loan Lodgement without waiving any charge. The loan goes to lodgement. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage."),
-      ("Approved – partial waive-off", "OPS waives part of the charges and approves the Loan Lodgement. The loan goes to lodgement.",
+      ("Approved – partial waive-off", "OPS submits the waive-off of part of the charges (maker → checker → Treasury approval), then approves the Loan Lodgement. The loan goes to lodgement.",
        "Existing communication.", "Not applicable – the loan continues.", "The waived part does not go into UNO."),
-      ("Approved – full waive-off", "OPS waives all the charges and approves the Loan Lodgement. The loan goes to lodgement.",
+      ("Approved – full waive-off", "OPS submits the waive-off of all the charges (maker → checker → Treasury approval), then approves the Loan Lodgement. The loan goes to lodgement.",
        "Existing communication.", "Not applicable – the loan continues.", "The waived charges do not go into UNO.")] + REJ_OUTCOMES),
     (7, "ACTIVE", "After the Loan Lodgement (loan account active)", ACTIVE_CH,
-     "Waive the charges on the active loan: OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off. The loan cannot be rejected at this stage.",
+     "Waive the charges on the active loan (≡ menu → Waive-off page): Full Waive-off, Partial Waive-off or Without waive-off, with the maker → checker → Treasury approval. The loan cannot be rejected at this stage.",
      [("Without waive-off", "The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.",
        "Existing communication.", "At loan closure (existing process).", "Existing accounting process."),
-      ("With full waive-off", "OPS waives the full charge. As the charge is already posted in the SOA, the SOA "
+      ("With full waive-off", "OPS submits the waive-off of the full charge (maker → checker → Treasury approval). As the charge is already posted in the SOA, the SOA "
        "is updated with a waiver narration.", "Existing communication.", "At loan closure (existing process).",
        "The waived charges do not go into UNO."),
-      ("With partial waive-off", "OPS waives part of a charge; the balance is collected before the loan account is closed. "
+      ("With partial waive-off", "OPS submits the waive-off of part of a charge (maker → checker → Treasury approval); the balance is collected before the loan account is closed. "
        "The SOA is updated with a waiver narration.", "Existing communication.", "At loan closure (existing process).",
        "The waived part does not go into UNO; the balance follows the existing accounting process.")]),
 ]
@@ -76,37 +76,45 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
 
 def _waiver_body():
     amt = dict((c, a) for c, a, _ in CHARGES)
-    def srow(n, st, sc, ch, op):
-        lead = f"<td class='c'>{n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
+    def srow(n, st, sc, ch, op):   # S codes as given by the owner (DISC-370): S 2.1 Reject Without Waive-off …
+        lead = f"<td class='c'>S {n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
+        three = lambda k0, verb: [f"<td class='wo'>S {n}.{k0 + i} – {verb}{x}</td>" for i, x in
+                                  enumerate(("Without Waive-off", "With Full Waive-off", "With Partial Waive-off"))]
+        rs = lambda k, h: h.replace("<td", f"<td rowspan='{k}'")
         if not ch:
             return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td>{op}</td></tr>"
-        rej = ("<td class='wo'>Without Waive-off</td></tr><tr><td class='wo'>With Full Waive-off</td></tr>"
-               "<tr><td class='wo'>With Partial Waive-off</td></tr>")
-        if n == 5:   # owner (DISC-295): Approved, Reject without waive-off, Reject with full / partial waive-off
-            rs = lambda h: h.replace("<td", "<td rowspan='4'")
-            return (f"<tr>{rs(lead)}<td colspan='2' class='wo'>Approve</td>{rs(f'<td>{op}</td>')}</tr>"
-                    "<tr><td rowspan='3' class='wo'>Reject</td>" + rej)
-        if n == 6:   # owner (DISC-298): Approve and Reject, each without / with full / with partial waive-off
-            r6 = lambda h: h.replace("<td", "<td rowspan='6'")
-            return (f"<tr>{r6(lead)}<td rowspan='3' class='wo'>Approve</td>"
-                    + rej.replace("</tr>", f"{r6(f'<td>{op}</td>')}</tr>", 1)
-                    + "<tr><td rowspan='3' class='wo'>Reject</td>" + rej)
-        if n in (2, 3, 4):   # owner (DISC-296): same format as scenario 5, Reject only
-            r3 = lambda h: h.replace("<td", "<td rowspan='3'")
-            return f"<tr>{r3(lead)}<td rowspan='3' class='wo'>Reject</td>" + rej.replace("</tr>", f"{r3(f'<td>{op}</td>')}</tr>", 1)
-        r3 = lambda h: h.replace("<td", "<td rowspan='3'")   # scenario 7 (DISC-300): three options, no approve / reject
-        return (f"<tr>{r3(lead)}<td colspan='2' class='wo'>Without Waive-off</td>{r3(f'<td>{op}</td>')}</tr>"
-                "<tr><td colspan='2' class='wo'>With Full Waive-off</td></tr>"
-                "<tr><td colspan='2' class='wo'>With Partial Waive-off</td></tr>")
-    summary = ("<table class='brd-table brd-sum'><thead><tr><th>Sc.</th><th>LAN status</th>"
+        if n in (2, 3, 4):
+            r = three(1, "Reject ")
+            return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{rs(3, f'<td>{op}</td>')}</tr>"
+                    f"<tr>{r[1]}</tr><tr>{r[2]}</tr>")
+        if n == 5:
+            r = three(2, "Reject ")
+            return (f"<tr>{rs(4, lead)}<td colspan='2' class='wo'>S 5.1 – Approve</td>{rs(4, f'<td>{op}</td>')}</tr>"
+                    f"<tr><td rowspan='3' class='wo'>Reject</td>{r[0]}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
+        if n == 6:
+            a6, r6 = three(1, "Approve "), three(4, "Reject ")
+            return (f"<tr>{rs(6, lead)}<td rowspan='3' class='wo'>Approve</td>{a6[0]}{rs(6, f'<td>{op}</td>')}</tr>"
+                    f"<tr>{a6[1]}</tr><tr>{a6[2]}</tr><tr><td rowspan='3' class='wo'>Reject</td>{r6[0]}</tr><tr>{r6[1]}</tr><tr>{r6[2]}</tr>")
+        r7 = three(1, "")
+        return (f"<tr>{rs(3, lead)}<td colspan='2' class='wo'>{r7[0][15:-5]}</td>{rs(3, f'<td>{op}</td>')}</tr>"
+                f"<tr><td colspan='2' class='wo'>{r7[1][15:-5]}</td></tr><tr><td colspan='2' class='wo'>{r7[2][15:-5]}</td></tr>")
+    summary = ("<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th>"
                "<th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th>"
                "<th class='ops'>What OPS can do</th></tr></thead><tbody>"
                + "".join(srow(n, st, sc, ch, op) for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
     charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody>"
                + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
 
+    def code(n, o):   # outcome → S code (DISC-370)
+        k = "no" if "no waive-off" in o.lower() or o.startswith("Without") else "full" if "full" in o.lower() else "partial" if "partial" in o.lower() else "approve"
+        if n in (2, 3, 4): idx = {"no": 1, "full": 2, "partial": 3}[k]
+        elif n == 5: idx = 1 if k == "approve" else {"no": 2, "full": 3, "partial": 4}[k]
+        elif n == 6: idx = {"no": 1, "full": 2, "partial": 3}[k] + (3 if o.startswith("Rejected") else 0)
+        else: idx = {"no": 1, "full": 2, "partial": 3}[k]
+        return f"S {n}.{idx} – "
+
     def scenario(n, st, sc, ch, op, outs):
-        h = f"<h3>11.{n} Scenario {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h3>"
+        h = f"<h3>11.{n} S {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h3>"
         if not ch:
             return h + ("<ul><li><b>Charges:</b> none – the units are not pledged.</li>"
                         "<li><b>Approvals tab:</b> no action. The LAN moves from DRAFT to INACTIVE automatically when the units are "
@@ -119,7 +127,8 @@ def _waiver_body():
                + "</tbody></table>")
         out = ("<table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th>"
                "<th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody>"
-               + "".join(f"<tr><td><b>{o}</b></td><td>{w}</td><td>{c}</td><td>{d}</td><td>{u}</td></tr>" for o, w, c, d, u in outs)
+               + "".join(f"<tr><td><b>{code(n, o)}{o}</b></td><td>{w}</td><td>{c}</td><td>{d}</td><td>{u}</td></tr>"
+                         for o, w, c, d, u in sorted(outs, key=lambda x: float(code(n, x[0])[2:-3])))
                + "</tbody></table>")
         return h + f"<p><b>What OPS can do:</b> {op}</p>" + chs + out
 
@@ -130,8 +139,10 @@ def _waiver_body():
     return f"""
 <h2>1. Purpose</h2>
 <p>When a customer drops off after pledging the mutual fund units, some charges are already incurred. Today SCCL bears them.
-This BRD gives OPS one common process to waive these charges fully, partially or not at all, and to collect the balance from the
-customer before the units are de-pledged.</p>
+This BRD gives one common process to waive these charges fully, partially or not at all – for DRAFT, SUBMITTED and ACCOUNT OPENED
+loans in the Approvals tab and for ACTIVE loans from the ≡ menu – with an OPS maker, an OPS checker and the Treasury approval; to reject
+a pledged DRAFT loan; and to collect the balance from the customer (payment link, receipt, Treasury confirmation) before the units are
+de-pledged.</p>
 <h2>2. Summary of scenarios</h2>
 {summary}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
@@ -424,10 +435,8 @@ navigates to the <b>Waive-off</b> page of that LAN:
 <h2>12. Open points</h2>
 <ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
 <li>Active loans: the internal mail templates for the active waive-off (checker / Treasury approval required, approved).</li>
-<li>Roles for approving with a waive-off in scenario 6.</li>
 <li>Pledged DRAFT loan → INACTIVE: when does it happen (after how many days, automatically or by OPS), and what happens to the
 pledged units and the charges then (de-pledge is allowed only for a REJECTED or CLOSED LAN)?</li>
-<li>Does the same maker → checker → Treasury approval apply to the waive-off with a rejection of SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6)?</li>
 <li>Should the maker get a mail when the checker or Treasury declines (today: Audit entry only)?</li></ul>
 """
 
