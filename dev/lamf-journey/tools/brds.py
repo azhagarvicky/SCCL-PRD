@@ -76,33 +76,29 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
 
 def _waiver_body():
     amt = dict((c, a) for c, a, _ in CHARGES)
-    def srow(n, st, sc, ch, op):   # S codes as given by the owner (DISC-370): S 2.1 Reject Without Waive-off …
-        nxt = {1: "INACTIVE (after 30 days)", 2: "REJECTED (OPS rejects)<br>SUBMITTED (customer completes the journey)",
-               3: "REJECTED (OPS rejects)<br>SUBMITTED (customer completes the journey)",
-               4: "REJECTED (OPS rejects)<br>SUBMITTED (customer completes the E-Mandate)",
-               5: "ACCOUNT OPENED (approve)<br>REJECTED (reject)", 6: "ACTIVE (approve)<br>REJECTED (reject)",
-               7: "CLOSED (foreclosure, tenure completion or invocation)"}[n]   # DISC-375
+    def srow(n, st, sc, ch, op):   # S codes (DISC-370); “LAN status can change to” for each Approvals / Waive-off row (DISC-375)
         lead = f"<td class='c'>S {n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
-        three = lambda k0, verb: [f"<td class='wo'>S {n}.{k0 + i} – {verb}{x}</td>" for i, x in
-                                  enumerate(("Without Waive-off", "With Full Waive-off", "With Partial Waive-off"))]
         rs = lambda k, h: h.replace("<td", f"<td rowspan='{k}'")
+        opc = lambda k: rs(k, f"<td>{op}</td>")
+        sub = lambda code, txt, to: f"<td class='wo'>S {n}.{code} – {txt}</td><td class='to'>{to}</td>"
+        W = ("Without Waive-off", "With Full Waive-off", "With Partial Waive-off")
         if not ch:
-            return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td>{nxt}</td><td>{op}</td></tr>"
+            return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td class='to'>INACTIVE (after 30 days)</td>{op and f'<td>{op}</td>'}</tr>"
         if n in (2, 3, 4):
-            r = three(1, "Reject ")
-            return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{rs(3, f'<td>{nxt}</td><td>{op}</td>')}</tr>"
-                    f"<tr>{r[1]}</tr><tr>{r[2]}</tr>")
+            r = [sub(i + 1, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
+            return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{opc(3)}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
         if n == 5:
-            r = three(2, "Reject ")
-            return (f"<tr>{rs(4, lead)}<td colspan='2' class='wo'>S 5.1 – Approve</td>{rs(4, f'<td>{nxt}</td><td>{op}</td>')}</tr>"
+            r = [sub(i + 2, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
+            return (f"<tr>{rs(4, lead)}<td colspan='2' class='wo'>S 5.1 – Approve</td><td class='to'>ACCOUNT OPENED</td>{opc(4)}</tr>"
                     f"<tr><td rowspan='3' class='wo'>Reject</td>{r[0]}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
         if n == 6:
-            a6, r6 = three(1, "Approve "), three(4, "Reject ")
-            return (f"<tr>{rs(6, lead)}<td rowspan='3' class='wo'>Approve</td>{a6[0]}{rs(6, f'<td>{nxt}</td><td>{op}</td>')}</tr>"
-                    f"<tr>{a6[1]}</tr><tr>{a6[2]}</tr><tr><td rowspan='3' class='wo'>Reject</td>{r6[0]}</tr><tr>{r6[1]}</tr><tr>{r6[2]}</tr>")
-        r7 = three(1, "")
-        return (f"<tr>{rs(3, lead)}<td colspan='2' class='wo'>{r7[0][15:-5]}</td>{rs(3, f'<td>{nxt}</td><td>{op}</td>')}</tr>"
-                f"<tr><td colspan='2' class='wo'>{r7[1][15:-5]}</td></tr><tr><td colspan='2' class='wo'>{r7[2][15:-5]}</td></tr>")
+            a6 = [sub(i + 1, "Approve " + w, "ACTIVE") for i, w in enumerate(W)]
+            r6 = [sub(i + 4, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
+            return (f"<tr>{rs(6, lead)}<td rowspan='3' class='wo'>Approve</td>{a6[0]}{opc(6)}</tr><tr>{a6[1]}</tr><tr>{a6[2]}</tr>"
+                    f"<tr><td rowspan='3' class='wo'>Reject</td>{r6[0]}</tr><tr>{r6[1]}</tr><tr>{r6[2]}</tr>")
+        r7 = [f"<td colspan='2' class='wo'>S 7.{i + 1} – {w}</td><td class='to'>No change (stays ACTIVE)</td>" for i, w in enumerate(W)]
+        return f"<tr>{rs(3, lead)}{r7[0]}{opc(3)}</tr><tr>{r7[1]}</tr><tr>{r7[2]}</tr>"
+
     summary = ("<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th>"
                "<th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th><th>LAN status can change to</th>"
                "<th class='ops'>What OPS can do</th></tr></thead><tbody>"
