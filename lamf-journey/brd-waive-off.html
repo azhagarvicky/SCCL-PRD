@@ -20,14 +20,19 @@ marking, lien removal, stamp duty or processing fee). Today SCCL bears these cha
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
 <h3>LAN status changes</h3>
 <ul>
-<li><b>DRAFT, units not pledged (S 1):</b> the LAN moves to INACTIVE automatically after 30 days from the LAN created date. There are
-no charges and OPS does not need to do anything.</li>
-<li><b>DRAFT, units pledged (S 2 – S 4):</b> the LAN moves to SUBMITTED when the customer completes the journey. If the customer does
-not complete it, OPS rejects the LAN and it moves to REJECTED. A pledged DRAFT LAN never moves to INACTIVE.</li>
-<li><b>SUBMITTED:</b> the LAN moves to ACCOUNT OPENED when OPS approves the Loan Account Opening, or to REJECTED when OPS rejects it.</li>
-<li><b>ACCOUNT OPENED:</b> the LAN moves to ACTIVE when OPS approves the Loan Lodgement, or to REJECTED when OPS rejects it.</li>
-<li><b>ACTIVE:</b> the LAN moves to CLOSED on foreclosure, tenure completion or invocation.</li>
-<li>Only an ACTIVE LAN can be closed. The pledged units can be de-pledged only when the LAN is REJECTED or CLOSED.</li>
+<li><b>DRAFT → INACTIVE:</b> When the MF units are not pledged, the LAN moves to INACTIVE automatically after 30 days from the LAN
+created date. There are no charges and OPS does not need to do anything. The customer receives a communication on the 30th day.</li>
+<li><b>DRAFT → SUBMITTED:</b> When the MF units are pledged and the customer completes the journey up to the E-Mandate, the LAN moves to
+SUBMITTED automatically.</li>
+<li><b>DRAFT → REJECTED:</b> When the MF units are pledged and the customer does not complete the journey, OPS rejects the LAN after 30
+days from the LAN created date (or earlier, if the customer asks to remove the lien). The customer receives a communication on the 30th
+day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE.</li>
+<li><b>SUBMITTED → ACCOUNT OPENED:</b> When OPS approves the Loan Account Opening.</li>
+<li><b>SUBMITTED → REJECTED:</b> When OPS rejects the loan.</li>
+<li><b>ACCOUNT OPENED → ACTIVE:</b> When OPS approves the Loan Lodgement.</li>
+<li><b>ACCOUNT OPENED → REJECTED:</b> When OPS rejects the loan.</li>
+<li><b>ACTIVE → CLOSED:</b> On foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
+<li>The pledged units can be de-pledged only when the LAN is REJECTED or CLOSED.</li>
 </ul>
 <h2>3. Approvals Tab:</h2>
 <ul>
