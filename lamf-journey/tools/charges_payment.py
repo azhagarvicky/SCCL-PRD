@@ -4,12 +4,12 @@ charges-payment.html: a clickable mock-up of the customer's steps – payment li
 (total charges with the breakup, one Pay CTA, no partial payment) → payment gateway (simulated) → success (lien removal will be
 initiated soon, receipt) or failure (nothing changes – back to the Pay Charges page).
 charges-receipt.html: the payment receipt – generated on payment, stored in the LMS Documents tab and sent to the customer.
-Sample values are the same as the LMS prototype (DRAFT LAN SCCLMF20261100079: Processing Fee ₹1,178.82 with ₹500 waived) – the
+Sample values are the same as the LMS prototype (DRAFT LAN SCCLMF20261100079: Processing Fee ₹1,768.82 with ₹500 waived) – the
 Processing Fee includes the Lien Marking, Lien Removal and Stamp Duty charges and GST (DISC-354).
 """
 
 LAN = "SCCLMF20261100079"
-CHARGES = [("Processing Fee*", 1178.82, 500)]   # (charge, amount, waived off) – one charge only (DISC-354)
+CHARGES = [("Processing Fee*", 1768.82, 500)]   # (charge, amount, waived off) – one charge only (DISC-354)
 INCL = "*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST"
 TOTAL = sum(a for _, a, _ in CHARGES)
 WAIVED = sum(w for _, _, w in CHARGES)
@@ -118,7 +118,7 @@ tfoot td{{font-weight:bold}} .w{{margin:14px 0 0;font-size:14px}} .n{{margin:18p
 </div>
 <table><thead><tr><th>Charges</th><th>Amount of Charges</th><th>Waived off</th><th>Amount Paid</th></tr></thead><tbody>{rows}</tbody>
 <tfoot><tr><td>Total</td><td>{rs(TOTAL)}</td><td>{rs(WAIVED)}</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>
-<p class="w">Amount received in words: <b>Rupees Six Hundred Seventy-Eight and Paise Eighty-Two Only</b></p>
+<p class="w">Amount received in words: <b>Rupees One Thousand Two Hundred Sixty-Eight and Paise Eighty-Two Only</b></p>
 <p class="n">{INCL}. This is a system-generated receipt and does not need a signature. The lien on your Mutual Fund
 units will be removed after the payment is confirmed.</p></div>
 <div class="f">Sample receipt for the prototype (Waiver BRD) – generated on payment, stored in the LMS Documents tab and sent to the customer.</div>

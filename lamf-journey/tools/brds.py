@@ -14,12 +14,12 @@ TBD = '<span class="brd-tbd">To be defined</span>'
 # ---------------------------------------------------------------------------------------------------------------------------
 CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by the owner (DISC-289); GST at 18%
     # DISC-354: Lien Marking, Lien Removal and Stamp Duty charges are included in the Processing Fee – not charged separately
-    ("Processing Fee Charge", "One-time fee, as per the sanction letter + GST (sample ₹999 + GST = ₹1,178.82) – inclusive of the "
+    ("Processing Fee Charge", "One-time fee as per the Processing Fee structure below, + GST (sample ₹1,499 + GST = ₹1,768.82) – inclusive of the "
      "Lien Marking, Lien Removal and Stamp Duty charges and GST", "When the mutual fund units are pledged"),
     ("Bounce Charge", "₹100 + GST (₹118) per instance", "Active loan, when an EMI bounces"),
     ("Penal Charge", "36% a year on the unpaid interest / EMI", "Active loan, on a delay or default"),
-    ("Loan Renewal Charge", "₹999 + GST (₹1,178.82)", "Active loan, on renewal"),
-    ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,178.82)", "Active loan, every year"),
+    ("Loan Renewal Charge", "₹999 + GST (₹1,768.82)", "Active loan, on renewal"),
+    ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,768.82)", "Active loan, every year"),
     ("Bank Swap Charge", "₹250 + GST (₹295)", "Active loan, when the repayment bank account is changed"),
 ]
 PF = "Processing Fee Charge"
@@ -149,10 +149,20 @@ button at the bottom. A DRAFT loan cannot be approved, so there is no Approve bu
 <li>The only charge here is the <b>Processing Fee</b>. The Lien Marking, Lien Removal and Stamp Duty charges are included in the
 Processing Fee (with GST) and are not shown or charged separately.</li>
 </ul>
+<p><b>Processing Fee structure</b> (DISC-355) – inclusive of the Lien Marking, Lien Removal and Stamp Duty charges, exclusive of GST
+(18% GST is added):</p>
+<table class="brd-table"><thead><tr><th>Sanctioned Amount</th><th>Processing Fee (inclusive of Lien Marking, Lien Removal and Stamp
+Duty charges), exclusive of GST</th><th>Example</th></tr></thead><tbody>
+<tr><td>Below ₹1,50,000</td><td>₹1,499 (flat)</td><td>₹1,25,000 → ₹1,499 + GST = ₹1,768.82</td></tr>
+<tr><td>₹1,50,000 to ₹10,00,000</td><td>1% of the sanctioned amount</td><td>₹5,00,000 → ₹5,000 + GST = ₹5,900</td></tr>
+<tr><td>Above ₹10,00,000 to ₹50,00,000</td><td>0.8% of the sanctioned amount</td><td>₹20,00,000 → ₹16,000 + GST = ₹18,880</td></tr>
+<tr><td>Above ₹50,00,000</td><td>0.5% of the sanctioned amount</td><td>₹1,00,00,000 → ₹50,000 + GST = ₹59,000</td></tr>
+</tbody></table>
+<p>The prototype screens use the sample LAN with a sanctioned amount of ₹1,25,000: Processing Fee ₹1,499 + GST = ₹1,768.82.</p>
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
 <tr><td>Checkbox</td><td>Selects one charge. The checkbox in the header selects all the charges.</td></tr>
 <tr><td>Charges Name</td><td>Processing Fee (inclusive of the Lien Marking, Lien Removal and Stamp Duty charges and GST)</td></tr>
-<tr><td>Amount of Charges</td><td>The Processing Fee including GST (sample ₹1,178.82). It does not change after a waive-off.</td></tr>
+<tr><td>Amount of Charges</td><td>The Processing Fee including GST (sample ₹1,768.82). It does not change after a waive-off.</td></tr>
 <tr><td>Waived off Charges</td><td>The amount already waived off for that charge (₹0 until a waive-off is done). It goes up after
 every waive-off of that charge.</td></tr>
 <tr><td>Amount to be waived off</td><td>0 by default and not editable. OPS can enter the amount only after selecting the checkbox of
@@ -170,7 +180,7 @@ that charge; it cannot be more than the balance (Amount of Charges – Waived of
 <tr><td>0 (every charge waived in full)</td><td>Full waive-off</td></tr>
 </tbody></table>
 {fig('02_table_default.png', 'Default – nothing selected, Waive-off button disabled')}
-{fig('03_table_selected.png', 'Processing Fee selected and ₹500 entered – Payable ₹678.82, Waive-off button enabled')}
+{fig('03_table_selected.png', 'Processing Fee selected and ₹500 entered – Payable ₹1,268.82, Waive-off button enabled')}
 <h2>5. Waive-off reconfirmation:</h2>
 <ul>
 <li>On <b>Waive-off</b>, show the pop-up <b>“Are you sure you want to waive-off selected charges?”</b> with <b>No, don’t</b>,
@@ -199,7 +209,7 @@ the product team in Cc: the LAN, customer name, amount waived, type of waive-off
 Waived Off, Payable Charges, Total), who waived it off and when.
 <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 12).</li>
 </ul>
-{fig('06_table_balance.png', 'After waiving ₹500 of the Processing Fee – Waived off Charges ₹500, Payable Charges ₹678.82')}
+{fig('06_table_balance.png', 'After waiving ₹500 of the Processing Fee – Waived off Charges ₹500, Payable Charges ₹1,268.82')}
 {fig('06b_table_full.png', 'The balance then waived in full – the charge stays in the table with Payable ₹0 and the checkbox disabled')}
 <h2>7. Reject:</h2>
 <ul>
@@ -238,9 +248,9 @@ rejection reason, who rejected it and when. <a href="internal/IC-13.html" target
 <ul>
 <li>Every waive-off and the rejection are recorded in the Audit tab of the LAN, in the existing format (date and time, message,
 Approved by, Initiated by with the note). Examples:
-  <ul><li>“Processing fee charge of ₹500.00 has been waived off (partial waive-off); balance ₹678.82”</li>
-  <li>“Processing fee charge of ₹678.82 has been waived off (full waive-off); balance ₹0.00”</li>
-  <li>“Application rejected – LAN status changed from DRAFT to REJECTED (partial waive-off; charges payable ₹678.82)”</li></ul></li>
+  <ul><li>“Processing fee charge of ₹500.00 has been waived off (partial waive-off); balance ₹1,268.82”</li>
+  <li>“Processing fee charge of ₹1,268.82 has been waived off (full waive-off); balance ₹0.00”</li>
+  <li>“Application rejected – LAN status changed from DRAFT to REJECTED (partial waive-off; charges payable ₹1,268.82)”</li></ul></li>
 </ul>
 {fig('10_audit.png', 'Audit tab – waive-off and rejection entries')}
 <h2>9. Charges payment by the customer:</h2>
