@@ -50,9 +50,14 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS opt
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF],
      "Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.", REJ_OUTCOMES),
     (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF],
-     "Approve the Loan Account Opening (the loan continues), or reject the application with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).",
-     [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
-       "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
+     "Approve the Loan Account Opening (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).",
+     # DISC-377: three approve options, as in S 6
+     [("Approved – no waive-off", "OPS approves the Loan Account Opening without waiving any charge. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
+       "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage."),
+      ("Approved – partial waive-off", "OPS submits the waive-off of part of the charges with the approval (maker → checker → Treasury approval). LAN → ACCOUNT OPENED.",
+       "Existing communication.", "Not applicable – the loan continues.", "The waived part does not go into UNO."),
+      ("Approved – full waive-off", "OPS submits the waive-off of all the charges with the approval (maker → checker → Treasury approval). LAN → ACCOUNT OPENED.",
+       "Existing communication.", "Not applicable – the loan continues.", "The waived charges do not go into UNO.")] + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF],
      "Approve the Loan Lodgement (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).",
      [("Approved – no waive-off", "OPS approves the Loan Lodgement without waiving any charge. The loan goes to lodgement. No charges are collected at this stage.",
@@ -87,12 +92,8 @@ def _waiver_body():
         if n in (2, 3, 4):
             r = [sub(i + 1, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
             return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{opc(3)}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
-        if n == 5:
-            r = [sub(i + 2, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
-            return (f"<tr>{rs(4, lead)}<td colspan='2' class='wo'>S 5.1 – Approve</td><td class='to'>ACCOUNT OPENED</td>{opc(4)}</tr>"
-                    f"<tr><td rowspan='3' class='wo'>Reject</td>{r[0]}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
-        if n == 6:
-            a6 = [sub(i + 1, "Approve " + w, "ACTIVE") for i, w in enumerate(W)]
+        if n in (5, 6):   # three approve options for S 5 too (DISC-377)
+            a6 = [sub(i + 1, "Approve " + w, "ACCOUNT OPENED" if n == 5 else "ACTIVE") for i, w in enumerate(W)]
             r6 = [sub(i + 4, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
             return (f"<tr>{rs(6, lead)}<td rowspan='3' class='wo'>Approve</td>{a6[0]}{opc(6)}</tr><tr>{a6[1]}</tr><tr>{a6[2]}</tr>"
                     f"<tr><td rowspan='3' class='wo'>Reject</td>{r6[0]}</tr><tr>{r6[1]}</tr><tr>{r6[2]}</tr>")
@@ -109,8 +110,7 @@ def _waiver_body():
     def code(n, o):   # outcome → S code (DISC-370)
         k = "no" if "no waive-off" in o.lower() or o.startswith("Without") else "full" if "full" in o.lower() else "partial" if "partial" in o.lower() else "approve"
         if n in (2, 3, 4): idx = {"no": 1, "full": 2, "partial": 3}[k]
-        elif n == 5: idx = 1 if k == "approve" else {"no": 2, "full": 3, "partial": 4}[k]
-        elif n == 6: idx = {"no": 1, "full": 2, "partial": 3}[k] + (3 if o.startswith("Rejected") else 0)
+        elif n in (5, 6): idx = {"no": 1, "full": 2, "partial": 3}[k] + (3 if o.startswith("Rejected") else 0)
         else: idx = {"no": 1, "full": 2, "partial": 3}[k]
         return f"S {n}.{idx} – "
 

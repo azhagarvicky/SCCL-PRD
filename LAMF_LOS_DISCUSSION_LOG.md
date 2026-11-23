@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-11-2026 23:16 IST
+**Last Updated:** 23-11-2026 23:19 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -409,6 +409,7 @@
 | DISC-374 | 23-11-2026 | exports/BRD_Charges_Waiver_Post-Pledge_Drop-off.docx | Waiver BRD as a Word file | Owner: create the Waiver BRD like the attached Word format (their BRD.docx) | Word file built with their BRD.docx as the style template (Calibri, Heading 1 / Heading 2 with “:”, their bullet list, tables, screenshots and links to the prototype): Purpose, Scenarios (S 1 – S 7.3), LAN status changes, Approvals Tab, Approvals – maker / checker / Treasury, Waive-off charges (charges by scenario, Processing Fee* structure, table columns), Rejection (S 2 – S 4), Approve or Reject (S 5, S 6), Active loan waive-off (S 7), customer communication, charges payment, Audit, internal and customer communications, open points. 14 pages. Generator kept in the session scratchpad (waiver_docx.py); regenerate only when asked (DISC-297). | Implemented |
 | DISC-375 | 23-11-2026 | brd-waive-off.html | “LAN status can change to” column in the summary of scenarios | Owner: add one more column “LAN status Can Change To” to the summary table | New column after Approvals / Waive-off (moved there on the owner’s request, before What OPS can do): S 1 INACTIVE (after 30 days); S 2 – S 3 REJECTED (OPS rejects) / SUBMITTED (customer completes the journey); S 4 REJECTED / SUBMITTED (customer completes the E-Mandate); S 5 ACCOUNT OPENED (approve) / REJECTED (reject); S 6 ACTIVE (approve) / REJECTED (reject); S 7 CLOSED (foreclosure, tenure completion or invocation). The Word file (DISC-374) is not regenerated – only on request. | Implemented |
 | DISC-376 | 23-11-2026 | brd-waive-off.html | “LAN status can change to” per Approvals / Waive-off row | Owner: the Approvals / Waive-off column has rows – the LAN status can change to value has to be given for each row | One value per row: S 1 INACTIVE (after 30 days); every Reject row (S 2.1 – S 4.3, S 5.2 – S 5.4, S 6.4 – S 6.6) REJECTED; S 5.1 Approve ACCOUNT OPENED; S 6.1 – S 6.3 Approve ACTIVE; S 7.1 – S 7.3 No change (stays ACTIVE). DRAFT → SUBMITTED (customer completes the journey) is not an OPS action, so it is not in these rows – it stays in the LAN status changes table. | Implemented |
+| DISC-377 | 23-11-2026 | brd-waive-off.html | S 5 – three approve options | Owner: S 6 approval has three options – need the same for S 5 | S 5 (SUBMITTED) now: S 5.1 Approve Without Waive-off, S 5.2 Approve With Full Waive-off, S 5.3 Approve With Partial Waive-off (→ ACCOUNT OPENED), S 5.4 – S 5.6 Reject Without / With Full / With Partial Waive-off (→ REJECTED). Summary table, “What OPS can do” and the S 5 outcomes in section 11 updated (approve with a waive-off goes through the maker → checker → Treasury approval; waived amounts never go into UNO). Replaces the single “S 5.1 Approve” (DISC-370). Word file not regenerated. | Implemented |
 
 ---
 
