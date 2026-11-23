@@ -1539,3 +1539,4 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .wa-table .wa-amt { width: 100%; max-width: 320px; box-sizing: border-box; border: 1px solid #E6E8EC; border-radius: 6px; padding: 8px 10px; font: inherit; }
 .wv-yes-k, .wv-yes-a, .wv-yes-d, .wv-yes-c, .wa-yes { background: #1F47D6; color: #fff; font-weight: 600; font-size: 16px; border-radius: 8px; padding: 12px; }
 .page-brd .brd-sum td.c, .page-brd .brd-sum td.wo { white-space: nowrap; }
+.page-brd .brd-sum td.to { white-space: nowrap; }
