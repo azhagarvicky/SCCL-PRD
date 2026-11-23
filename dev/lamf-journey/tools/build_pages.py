@@ -856,7 +856,9 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              # DRAFT Application Rejected alert (DISC-348)
              "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM",
              # Charges Payment Received alert (DISC-351)
-             "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/000149"}
+             "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/000149",
+             # Charges Received – Initiate De-pledge alert (DISC-359)
+             "{{Treasury User Name}}": "Natarajan K", "{{Confirmation Date & Time}}": "23-11-2026 03:10 PM"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
 

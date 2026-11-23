@@ -409,4 +409,30 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])]),
+ # DISC-359 – Waiver BRD: Treasury confirms the customer's charges payment in LMS (after the UNO transaction) – mail to OPS to
+ # initiate the de-pledge. To OPS (same as DRAFT→REJECTED, alert 13), Cc Treasury.
+ ('REJECTED',
+  'NA',
+  'Treasury confirms the customer’s charges payment in LMS (Approvals tab → Confirm Payment), after the payment is transacted in UNO',
+  'Action Required | {{LAN}} | Charges Received – Initiate De-pledge',
+  'Charges Received – Initiate De-pledge',
+  '{{To User Name}}',
+  'The charges of {{Amount Paid}} paid by customer {{Customer Name}} for {{LAN}} (REJECTED) have been received and confirmed by Treasury, '
+  'and the transaction is posted in UNO.\n'
+  '| Charges Name | Amount of Charges | Waived off Charges | Amount Paid\n'
+  '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
+  'Transaction ID: {{Transaction ID}}. Receipt No.: {{Receipt No}}. Confirmed by {{Treasury User Name}} on {{Confirmation Date & Time}}.\n'
+  'Please initiate the de-pledge of the pledged Mutual Fund units in LMS (Approvals tab of the LAN → Initiate De-pledge).',
+  [('Any Sanction amount',
+    ['richajayswal@shriramcredit.in'],
+    ['k.natarajan@shriramcredit.in',
+     'satyaparida@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])])]
