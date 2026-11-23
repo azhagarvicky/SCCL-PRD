@@ -49,6 +49,21 @@ def button(label, link):
 def link(url):
     return f'<a href="{url}" style="color:#0b5ed7;text-decoration:underline;">{url}</a>'
 
+def charges_table(title):   # DRAFT rejection mails (DISC-350): one row per charge incurred, then the total
+    th = lambda t, al="right": (f'<td style="padding:10px 12px;{FONT}font-size:12px;line-height:16px;font-weight:bold;color:#1a1a1a;'
+                                f'text-align:{al};text-transform:uppercase;">{t}</td>')
+    td = lambda t, al="right", b=False: (f'<td style="padding:9px 12px;{FONT}font-size:14px;line-height:20px;color:{"#1a1a1a" if b else "#555555"};'
+                                         f'{"font-weight:bold;" if b else ""}text-align:{al};border-top:1px solid #ececec;{"" if al == "left" else "white-space:nowrap;"}">{t}</td>')
+    row = lambda c, b=False: "<tr>" + td(c[0], "left", b) + "".join(td(x, b=b) for x in c[1:]) + "</tr>"
+    return (f'<tr><td class="px" style="padding:22px 48px 0 48px;"><p style="margin:0 0 8px 0;{FONT}font-size:13px;line-height:18px;'
+            f'font-weight:bold;letter-spacing:.5px;color:#1a1a1a;text-transform:uppercase;">{title}</p>'
+            '<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#FAFAF8;'
+            'border:1px solid #e2e2e2;border-radius:8px;"><tr>' + th("Charges", "left") + th("Amount") + th("Waived off") + th("Payable") + "</tr>"
+            + "<!-- one row per charge incurred -->"
+            + row(["{{CHARGE_NAME}}", "&#8377;{{CHARGE_AMOUNT}}", "&#8377;{{WAIVED_AMOUNT}}", "&#8377;{{PAYABLE_AMOUNT}}"])
+            + row(["Total", "&#8377;{{TOTAL_CHARGES}}", "&#8377;{{TOTAL_WAIVED}}", "&#8377;{{TOTAL_PAYABLE}}"], True)
+            + "</table></td></tr>")
+
 SUPPORT = para('Should you have any questions, require clarification, or assistance, please feel free to reach out to our customer support at '
                '<a href="mailto:lassupport@shriramcredit.in" style="color:#0b5ed7;text-decoration:underline;">lassupport@shriramcredit.in</a>. '
                'Our team will be happy to assist you.', pad="22px 48px 0 48px")
@@ -118,6 +133,37 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       para("You may contact our support team for placing a fresh withdrawal request.", pad="22px 48px 0 48px"),
       SUPPORT],
      ""),
+    # DISC-350 – a pledged DRAFT LAN rejected by OPS (Waiver BRD): with the payment link when Payable Charges ≠ 0 (partial / no
+    # waive-off), without it when Payable Charges = 0 (full waive-off). SMS – the same as the rejection SMS of rows 14 / 15.
+    ("06_Draft_Application_Rejected_Pay_Charges", "Application Rejected &ndash; Payment of Charges",
+     "Action Required: Application Rejected – Pay Charges {{LOAN_ID}}",
+     "Your Loan Against Mutual Fund application has been rejected. Please pay the charges to unpledge your Mutual Fund units.",
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{CHARGE_NAME}}", "{{CHARGE_AMOUNT}}", "{{WAIVED_AMOUNT}}", "{{PAYABLE_AMOUNT}}",
+      "{{TOTAL_CHARGES}}", "{{TOTAL_WAIVED}}", "{{TOTAL_PAYABLE}}", "{{PAYMENT_LINK}}"],
+     [badge("Your Loan Against Mutual Fund application has been rejected", "warn"),
+      para("We regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
+           "Company Limited (SCCL) has been rejected.", pad="22px 48px 0 48px"),
+      para("To unpledge your Mutual Fund units, please pay the charges below:"),
+      charges_table("Charges Payable"),
+      para("Please use the below link to make the payment.", pad="22px 48px 0 48px"),
+      para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),
+      para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
+      button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
+      para("Your pledged Mutual Fund units will be released through the lien removal process after the successful receipt of charges.", pad="22px 48px 0 48px"),
+      SUPPORT],
+     "DRAFT LAN rejected with Payable Charges not equal to zero (partial / no waive-off) – Waiver BRD."),
+    ("07_Draft_Application_Rejected", "Application Rejected",
+     "Update: Your Shriram Credit LAMF Application Is Rejected {{LOAN_ID}}",
+     "Your Loan Against Mutual Fund application has been rejected. We will initiate to unpledge your Mutual Fund units shortly.",
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}"],
+     [badge("Your Loan Against Mutual Fund application has been rejected", "warn"),
+      para("We regret to inform you that your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit "
+           "Company Limited (SCCL) has been rejected.", pad="22px 48px 0 48px"),
+      para("All the applicable charges have been waived off, so there is nothing for you to pay. We will initiate to unpledge your "
+           "Mutual Fund units shortly."),
+      LIEN_PROCESS.replace("{STATUS}", "Lien release process initiated"),
+      SUPPORT],
+     "DRAFT LAN rejected with Payable Charges equal to zero (full waive-off) – Waiver BRD."),
 ]
 
 

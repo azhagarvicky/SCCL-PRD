@@ -719,6 +719,31 @@ for after, stage, scen, app, fname, subj, subj_sample, head, subs in MAIL_ONLY:
     if stage in NEW_SMS:
         sms = ("SMS, Mail", "SCCL") + NEW_SMS[stage] + ("SGRCDT-T", "No – to be created", "Required")
     COMMS.insert(_i, (stage, scen, app) + sms + (subj, subj_sample, body, sample, f"Yes [[view:mails/{fname}]]", "Required"))
+# DRAFT LAN rejection (Waiver BRD, DISC-350): same SMS as rows 14 / 15, new mails from tools/new_mails.py (new-mails/06, 07)
+from new_mails import NEW_MAILS as _NM, mail_html as _nm_html
+def _nm_text(fname):
+    t = _MailText(); t.feed(_nm_html(next(m for m in _NM if m[0] == fname)))
+    return "\n\n".join(re.sub(r"[ \t]+", " ", x).replace(" \n", "\n").strip() for x in t.parts if x.strip())
+DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, sample values)
+ ("Loan Account Opening / Loan Lodgement Rejection (with payment link)", "DRAFT Application Rejection (with payment link)",
+  "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are not equal to zero (partial waive-off or no waive-off) – the communication carries the payment link and the customer pays the charges using that link. Waiver BRD.",
+  "06_Draft_Application_Rejected_Pay_Charges",
+  {"{{LOAN_ID}}": "SCCLMF20261100079", "{{CHARGE_NAME}}": "Lien Marking Charges", "{{CHARGE_AMOUNT}}": "531", "{{WAIVED_AMOUNT}}": "500",
+   "{{PAYABLE_AMOUNT}}": "31", "{{TOTAL_CHARGES}}": "531", "{{TOTAL_WAIVED}}": "500", "{{TOTAL_PAYABLE}}": "31"}),
+ ("Loan Account Opening / Loan Lodgement Rejection (without payment link)", "DRAFT Application Rejection (without payment link)",
+  "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are equal to zero (full waive-off) – the communication has no payment link; the units are de-pledged. Waiver BRD.",
+  "07_Draft_Application_Rejected", {"{{LOAN_ID}}": "SCCLMF20261100079"}),
+]
+for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS:   # added at the end so the existing row numbers stay
+    base = next(r for r in COMMS if r[0] == _src)
+    m = next(x for x in _NM if x[0] == fname)
+    body = _nm_text(fname)
+    sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY")
+    for k, v in subs.items():
+        sample = sample.replace(k, v)
+    subj = m[2]
+    COMMS.append((stage, scen, "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
+                                                       f"No – to be created [[view:new-mails/{fname}.html]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 # SMS Status “Not Required” → Mail Status “Not Required” too (DISC-242)
 assert COMMS_COLS[10] == "SMS Status" and COMMS_COLS[-1] == "Mail Status"
