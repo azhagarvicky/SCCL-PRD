@@ -855,6 +855,8 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "1,268.82",
              # DRAFT Application Rejected alert (DISC-348)
              "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM",
+             # Waive-off & Rejection approval alerts (DISC-361)
+             "{{Submitted Date & Time}}": "23-11-2026 11:25 AM", "{{Approval Date & Time}}": "23-11-2026 12:05 PM",
              # Charges Payment Received alert (DISC-351)
              "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/000149",
              # Charges Received – Initiate De-pledge alert (DISC-359)

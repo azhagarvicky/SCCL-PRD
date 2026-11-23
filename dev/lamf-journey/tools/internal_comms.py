@@ -323,21 +323,24 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])]),
- # DISC-343 – Waiver BRD: sent after every waive-off in the Approvals tab of a DRAFT LAN (after “Yes, waive-off”).
- # Lines starting with “|” are shown as the breakup table in the mail view. Recipients as given by the owner (DISC-347).
+ # DISC-361 – Waiver BRD: waive-off and rejection are ONE request that needs the Treasury approval (replaces the “Charges Waived
+ # Off” and “DRAFT Application Rejected” alerts of DISC-343 / DISC-348). 12 – OPS submits → Treasury; 13 – Treasury approves → OPS.
+ # Recipients: 12 as the old Charges Waived Off alert (DISC-347), 13 as the De-pledge alert (DISC-360) – to be confirmed.
  ('DRAFT',
   'NA',
-  'OPS waives off charges in the Approvals tab of a pledged DRAFT LAN (after “Yes, waive-off” on the reconfirmation pop-up)',
-  'Status Update | {{LAN}} | Charges Waived Off',
-  'Charges Waived Off',
+  'OPS submits the waive-off and rejection request for a pledged DRAFT LAN in the Approvals tab (Reject → “Yes, submit”)',
+  'Action Required | {{LAN}} | Approval Required – Waive-off & Rejection',
+  'Approval Required – Waive-off & Rejection',
   '{{To User Name}}',
-  'Charges of {{Waived Amount}} have been waived off for {{LAN}} of customer {{Customer Name}}. Type of waive-off: {{Waive-off Type}}.\n'
-  '| Charges Name | Amount of Charges | Amount Waived Off | Payable Charges\n'
+  'A waive-off and rejection request for {{LAN}} of customer {{Customer Name}} (DRAFT, mutual fund units pledged) is pending your approval. '
+  'Type of waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Amount to be Waived Off | Payable Charges\n'
   '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
-  'Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} '
-  'will be collected from the customer before the units are de-pledged.',
+  'Rejection reason: {{Rejection Reason}}\n'
+  'Submitted by {{OPS User Name}} on {{Submitted Date & Time}}. Please approve or decline the request in LMS (Approvals tab of the LAN). '
+  'On approval, the waive-off is applied and the LAN is rejected; on decline, the request is cancelled and the LAN stays in DRAFT.',
   [('Any Sanction amount',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
@@ -353,31 +356,37 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])]),
- # DISC-348 – Waiver BRD: a pledged DRAFT LAN rejected by OPS (after “Yes” on the reconfirmation pop-up) – mail to the OPS team,
- # same To / Cc as the SUBMITTED→REJECTED alert.
  ('DRAFT→REJECTED',
   'NA',
-  'OPS rejects a pledged DRAFT LAN in the Approvals tab (after “Yes” on the reconfirmation pop-up)',
-  'Rejected | {{LAN}} | DRAFT Application',
-  'DRAFT Application Rejected',
+  'Treasury approves the waive-off and rejection request in LMS (Approve → “Yes”) – the waive-off is applied and the LAN is rejected',
+  'Approved | {{LAN}} | Waive-off & Rejection',
+  'Waive-off & Rejection Approved',
   '{{To User Name}}',
-  '{{LAN}} for customer {{Customer Name}} has been REJECTED in DRAFT status (mutual fund units pledged). Type of waive-off: {{Waive-off Type}}.\n'
+  'The waive-off and rejection request for {{LAN}} of customer {{Customer Name}} has been approved by Treasury. The LAN has been '
+  'REJECTED. Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
   '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
   'Rejection reason: {{Rejection Reason}}\n'
-  'Rejected by {{OPS User Name}} on {{Rejection Date & Time}}. The rejection SMS and mail with the payment link for {{Balance Payable}} '
-  'have been sent to the customer. The units will be de-pledged after the customer pays and Treasury confirms the payment.',
+  'Submitted by {{OPS User Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The rejection SMS and mail with the '
+  'payment link for {{Balance Payable}} have been sent to the customer. The units will be de-pledged after the customer pays and Treasury '
+  'confirms the payment.',
   [('Any Sanction amount',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
      'ashok@shriramcredit.in',
+     'vijayamr@shriramcredit.in',
+     'satyanarayan@shriramcredit.in',
+     'ganga@shriramcredit.in',
+     'lalithak@shriramcredit.in',
+     'nadanakumar@shriramcredit.in',
      'azhagarsamy.s@shriramcredit.in',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
-     'sarathananthan.m@shriramcredit.in'])]),
+     'sarathananthan.m@shriramcredit.in',
+     'k.natarajan@shriramcredit.in'])]),
  # DISC-351 – Waiver BRD: the customer pays the charges in the LOS after a DRAFT rejection – Treasury has to confirm in LMS
  # before the de-pledge. To Treasury, Cc OPS – same recipients as the Charges Waived Off alert (DISC-347).
  ('REJECTED',
