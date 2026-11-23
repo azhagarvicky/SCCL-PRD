@@ -109,7 +109,11 @@ def _rs(n, dec=False):
 # ---- Approvals tab for a DRAFT loan (DISC-337) – new, as per the Waiver BRD 3.1 / 3.2 (not in the live LMS yet).
 # Charges depend on how far the customer went (Waiver BRD scenarios 2 – 4); amounts include 18% GST.
 # DISC-354: Lien Marking, Lien Removal and Stamp Duty are included in the Processing Fee – one charge only (sample ₹1,499 + GST – sanctioned amount below ₹1.5 lakh, DISC-355)
-DRAFT_CHARGES = {2: [("Processing Fee", 1768.82)], 3: [("Processing Fee", 1768.82)], 4: [("Processing Fee", 1768.82)]}
+# DISC-356: scenario 2 (pledged, no Sanction Letter yet) – Lien Marking + Lien Removal; from the Sanction Letter – Processing Fee* only
+DRAFT_CHARGES = {2: [("Lien Marking Charges", 531), ("Lien Removal Charges", 118)], 3: [("Processing Fee*", 1768.82)], 4: [("Processing Fee*", 1768.82)]}
+
+
+FOOT = "*Inclusive of Lien Marking, Lien Removal and Stamp Duty"   # DISC-356
 
 
 def _amt(v):
@@ -135,7 +139,7 @@ def draft_approvals(r, tid):
             '<th>Charges Name</th><th class="num">Amount of Charges</th><th class="num">Waived off Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
             f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b class="wv-ctot">₹{_amt(total)}</b></td>'
             f'<td class="num"><b class="wv-dtot">₹0</b></td><td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
-            '<p class="wv-hint">Processing Fee is inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST (₹1,499 + GST for a sanctioned amount below ₹1.5 lakh).</p>'
+            + (f'<p class="wv-hint">{FOOT}</p>' if sc > 2 else '') +
             '<p class="wv-allgone" hidden>All charges have been waived off – nothing is payable.</p>'
             '<p class="wv-type">Type of waive-off: <b>No waive-off</b></p>'
             '<label class="wv-lbl">Add a note <span>(rejection reason – recorded in the Audit)</span></label>'
@@ -160,7 +164,7 @@ def draft_approvals(r, tid):
             + '</div>')
 
 
-AUDIT_NAME = {"Processing Fee": "Processing fee charge", "Lien Marking Charges": "Pledge charge",
+AUDIT_NAME = {"Processing Fee*": "Processing fee charge", "Processing Fee": "Processing fee charge", "Lien Marking Charges": "Pledge charge",
               "Lien Removal Charges": "Collateral release charge", "Stamp Duty Charges": "Stamp duty charge"}
 
 
@@ -219,7 +223,7 @@ WAIVER_JS = """<script>
   }
   function stamp() { var d = new Date(), p = function (x) { return String(x).padStart(2, '0'); };
     return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ', ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()); }
-  var AN = { 'Processing Fee': 'Processing fee charge', 'Lien Marking Charges': 'Pledge charge',
+  var AN = { 'Processing Fee*': 'Processing fee charge', 'Processing Fee': 'Processing fee charge', 'Lien Marking Charges': 'Pledge charge',
              'Lien Removal Charges': 'Collateral release charge', 'Stamp Duty Charges': 'Stamp duty charge' };
   function audit(w, msg, note) {          /* LMS-style Audit entry: “date, time ▸ message” → Approved by / Initiated by (DISC-340) */
     var list = w.closest('.lms-lanpage').querySelector('.aud-list'); if (!list) return;

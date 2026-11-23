@@ -4,13 +4,13 @@ charges-payment.html: a clickable mock-up of the customer's steps – payment li
 (total charges with the breakup, one Pay CTA, no partial payment) → payment gateway (simulated) → success (lien removal will be
 initiated soon, receipt) or failure (nothing changes – back to the Pay Charges page).
 charges-receipt.html: the payment receipt – generated on payment, stored in the LMS Documents tab and sent to the customer.
-Sample values are the same as the LMS prototype (DRAFT LAN SCCLMF20261100079: Processing Fee ₹1,768.82 with ₹500 waived) – the
+Sample values are the same as the LMS prototype (DRAFT LAN SCCLMF20261100073: Processing Fee ₹1,768.82 with ₹500 waived) – the
 Processing Fee includes the Lien Marking, Lien Removal and Stamp Duty charges and GST (DISC-354).
 """
 
-LAN = "SCCLMF20261100079"
+LAN = "SCCLMF20261100073"
 CHARGES = [("Processing Fee*", 1768.82, 500)]   # (charge, amount, waived off) – one charge only (DISC-354)
-INCL = "*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST"
+INCL = "*Inclusive of Lien Marking, Lien Removal and Stamp Duty"   # DISC-356
 TOTAL = sum(a for _, a, _ in CHARGES)
 WAIVED = sum(w for _, _, w in CHARGES)
 PAYABLE = round(TOTAL - WAIVED, 2)

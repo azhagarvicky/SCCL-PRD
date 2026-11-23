@@ -335,7 +335,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Charges Name | Amount of Charges | Amount Waived Off | Payable Charges\n'
   '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
-  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
   'Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} '
   'will be collected from the customer before the units are de-pledged.',
   [('Any Sanction amount',
@@ -365,7 +365,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
   '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
-  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
   'Rejection reason: {{Rejection Reason}}\n'
   'Rejected by {{OPS User Name}} on {{Rejection Date & Time}}. The rejection SMS and mail with the payment link for {{Balance Payable}} '
   'have been sent to the customer. The units will be de-pledged after the customer pays and Treasury confirms the payment.',
@@ -390,7 +390,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Charges Name | Amount of Charges | Waived off Charges | Amount Paid\n'
   '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
-  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
   'Transaction ID: {{Transaction ID}}. Paid on: {{Payment Date & Time}}. Receipt No.: {{Receipt No}} (saved in the Documents tab of the LAN). '
   'The accounting entries have been posted in UNO.\n'
   'Please verify the payment and confirm it in LMS (Approvals tab of the LAN). The de-pledge of the units can be initiated only after '

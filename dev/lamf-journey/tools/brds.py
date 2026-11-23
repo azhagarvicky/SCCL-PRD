@@ -13,16 +13,19 @@ TBD = '<span class="brd-tbd">To be defined</span>'
 # screen detail (DISC-272).
 # ---------------------------------------------------------------------------------------------------------------------------
 CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by the owner (DISC-289); GST at 18%
-    # DISC-354: Lien Marking, Lien Removal and Stamp Duty charges are included in the Processing Fee – not charged separately
-    ("Processing Fee Charge", "One-time fee as per the Processing Fee structure below, + GST (sample ₹1,499 + GST = ₹1,768.82) – inclusive of the "
-     "Lien Marking, Lien Removal and Stamp Duty charges and GST", "When the mutual fund units are pledged"),
+    # DISC-354 / DISC-356: from the Sanction Letter, Lien Marking, Lien Removal and Stamp Duty are included in the Processing Fee*;
+    # before it (scenario 2 – pledged only) the Lien Marking and Lien Removal charges apply on their own
+    ("Lien Marking Charge", "₹450 + GST (₹531)", "When the mutual fund units are pledged – charged on its own only in scenario 2 (before the Sanction Letter)"),
+    ("Lien Removal Charge", "₹100 + GST (₹118)", "When the lien is removed – charged on its own only in scenario 2 (before the Sanction Letter)"),
+    ("Processing Fee* Charge", "One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small>",
+     "From the Sanction Letter generation"),
     ("Bounce Charge", "₹100 + GST (₹118) per instance", "Active loan, when an EMI bounces"),
     ("Penal Charge", "36% a year on the unpaid interest / EMI", "Active loan, on a delay or default"),
     ("Loan Renewal Charge", "₹999 + GST (₹1,768.82)", "Active loan, on renewal"),
     ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,768.82)", "Active loan, every year"),
     ("Bank Swap Charge", "₹250 + GST (₹295)", "Active loan, when the repayment bank account is changed"),
 ]
-PF = "Processing Fee Charge"
+LM, LR, PF = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee* Charge"
 ACTIVE_CH = [PF, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Annual Maintenance Charge (AMC)", "Bank Swap Charge"]
 
 # The 7 scenarios from the owner's LAMF_Charges_Waiver_V1.xlsx (DISC-274) – outcomes, Product Construct and Treasury Remarks
@@ -42,7 +45,7 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
 ]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS options in the Approvals tab, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action needed. The loan moves to INACTIVE automatically after 30 days.", []),
-    (2, "DRAFT", "After pledging the mutual funds", [PF], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
+    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
     (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF],
      "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
@@ -131,6 +134,7 @@ This BRD gives OPS one common process to waive these charges fully, partially or
 customer before the units are de-pledged.</p>
 <h2>2. Summary of scenarios</h2>
 {summary}
+<p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
 <h2>3. Approvals Tab:</h2>
 <ul>
 <li>Need approvals tab in the DRAFT LOAN section, which is currently available in the ACTIVE, SUBMITTED and ACCOUNT OPENED LOANS.</li>
@@ -146,23 +150,27 @@ button at the bottom. A DRAFT loan cannot be approved, so there is no Approve bu
 <li>Before waive-off reconfirming option needed.</li>
 <li>Waive-off type is <b>No waive-off, Full waive-off, Partial waive-off.</b></li>
 <li>User cannot enter the waive-off amount greater than the actual amount of the charges.</li>
-<li>The only charge here is the <b>Processing Fee</b>. The Lien Marking, Lien Removal and Stamp Duty charges are included in the
-Processing Fee (with GST) and are not shown or charged separately.</li>
+<li><b>Charges by scenario:</b>
+  <ul><li><b>Scenario 2</b> (units pledged, Sanction Letter not generated): <b>Lien Marking Charges</b> (₹450 + GST = ₹531) and
+  <b>Lien Removal Charges</b> (₹100 + GST = ₹118).</li>
+  <li><b>Scenario 3 onwards</b> (from the Sanction Letter): <b>Processing Fee*</b> only – the Lien Marking, Lien Removal and Stamp
+  Duty charges are not shown or charged separately.<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></li></ul></li>
 </ul>
-<p><b>Processing Fee structure</b> (DISC-355) – inclusive of the Lien Marking, Lien Removal and Stamp Duty charges, exclusive of GST
-(18% GST is added):</p>
-<table class="brd-table"><thead><tr><th>Sanctioned Amount</th><th>Processing Fee (inclusive of Lien Marking, Lien Removal and Stamp
-Duty charges), exclusive of GST</th><th>Example</th></tr></thead><tbody>
+<p><b>Processing Fee* structure</b> (DISC-355) – exclusive of GST (18% GST is added):</p>
+<table class="brd-table"><thead><tr><th>Sanctioned Amount</th><th>Processing Fee*, exclusive of GST</th><th>Example</th></tr></thead><tbody>
 <tr><td>Below ₹1,50,000</td><td>₹1,499 (flat)</td><td>₹1,25,000 → ₹1,499 + GST = ₹1,768.82</td></tr>
 <tr><td>₹1,50,000 to ₹10,00,000</td><td>1% of the sanctioned amount</td><td>₹5,00,000 → ₹5,000 + GST = ₹5,900</td></tr>
 <tr><td>Above ₹10,00,000 to ₹50,00,000</td><td>0.8% of the sanctioned amount</td><td>₹20,00,000 → ₹16,000 + GST = ₹18,880</td></tr>
 <tr><td>Above ₹50,00,000</td><td>0.5% of the sanctioned amount</td><td>₹1,00,00,000 → ₹50,000 + GST = ₹59,000</td></tr>
 </tbody></table>
-<p>The prototype screens use the sample LAN with a sanctioned amount of ₹1,25,000: Processing Fee ₹1,499 + GST = ₹1,768.82.</p>
+<p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
+<p>The prototype screens use a scenario 3 sample LAN (SCCLMF20261100073) with a sanctioned amount of ₹22,400: Processing Fee* ₹1,499 +
+GST = ₹1,768.82.</p>
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
 <tr><td>Checkbox</td><td>Selects one charge. The checkbox in the header selects all the charges.</td></tr>
-<tr><td>Charges Name</td><td>Processing Fee (inclusive of the Lien Marking, Lien Removal and Stamp Duty charges and GST)</td></tr>
-<tr><td>Amount of Charges</td><td>The Processing Fee including GST (sample ₹1,768.82). It does not change after a waive-off.</td></tr>
+<tr><td>Charges Name</td><td>Scenario 2: Lien Marking Charges and Lien Removal Charges. Scenario 3 onwards: Processing Fee*
+(with the note “*Inclusive of Lien Marking, Lien Removal and Stamp Duty” below the table).</td></tr>
+<tr><td>Amount of Charges</td><td>The charge including GST (for example, Processing Fee* ₹1,768.82). It does not change after a waive-off.</td></tr>
 <tr><td>Waived off Charges</td><td>The amount already waived off for that charge (₹0 until a waive-off is done). It goes up after
 every waive-off of that charge.</td></tr>
 <tr><td>Amount to be waived off</td><td>0 by default and not editable. OPS can enter the amount only after selecting the checkbox of
@@ -180,7 +188,7 @@ that charge; it cannot be more than the balance (Amount of Charges – Waived of
 <tr><td>0 (every charge waived in full)</td><td>Full waive-off</td></tr>
 </tbody></table>
 {fig('02_table_default.png', 'Default – nothing selected, Waive-off button disabled')}
-{fig('03_table_selected.png', 'Processing Fee selected and ₹500 entered – Payable ₹1,268.82, Waive-off button enabled')}
+{fig('03_table_selected.png', 'Processing Fee* selected and ₹500 entered – Payable ₹1,268.82, Waive-off button enabled')}
 <h2>5. Waive-off reconfirmation:</h2>
 <ul>
 <li>On <b>Waive-off</b>, show the pop-up <b>“Are you sure you want to waive-off selected charges?”</b> with <b>No, don’t</b>,
@@ -209,7 +217,7 @@ the product team in Cc: the LAN, customer name, amount waived, type of waive-off
 Waived Off, Payable Charges, Total), who waived it off and when.
 <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 12).</li>
 </ul>
-{fig('06_table_balance.png', 'After waiving ₹500 of the Processing Fee – Waived off Charges ₹500, Payable Charges ₹1,268.82')}
+{fig('06_table_balance.png', 'After waiving ₹500 of the Processing Fee* – Waived off Charges ₹500, Payable Charges ₹1,268.82')}
 {fig('06b_table_full.png', 'The balance then waived in full – the charge stays in the table with Payable ₹0 and the checkbox disabled')}
 <h2>7. Reject:</h2>
 <ul>
