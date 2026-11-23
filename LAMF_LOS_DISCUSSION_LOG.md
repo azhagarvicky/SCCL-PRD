@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-11-2026 10:36 IST
+**Last Updated:** 23-11-2026 10:39 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -378,6 +378,7 @@
 | DISC-343 | 23-11-2026 | internal-communications.html, internal/IC-12.html, brd-waive-off.html | Internal mail after a waive-off | Owner: “After the waive-off the internal communication has to send so create the content format” | New internal alert 12 “Charges Waived Off” (tools/internal_comms.py): trigger – OPS waives off charges in the Approvals tab of a pledged DRAFT LAN (after Yes, waive-off); subject “Status Update | {{LAN}} | Charges Waived Off”; body – amount waived, LAN, customer, type of waive-off, breakup table (Charges Name / Amount of Charges / Amount Waived Off / Payable Charges / Total), waived off by and when, balance collected after the rejection before the de-pledge. To Treasury (Natarajan K), Cc OPS and product team – recipients to be confirmed. Mail view supports a breakup table (lines starting with “|”). Waiver BRD section 6 gets an “Internal mail” bullet with a link to the format. | Implemented |
 | DISC-344 | 23-11-2026 | internal/IC-12.html | Charges Waived Off mail – last line reworded | Owner gave the line: “Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} will be collected from the customer before the units are de-pledged.” | Removed “after the rejection,” from the last line of alert 12. | Implemented |
 | DISC-345 | 23-11-2026 | lms.html, brd-waive-off.html | “Waived off Charges” column in the Waive-off charges table | Owner (screenshot of the table): “here add one more column that waived off charges” | New column after Amount of Charges: Waived off Charges – amount already waived for that charge (₹0 at first, goes up after each waive-off), with a total. Amount of Charges now stays the original charge; Amount to be waived off is capped at the balance; Payable Charges = Amount of Charges – Waived off Charges – Amount to be waived off. A fully waived charge is still removed from the table. LMS prototype and Waiver BRD (column table, section 6, scenario tables, screenshots 02 / 03 / 06) updated. | Implemented |
+| DISC-346 | 23-11-2026 | lms.html, brd-waive-off.html | Fully waived charge stays in the table | Owner (screenshots): “once charges waived instead of removed just keep like this.” | A charge waived in full is no longer removed: it stays with the full amount in Waived off Charges, Payable Charges ₹0 and its checkbox disabled (select all skips it). When every charge is waived, the table stays and “All charges have been waived off – nothing is payable.” shows below it. Waiver BRD section 6 updated, with a new screenshot (06b). Replaces the removal rule of DISC-339 / DISC-341. | Implemented |
 
 ---
 
