@@ -188,6 +188,10 @@ waived and the balance payable. OK closes it.</li>
 the amount goes back to 0, so the balance can be waived again later.</li>
 <li>When all the charges are waived in full, the table shows “All charges have been waived off – nothing is payable.”</li>
 <li>Waive-off and rejection are separate actions: OPS can waive off first and reject afterwards.</li>
+<li><b>Internal mail:</b> after every waive-off, LMS sends the internal mail <b>“Charges Waived Off”</b> to Treasury, with OPS and
+the product team in Cc: the LAN, customer name, amount waived, type of waive-off, the charges breakup (Amount of Charges, Amount
+Waived Off, Payable Charges, Total), who waived it off and when.
+<a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 12).</li>
 </ul>
 {fig('06_table_balance.png', 'After waiving ₹500 of Lien Marking Charges – only the balance ₹31 is shown')}
 <h2>7. Reject:</h2>
