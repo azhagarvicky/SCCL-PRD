@@ -734,15 +734,22 @@ DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, samp
   "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are equal to zero (full waive-off) – the communication has no payment link; the units are de-pledged. Waiver BRD.",
   "07_Draft_Application_Rejected", {"{{LOAN_ID}}": "SCCLMF20261100079"}),
 ]
-for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS:   # added at the end so the existing row numbers stay
-    base = next(r for r in COMMS if r[0] == _src)
+for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges Payment Received",
+  "When the customer pays the charges in the LOS through the payment link after the DRAFT LAN is rejected (payment successful) – the receipt is generated, stored in the LMS Documents tab and attached to the mail. Waiver BRD.",
+  "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100079", "{{AMOUNT_PAID}}": "149", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
+                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/000149"})]:   # added at the end so the existing row numbers stay
+    base = next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
+        # SMS drafted by Claude for approval – to be created and registered (DISC-351)
+        "Dear {#alp#}, We have received your payment of Rs. {#alp#} for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
+        "Dear AZHAGARSAMY, We have received your payment of Rs. 149 for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
+        "SGRCDT-T", "No – to be created", "Required")
     m = next(x for x in _NM if x[0] == fname)
     body = _nm_text(fname)
     sample = body.replace("{{CUSTOMER_NAME}}", "AZHAGARSAMY")
     for k, v in subs.items():
         sample = sample.replace(k, v)
     subj = m[2]
-    COMMS.append((stage, scen, "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
+    COMMS.append((stage, scen, "LOS" if stage == "Charges Payment Received" else "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
                                                        f"No – to be created [[view:new-mails/{fname}.html]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 # SMS Status “Not Required” → Mail Status “Not Required” too (DISC-242)
@@ -847,7 +854,9 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              "{{Waived Amount}}": "500.00", "{{Waive-off Type}}": "Partial waive-off", "{{OPS User Name}}": "OPS user",
              "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "149.00",
              # DRAFT Application Rejected alert (DISC-348)
-             "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM"}
+             "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM",
+             # Charges Payment Received alert (DISC-351)
+             "{{Amount Paid}}": "149.00", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/000149"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
 
@@ -1066,6 +1075,12 @@ with open(os.path.join(ROOT, "communications.html"), "w") as f:
 from lms import lms_body
 with open(os.path.join(ROOT, "lms.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")))
+# LOS charges payment after a DRAFT rejection and the payment receipt (DISC-351); data in tools/charges_payment.py
+import charges_payment as _cp
+with open(os.path.join(ROOT, "charges-payment.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – LOS Charges Payment", cls="page-cp", body=_cp.body()))
+with open(os.path.join(ROOT, "charges-receipt.html"), "w") as f:
+    f.write(_cp.receipt())
 # New customer mails from the additional scenarios sheet – separate list page + one HTML per mail (DISC-304)
 from new_mails import NEW_MAILS, mail_html, list_body as new_mails_body
 os.makedirs(os.path.join(ROOT, "new-mails"), exist_ok=True)

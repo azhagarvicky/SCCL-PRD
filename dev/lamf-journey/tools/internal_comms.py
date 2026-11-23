@@ -377,4 +377,36 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])]),
+ # DISC-351 – Waiver BRD: the customer pays the charges in the LOS after a DRAFT rejection – Treasury has to confirm in LMS
+ # before the de-pledge. To Treasury, Cc OPS – same recipients as the Charges Waived Off alert (DISC-347).
+ ('REJECTED',
+  'NA',
+  'The customer pays the charges in the LOS (payment link) after the DRAFT LAN is rejected – payment successful',
+  'Action Required | {{LAN}} | Charges Payment Received – Treasury Confirmation',
+  'Charges Payment Received',
+  '{{To User Name}}',
+  'Customer {{Customer Name}} has paid charges of {{Amount Paid}} for {{LAN}} (REJECTED).\n'
+  '| Charges Name | Amount of Charges | Waived off Charges | Amount Paid\n'
+  '| Lien Marking Charges | 531.00 | 500.00 | 31.00\n'
+  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
+  '| Total | 649.00 | 500.00 | 149.00\n'
+  'Transaction ID: {{Transaction ID}}. Paid on: {{Payment Date & Time}}. Receipt No.: {{Receipt No}} (saved in the Documents tab of the LAN). '
+  'The accounting entries have been posted in UNO.\n'
+  'Please verify the payment and confirm it in LMS (Approvals tab of the LAN). The de-pledge of the units can be initiated only after '
+  'your confirmation.',
+  [('Any Sanction amount',
+    ['k.natarajan@shriramcredit.in'],
+    ['satyaparida@shriramcredit.in',
+     'richajayswal@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'vijayamr@shriramcredit.in',
+     'satyanarayan@shriramcredit.in',
+     'ganga@shriramcredit.in',
+     'lalithak@shriramcredit.in',
+     'nadanakumar@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])])]

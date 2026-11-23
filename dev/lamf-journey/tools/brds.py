@@ -242,20 +242,50 @@ Approved by, Initiated by with the note). Examples:
   <li>“Application rejected – LAN status changed from DRAFT to REJECTED (partial waive-off; charges payable ₹149.00)”</li></ul></li>
 </ul>
 {fig('10_audit.png', 'Audit tab – waive-off and rejection entries')}
-<h2>9. After the rejection:</h2>
+<h2>9. Charges payment by the customer:</h2>
+<p>Applies when the Payable Charges are not zero on rejection (partial waive-off or no waive-off). With a full waive-off nothing is
+payable and the units can be de-pledged right after the rejection.
+<a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
 <ul>
-<li><b>Customer communication:</b> only after the rejection – with the payment link for partial or no waive-off, without it for
-a full waive-off.</li>
-<li><b>Payment:</b> through the payment link (after OTP verification), or in LOS, where a new page shows the total charges, the
-breakup and a Pay button. After the rejection, paying is the only option in LOS; the Curated Offers page shows a fresh product
-card to start a new application.</li>
-<li><b>After the payment:</b> the UNO entry is posted, and an internal mail goes to Treasury (Natarajan K) with the LAN, the amount
-and the breakup. Treasury confirms the payment in LMS. The system then generates the receipt, saves it in the LAN’s Documents tab,
-and sends it to the customer with a payment received SMS and mail.</li>
-<li><b>De-pledge:</b> full waive-off – right after the rejection. Partial or no waive-off – only after the Treasury confirmation;
-until then the de-pledge option stays disabled.</li>
-<li><b>Accounting:</b> UNO entries only for what the customer actually pays, when it is received. Waived charges never go into UNO.</li>
+<li>The customer clicks the payment link in the rejection SMS or mail and is taken to the LOS, where the mobile number is verified
+with an OTP.</li>
+<li>After the OTP is verified, the LOS shows the <b>Pay Charges</b> page: the total charges with the breakup (Charges, Amount of
+Charges, Waived off, Payable, Total), the Total Payable and a <b>Pay</b> button. There is <b>no option for partial payment</b> – the
+full amount is paid in one payment. After the rejection, paying the charges is the only option for this application in the LOS; the Curated Offers page
+shows a fresh product card to start a new application.</li>
+<li><b>Payment failed:</b> nothing changes – no update in the LOS or LMS, no communication, no accounting entry. The customer is back
+on the Pay Charges page and can pay again.</li>
+<li><b>Payment successful:</b>
+  <ul><li>The LOS shows <b>“Payment successful”</b> with the amount paid, transaction ID, date and receipt number, and the message
+  <b>“Your lien removal will be initiated soon.”</b></li>
+  <li>The accounting entries are posted in <b>UNO immediately</b> – only for what the customer paid. Waived charges never go into UNO.</li>
+  <li>The <b>receipt</b> is generated and stored in the LMS, in the <b>Documents</b> tab of the LAN.</li>
+  <li>An internal event mail <b>“Charges Payment Received”</b> is sent to Treasury and OPS, asking Treasury to confirm the payment
+  in LMS. <a href="internal/IC-14.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 14).</li>
+  <li>The customer gets the <b>payment received SMS and mail with the receipt attached</b>.
+  <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">View the mail</a> (Customer Communications, row 38).</li></ul></li>
+<li><b>Treasury confirmation in LMS:</b> the payment is not taken as final in LMS directly. The Approvals tab of the LAN shows the
+payment received, pending Treasury confirmation, with a <b>Confirm Payment</b> button for the Treasury team (with a reconfirmation
+pop-up). Only after Treasury confirms can the <b>de-pledge be initiated</b>; until then the Initiate De-pledge button stays disabled.</li>
+<li>Every step is recorded in the Audit tab: payment received with the receipt number, payment confirmed by Treasury, de-pledge initiated.</li>
 </ul>
+<div class="brd-figs">
+{fig('11_los_link.png', 'Payment link in the rejection SMS', 'sm')}
+{fig('12_los_otp.png', 'LOS – OTP verification', 'sm')}
+</div>
+{fig('13_los_pay.png', 'LOS – Pay Charges: total charges with the breakup and one Pay button (no partial payment)')}
+<div class="brd-figs">
+{fig('14_los_gateway.png', 'Payment gateway (simulated) – success or failure', 'sm')}
+{fig('15_los_success.png', 'LOS – payment successful: lien removal will be initiated soon', 'sm')}
+</div>
+{fig('16_receipt.png', 'Payment receipt – stored in the LMS Documents tab and sent to the customer', 'sm')}
+{fig('17_lms_await.png', 'LMS Approvals tab after the rejection – awaiting the customer’s payment, de-pledge disabled')}
+{fig('18_lms_received.png', 'Payment received – pending Treasury confirmation (Confirm Payment)')}
+<div class="brd-figs">
+{fig('19_lms_confirm_pop.png', 'Treasury confirmation pop-up', 'sm')}
+</div>
+{fig('20_lms_confirmed.png', 'Payment confirmed by Treasury – de-pledge can be initiated')}
+{fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
 <h2>10. Waive-off for Submitted, Account Opened and Active loans:</h2>
 <ul>
 <li>Submitted and Account Opened loans (scenarios 5 and 6): the same Waive-off charges table is added above the existing Decline
