@@ -150,8 +150,8 @@ de-pledged.</p>
 <table class="brd-table"><thead><tr><th>From</th><th>Can change to</th><th>When</th></tr></thead><tbody>
 <tr><td rowspan="3">DRAFT</td><td>REJECTED</td><td>Only when the units are pledged – OPS rejects the application (with or without a waive-off, after the
 maker → checker → Treasury approval).</td></tr>
-<tr><td>INACTIVE</td><td>Units not pledged – moves to INACTIVE (after 30 days from the LAN generated date). Units pledged – can also move to
-INACTIVE.</td></tr>
+<tr><td>INACTIVE</td><td>Only when the units are <b>not pledged</b> – moves to INACTIVE after 30 days from the LAN generated date. A pledged
+DRAFT loan never moves to INACTIVE.</td></tr>
 <tr><td>SUBMITTED</td><td>The customer completes the journey and submits the application.</td></tr>
 <tr><td rowspan="2">SUBMITTED</td><td>ACCOUNT OPENED</td><td>OPS approves the Loan Account Opening.</td></tr>
 <tr><td>REJECTED</td><td>OPS rejects the Loan Account Opening.</td></tr>
@@ -160,8 +160,8 @@ INACTIVE.</td></tr>
 <tr><td>ACTIVE</td><td>CLOSED</td><td>Foreclosure, tenure completion or invocation.</td></tr>
 </tbody></table>
 <ul>
-<li><b>Pledged DRAFT loan:</b> DRAFT → REJECTED, or DRAFT → INACTIVE, or DRAFT → SUBMITTED.</li>
-<li><b>Not pledged DRAFT loan:</b> DRAFT → INACTIVE, or DRAFT → SUBMITTED (no rejection – nothing to de-pledge).</li>
+<li><b>Pledged DRAFT loan</b> (S 2 – S 4): DRAFT → REJECTED or DRAFT → SUBMITTED only.</li>
+<li><b>Not pledged DRAFT loan</b> (S 1): DRAFT → INACTIVE only (no rejection – nothing to de-pledge).</li>
 <li>A DRAFT, SUBMITTED or ACCOUNT OPENED loan is never CLOSED; only an ACTIVE loan is closed. De-pledge is allowed only for a REJECTED
 or CLOSED LAN.</li>
 </ul>
@@ -322,7 +322,8 @@ request will be cancelled.”</b></li>
 </ul>
 {fig('05_pending.png', 'Treasury – pending Treasury L1 approval: approve or decline only')}
 <p><b>Decline by the checker or Treasury</b> – the request is <b>cancelled</b>: nothing is waived, the LAN stays in DRAFT, the table,
-notes and files are cleared, and the maker can submit a new request. Every step (submit, checker approval or decline, Treasury approval
+notes and files are cleared, and the maker can submit a new request. Internal mail <b>“Waive-off Request Declined”</b> goes to the
+maker with the remark (<a href="internal/IC-17.html" target="_blank" rel="noopener">alert 17</a>). Every step (submit, checker approval or decline, Treasury approval
 or decline) is recorded in the Audit tab with Approved by / Initiated by and the note or remark.</p>
 <div class="brd-figs">
 {fig('08_pop_approve.png', 'Treasury approval pop-up (existing irreversible pop-up)', 'sm')}
@@ -331,7 +332,7 @@ or decline) is recorded in the Audit tab with Approved by / Initiated by and the
 {fig('09_rejected.png', 'Approved by the checker and Treasury – waive-off applied and LAN rejected')}
 <h2>7. After the approval (rejection):</h2>
 <ul>
-<li>A DRAFT loan is never closed; it can only move to Rejected (units pledged), Inactive or Submitted (section 2, LAN status changes).</li>
+<li>A DRAFT loan is never closed: a pledged DRAFT loan can only move to Rejected or Submitted; a not pledged one only to Inactive (section 2, LAN status changes).</li>
 <li>After the approval, the communication is sent to the customer automatically:
   <ul><li><b>Payable Charges equal to zero (Full waive-off):</b> the communication is sent <b>without</b> a payment link.</li>
   <li><b>Payable Charges not equal to zero (Partial waive-off or No waive-off):</b> the communication is sent <b>with</b> a payment
@@ -366,6 +367,9 @@ with an OTP.</li>
 Amount – the amount payable for each charge – and Total; the waived amounts are not shown to the customer), the Total Payable and a <b>Pay</b> button. There is <b>no option for partial payment</b> – the
 full amount is paid in one payment. After the rejection, paying the charges is the only option for this application in the LOS; the Curated Offers page
 shows a fresh product card to start a new application.</li>
+<li><b>Customer does not pay:</b> a <b>reminder SMS and mail is sent once a month</b> with the payment link, until the customer pays.
+There is no time limit; the units stay lien-marked until the payment is received and confirmed.
+<a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">View the mail</a> (Customer Communications, row 39).</li>
 <li><b>Payment failed:</b> nothing changes – no update in the LOS or LMS, no communication, no accounting entry. The customer is back
 on the Pay Charges page and can pay again.</li>
 <li><b>Payment successful:</b>
@@ -419,7 +423,11 @@ navigates to the <b>Waive-off</b> page of that LAN:
   amount above the charge, the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off /
   Yes, Waive Off / ×) with the type of waive-off, and the <b>maker → checker → Treasury</b> approval by the sanction loan amount (maker:
   note and file mandatory; checker: note mandatory, file too if the amounts are changed; Treasury: approve or decline only; a decline
-  cancels the request), with the internal mails and the Audit;</li>
+  cancels the request), with the Audit and the internal mails
+  <a href="internal/IC-18.html" target="_blank" rel="noopener">Checker Approval Required – Waive-off</a> (alert 18),
+  <a href="internal/IC-19.html" target="_blank" rel="noopener">Approval Required – Waive-off</a> (alert 19),
+  <a href="internal/IC-20.html" target="_blank" rel="noopener">Waive-off Approved</a> (alert 20) and, on a decline,
+  <a href="internal/IC-17.html" target="_blank" rel="noopener">Waive-off Request Declined</a> (alert 17);</li>
   <li>there is no rejection for an active loan: on the Treasury approval the waived amount is posted in the Statement of Account with a
   waiver narration and the Amount shows the balance; a fully waived charge cannot be selected again.</li></ul></li>
 </ul>
@@ -434,11 +442,8 @@ navigates to the <b>Waive-off</b> page of that LAN:
 <h2>11. Scenarios</h2>
 {scen}
 <h2>12. Open points</h2>
-<ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
-<li>Active loans: the internal mail templates for the active waive-off (checker / Treasury approval required, approved).</li>
-<li>Pledged DRAFT loan → INACTIVE: when does it happen (after how many days, automatically or by OPS), and what happens to the
-pledged units and the charges then (de-pledge is allowed only for a REJECTED or CLOSED LAN)?</li>
-<li>Should the maker get a mail when the checker or Treasury declines (today: Audit entry only)?</li></ul>
+<ul><li>None at the moment – all the points raised so far are answered in this BRD (recipients of the new internal mails 16 – 20 and
+the new SMS templates are to be confirmed and registered).</li></ul>
 """
 
 

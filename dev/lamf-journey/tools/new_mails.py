@@ -188,6 +188,24 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
            "CAMS/KFintech once your units are fully unlocked."),
       SUPPORT],
      "Sent after the customer pays the charges (DRAFT rejection, Waiver BRD). Attachment: Payment Receipt PDF."),
+    # DISC-372 – monthly reminder to pay the charges after a rejection with a payment link (Waiver BRD section 9); sent once a month
+    # until the customer pays – the units stay lien-marked till then.
+    ("09_Charges_Payment_Reminder", "Reminder &ndash; Payment of Charges",
+     "Reminder: Pay the Charges to Unpledge Your Mutual Fund Units {{LOAN_ID}}",
+     "The charges for your rejected Loan Against Mutual Fund application are still pending.",
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{TOTAL_PAYABLE}}", "{{REJECTION_DATE}}", "{{PAYMENT_LINK}}"],
+     [badge("Payment of charges is pending", "warn"),
+      para("This is a reminder that the charges for your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>), rejected on "
+           "{{REJECTION_DATE}}, are still pending. Your Mutual Fund units remain pledged with Shriram Credit Company Limited (SCCL) until "
+           "the charges are paid.", pad="22px 48px 0 48px"),
+      details("Charges Payable", [("Loan Application ID", "{{LOAN_ID}}"), ("Amount Payable", "&#8377;{{TOTAL_PAYABLE}}")]),
+      para("Please use the below link to make the payment. The full amount has to be paid in one payment.", pad="22px 48px 0 48px"),
+      para(link("https://lamf.shriramcredit.in/user/loans/"), align="center"),
+      para("or", pad="12px 48px 0 48px", align="center", color="#555555"),
+      button("Pay Charges &rarr;", "{{PAYMENT_LINK}}"),
+      para("Once the payment is received, the lien removal of your Mutual Fund units will be initiated.", pad="22px 48px 0 48px"),
+      SUPPORT],
+     "Sent once a month until the customer pays the charges (Waiver BRD section 9)."),
 ]
 
 

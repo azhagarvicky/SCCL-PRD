@@ -737,8 +737,15 @@ DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, samp
 for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges Payment Received",
   "When the customer pays the charges in the LOS through the payment link after the DRAFT LAN is rejected (payment successful) – the receipt is generated, stored in the LMS Documents tab and attached to the mail. Waiver BRD.",
   "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{AMOUNT_PAID}}": "1,268.82", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
-                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/11/000149"})]:   # added at the end so the existing row numbers stay
-    base = next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
+                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/11/000149"}),
+  (None, "Charges Payment Reminder",
+  "Once a month after the rejection, until the customer pays the charges through the payment link (partial or no waive-off). The units stay lien-marked until the payment. Waiver BRD.",
+  "09_Charges_Payment_Reminder", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{TOTAL_PAYABLE}}": "1,268.82", "{{REJECTION_DATE}}": "23-11-2026"})]:   # added at the end so the existing row numbers stay
+    base = (None, None, None, "SMS, Mail", "SCCL",   # reminder SMS drafted by Claude for approval (DISC-372)
+        "Dear {#alp#}, Reminder: charges of Rs. {#alp#} for your rejected LAMF application are pending. Pay here to unpledge your MF units: {#urg#} - Shriram Credit",
+        "Dear AZHAGARSAMY, Reminder: charges of Rs. 1,268.82 for your rejected LAMF application are pending. Pay here to unpledge your MF units: https://lamf.shriramcredit.in/user/loans/ - Shriram Credit",
+        "SGRCDT-T", "No – to be created", "Required") if stage == "Charges Payment Reminder" else \
+        next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
         # SMS drafted by Claude for approval – to be created and registered (DISC-351)
         "Dear {#alp#}, We have received your payment of Rs. {#alp#} for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
         "Dear AZHAGARSAMY, We have received your payment of Rs. 1,268.82 for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
@@ -749,7 +756,7 @@ for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges P
     for k, v in subs.items():
         sample = sample.replace(k, v)
     subj = m[2]
-    COMMS.append((stage, scen, "LOS" if stage == "Charges Payment Received" else "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
+    COMMS.append((stage, scen, "LOS" if stage in ("Charges Payment Received", "Charges Payment Reminder") else "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
                                                        f"No – to be created [[view:new-mails/{fname}.html]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 # SMS Status “Not Required” → Mail Status “Not Required” too (DISC-242)
@@ -858,6 +865,8 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              # Waive-off & Rejection approval alerts (DISC-361)
              "{{Submitted Date & Time}}": "23-11-2026 11:25 AM", "{{Approval Date & Time}}": "23-11-2026 12:05 PM",
              "{{OPS Maker Name}}": "OPS L1 user", "{{OPS Checker Name}}": "OPS L2 user", "{{Checker Approval Date & Time}}": "23-11-2026 11:45 AM",
+             # Decline and Active waive-off alerts (DISC-372)
+             "{{Declined By}}": "Treasury L1 (Natarajan K)", "{{Declined Date & Time}}": "23-11-2026 12:10 PM", "{{Decline Remark}}": "Waive-off amount not justified", "{{Waive-off Reason}}": "Customer goodwill – charges waived",
              # Charges Payment Received alert (DISC-351)
              "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/000149",
              # Charges Received – Initiate De-pledge alert (DISC-359)
