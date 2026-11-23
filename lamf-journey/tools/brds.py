@@ -171,12 +171,10 @@ or CLOSED LAN.</li>
 <li>Need approvals tab in the DRAFT LOAN section, which is currently available in the ACTIVE, SUBMITTED and ACCOUNT OPENED LOANS.</li>
 <li>The tab has two parts: <b>Waive-off charges</b> at the top, and <b>Add a note</b>, <b>Upload a file</b> and the <b>Reject</b>
 button at the bottom. A DRAFT loan cannot be approved, so there is no Approve button.</li>
-<li><b>Until the LAN status is ACTIVE, the waive-off is not a separate event:</b> it goes with the <b>Reject</b> (DRAFT, SUBMITTED,
-ACCOUNT OPENED) or with the <b>Approve</b> (SUBMITTED, ACCOUNT OPENED) as one event. The OPS maker enters the amounts to be waived
-off together with the reject or approve, and the request goes to the OPS checker for approval and then to Treasury for the final
-approval.</li>
-<li><b>Once the LAN status is ACTIVE, the waive-off is a standalone event</b> – there is no approve or reject of the loan; it is done
-from the ≡ menu → Waive-off page (section 10).</li>
+<li><b>Before the loan is Active:</b> waive-off is done together with Reject or Approve, as one request.</li>
+<li>Reject: Draft, Submitted and Account Opened loans. Approve: Submitted and Account Opened loans.</li>
+<li>Flow: OPS maker → OPS checker → Treasury.</li>
+<li><b>After the loan is Active:</b> waive-off is a separate request, from the ≡ menu → Waive-off.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Sanction loan amount</th><th>Maker</th><th>Checker</th><th>Final approval</th></tr></thead><tbody>
 <tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2 or OPS L3</td><td>Treasury L1, L2 or L3</td></tr>
