@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 00:09 IST
+**Last Updated:** 24-11-2026 00:12 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -412,6 +412,7 @@
 | DISC-377 | 23-11-2026 | brd-waive-off.html | S 5 – three approve options | Owner: S 6 approval has three options – need the same for S 5 | S 5 (SUBMITTED) now: S 5.1 Approve Without Waive-off, S 5.2 Approve With Full Waive-off, S 5.3 Approve With Partial Waive-off (→ ACCOUNT OPENED), S 5.4 – S 5.6 Reject Without / With Full / With Partial Waive-off (→ REJECTED). Summary table, “What OPS can do” and the S 5 outcomes in section 11 updated (approve with a waive-off goes through the maker → checker → Treasury approval; waived amounts never go into UNO). Replaces the single “S 5.1 Approve” (DISC-370). Word file not regenerated. | Implemented |
 | DISC-378 | 23-11-2026 | brd-waive-off.html | Waiver BRD section 3 – two lines removed, one-event rule restated | Owner: remove “Treasury is the same team as Accounts…” and “Show it after the Overview tab, only for a DRAFT loan whose units are pledged”; waive-off and rejection are one event until the LAN is ACTIVE, and the same for approve; in ACTIVE the waive-off is a standalone event | Both lines removed (replaces the Treasury = Accounts line of DISC-371). The one-event bullet now says: until ACTIVE the waive-off goes with the Reject (DRAFT, SUBMITTED, ACCOUNT OPENED) or the Approve (SUBMITTED, ACCOUNT OPENED) as one event, maker → checker → Treasury; once ACTIVE the waive-off is a standalone event from the ≡ menu (section 10). | Implemented |
 | DISC-379 | 24-11-2026 | brd-waive-off.html | One-event rule in simple English | Owner: the bracketed wording is not understandable – write only the logic, in simple English | Section 3 now: “Before the loan is Active: waive-off is done together with Reject or Approve, as one request.” / “Reject: Draft, Submitted and Account Opened loans. Approve: Submitted and Account Opened loans.” / “Flow: OPS maker → OPS checker → Treasury.” / “After the loan is Active: waive-off is a separate request, from the ≡ menu → Waive-off.” Owner prefers short, plain lines without brackets. | Implemented |
+| DISC-380 | 24-11-2026 | brd-waive-off.html | Whole Waiver BRD in simple English | Owner: like that simple English, with the actual content – no filler | Sections 1 – 12 rewritten as short plain lines with only the logic (no brackets / long sentences): Purpose; LAN status changes; Approvals tab with “Who approves” table and the note / file rules; Waive-off charges (rules, charges by scenario, fee structure, columns); Reject or Approve – maker; Checker and Treasury; customer communication; Audit; charges payment; Active loan waive-off; Scenarios; open points. Scenario outcomes and “What OPS can do” also simplified (e.g. “Rejected. Part of the charges waived. LAN → REJECTED.”). Rules, tables, screenshots and links unchanged. Page text ~36k → ~21k characters. BRD summary line simplified; updated date set. Owner style preference recorded: simple English, actual content only. | Implemented |
 
 ---
 

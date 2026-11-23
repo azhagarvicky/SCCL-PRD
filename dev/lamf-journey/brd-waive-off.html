@@ -4,327 +4,224 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=4b5a8a0">
+<link rel="stylesheet" href="assets/lamf.css?v=34e33b3">
 </head>
-<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 23-11-2026 · One common process to waive the charges fully, partially or not at all, collect the balance from the customer and allow the de-pledge only after Treasury confirms the payment.</p><div class="brd-body">
+<body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
-<p>When a customer drops off after pledging the mutual fund units, some charges are already incurred. Today SCCL bears them.
-This BRD gives one common process to waive these charges fully, partially or not at all – for DRAFT, SUBMITTED and ACCOUNT OPENED
-loans in the Approvals tab and for ACTIVE loans from the ≡ menu – with an OPS maker, an OPS checker and the Treasury approval; to reject
-a pledged DRAFT loan; and to collect the balance from the customer (payment link, receipt, Treasury confirmation) before the units are
-de-pledged.</p>
+<ul>
+<li>When a customer drops off after pledging, some charges are already incurred. Today SCCL bears them.</li>
+<li>This BRD lets OPS waive these charges (full, partial or none), reject or approve the loan, and collect the balance from the
+customer before the units are de-pledged.</li>
+</ul>
 <h2>2. Summary of scenarios</h2>
-<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th><th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th><th>LAN status can change to</th><th class='ops'>What OPS can do</th></tr></thead><tbody><tr><td class='c'>S 1</td><td>DRAFT</td><td>Before pledging the mutual funds</td><td>None</td><td colspan='2' class='wo'>Not applicable</td><td class='to'>INACTIVE (after 30 days)</td><td>No action needed. The loan moves to INACTIVE automatically after 30 days.</td></tr><tr><td rowspan='3' class='c'>S 2</td><td rowspan='3'>DRAFT</td><td rowspan='3'>After pledging the mutual funds</td><td rowspan='3'>Lien Marking Charge<br>Lien Removal Charge</td><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 2.1 – Reject Without Waive-off</td><td class='to'>REJECTED</td><td rowspan='3'>Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.</td></tr><tr><td class='wo'>S 2.2 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 2.3 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='3' class='c'>S 3</td><td rowspan='3'>DRAFT</td><td rowspan='3'>After the Sanction Letter is generated (units pledged)</td><td rowspan='3'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 3.1 – Reject Without Waive-off</td><td class='to'>REJECTED</td><td rowspan='3'>Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.</td></tr><tr><td class='wo'>S 3.2 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 3.3 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='3' class='c'>S 4</td><td rowspan='3'>DRAFT</td><td rowspan='3'>After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)</td><td rowspan='3'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 4.1 – Reject Without Waive-off</td><td class='to'>REJECTED</td><td rowspan='3'>Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.</td></tr><tr><td class='wo'>S 4.2 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 4.3 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='6' class='c'>S 5</td><td rowspan='6'>SUBMITTED</td><td rowspan='6'>After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)</td><td rowspan='6'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Approve</td><td class='wo'>S 5.1 – Approve Without Waive-off</td><td class='to'>ACCOUNT OPENED</td><td rowspan='6'>Approve the Loan Account Opening (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).</td></tr><tr><td class='wo'>S 5.2 – Approve With Full Waive-off</td><td class='to'>ACCOUNT OPENED</td></tr><tr><td class='wo'>S 5.3 – Approve With Partial Waive-off</td><td class='to'>ACCOUNT OPENED</td></tr><tr><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 5.4 – Reject Without Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 5.5 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 5.6 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='6' class='c'>S 6</td><td rowspan='6'>ACCOUNT OPENED</td><td rowspan='6'>After the Loan Account Opening</td><td rowspan='6'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Approve</td><td class='wo'>S 6.1 – Approve Without Waive-off</td><td class='to'>ACTIVE</td><td rowspan='6'>Approve the Loan Lodgement (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).</td></tr><tr><td class='wo'>S 6.2 – Approve With Full Waive-off</td><td class='to'>ACTIVE</td></tr><tr><td class='wo'>S 6.3 – Approve With Partial Waive-off</td><td class='to'>ACTIVE</td></tr><tr><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 6.4 – Reject Without Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 6.5 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 6.6 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='3' class='c'>S 7</td><td rowspan='3'>ACTIVE</td><td rowspan='3'>After the Loan Lodgement (loan account active)</td><td rowspan='3'>Processing Fee* Charge<br>Bounce Charge<br>Penal Charge<br>Loan Renewal Charge<br>Annual Maintenance Charge (AMC)<br>Bank Swap Charge</td><td colspan='2' class='wo'>S 7.1 – Without Waive-off</td><td class='to'>No change (stays ACTIVE)</td><td rowspan='3'>Waive the charges on the active loan (≡ menu → Waive-off page): Full Waive-off, Partial Waive-off or Without waive-off, with the maker → checker → Treasury approval. The loan cannot be rejected at this stage.</td></tr><tr><td colspan='2' class='wo'>S 7.2 – With Full Waive-off</td><td class='to'>No change (stays ACTIVE)</td></tr><tr><td colspan='2' class='wo'>S 7.3 – With Partial Waive-off</td><td class='to'>No change (stays ACTIVE)</td></tr></tbody></table>
+<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th><th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th><th>LAN status can change to</th><th class='ops'>What OPS can do</th></tr></thead><tbody><tr><td class='c'>S 1</td><td>DRAFT</td><td>Before pledging the mutual funds</td><td>None</td><td colspan='2' class='wo'>Not applicable</td><td class='to'>INACTIVE (after 30 days)</td><td>No action. Moves to INACTIVE after 30 days.</td></tr><tr><td rowspan='3' class='c'>S 2</td><td rowspan='3'>DRAFT</td><td rowspan='3'>After pledging the mutual funds</td><td rowspan='3'>Lien Marking Charge<br>Lien Removal Charge</td><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 2.1 – Reject Without Waive-off</td><td class='to'>REJECTED</td><td rowspan='3'>Reject, with or without waive-off.</td></tr><tr><td class='wo'>S 2.2 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 2.3 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='3' class='c'>S 3</td><td rowspan='3'>DRAFT</td><td rowspan='3'>After the Sanction Letter is generated</td><td rowspan='3'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 3.1 – Reject Without Waive-off</td><td class='to'>REJECTED</td><td rowspan='3'>Reject, with or without waive-off.</td></tr><tr><td class='wo'>S 3.2 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 3.3 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='3' class='c'>S 4</td><td rowspan='3'>DRAFT</td><td rowspan='3'>After the Loan Agreement e-Sign</td><td rowspan='3'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 4.1 – Reject Without Waive-off</td><td class='to'>REJECTED</td><td rowspan='3'>Reject, with or without waive-off.</td></tr><tr><td class='wo'>S 4.2 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 4.3 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='6' class='c'>S 5</td><td rowspan='6'>SUBMITTED</td><td rowspan='6'>After the E-Mandate</td><td rowspan='6'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Approve</td><td class='wo'>S 5.1 – Approve Without Waive-off</td><td class='to'>ACCOUNT OPENED</td><td rowspan='6'>Approve or reject, with or without waive-off.</td></tr><tr><td class='wo'>S 5.2 – Approve With Full Waive-off</td><td class='to'>ACCOUNT OPENED</td></tr><tr><td class='wo'>S 5.3 – Approve With Partial Waive-off</td><td class='to'>ACCOUNT OPENED</td></tr><tr><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 5.4 – Reject Without Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 5.5 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 5.6 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='6' class='c'>S 6</td><td rowspan='6'>ACCOUNT OPENED</td><td rowspan='6'>After the Loan Account Opening</td><td rowspan='6'>Processing Fee* Charge</td><td rowspan='3' class='wo'>Approve</td><td class='wo'>S 6.1 – Approve Without Waive-off</td><td class='to'>ACTIVE</td><td rowspan='6'>Approve or reject, with or without waive-off.</td></tr><tr><td class='wo'>S 6.2 – Approve With Full Waive-off</td><td class='to'>ACTIVE</td></tr><tr><td class='wo'>S 6.3 – Approve With Partial Waive-off</td><td class='to'>ACTIVE</td></tr><tr><td rowspan='3' class='wo'>Reject</td><td class='wo'>S 6.4 – Reject Without Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 6.5 – Reject With Full Waive-off</td><td class='to'>REJECTED</td></tr><tr><td class='wo'>S 6.6 – Reject With Partial Waive-off</td><td class='to'>REJECTED</td></tr><tr><td rowspan='3' class='c'>S 7</td><td rowspan='3'>ACTIVE</td><td rowspan='3'>After the Loan Lodgement</td><td rowspan='3'>Processing Fee* Charge<br>Bounce Charge<br>Penal Charge<br>Loan Renewal Charge<br>Annual Maintenance Charge (AMC)<br>Bank Swap Charge</td><td colspan='2' class='wo'>S 7.1 – Without Waive-off</td><td class='to'>No change (stays ACTIVE)</td><td rowspan='3'>Waive-off only, from the ≡ menu. No approve or reject.</td></tr><tr><td colspan='2' class='wo'>S 7.2 – With Full Waive-off</td><td class='to'>No change (stays ACTIVE)</td></tr><tr><td colspan='2' class='wo'>S 7.3 – With Partial Waive-off</td><td class='to'>No change (stays ACTIVE)</td></tr></tbody></table>
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
 <h3>LAN status changes</h3>
-<table class="brd-table"><thead><tr><th>From</th><th>Can change to</th><th>When</th></tr></thead><tbody>
-<tr><td rowspan="3">DRAFT</td><td>REJECTED</td><td>Only when the units are pledged – OPS rejects the application (with or without a waive-off, after the
-maker → checker → Treasury approval).</td></tr>
-<tr><td>INACTIVE</td><td>Only when the units are <b>not pledged</b> – moves to INACTIVE after 30 days from the LAN generated date. A pledged
-DRAFT loan never moves to INACTIVE.</td></tr>
-<tr><td>SUBMITTED</td><td>The customer completes the journey and submits the application.</td></tr>
-<tr><td rowspan="2">SUBMITTED</td><td>ACCOUNT OPENED</td><td>OPS approves the Loan Account Opening.</td></tr>
-<tr><td>REJECTED</td><td>OPS rejects the Loan Account Opening.</td></tr>
-<tr><td rowspan="2">ACCOUNT OPENED</td><td>ACTIVE</td><td>OPS approves the Loan Lodgement.</td></tr>
-<tr><td>REJECTED</td><td>OPS rejects the Loan Lodgement.</td></tr>
-<tr><td>ACTIVE</td><td>CLOSED</td><td>Foreclosure, tenure completion or invocation.</td></tr>
-</tbody></table>
 <ul>
-<li><b>Pledged DRAFT loan</b> (S 2 – S 4): DRAFT → REJECTED or DRAFT → SUBMITTED only.</li>
-<li><b>Not pledged DRAFT loan</b> (S 1): DRAFT → INACTIVE only (no rejection – nothing to de-pledge).</li>
-<li>A DRAFT, SUBMITTED or ACCOUNT OPENED loan is never CLOSED; only an ACTIVE loan is closed. De-pledge is allowed only for a REJECTED
-or CLOSED LAN.</li>
+<li>DRAFT, not pledged (S 1): moves to INACTIVE after 30 days.</li>
+<li>DRAFT, pledged (S 2 – S 4): moves to SUBMITTED when the customer completes the journey, or to REJECTED when OPS rejects. It
+never moves to INACTIVE.</li>
+<li>SUBMITTED: moves to ACCOUNT OPENED (approve) or REJECTED (reject).</li>
+<li>ACCOUNT OPENED: moves to ACTIVE (approve) or REJECTED (reject).</li>
+<li>ACTIVE: moves to CLOSED (foreclosure, tenure completion or invocation).</li>
+<li>Only an ACTIVE loan is closed. De-pledge is allowed only for a REJECTED or CLOSED loan.</li>
 </ul>
 <h2>3. Approvals Tab:</h2>
 <ul>
-<li>Need approvals tab in the DRAFT LOAN section, which is currently available in the ACTIVE, SUBMITTED and ACCOUNT OPENED LOANS.</li>
-<li>The tab has two parts: <b>Waive-off charges</b> at the top, and <b>Add a note</b>, <b>Upload a file</b> and the <b>Reject</b>
-button at the bottom. A DRAFT loan cannot be approved, so there is no Approve button.</li>
+<li>Add the Approvals tab to DRAFT loans. Today it is only in SUBMITTED, ACCOUNT OPENED and ACTIVE loans.</li>
+<li>Top: Waive-off charges table. Bottom: Add a note, Upload a file and the Reject button.</li>
+<li>A DRAFT loan has only Reject. SUBMITTED and ACCOUNT OPENED loans have Approve and Reject.</li>
 <li><b>Before the loan is Active:</b> waive-off is done together with Reject or Approve, as one request.</li>
-<li>Reject: Draft, Submitted and Account Opened loans. Approve: Submitted and Account Opened loans.</li>
-<li>Flow: OPS maker → OPS checker → Treasury.</li>
 <li><b>After the loan is Active:</b> waive-off is a separate request, from the ≡ menu → Waive-off.</li>
 </ul>
-<table class="brd-table"><thead><tr><th>Sanction loan amount</th><th>Maker</th><th>Checker</th><th>Final approval</th></tr></thead><tbody>
-<tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2 or OPS L3</td><td>Treasury L1, L2 or L3</td></tr>
-<tr><td>₹5 lakh and above</td><td>OPS L2</td><td>OPS L3</td><td>Treasury L2 or L3 (not Treasury L1)</td></tr>
+<p><b>Who approves</b></p>
+<table class="brd-table"><thead><tr><th>Sanction amount</th><th>Maker</th><th>Checker</th><th>Final approval</th></tr></thead><tbody>
+<tr><td>Below ₹5 lakh</td><td>OPS L1</td><td>OPS L2 or L3</td><td>Treasury L1, L2 or L3</td></tr>
+<tr><td>₹5 lakh and above</td><td>OPS L2</td><td>OPS L3</td><td>Treasury L2 or L3</td></tr>
 </tbody></table>
 <ul>
-<li><b>Waive-off by the OPS team (maker and checker):</b>
-  <ul><li>For a sanction loan amount below ₹5 lakh, <b>OPS L1</b> initiates (maker) and <b>OPS L2 or OPS L3</b> reviews and approves it
-  (checker).</li>
-  <li>For a sanction loan amount of ₹5 lakh and above, <b>OPS L2</b> initiates (maker) and <b>OPS L3</b> reviews and approves it
-  (checker).</li>
-  <li>For the maker, <b>Add a note</b> and <b>Upload a file</b> are mandatory.</li>
-  <li>The checker can modify the request (the amounts to be waived off). If the checker changes the request, <b>Add a note</b> and
-  <b>Upload a file</b> are mandatory for the checker; otherwise only <b>Add a note</b> is mandatory.</li></ul></li>
-<li><b>Final approval by the Treasury team:</b> once the OPS team (maker and checker) has approved the waive-off with the rejection,
-the final approval is required from the Treasury team, also based on the sanction loan amount:
-  <ul><li>below ₹5 lakh – <b>Treasury L1, L2 or L3</b>;</li>
-  <li>₹5 lakh and above – <b>Treasury L2 or L3</b> only (Treasury L1 cannot).</li>
-  <li>The Treasury team can only <b>approve or reject</b> the request; it cannot change the amounts. <b>Add a note</b> is mandatory for
-  Treasury.</li></ul></li>
-<li><b>The same maker → checker → Treasury approval applies to every event</b> – the DRAFT rejection, the SUBMITTED approval or
-rejection, the ACCOUNT OPENED approval or rejection (with or without a waive-off) and the ACTIVE loan waive-off (DISC-373).</li>
+<li>Every request goes: OPS maker → OPS checker → Treasury. This applies to reject, approve and Active-loan waive-off.</li>
+<li>Maker: note and file are mandatory.</li>
+<li>Checker: note is mandatory. Checker can change the amounts. If changed, a file is also mandatory.</li>
+<li>Treasury: note is mandatory. Treasury can only approve or reject. Treasury cannot change the amounts.</li>
+<li>If the checker or Treasury rejects the request, the request is cancelled. Nothing is waived. The LAN status does not change.
+The maker can raise a new request.</li>
 </ul>
-<p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT LAN, Approvals tab).</p>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/01_tabs.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/01_tabs.png' alt='DRAFT LAN – Approvals tab after the Overview tab' loading='lazy'></a><figcaption>DRAFT LAN – Approvals tab after the Overview tab</figcaption></figure>
+<p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT loan, Approvals tab).</p>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/01_tabs.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/01_tabs.png' alt='DRAFT loan – Approvals tab' loading='lazy'></a><figcaption>DRAFT loan – Approvals tab</figcaption></figure>
 <h2>4. Waive-off charges:</h2>
-<h3>4.1 Before the loan is Active</h3>
 <ul>
-<li>Need a waive-off option for the applicable charges under the Approvals tab for loans in <b>DRAFT, SUBMITTED and ACCOUNT OPENED</b>
-status.</li>
-<li>Users need options for single and multiple selection of the charges (a checkbox for each charge and one to select all).</li>
-<li>Waive-off type is <b>No waive-off, Full waive-off, Partial waive-off.</b></li>
-<li>Users cannot waive an amount greater than the actual amount of the charges.</li>
-<li>Before proceeding with the waive-off action, a reconfirmation pop-up is displayed with the message <b>“Are you sure you want to
-waive off the selected charges?”</b> and the options <b>No, Don’t Waive Off</b>, <b>Yes, Waive Off</b> and a close (×) icon. For a
-DRAFT loan the waive-off goes with the rejection, so this reconfirmation is shown on <b>Reject</b>, with the type of waive-off and the
-amounts (section 5).</li>
-<li>Every waive-off needs a <b>maker and a checker</b> (OPS) and the <b>Treasury approval</b>, as per the sanction loan amount
-(section 3):
-  <ul><li>below ₹5 lakh – OPS L1 (maker) → OPS L2 or L3 (checker) → Treasury L1, L2 or L3;</li>
-  <li>₹5 lakh and above – OPS L2 (maker) → OPS L3 (checker) → Treasury L2 or L3.</li>
-  <li>Add a note and Upload a file are mandatory for the maker. The checker can modify the request; if modified, Add a note and
-  Upload a file are mandatory, otherwise only Add a note.</li>
-  <li>Treasury can only approve or reject the request; Add a note is mandatory for Treasury.</li></ul></li>
-<li>Users can see both the <b>Waived off Charges</b> and the <b>Payable Charges</b> in the Waive-off charges table before proceeding
-with the waiver action.</li>
-<li><b>After the waive-off</b> (once approved):
-  <ul><li><b>Full waive-off of a charge:</b> the checkbox is disabled because there is no amount left to waive, and the Payable Charges
-  show ₹0. When all the charges are waived in full, the message <b>“All charges have been waived off – nothing is payable.”</b> is
-  shown.</li>
-  <li><b>Partial waive-off of a charge:</b> the Waived off Charges and the Payable Charges are shown clearly. The checkbox stays
-  enabled, so the user can select the charge and request another waive-off if needed (while the loan is not yet rejected).</li></ul></li>
-<li>After every waive-off step, an internal event mail is triggered:
-  <a href="internal/IC-16.html" target="_blank" rel="noopener">checker approval required</a> (alert 16),
-  <a href="internal/IC-12.html" target="_blank" rel="noopener">Treasury approval required</a> (alert 12) and
-  <a href="internal/IC-13.html" target="_blank" rel="noopener">waive-off and rejection approved</a> (alert 13).</li>
-<li>Every waive-off is recorded in the <b>Audit</b> tab of the LAN, in the existing format (section 8).</li>
+<li>Available in the Approvals tab for DRAFT, SUBMITTED and ACCOUNT OPENED loans.</li>
+<li>Select one charge or all charges.</li>
+<li>Waive-off type: No waive-off, Full waive-off or Partial waive-off. The system sets it from the payable amount.</li>
+<li>Waive-off amount cannot be more than the charge.</li>
+<li>The table shows the waived amount and the payable amount before submitting.</li>
+<li>After approval: a fully waived charge shows Payable ₹0 and its checkbox is disabled. A partly waived charge shows the waived
+and payable amounts.</li>
+<li>When all charges are waived, the table shows “All charges have been waived off – nothing is payable.”</li>
 </ul>
-<p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT LAN, Approvals tab).</p>
-<p><b>Charges and amounts</b></p>
+<p><b>Charges by scenario</b></p>
 <ul>
-<li><b>Charges by scenario:</b>
-  <ul><li><b>Scenario 2</b> (units pledged, Sanction Letter not generated): <b>Lien Marking Charges</b> (₹450 + GST = ₹531) and
-  <b>Lien Removal Charges</b> (₹100 + GST = ₹118).</li>
-  <li><b>Scenario 3 onwards</b> (from the Sanction Letter): <b>Processing Fee*</b> only – the Lien Marking, Lien Removal and Stamp
-  Duty charges are not shown or charged separately.<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></li></ul></li>
+<li>S 2: Lien Marking ₹450 + GST (₹531) and Lien Removal ₹100 + GST (₹118).</li>
+<li>S 3 onwards: Processing Fee* only.</li>
 </ul>
-<p><b>Processing Fee* structure</b> (DISC-355) – exclusive of GST (18% GST is added):</p>
-<table class="brd-table"><thead><tr><th>Sanctioned Amount</th><th>Processing Fee*, exclusive of GST</th><th>Example</th></tr></thead><tbody>
-<tr><td>Below ₹1,50,000</td><td>₹1,499 (flat)</td><td>₹1,25,000 → ₹1,499 + GST = ₹1,768.82</td></tr>
-<tr><td>₹1,50,000 to ₹10,00,000</td><td>1% of the sanctioned amount</td><td>₹5,00,000 → ₹5,000 + GST = ₹5,900</td></tr>
-<tr><td>Above ₹10,00,000 to ₹50,00,000</td><td>0.8% of the sanctioned amount</td><td>₹20,00,000 → ₹16,000 + GST = ₹18,880</td></tr>
-<tr><td>Above ₹50,00,000</td><td>0.5% of the sanctioned amount</td><td>₹1,00,00,000 → ₹50,000 + GST = ₹59,000</td></tr>
+<p><b>Processing Fee* structure</b> (plus 18% GST)</p>
+<table class="brd-table"><thead><tr><th>Sanction amount</th><th>Processing Fee*</th><th>Example</th></tr></thead><tbody>
+<tr><td>Below ₹1,50,000</td><td>₹1,499</td><td>₹1,25,000 → ₹1,499 + GST = ₹1,768.82</td></tr>
+<tr><td>₹1,50,000 to ₹10,00,000</td><td>1%</td><td>₹5,00,000 → ₹5,000 + GST = ₹5,900</td></tr>
+<tr><td>Above ₹10,00,000 to ₹50,00,000</td><td>0.8%</td><td>₹20,00,000 → ₹16,000 + GST = ₹18,880</td></tr>
+<tr><td>Above ₹50,00,000</td><td>0.5%</td><td>₹1,00,00,000 → ₹50,000 + GST = ₹59,000</td></tr>
 </tbody></table>
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
-<p>The prototype screens use a scenario 3 sample LAN (SCCLMF20261100073) with a sanctioned amount of ₹22,400: Processing Fee* ₹1,499 +
-GST = ₹1,768.82.</p>
-<table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
-<tr><td>Checkbox</td><td>Selects one charge. The checkbox in the header selects all the charges.</td></tr>
-<tr><td>Charges Name</td><td>Scenario 2: Lien Marking Charges and Lien Removal Charges. Scenario 3 onwards: Processing Fee*
-(with the note “*Inclusive of Lien Marking, Lien Removal and Stamp Duty” below the table).</td></tr>
-<tr><td>Amount of Charges</td><td>The charge including GST (for example, Processing Fee* ₹1,768.82). It does not change after a waive-off.</td></tr>
-<tr><td>Waived off Charges</td><td>The amount waived off for that charge – ₹0 until Treasury approves the request; after the
-approval, the approved amount.</td></tr>
-<tr><td>Amount to be waived off</td><td>0 by default and not editable. OPS can enter the amount only after selecting the checkbox of
-that charge; it cannot be more than the Amount of Charges. Unselecting the checkbox sets it back to 0.</td></tr>
-<tr><td>Payable Charges</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr>
-<tr><td>Total</td><td>Total of each column</td></tr>
+<p><b>Table columns</b></p>
+<table class="brd-table"><thead><tr><th>Column</th><th>Shows</th></tr></thead><tbody>
+<tr><td>Checkbox</td><td>Select a charge. Header checkbox selects all.</td></tr>
+<tr><td>Charges Name</td><td>Lien Marking / Lien Removal (S 2) or Processing Fee* (S 3 onwards).</td></tr>
+<tr><td>Amount of Charges</td><td>Charge with GST. Does not change.</td></tr>
+<tr><td>Waived off Charges</td><td>Amount already waived. ₹0 until approved.</td></tr>
+<tr><td>Amount to be waived off</td><td>₹0 by default. Editable only after selecting the charge.</td></tr>
+<tr><td>Payable Charges</td><td>Charges – Waived – To be waived.</td></tr>
+<tr><td>Total</td><td>Total of each column.</td></tr>
 </tbody></table>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/02_table_default.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/02_table_default.png' alt='Waive-off charges – nothing selected' loading='lazy'></a><figcaption>Waive-off charges – nothing selected</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/03_table_selected.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/03_table_selected.png' alt='Processing Fee* selected, ₹500 to waive – Payable ₹1,268.82' loading='lazy'></a><figcaption>Processing Fee* selected, ₹500 to waive – Payable ₹1,268.82</figcaption></figure>
+<h2>5. Reject or Approve – maker:</h2>
 <ul>
-<li>The type of waive-off is shown below the table and is set by the system, not chosen by OPS:</li>
+<li>Reject is new for DRAFT loans. It is needed so the pledged units can be de-pledged.</li>
+<li>When to reject a DRAFT loan: after 30 days if the customer has not submitted, or earlier if the customer asks for lien
+removal.</li>
+<li>Maker selects the charges to waive (or none), adds a note, uploads a file and clicks Reject (or Approve).</li>
+<li>OPS can reject even if the payable amount is not zero.</li>
+<li>Pop-up: “Are you sure you want to reject the application with the selected waive-off?” It shows the waive-off type, the amount
+to waive and the payable amount. Buttons: No, Yes, submit, ×.</li>
+<li>On Yes, submit: the request goes to the checker. The LAN stays in the same status. Nothing is waived yet.</li>
+<li>Mail to the checker: “Checker Approval Required – Waive-off &amp; Rejection”.
+<a href="internal/IC-16.html" target="_blank" rel="noopener">View</a> (alert 16)</li>
 </ul>
-<table class="brd-table"><thead><tr><th>Payable charges</th><th>Type of waive-off</th></tr></thead><tbody>
-<tr><td>Same as the original charges (nothing waived)</td><td>No waive-off</td></tr>
-<tr><td>Less than the original charges, but not 0</td><td>Partial waive-off</td></tr>
-<tr><td>0 (every charge waived in full)</td><td>Full waive-off</td></tr>
-</tbody></table>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/02_table_default.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/02_table_default.png' alt='Default – nothing selected' loading='lazy'></a><figcaption>Default – nothing selected</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/03_table_selected.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/03_table_selected.png' alt='Processing Fee* selected and ₹500 entered – Payable ₹1,268.82, Partial waive-off' loading='lazy'></a><figcaption>Processing Fee* selected and ₹500 entered – Payable ₹1,268.82, Partial waive-off</figcaption></figure>
-<h2>5. Reject – maker (OPS):</h2>
-<ul>
-<li>Today, OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so
-that the units can be de-pledged (de-pledge is allowed only for a REJECTED or CLOSED LAN).</li>
-<li>The <b>maker</b> (OPS L1 below ₹5 lakh / OPS L2 at ₹5 lakh and above) selects the charges to waive off (or none), enters the
-rejection reason in <b>Add a note</b> and uploads a file in <b>Upload a file</b> – <b>both are mandatory</b> for the maker – and clicks
-<b>Reject</b>. Without them LMS shows “Please add the note and upload a file.”</li>
-<li><b>When:</b> after 30 days from the LAN generated date when the customer has not submitted the application, or earlier when
-the customer asks for the lien to be removed. A DRAFT loan whose units are not pledged within 30 days moves to INACTIVE
-automatically, and Reject is not offered for it (scenario 1).</li>
-<li>OPS can reject whether the Payable Charges are zero or not.</li>
-<li>On <b>Reject</b>, a pop-up asks <b>“Are you sure you want to reject the application with the selected waive-off?”</b> – <i>The
-request will be sent to the checker (OPS L2 or L3 / OPS L3) for approval</i> – showing the <b>Type of waive-off</b> (No / Partial / Full
-waive-off), the amount to be waived off and the payable charges – with <b>No</b>, <b>Yes, submit</b> and a close (×) icon. The checker’s
-approve pop-up and the Treasury’s irreversible pop-up show the same type of waive-off and amounts.</li>
-<li>On <b>Yes, submit</b>: the request is pending the checker, the maker’s note and file are locked, the LAN stays in DRAFT (shown as
-“Draft – Pending OPS L2 approval”), nothing is waived yet, and the Audit is updated.</li>
-<li>Internal mail <b>“Checker Approval Required – Waive-off &amp; Rejection”</b> goes to the checker (OPS L2 or L3 below ₹5 lakh / OPS L3 at
-₹5 lakh and above). <a href="internal/IC-16.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 16).</li>
-</ul>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/07_reject_block.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/07_reject_block.png' alt='Maker – roles, Add a note and Upload a file (both mandatory) and Reject' loading='lazy'></a><figcaption>Maker – roles, Add a note and Upload a file (both mandatory) and Reject</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/07_reject_block.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/07_reject_block.png' alt='Maker – note and file mandatory, Reject' loading='lazy'></a><figcaption>Maker – note and file mandatory, Reject</figcaption></figure>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/04_pop_submit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/04_pop_submit.png' alt='Submit pop-up – the request goes to the checker' loading='lazy'></a><figcaption>Submit pop-up – the request goes to the checker</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/04_pop_submit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/04_pop_submit.png' alt='Reject pop-up with the waive-off type' loading='lazy'></a><figcaption>Reject pop-up with the waive-off type</figcaption></figure>
 </div>
-<h2>6. Checker (OPS) and Treasury approval:</h2>
-<p><b>Checker (OPS L2 or L3 below ₹5 lakh / OPS L3 at ₹5 lakh and above)</b></p>
+<h2>6. Checker and Treasury:</h2>
+<p><b>Checker</b></p>
 <ul>
-<li>The checker sees the request (maker, type of waive-off, amounts, reason) with <b>Approve</b> and <b>Decline</b>.</li>
-<li>The checker can <b>change the amounts to be waived off</b> in the table. <b>If anything is changed, the checker note and an uploaded
-file are mandatory</b> (“The amounts were changed – please add the note and upload a file.”). Without a change, only the checker note is
-mandatory.</li>
-<li><b>Approve:</b> pop-up “Are you sure you want to approve the waive-off and rejection? The request will be sent to Treasury L1 /
-Treasury L2 for approval.” On <b>Yes, approve</b>, the amounts are locked, the LAN shows “Draft – Pending Treasury L1 approval”, the
-Audit is updated, and internal mail <b>“Approval Required – Waive-off &amp; Rejection”</b> goes to Treasury (L1, L2 or L3 below ₹5 lakh /
-L2 or L3 at ₹5 lakh and above). <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (alert 12).</li>
-<li><b>Decline:</b> the checker note is required; on confirmation the request is <b>cancelled</b> (see below).</li>
+<li>Sees the request: maker, waive-off type, amounts and reason.</li>
+<li>Can change the amounts. Note is mandatory. If amounts are changed, a file is also mandatory.</li>
+<li>Approve: request goes to Treasury. Mail to Treasury: “Approval Required – Waive-off &amp; Rejection”.
+<a href="internal/IC-12.html" target="_blank" rel="noopener">View</a> (alert 12)</li>
+<li>Reject: request is cancelled.</li>
 </ul>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – pending OPS L2 approval, note and file required if the amounts are changed' loading='lazy'></a><figcaption>Checker – pending OPS L2 approval, note and file required if the amounts are changed</figcaption></figure>
-<p><b>Treasury (Treasury L1, L2 or L3 below ₹5 lakh / Treasury L2 or L3 at ₹5 lakh and above)</b></p>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – approve or reject; can change the amounts' loading='lazy'></a><figcaption>Checker – approve or reject; can change the amounts</figcaption></figure>
+<p><b>Treasury</b></p>
 <ul>
-<li>Treasury can <b>only approve or decline</b> the request – the amounts cannot be changed. The Treasury note is mandatory for both.</li>
-<li><b>Approve:</b> the existing pop-up <b>“This action is irreversible. Are you sure you want to proceed?”</b> (No / Yes / ×). On
-<b>Yes</b>, the waive-off and the rejection are applied together and cannot be revoked:
-  <ul><li>the amounts move to <b>Waived off Charges</b> and <b>Payable Charges</b> shows the balance;</li>
-  <li>the LAN status changes from DRAFT to <b>REJECTED</b>, and the type of waive-off is final;</li>
-  <li>internal mail <b>“Waive-off &amp; Rejection Approved”</b> goes to OPS and Treasury.
-  <a href="internal/IC-13.html" target="_blank" rel="noopener">View the mail format</a> (alert 13).</li></ul></li>
-<li><b>Decline:</b> a Treasury remark is required, then the pop-up <b>“Are you sure you want to decline? The waive-off and rejection
-request will be cancelled.”</b></li>
+<li>Can only approve or reject. Cannot change the amounts. Note is mandatory.</li>
+<li>Approve: pop-up “This action is irreversible. Are you sure you want to proceed?”. On Yes, the waive-off is applied and the LAN
+status changes (REJECTED for a reject, ACCOUNT OPENED or ACTIVE for an approve).</li>
+<li>Mail to OPS and Treasury: “Waive-off &amp; Rejection Approved”.
+<a href="internal/IC-13.html" target="_blank" rel="noopener">View</a> (alert 13)</li>
+<li>Reject: request is cancelled.</li>
 </ul>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/05_pending.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_pending.png' alt='Treasury – pending Treasury L1 approval: approve or decline only' loading='lazy'></a><figcaption>Treasury – pending Treasury L1 approval: approve or decline only</figcaption></figure>
-<p><b>Decline by the checker or Treasury</b> – the request is <b>cancelled</b>: nothing is waived, the LAN stays in DRAFT, the table,
-notes and files are cleared, and the maker can submit a new request. Internal mail <b>“Waive-off Request Declined”</b> goes to the
-maker with the remark (<a href="internal/IC-17.html" target="_blank" rel="noopener">alert 17</a>). Every step (submit, checker approval or decline, Treasury approval
-or decline) is recorded in the Audit tab with Approved by / Initiated by and the note or remark.</p>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/05_pending.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_pending.png' alt='Treasury – approve or reject only' loading='lazy'></a><figcaption>Treasury – approve or reject only</figcaption></figure>
+<p><b>When the checker or Treasury rejects</b></p>
+<ul>
+<li>Request is cancelled. Nothing is waived. LAN status does not change. Table, notes and files are cleared.</li>
+<li>Mail to the maker: “Waive-off Request Declined”. <a href="internal/IC-17.html" target="_blank" rel="noopener">View</a> (alert 17)</li>
+<li>Maker can raise a new request.</li>
+</ul>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/08_pop_approve.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/08_pop_approve.png' alt='Treasury approval pop-up (existing irreversible pop-up)' loading='lazy'></a><figcaption>Treasury approval pop-up (existing irreversible pop-up)</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/08_pop_approve.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/08_pop_approve.png' alt='Treasury approval pop-up' loading='lazy'></a><figcaption>Treasury approval pop-up</figcaption></figure>
 </div>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/06_declined.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/06_declined.png' alt='Declined – request cancelled, LAN stays DRAFT' loading='lazy'></a><figcaption>Declined – request cancelled, LAN stays DRAFT</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/09_rejected.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/09_rejected.png' alt='Approved by the checker and Treasury – waive-off applied and LAN rejected' loading='lazy'></a><figcaption>Approved by the checker and Treasury – waive-off applied and LAN rejected</figcaption></figure>
-<h2>7. After the approval (rejection):</h2>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/06_declined.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/06_declined.png' alt='Request rejected – cancelled' loading='lazy'></a><figcaption>Request rejected – cancelled</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/09_rejected.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/09_rejected.png' alt='Approved – waive-off applied, LAN rejected' loading='lazy'></a><figcaption>Approved – waive-off applied, LAN rejected</figcaption></figure>
+<h2>7. Customer communication after rejection:</h2>
 <ul>
-<li>A DRAFT loan is never closed: a pledged DRAFT loan can only move to Rejected or Submitted; a not pledged one only to Inactive (section 2, LAN status changes).</li>
-<li>After the approval, the communication is sent to the customer automatically:
-  <ul><li><b>Payable Charges equal to zero (Full waive-off):</b> the communication is sent <b>without</b> a payment link.</li>
-  <li><b>Payable Charges not equal to zero (Partial waive-off or No waive-off):</b> the communication is sent <b>with</b> a payment
-  link, and the customer has to pay the charges using that link.</li></ul>
-  The SMS is the same as for the existing rejection; the mails are new:
-  <a href="new-mails/06_Draft_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">mail with the payment link</a> and
-  <a href="new-mails/07_Draft_Application_Rejected.html" target="_blank" rel="noopener">mail without the payment link</a>
-  (Customer Communications, rows 36 and 37).</li>
-<li>De-pledge: full waive-off – right after the approval; partial or no waive-off – after the customer pays and Treasury confirms
-the payment (section 9).</li>
+<li>Payable is zero (full waive-off): SMS and mail without a payment link.</li>
+<li>Payable is not zero (partial or no waive-off): SMS and mail with the payment link.</li>
+<li><a href="new-mails/06_Draft_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">Mail with the payment link</a>
+(row 36), <a href="new-mails/07_Draft_Application_Rejected.html" target="_blank" rel="noopener">mail without the payment link</a>
+(row 37). SMS same as the existing rejection SMS.</li>
+<li>De-pledge: full waive-off – right after the rejection. Partial or no waive-off – after payment and Treasury confirmation.</li>
 </ul>
 <h2>8. Audit tab:</h2>
 <ul>
-<li>Every step is recorded in the Audit tab of the LAN, in the existing format (date and time, message, Approved by, Initiated by
-with the note). Examples:
-  <ul><li>“Waive-off and rejection submitted by OPS L1 (Maker) for OPS L2 (Checker) approval (partial waive-off; amount to be waived
-  off ₹500.00; charges payable ₹1,268.82)” – initiated by the maker, with the note</li>
-  <li>“Waive-off and rejection approved by OPS L2 (Checker) with changes and sent for Treasury L1 approval (…)” – with the checker note</li>
-  <li>“Waive-off and rejection request declined by Treasury L1 – request cancelled; LAN stays in DRAFT” – with the remark</li>
-  <li>“Processing fee charge of ₹500.00 has been waived off (partial waive-off); balance ₹1,268.82” – approved by OPS L2 and Treasury L1</li>
-  <li>“Application rejected – LAN status changed from DRAFT to REJECTED (partial waive-off; charges payable ₹1,268.82)” – approved by OPS L2 and Treasury L1</li></ul></li>
+<li>Every step is recorded in the Audit tab: maker submit, checker approve or reject, Treasury approve or reject, each charge waived,
+LAN status change, payment received, payment confirmed, de-pledge.</li>
+<li>Each entry has date and time, message, approved by, initiated by and the note.</li>
+<li>Example: “Processing fee charge of ₹500.00 has been waived off (partial waive-off); balance ₹1,268.82”.</li>
 </ul>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/10_audit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/10_audit.png' alt='Audit tab – maker, checker, Treasury and rejection entries' loading='lazy'></a><figcaption>Audit tab – maker, checker, Treasury and rejection entries</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/10_audit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/10_audit.png' alt='Audit tab' loading='lazy'></a><figcaption>Audit tab</figcaption></figure>
 <h2>9. Charges payment by the customer:</h2>
-<p>Applies when the Payable Charges are not zero on rejection (partial waive-off or no waive-off). With a full waive-off nothing is
-payable and the units can be de-pledged right after the rejection.
-<a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
 <ul>
-<li>The customer clicks the payment link in the rejection SMS or mail and is taken to the LOS, where the mobile number is verified
-with an OTP.</li>
-<li>After the OTP is verified, the LOS shows the <b>Pay Charges</b> page: the charges to be paid with the breakup (Charges and
-Amount – the amount payable for each charge – and Total; the waived amounts are not shown to the customer), the Total Payable and a <b>Pay</b> button. There is <b>no option for partial payment</b> – the
-full amount is paid in one payment. After the rejection, paying the charges is the only option for this application in the LOS; the Curated Offers page
-shows a fresh product card to start a new application.</li>
-<li><b>Customer does not pay:</b> a <b>reminder SMS and mail is sent once a month</b> with the payment link, until the customer pays.
-There is no time limit; the units stay lien-marked until the payment is received and confirmed.
-<a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">View the mail</a> (Customer Communications, row 39).</li>
-<li><b>Payment failed:</b> nothing changes – no update in the LOS or LMS, no communication, no accounting entry. The customer is back
-on the Pay Charges page and can pay again.</li>
-<li><b>Payment successful:</b>
-  <ul><li>The LOS shows <b>“Payment successful”</b> with the amount paid, transaction ID, date and receipt number, and the message
-  <b>“Your lien removal will be initiated soon.”</b></li>
-  <li>The accounting entries are posted in <b>UNO immediately</b> – only for what the customer paid. Waived charges never go into UNO.</li>
-  <li>The <b>receipt</b> is generated and stored in the LMS, in the <b>Documents</b> tab of the LAN. Receipt number format: <b>RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts}}</b> – for example, RCPT/LAMF/2026/11/000149.</li>
-  <li>An internal event mail <b>“Charges Payment Received”</b> is sent to Treasury and OPS, asking Treasury to confirm the payment
-  in LMS. <a href="internal/IC-14.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 14).</li>
-  <li>The customer gets the <b>payment received SMS and mail with the receipt attached</b>.
-  <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">View the mail</a> (Customer Communications, row 38).</li></ul></li>
-<li><b>Treasury confirmation in LMS:</b> the payment is not taken as final in LMS directly. The Approvals tab of the LAN shows the
-payment received, pending Treasury confirmation, with a <b>Confirm Payment</b> button for the Treasury team (with a reconfirmation
-pop-up). Only after Treasury confirms can the <b>de-pledge be initiated</b>; until then the Initiate De-pledge button stays disabled.</li>
-<li><b>Mail to OPS after the Treasury confirmation:</b> once the payment is transacted in UNO and Treasury confirms it in LMS, an
-internal event mail <b>“Charges Received – Initiate De-pledge”</b> goes to the OPS team (Treasury in Cc): the charges are received
-from the customer, so OPS can initiate the de-pledge. <a href="internal/IC-15.html" target="_blank" rel="noopener">View the mail
-format</a> (Internal communications, alert 15).</li>
-<li>Every step is recorded in the Audit tab: payment received with the receipt number, payment confirmed by Treasury, de-pledge initiated.</li>
+<li>Customer clicks the payment link in the SMS or mail.</li>
+<li>LOS asks for OTP on the registered mobile number.</li>
+<li>LOS shows the Pay Charges page: charges, amount and total. Waived amounts are not shown. One Pay button.</li>
+<li>No partial payment. The full amount is paid at once.</li>
+<li>After rejection, paying the charges is the only option for this application in LOS.</li>
+<li>Payment failed: nothing changes. Customer can pay again.</li>
+<li>Payment successful:
+  <ul><li>LOS shows “Payment successful” and “Your lien removal will be initiated soon.”</li>
+  <li>Paid amount posted in UNO immediately. Waived amount is never posted.</li>
+  <li>Receipt is generated and saved in the LMS Documents tab. Format: RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts}}.</li>
+  <li>Mail to Treasury and OPS: “Charges Payment Received”. <a href="internal/IC-14.html" target="_blank" rel="noopener">View</a> (alert 14)</li>
+  <li>SMS and mail to the customer with the receipt. <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">View</a> (row 38)</li></ul></li>
+<li>Treasury confirms the payment in LMS (Confirm Payment). Only then de-pledge can be initiated.</li>
+<li>Mail to OPS: “Charges Received – Initiate De-pledge”. <a href="internal/IC-15.html" target="_blank" rel="noopener">View</a> (alert 15)</li>
+<li>Customer does not pay: reminder SMS and mail once a month until paid. Units stay pledged.
+<a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">View</a> (row 39)</li>
 </ul>
+<p><a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/11_los_link.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/11_los_link.png' alt='Payment link in the rejection SMS' loading='lazy'></a><figcaption>Payment link in the rejection SMS</figcaption></figure>
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/12_los_otp.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/12_los_otp.png' alt='LOS – OTP verification' loading='lazy'></a><figcaption>LOS – OTP verification</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/11_los_link.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/11_los_link.png' alt='Payment link in the SMS' loading='lazy'></a><figcaption>Payment link in the SMS</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/12_los_otp.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/12_los_otp.png' alt='LOS – OTP' loading='lazy'></a><figcaption>LOS – OTP</figcaption></figure>
 </div>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/13_los_pay.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/13_los_pay.png' alt='LOS – Pay Charges: total charges with the breakup and one Pay button (no partial payment)' loading='lazy'></a><figcaption>LOS – Pay Charges: total charges with the breakup and one Pay button (no partial payment)</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/13_los_pay.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/13_los_pay.png' alt='LOS – Pay Charges' loading='lazy'></a><figcaption>LOS – Pay Charges</figcaption></figure>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/14_los_gateway.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/14_los_gateway.png' alt='Payment gateway (simulated) – success or failure' loading='lazy'></a><figcaption>Payment gateway (simulated) – success or failure</figcaption></figure>
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/15_los_success.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/15_los_success.png' alt='LOS – payment successful: lien removal will be initiated soon' loading='lazy'></a><figcaption>LOS – payment successful: lien removal will be initiated soon</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/14_los_gateway.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/14_los_gateway.png' alt='Payment gateway (simulated)' loading='lazy'></a><figcaption>Payment gateway (simulated)</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/15_los_success.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/15_los_success.png' alt='LOS – payment successful' loading='lazy'></a><figcaption>LOS – payment successful</figcaption></figure>
 </div>
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/16_receipt.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/16_receipt.png' alt='Payment receipt – stored in the LMS Documents tab and sent to the customer' loading='lazy'></a><figcaption>Payment receipt – stored in the LMS Documents tab and sent to the customer</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/17_lms_await.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/17_lms_await.png' alt='LMS Approvals tab after the rejection – awaiting the customer’s payment, de-pledge disabled' loading='lazy'></a><figcaption>LMS Approvals tab after the rejection – awaiting the customer’s payment, de-pledge disabled</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/18_lms_received.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/18_lms_received.png' alt='Payment received – pending Treasury confirmation (Confirm Payment)' loading='lazy'></a><figcaption>Payment received – pending Treasury confirmation (Confirm Payment)</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/16_receipt.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/16_receipt.png' alt='Payment receipt' loading='lazy'></a><figcaption>Payment receipt</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/17_lms_await.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/17_lms_await.png' alt='LMS – waiting for payment, de-pledge disabled' loading='lazy'></a><figcaption>LMS – waiting for payment, de-pledge disabled</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/18_lms_received.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/18_lms_received.png' alt='LMS – payment received, waiting for Treasury' loading='lazy'></a><figcaption>LMS – payment received, waiting for Treasury</figcaption></figure>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/19_lms_confirm_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/19_lms_confirm_pop.png' alt='Treasury confirmation pop-up' loading='lazy'></a><figcaption>Treasury confirmation pop-up</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/19_lms_confirm_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/19_lms_confirm_pop.png' alt='Treasury confirm pop-up' loading='lazy'></a><figcaption>Treasury confirm pop-up</figcaption></figure>
 </div>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/20_lms_confirmed.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/20_lms_confirmed.png' alt='Payment confirmed by Treasury – de-pledge can be initiated' loading='lazy'></a><figcaption>Payment confirmed by Treasury – de-pledge can be initiated</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/21_lms_documents.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/21_lms_documents.png' alt='LMS Documents tab – the receipt' loading='lazy'></a><figcaption>LMS Documents tab – the receipt</figcaption></figure>
-<h2>10. Waive-off for Submitted, Account Opened and Active loans:</h2>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/20_lms_confirmed.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/20_lms_confirmed.png' alt='LMS – payment confirmed, de-pledge enabled' loading='lazy'></a><figcaption>LMS – payment confirmed, de-pledge enabled</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/21_lms_documents.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/21_lms_documents.png' alt='LMS Documents tab – receipt' loading='lazy'></a><figcaption>LMS Documents tab – receipt</figcaption></figure>
+<h2>10. Waive-off for an Active loan:</h2>
 <ul>
-<li><b>DRAFT, SUBMITTED and ACCOUNT OPENED loans:</b> the waive-off is done under the <b>Approvals</b> tab of the LAN (section 4.1) –
-for SUBMITTED and ACCOUNT OPENED loans the same Waive-off charges table, with the same maker → checker → Treasury approval, is added
-above the existing Decline and Approve actions.</li>
-<li><b>ACTIVE loans</b> (scenario 7): <b>the only difference is where the option is</b> – the same waive-off is on a separate page.
-It is opened from the <b>≡ menu</b> at the top right of the LAN page (next to “Go to Simulator”: Disbursal, Repayment, Soft Freeze,
-Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI, Foreclose, <b>Waive-off</b>, Add Credit Note). <b>Waive-off</b>
-navigates to the <b>Waive-off</b> page of that LAN:
-  <ul><li>the existing columns are kept: a checkbox (and select all), <b>Charge Type</b> (for example, Processing fee, Pledge, Stamp duty,
-  Collateral release), <b>Date</b>, <b>From</b>, <b>To</b>, <b>Amount</b> and <b>Amount to be waived off</b>, with the <b>Waive-off</b>
-  button at the top right;</li>
-  <li><b>the rest of the functionality is the same as in section 4.1</b>: single / multiple selection, the three waive-off types, no
-  amount above the charge, the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off /
-  Yes, Waive Off / ×) with the type of waive-off, and the <b>maker → checker → Treasury</b> approval by the sanction loan amount (maker:
-  note and file mandatory; checker: note mandatory, file too if the amounts are changed; Treasury: note mandatory, approve or decline only; a decline
-  cancels the request), with the Audit and the internal mails
-  <a href="internal/IC-18.html" target="_blank" rel="noopener">Checker Approval Required – Waive-off</a> (alert 18),
-  <a href="internal/IC-19.html" target="_blank" rel="noopener">Approval Required – Waive-off</a> (alert 19),
-  <a href="internal/IC-20.html" target="_blank" rel="noopener">Waive-off Approved</a> (alert 20) and, on a decline,
-  <a href="internal/IC-17.html" target="_blank" rel="noopener">Waive-off Request Declined</a> (alert 17);</li>
-  <li>there is no rejection for an active loan: on the Treasury approval the waived amount is posted in the Statement of Account with a
-  waiver narration and the Amount shows the balance; a fully waived charge cannot be selected again.</li></ul></li>
+<li>Waive-off is a separate request. No approve or reject of the loan.</li>
+<li>Open from the ≡ menu at the top right of the LAN page → Waive-off.</li>
+<li>Columns: Charge Type, Date, From, To, Amount, Amount to be waived off. Waive-off button at the top right.</li>
+<li>Same rules as section 4: select charges, waive-off type, amount limit, same maker → checker → Treasury flow, same note and file
+rules.</li>
+<li>Pop-up: “Are you sure you want to waive off the selected charges?” Buttons: No, Don’t Waive Off, Yes, Waive Off, ×.</li>
+<li>After Treasury approval: the waived amount is posted in the SOA with a waiver narration. Amount shows the balance.</li>
+<li>Mails: <a href="internal/IC-18.html" target="_blank" rel="noopener">checker approval required</a> (alert 18),
+<a href="internal/IC-19.html" target="_blank" rel="noopener">Treasury approval required</a> (alert 19),
+<a href="internal/IC-20.html" target="_blank" rel="noopener">approved</a> (alert 20),
+<a href="internal/IC-17.html" target="_blank" rel="noopener">rejected</a> (alert 17).</li>
 </ul>
-<p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active LAN → ≡ → Waive-off).</p>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/22_active_menu.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/22_active_menu.png' alt='Active LAN – ≡ menu with Waive-off' loading='lazy'></a><figcaption>Active LAN – ≡ menu with Waive-off</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/23_active_waive.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/23_active_waive.png' alt='Active LAN – Waive-off page' loading='lazy'></a><figcaption>Active LAN – Waive-off page</figcaption></figure>
+<p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off).</p>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/22_active_menu.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/22_active_menu.png' alt='Active loan – ≡ menu with Waive-off' loading='lazy'></a><figcaption>Active loan – ≡ menu with Waive-off</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/23_active_waive.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/23_active_waive.png' alt='Active loan – Waive-off page' loading='lazy'></a><figcaption>Active loan – Waive-off page</figcaption></figure>
 <div class="brd-figs">
-<figure class='brd-fig sm'><a href='assets/img/brd/waiver/24_active_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/24_active_pop.png' alt='Active LAN – maker’s reconfirmation pop-up (goes to the checker)' loading='lazy'></a><figcaption>Active LAN – maker’s reconfirmation pop-up (goes to the checker)</figcaption></figure>
+<figure class='brd-fig sm'><a href='assets/img/brd/waiver/24_active_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/24_active_pop.png' alt='Active loan – waive-off pop-up' loading='lazy'></a><figcaption>Active loan – waive-off pop-up</figcaption></figure>
 </div>
 <h3>Charges and amounts</h3>
-<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹450 + GST (₹531)</td><td>When the mutual fund units are pledged – charged on its own only in scenario 2 (before the Sanction Letter)</td></tr><tr><td>Lien Removal Charge</td><td>₹100 + GST (₹118)</td><td>When the lien is removed – charged on its own only in scenario 2 (before the Sanction Letter)</td></tr><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>From the Sanction Letter generation</td></tr><tr><td>Bounce Charge</td><td>₹100 + GST (₹118) per instance</td><td>Active loan, when an EMI bounces</td></tr><tr><td>Penal Charge</td><td>36% a year on the unpaid interest / EMI</td><td>Active loan, on a delay or default</td></tr><tr><td>Loan Renewal Charge</td><td>₹999 + GST (₹1,178.82)</td><td>Active loan, on renewal</td></tr><tr><td>Annual Maintenance Charge (AMC)</td><td>₹999 + GST (₹1,178.82)</td><td>Active loan, every year</td></tr><tr><td>Bank Swap Charge</td><td>₹250 + GST (₹295)</td><td>Active loan, when the repayment bank account is changed</td></tr></tbody></table>
+<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹450 + GST (₹531)</td><td>When the units are pledged. Charged separately in S 2 only.</td></tr><tr><td>Lien Removal Charge</td><td>₹100 + GST (₹118)</td><td>When the lien is removed. Charged separately in S 2 only.</td></tr><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>From the Sanction Letter (S 3 onwards).</td></tr><tr><td>Bounce Charge</td><td>₹100 + GST (₹118) per instance</td><td>Active loan, when an EMI bounces</td></tr><tr><td>Penal Charge</td><td>36% a year on the unpaid interest / EMI</td><td>Active loan, on a delay or default</td></tr><tr><td>Loan Renewal Charge</td><td>₹999 + GST (₹1,178.82)</td><td>Active loan, on renewal</td></tr><tr><td>Annual Maintenance Charge (AMC)</td><td>₹999 + GST (₹1,178.82)</td><td>Active loan, every year</td></tr><tr><td>Bank Swap Charge</td><td>₹250 + GST (₹295)</td><td>Active loan, when the repayment bank account is changed</td></tr></tbody></table>
 <h2>11. Scenarios</h2>
-<h3>11.1 S 1 – DRAFT: customer dropped off before pledging the mutual funds</h3><ul><li><b>Charges:</b> none – the units are not pledged.</li><li><b>Approvals tab:</b> no action. The LAN moves from DRAFT to INACTIVE automatically when the units are not pledged within 30 days from the LAN generated date.</li><li><b>Customer communication:</b> none.</li><li><b>Accounting:</b> no entries.</li></ul>
-<h3>11.2 S 2 – DRAFT: customer dropped off after pledging the mutual funds</h3><p><b>What OPS can do:</b> Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹450 + GST (₹531)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Lien Removal Charge</td><td>₹100 + GST (₹118)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 2.1 – Rejected – no waive-off</b></td><td>OPS submits the rejection without waiving any charge; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the full charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the charges paid, posted in UNO once SCCL receives the payment.</td></tr><tr><td><b>S 2.2 – Rejected – full waive-off</b></td><td>OPS submits the rejection with all the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry. The waived charges do not go into UNO.</td></tr><tr><td><b>S 2.3 – Rejected – partial waive-off</b></td><td>OPS submits the rejection with part of the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the payable (reduced) charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the amount paid, posted in UNO once SCCL receives the payment. The waived part does not go into UNO.</td></tr></tbody></table>
-<h3>11.3 S 3 – DRAFT: customer dropped off after the Sanction Letter is generated (units pledged)</h3><p><b>What OPS can do:</b> Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 3.1 – Rejected – no waive-off</b></td><td>OPS submits the rejection without waiving any charge; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the full charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the charges paid, posted in UNO once SCCL receives the payment.</td></tr><tr><td><b>S 3.2 – Rejected – full waive-off</b></td><td>OPS submits the rejection with all the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry. The waived charges do not go into UNO.</td></tr><tr><td><b>S 3.3 – Rejected – partial waive-off</b></td><td>OPS submits the rejection with part of the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the payable (reduced) charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the amount paid, posted in UNO once SCCL receives the payment. The waived part does not go into UNO.</td></tr></tbody></table>
-<h3>11.4 S 4 – DRAFT: customer dropped off after the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)</h3><p><b>What OPS can do:</b> Reject the application with Full Waive-off, Partial Waive-off or Without waive-off – one request, maker → checker → Treasury approval.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 4.1 – Rejected – no waive-off</b></td><td>OPS submits the rejection without waiving any charge; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the full charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the charges paid, posted in UNO once SCCL receives the payment.</td></tr><tr><td><b>S 4.2 – Rejected – full waive-off</b></td><td>OPS submits the rejection with all the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry. The waived charges do not go into UNO.</td></tr><tr><td><b>S 4.3 – Rejected – partial waive-off</b></td><td>OPS submits the rejection with part of the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the payable (reduced) charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the amount paid, posted in UNO once SCCL receives the payment. The waived part does not go into UNO.</td></tr></tbody></table>
-<h3>11.5 S 5 – SUBMITTED: customer dropped off after the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)</h3><p><b>What OPS can do:</b> Approve the Loan Account Opening (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 5.1 – Approved – no waive-off</b></td><td>OPS approves the Loan Account Opening without waiving any charge. LAN → ACCOUNT OPENED. No charges are collected at this stage.</td><td>Existing communication.</td><td>Not applicable – the loan continues.</td><td>No entry at this stage.</td></tr><tr><td><b>S 5.2 – Approved – full waive-off</b></td><td>OPS submits the waive-off of all the charges with the approval (maker → checker → Treasury approval). LAN → ACCOUNT OPENED.</td><td>Existing communication.</td><td>Not applicable – the loan continues.</td><td>The waived charges do not go into UNO.</td></tr><tr><td><b>S 5.3 – Approved – partial waive-off</b></td><td>OPS submits the waive-off of part of the charges with the approval (maker → checker → Treasury approval). LAN → ACCOUNT OPENED.</td><td>Existing communication.</td><td>Not applicable – the loan continues.</td><td>The waived part does not go into UNO.</td></tr><tr><td><b>S 5.4 – Rejected – no waive-off</b></td><td>OPS submits the rejection without waiving any charge; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the full charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the charges paid, posted in UNO once SCCL receives the payment.</td></tr><tr><td><b>S 5.5 – Rejected – full waive-off</b></td><td>OPS submits the rejection with all the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry. The waived charges do not go into UNO.</td></tr><tr><td><b>S 5.6 – Rejected – partial waive-off</b></td><td>OPS submits the rejection with part of the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the payable (reduced) charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the amount paid, posted in UNO once SCCL receives the payment. The waived part does not go into UNO.</td></tr></tbody></table>
-<h3>11.6 S 6 – ACCOUNT OPENED: customer dropped off after the Loan Account Opening</h3><p><b>What OPS can do:</b> Approve the Loan Lodgement (the loan continues) or reject the application – each with Full Waive-off, Partial Waive-off or Without waive-off (maker → checker → Treasury approval).</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 6.1 – Approved – no waive-off</b></td><td>OPS approves the Loan Lodgement without waiving any charge. The loan goes to lodgement. No charges are collected at this stage.</td><td>Existing communication.</td><td>Not applicable – the loan continues.</td><td>No entry at this stage.</td></tr><tr><td><b>S 6.2 – Approved – full waive-off</b></td><td>OPS submits the waive-off of all the charges (maker → checker → Treasury approval), then approves the Loan Lodgement. The loan goes to lodgement.</td><td>Existing communication.</td><td>Not applicable – the loan continues.</td><td>The waived charges do not go into UNO.</td></tr><tr><td><b>S 6.3 – Approved – partial waive-off</b></td><td>OPS submits the waive-off of part of the charges (maker → checker → Treasury approval), then approves the Loan Lodgement. The loan goes to lodgement.</td><td>Existing communication.</td><td>Not applicable – the loan continues.</td><td>The waived part does not go into UNO.</td></tr><tr><td><b>S 6.4 – Rejected – no waive-off</b></td><td>OPS submits the rejection without waiving any charge; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the full charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the charges paid, posted in UNO once SCCL receives the payment.</td></tr><tr><td><b>S 6.5 – Rejected – full waive-off</b></td><td>OPS submits the rejection with all the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry. The waived charges do not go into UNO.</td></tr><tr><td><b>S 6.6 – Rejected – partial waive-off</b></td><td>OPS submits the rejection with part of the charges to waive off; the OPS checker and Treasury approve. LAN → REJECTED.</td><td>Rejection SMS and mail with the payable (reduced) charges and the payment link.</td><td>After the customer pays and Treasury confirms the payment in LMS</td><td>Entry for the amount paid, posted in UNO once SCCL receives the payment. The waived part does not go into UNO.</td></tr></tbody></table>
-<h3>11.7 S 7 – ACTIVE: customer dropped off after the Loan Lodgement (loan account active)</h3><p><b>What OPS can do:</b> Waive the charges on the active loan (≡ menu → Waive-off page): Full Waive-off, Partial Waive-off or Without waive-off, with the maker → checker → Treasury approval. The loan cannot be rejected at this stage.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Bounce Charge</td><td>₹100 + GST (₹118) per instance</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Penal Charge</td><td>36% a year on the unpaid interest / EMI</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Loan Renewal Charge</td><td>₹999 + GST (₹1,178.82)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Annual Maintenance Charge (AMC)</td><td>₹999 + GST (₹1,178.82)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr><tr><td>Bank Swap Charge</td><td>₹250 + GST (₹295)</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 7.1 – Without waive-off</b></td><td>The charges stay in the Statement of Account (SOA) and are collected before the loan account is closed.</td><td>Existing communication.</td><td>At loan closure (existing process).</td><td>Existing accounting process.</td></tr><tr><td><b>S 7.2 – With full waive-off</b></td><td>OPS submits the waive-off of the full charge (maker → checker → Treasury approval). As the charge is already posted in the SOA, the SOA is updated with a waiver narration.</td><td>Existing communication.</td><td>At loan closure (existing process).</td><td>The waived charges do not go into UNO.</td></tr><tr><td><b>S 7.3 – With partial waive-off</b></td><td>OPS submits the waive-off of part of a charge (maker → checker → Treasury approval); the balance is collected before the loan account is closed. The SOA is updated with a waiver narration.</td><td>Existing communication.</td><td>At loan closure (existing process).</td><td>The waived part does not go into UNO; the balance follows the existing accounting process.</td></tr></tbody></table>
+<h3>11.1 S 1 – DRAFT: customer dropped off before pledging the mutual funds</h3><ul><li>No charges.</li><li>No action by OPS.</li><li>LAN moves to INACTIVE after 30 days from the LAN generated date.</li><li>No communication. No accounting entry.</li></ul>
+<h3>11.2 S 2 – DRAFT: customer dropped off after pledging the mutual funds</h3><p><b>What OPS can do:</b> Reject, with or without waive-off.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Lien Marking Charge</td><td>₹450 + GST (₹531)</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr><tr><td>Lien Removal Charge</td><td>₹100 + GST (₹118)</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 2.1 – Rejected – no waive-off</b></td><td>Rejected. Nothing waived. LAN → REJECTED.</td><td>SMS and mail with the payment link.</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received.</td></tr><tr><td><b>S 2.2 – Rejected – full waive-off</b></td><td>Rejected. All charges waived. LAN → REJECTED.</td><td>SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry.</td></tr><tr><td><b>S 2.3 – Rejected – partial waive-off</b></td><td>Rejected. Part of the charges waived. LAN → REJECTED.</td><td>SMS and mail with the payment link (balance).</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received. Waived amount not posted.</td></tr></tbody></table>
+<h3>11.3 S 3 – DRAFT: customer dropped off after the Sanction Letter is generated</h3><p><b>What OPS can do:</b> Reject, with or without waive-off.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 3.1 – Rejected – no waive-off</b></td><td>Rejected. Nothing waived. LAN → REJECTED.</td><td>SMS and mail with the payment link.</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received.</td></tr><tr><td><b>S 3.2 – Rejected – full waive-off</b></td><td>Rejected. All charges waived. LAN → REJECTED.</td><td>SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry.</td></tr><tr><td><b>S 3.3 – Rejected – partial waive-off</b></td><td>Rejected. Part of the charges waived. LAN → REJECTED.</td><td>SMS and mail with the payment link (balance).</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received. Waived amount not posted.</td></tr></tbody></table>
+<h3>11.4 S 4 – DRAFT: customer dropped off after the Loan Agreement e-Sign</h3><p><b>What OPS can do:</b> Reject, with or without waive-off.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 4.1 – Rejected – no waive-off</b></td><td>Rejected. Nothing waived. LAN → REJECTED.</td><td>SMS and mail with the payment link.</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received.</td></tr><tr><td><b>S 4.2 – Rejected – full waive-off</b></td><td>Rejected. All charges waived. LAN → REJECTED.</td><td>SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry.</td></tr><tr><td><b>S 4.3 – Rejected – partial waive-off</b></td><td>Rejected. Part of the charges waived. LAN → REJECTED.</td><td>SMS and mail with the payment link (balance).</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received. Waived amount not posted.</td></tr></tbody></table>
+<h3>11.5 S 5 – SUBMITTED: customer dropped off after the E-Mandate</h3><p><b>What OPS can do:</b> Approve or reject, with or without waive-off.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 5.1 – Approved – no waive-off</b></td><td>Approved. Nothing waived. LAN → ACCOUNT OPENED.</td><td>Existing communication.</td><td>Not applicable – loan continues.</td><td>No entry.</td></tr><tr><td><b>S 5.2 – Approved – full waive-off</b></td><td>Approved. All charges waived. LAN → ACCOUNT OPENED.</td><td>Existing communication.</td><td>Not applicable – loan continues.</td><td>Waived amount not posted.</td></tr><tr><td><b>S 5.3 – Approved – partial waive-off</b></td><td>Approved. Part of the charges waived. LAN → ACCOUNT OPENED.</td><td>Existing communication.</td><td>Not applicable – loan continues.</td><td>Waived amount not posted.</td></tr><tr><td><b>S 5.4 – Rejected – no waive-off</b></td><td>Rejected. Nothing waived. LAN → REJECTED.</td><td>SMS and mail with the payment link.</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received.</td></tr><tr><td><b>S 5.5 – Rejected – full waive-off</b></td><td>Rejected. All charges waived. LAN → REJECTED.</td><td>SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry.</td></tr><tr><td><b>S 5.6 – Rejected – partial waive-off</b></td><td>Rejected. Part of the charges waived. LAN → REJECTED.</td><td>SMS and mail with the payment link (balance).</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received. Waived amount not posted.</td></tr></tbody></table>
+<h3>11.6 S 6 – ACCOUNT OPENED: customer dropped off after the Loan Account Opening</h3><p><b>What OPS can do:</b> Approve or reject, with or without waive-off.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 6.1 – Approved – no waive-off</b></td><td>Approved. Nothing waived. LAN → ACTIVE.</td><td>Existing communication.</td><td>Not applicable – loan continues.</td><td>No entry.</td></tr><tr><td><b>S 6.2 – Approved – full waive-off</b></td><td>Approved. All charges waived. LAN → ACTIVE.</td><td>Existing communication.</td><td>Not applicable – loan continues.</td><td>Waived amount not posted.</td></tr><tr><td><b>S 6.3 – Approved – partial waive-off</b></td><td>Approved. Part of the charges waived. LAN → ACTIVE.</td><td>Existing communication.</td><td>Not applicable – loan continues.</td><td>Waived amount not posted.</td></tr><tr><td><b>S 6.4 – Rejected – no waive-off</b></td><td>Rejected. Nothing waived. LAN → REJECTED.</td><td>SMS and mail with the payment link.</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received.</td></tr><tr><td><b>S 6.5 – Rejected – full waive-off</b></td><td>Rejected. All charges waived. LAN → REJECTED.</td><td>SMS and mail. No payment link.</td><td>Right after the rejection</td><td>No entry.</td></tr><tr><td><b>S 6.6 – Rejected – partial waive-off</b></td><td>Rejected. Part of the charges waived. LAN → REJECTED.</td><td>SMS and mail with the payment link (balance).</td><td>After payment and Treasury confirmation</td><td>Paid amount posted in UNO when received. Waived amount not posted.</td></tr></tbody></table>
+<h3>11.7 S 7 – ACTIVE: customer dropped off after the Loan Lodgement</h3><p><b>What OPS can do:</b> Waive-off only, from the ≡ menu. No approve or reject.</p><table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th><th>Payable Charges</th></tr></thead><tbody><tr><td>Processing Fee* Charge</td><td>One-time fee as per the Processing Fee structure, + GST (sample ₹1,499 + GST = ₹1,768.82)<br><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr><tr><td>Bounce Charge</td><td>₹100 + GST (₹118) per instance</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr><tr><td>Penal Charge</td><td>36% a year on the unpaid interest / EMI</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr><tr><td>Loan Renewal Charge</td><td>₹999 + GST (₹1,178.82)</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr><tr><td>Annual Maintenance Charge (AMC)</td><td>₹999 + GST (₹1,178.82)</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr><tr><td>Bank Swap Charge</td><td>₹250 + GST (₹295)</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr></tbody></table><table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th><th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody><tr><td><b>S 7.1 – Without waive-off</b></td><td>Nothing waived. Charges stay in the SOA and are collected before closure.</td><td>Existing communication.</td><td>At loan closure.</td><td>Existing process.</td></tr><tr><td><b>S 7.2 – With full waive-off</b></td><td>Full charge waived. SOA updated with a waiver narration.</td><td>Existing communication.</td><td>At loan closure.</td><td>Waived amount not posted.</td></tr><tr><td><b>S 7.3 – With partial waive-off</b></td><td>Part of the charge waived. SOA updated with a waiver narration. Balance collected before closure.</td><td>Existing communication.</td><td>At loan closure.</td><td>Waived amount not posted.</td></tr></tbody></table>
 <h2>12. Open points</h2>
-<ul><li>None at the moment – all the points raised so far are answered in this BRD (recipients of the new internal mails 16 – 20 and
-the new SMS templates are to be confirmed and registered).</li></ul>
+<ul><li>Confirm the recipients of internal mails 16 – 20.</li>
+<li>Approve and register the new SMS (rows 38 and 39).</li></ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=4b5a8a0"></script>
-<script src="assets/colresize.js?v=4b5a8a0"></script>
+<script src="assets/review.js?v=34e33b3"></script>
+<script src="assets/colresize.js?v=34e33b3"></script>
 </body>
 </html>
