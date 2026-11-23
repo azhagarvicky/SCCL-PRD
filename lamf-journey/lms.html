@@ -60,7 +60,8 @@
   });
   document.addEventListener('change', function (e) {     /* show the chosen file name under the upload box */
     if (e.target.classList.contains('wv-file') || e.target.classList.contains('wv-cfile')) {
-      var fn = e.target.closest('.wv-drop').nextElementSibling; fn.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : ''; }
+      var fn = e.target.closest('.wv-drop').nextElementSibling; fn.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : '';
+      var w0 = e.target.closest('.wv'); if (w0) w0.querySelector(e.target.classList.contains('wv-file') ? '.wv-err' : '.wv-cerr').textContent = ''; }
   });
   document.addEventListener('input', function (e) { var w = e.target.closest('.wv'); if (w && e.target.classList.contains('wv-amt')) calc(w); });
   document.addEventListener('click', function (e) {
@@ -220,12 +221,16 @@
     var d = Q(w, '.wa-done'); d.hidden = false; d.className = 'wv-done wa-done wv-cancel'; d.innerHTML = msg; }
   document.addEventListener('change', function (e) { var w = e.target.closest('.wa'); if (!w) return;
     if (e.target.classList.contains('wa-file') || e.target.classList.contains('wa-cfile')) {
-      e.target.closest('.wv-drop').nextElementSibling.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : ''; return; }
+      e.target.closest('.wv-drop').nextElementSibling.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : '';
+      Q(w, e.target.classList.contains('wa-file') ? '.wa-err' : '.wa-cerr').textContent = ''; return; }
     if (e.target.classList.contains('wa-all')) w.querySelectorAll('tbody .wa-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked;
       var a = c.closest('tr').querySelector('.wa-amt'); a.disabled = !c.checked; if (!c.checked) a.value = 0; });
     if (e.target.classList.contains('wa-chk')) { var a = e.target.closest('tr').querySelector('.wa-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
     calc(w); });
-  document.addEventListener('input', function (e) { var w = e.target.closest('.wa'); if (w && e.target.classList.contains('wa-amt')) calc(w); });
+  document.addEventListener('input', function (e) { var w = e.target.closest('.wa'); if (!w) return;
+    if (e.target.classList.contains('wa-amt')) calc(w);
+    if (e.target.classList.contains('wa-note')) Q(w, '.wa-err').textContent = ''; if (e.target.classList.contains('wa-cnote')) Q(w, '.wa-cerr').textContent = '';
+    if (e.target.classList.contains('wa-tnote')) Q(w, '.wa-terr').textContent = ''; });
   document.addEventListener('click', function (e) { var w = e.target.closest('.wa'), c = e.target.classList; if (!w) return;
     if (c.contains('wv-x') || c.contains('wv-no')) e.target.closest('.wv-pop').hidden = true;
     if (c.contains('wa-btn')) { var m = [];                       /* maker – note and file required */
