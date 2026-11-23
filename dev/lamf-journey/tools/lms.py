@@ -128,7 +128,7 @@ def draft_approvals(r, tid):
     sc = 2 if k < 4 else 3 if k < 7 else 4
     # DISC-362: maker → checker → Treasury by the sanctioned amount (a draft with no sanctioned amount yet is taken as below ₹5 lakh)
     big = (_num(r["Sanction Amount"]) or 0) >= 500000
-    mk, ck, tr = ("OPS L2", "OPS L3", "Treasury L2") if big else ("OPS L1", "OPS L2", "Treasury L1")
+    mk, ck, tr = ("OPS L2 / OPS L3", "OPS L3 / OPS L2", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2", "Treasury L1")   # DISC-365
     # DISC-345: “Waived off Charges” column – what is already waived; Amount of Charges stays the original charge
     rows = "".join(f'<tr data-name="{n}" data-chg="{a}" data-done="0"><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td>'
                    f'<td class="num wv-chg">₹{_amt(a)}</td><td class="num wv-done-amt">₹0</td>'
@@ -156,8 +156,8 @@ def draft_approvals(r, tid):
             # DISC-362: OPS checker – can change the amounts; a change needs the note and a file
             f'<div class="wv-ck" hidden><h3>Waive-off &amp; Rejection – pending {ck} (Checker) approval</h3><p class="wv-ck-st"></p>'
             '<p class="wv-hint">The checker can change the amounts to be waived off in the table above. If anything is changed, the note and a '
-            'file are required.</p>'
-            '<label class="wv-lbl">Checker note <span>(required if changed or declined)</span></label>'
+            'file are required; otherwise only the note.</p>'
+            '<label class="wv-lbl">Checker note <span>(required)</span></label>'
             '<textarea class="wv-cnote" rows="2" placeholder="Add a note"></textarea>'
             '<label class="wv-lbl">Upload a file <span>(required if changed)</span></label>'
             '<label class="wv-drop">Drop files here or <u>click</u><input type="file" class="wv-cfile" hidden></label><p class="wv-fname"></p>'
@@ -304,9 +304,9 @@ WAIVER_JS = """<script>
     }
     if (c.contains('wv-ck-app')) {          /* checker – a change needs the note and a file */
       var ce = w.querySelector('.wv-cerr'), changed = amts(w) !== w.dataset.mkAmts, m2 = [];
-      if (changed && !w.querySelector('.wv-cnote').value.trim()) m2.push('add the note');
+      if (!w.querySelector('.wv-cnote').value.trim()) m2.push('add the note');          /* DISC-365: the checker note is always mandatory */
       if (changed && !w.querySelector('.wv-cfile').files.length) m2.push('upload a file');
-      if (m2.length) { ce.textContent = 'The amounts were changed – please ' + m2.join(' and ') + '.'; return; }
+      if (m2.length) { ce.textContent = (changed ? 'The amounts were changed – please ' : 'Please ') + m2.join(' and ') + '.'; return; }
       ce.textContent = ''; w.dataset.changed = changed ? '1' : ''; show(w, '.wv-pk', true);
     }
     if (c.contains('wv-yes-k')) {          /* checker approves → Treasury */
