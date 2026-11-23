@@ -728,15 +728,15 @@ DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, samp
  ("Loan Account Opening / Loan Lodgement Rejection (with payment link)", "DRAFT Application Rejection (with payment link)",
   "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are not equal to zero (partial waive-off or no waive-off) – the communication carries the payment link and the customer pays the charges using that link. Waiver BRD.",
   "06_Draft_Application_Rejected_Pay_Charges",
-  {"{{LOAN_ID}}": "SCCLMF20261100079", "{{CHARGE_NAME}}": "Processing Fee*", "{{CHARGE_AMOUNT}}": "1,768.82", "{{WAIVED_AMOUNT}}": "500",
+  {"{{LOAN_ID}}": "SCCLMF20261100073", "{{CHARGE_NAME}}": "Processing Fee*", "{{CHARGE_AMOUNT}}": "1,768.82", "{{WAIVED_AMOUNT}}": "500",
    "{{PAYABLE_AMOUNT}}": "1,268.82", "{{TOTAL_CHARGES}}": "1,768.82", "{{TOTAL_WAIVED}}": "500", "{{TOTAL_PAYABLE}}": "1,268.82"}),
  ("Loan Account Opening / Loan Lodgement Rejection (without payment link)", "DRAFT Application Rejection (without payment link)",
   "When OPS rejects a pledged DRAFT LAN in the backend LMS (Approvals tab) and the Payable Charges are equal to zero (full waive-off) – the communication has no payment link; the units are de-pledged. Waiver BRD.",
-  "07_Draft_Application_Rejected", {"{{LOAN_ID}}": "SCCLMF20261100079"}),
+  "07_Draft_Application_Rejected", {"{{LOAN_ID}}": "SCCLMF20261100073"}),
 ]
 for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges Payment Received",
   "When the customer pays the charges in the LOS through the payment link after the DRAFT LAN is rejected (payment successful) – the receipt is generated, stored in the LMS Documents tab and attached to the mail. Waiver BRD.",
-  "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100079", "{{AMOUNT_PAID}}": "1,268.82", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
+  "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{AMOUNT_PAID}}": "1,268.82", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
                                   "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/000149"})]:   # added at the end so the existing row numbers stay
     base = next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
         # SMS drafted by Claude for approval – to be created and registered (DISC-351)
