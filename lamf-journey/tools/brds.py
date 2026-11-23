@@ -135,6 +135,25 @@ customer before the units are de-pledged.</p>
 <h2>2. Summary of scenarios</h2>
 {summary}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
+<h3>LAN status changes</h3>
+<table class="brd-table"><thead><tr><th>From</th><th>Can change to</th><th>When</th></tr></thead><tbody>
+<tr><td rowspan="3">DRAFT</td><td>REJECTED</td><td>Only when the units are pledged – OPS rejects the application (with or without a waive-off, after the
+maker → checker → Treasury approval).</td></tr>
+<tr><td>INACTIVE</td><td>Units not pledged – moves to INACTIVE (after 30 days from the LAN generated date). Units pledged – can also move to
+INACTIVE.</td></tr>
+<tr><td>SUBMITTED</td><td>The customer completes the journey and submits the application.</td></tr>
+<tr><td rowspan="2">SUBMITTED</td><td>ACCOUNT OPENED</td><td>OPS approves the Loan Account Opening.</td></tr>
+<tr><td>REJECTED</td><td>OPS rejects the Loan Account Opening.</td></tr>
+<tr><td rowspan="2">ACCOUNT OPENED</td><td>ACTIVE</td><td>OPS approves the Loan Lodgement.</td></tr>
+<tr><td>REJECTED</td><td>OPS rejects the Loan Lodgement.</td></tr>
+<tr><td>ACTIVE</td><td>CLOSED</td><td>Foreclosure, tenure completion or invocation.</td></tr>
+</tbody></table>
+<ul>
+<li><b>Pledged DRAFT loan:</b> DRAFT → REJECTED, or DRAFT → INACTIVE, or DRAFT → SUBMITTED.</li>
+<li><b>Not pledged DRAFT loan:</b> DRAFT → INACTIVE, or DRAFT → SUBMITTED (no rejection – nothing to de-pledge).</li>
+<li>A DRAFT, SUBMITTED or ACCOUNT OPENED loan is never CLOSED; only an ACTIVE loan is closed. De-pledge is allowed only for a REJECTED
+or CLOSED LAN.</li>
+</ul>
 <h2>3. Approvals Tab:</h2>
 <ul>
 <li>Need approvals tab in the DRAFT LOAN section, which is currently available in the ACTIVE, SUBMITTED and ACCOUNT OPENED LOANS.</li>
@@ -300,7 +319,7 @@ or decline) is recorded in the Audit tab with Approved by / Initiated by and the
 {fig('09_rejected.png', 'Approved by the checker and Treasury – waive-off applied and LAN rejected')}
 <h2>7. After the approval (rejection):</h2>
 <ul>
-<li>A DRAFT loan is never closed; it can only be Rejected or Submitted.</li>
+<li>A DRAFT loan is never closed; it can only move to Rejected (units pledged), Inactive or Submitted (section 2, LAN status changes).</li>
 <li>After the approval, the communication is sent to the customer automatically:
   <ul><li><b>Payable Charges equal to zero (Full waive-off):</b> the communication is sent <b>without</b> a payment link.</li>
   <li><b>Payable Charges not equal to zero (Partial waive-off or No waive-off):</b> the communication is sent <b>with</b> a payment
@@ -406,6 +425,8 @@ navigates to the <b>Waive-off</b> page of that LAN:
 <ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
 <li>Active loans: the internal mail templates for the active waive-off (checker / Treasury approval required, approved).</li>
 <li>Roles for approving with a waive-off in scenario 6.</li>
+<li>Pledged DRAFT loan → INACTIVE: when does it happen (after how many days, automatically or by OPS), and what happens to the
+pledged units and the charges then (de-pledge is allowed only for a REJECTED or CLOSED LAN)?</li>
 <li>Does the same maker → checker → Treasury approval apply to the waive-off with a rejection of SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6)?</li>
 <li>Should the maker get a mail when the checker or Treasury declines (today: Audit entry only)?</li></ul>
 """
