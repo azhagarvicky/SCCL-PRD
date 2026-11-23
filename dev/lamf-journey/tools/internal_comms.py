@@ -333,8 +333,8 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   'Charges of {{Waived Amount}} have been waived off for {{LAN}} of customer {{Customer Name}}. Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Amount Waived Off | Payable Charges\n'
-  '| Processing Fee* | 1,178.82 | 500.00 | 678.82\n'
-  '| Total | 1,178.82 | 500.00 | 678.82\n'
+  '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
   'Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} '
   'will be collected from the customer before the units are de-pledged.',
@@ -363,8 +363,8 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   '{{LAN}} for customer {{Customer Name}} has been REJECTED in DRAFT status (mutual fund units pledged). Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
-  '| Processing Fee* | 1,178.82 | 500.00 | 678.82\n'
-  '| Total | 1,178.82 | 500.00 | 678.82\n'
+  '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
   'Rejection reason: {{Rejection Reason}}\n'
   'Rejected by {{OPS User Name}} on {{Rejection Date & Time}}. The rejection SMS and mail with the payment link for {{Balance Payable}} '
@@ -388,8 +388,8 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   'Customer {{Customer Name}} has paid charges of {{Amount Paid}} for {{LAN}} (REJECTED).\n'
   '| Charges Name | Amount of Charges | Waived off Charges | Amount Paid\n'
-  '| Processing Fee* | 1,178.82 | 500.00 | 678.82\n'
-  '| Total | 1,178.82 | 500.00 | 678.82\n'
+  '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
   'Transaction ID: {{Transaction ID}}. Paid on: {{Payment Date & Time}}. Receipt No.: {{Receipt No}} (saved in the Documents tab of the LAN). '
   'The accounting entries have been posted in UNO.\n'
