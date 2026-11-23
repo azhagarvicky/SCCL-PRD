@@ -185,11 +185,13 @@ waived and the balance payable. OK closes it.</li>
 <h2>6. After the waive-off:</h2>
 <ul>
 <li>The <b>Waived off Charges</b> column shows the amount waived off and <b>Payable Charges</b> shows the balance.</li>
-<li><b>Full waive-off of a charge:</b> the charge is removed from the table and is not shown again.</li>
+<li><b>Full waive-off of a charge:</b> the charge stays in the table with the full amount in Waived off Charges and ₹0 in Payable
+Charges; its checkbox is disabled as nothing is left to waive.</li>
 <li><b>Partial waive-off of a charge:</b> the charge stays with the original Amount of Charges, the amount waived in Waived off
 Charges and the balance in Payable Charges; the checkbox is cleared and the amount goes back to 0, so the balance can be waived again
 later.</li>
-<li>When all the charges are waived in full, the table shows “All charges have been waived off – nothing is payable.”</li>
+<li>When all the charges are waived in full, the message “All charges have been waived off – nothing is payable.” is shown below
+the table.</li>
 <li>Waive-off and rejection are separate actions: OPS can waive off first and reject afterwards.</li>
 <li><b>Internal mail:</b> after every waive-off, LMS sends the internal mail <b>“Charges Waived Off”</b> to Treasury, with OPS and
 the product team in Cc: the LAN, customer name, amount waived, type of waive-off, the charges breakup (Amount of Charges, Amount
@@ -197,6 +199,7 @@ Waived Off, Payable Charges, Total), who waived it off and when.
 <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 12).</li>
 </ul>
 {fig('06_table_balance.png', 'After waiving ₹500 of Lien Marking Charges – Waived off Charges ₹500, Payable Charges ₹31')}
+{fig('06b_table_full.png', 'Lien Removal Charges then waived in full – stays in the table with Payable ₹0 and the checkbox disabled')}
 <h2>7. Reject:</h2>
 <ul>
 <li>Today OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so

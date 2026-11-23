@@ -178,7 +178,7 @@ def draft_audit(r):
 
 WAIVER_JS = """<script>
 /* Draft loan Approvals tab (DISC-339). Tick a charge → amount to waive (≤ balance) → Waive-off → confirm → success.
-   After a waive-off only the balance stays: a fully waived charge leaves the table, a partly waived one shows its balance.
+   After a waive-off the row shows the amount waived (Waived off Charges) and the balance (Payable); a fully waived charge stays with Payable 0.
    Each waive-off and the rejection are written to the Audit tab. Reject needs the reason (note) and the reconfirmation. */
 (function () {
   var r2 = function (v) { return Math.round(v * 100) / 100; };
@@ -199,8 +199,7 @@ WAIVER_JS = """<script>
     var t = after <= 0 ? 'Full waive-off' : after < orig ? 'Partial waive-off' : 'No waive-off';
     w.querySelector('.wv-type b').textContent = t;
     w.querySelector('.wv-waive').disabled = !pend || w.classList.contains('closed');
-    w.querySelector('.wv-allgone').hidden = !!w.querySelector('tbody tr');
-    w.querySelector('.wv-table').hidden = !w.querySelector('tbody tr');
+    w.querySelector('.wv-allgone').hidden = bal > 0;          // DISC-346: fully waived charges stay in the table
     return { tw: tw, tp: after, type: t };
   }
   function stamp() { var d = new Date(), p = function (x) { return String(x).padStart(2, '0'); };
@@ -219,7 +218,7 @@ WAIVER_JS = """<script>
   document.addEventListener('change', function (e) {
     var w = e.target.closest('.wv'); if (!w) return;
     if (e.target.classList.contains('wv-all'))
-      w.querySelectorAll('tbody .wv-chk').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
+      w.querySelectorAll('tbody .wv-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
     if (e.target.classList.contains('wv-chk')) { var a = e.target.closest('tr').querySelector('.wv-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
     calc(w);
   });
@@ -236,9 +235,9 @@ WAIVER_JS = """<script>
         var left = r2(max - v); n++; tot += v;
         audit(w, (AN[tr.dataset.name] || tr.dataset.name) + ' of ' + f2(v) + ' has been waived off (' + (left > 0 ? 'partial' : 'full') +
                  ' waive-off); balance ' + f2(left), note);
-        if (left <= 0) { tr.remove(); return; }                       // fully waived – not shown again
         a.dataset.max = left; a.value = 0; a.disabled = true; chk.checked = false;
-        tr.dataset.done = r2(+tr.dataset.done + v);                   // partly waived – Waived off Charges goes up, Payable shows the balance
+        tr.dataset.done = r2(+tr.dataset.done + v);                   // Waived off Charges goes up, Payable shows the balance
+        if (left <= 0) { chk.disabled = true; tr.classList.add('wv-full'); }   // fully waived – stays in the table, nothing left to select (DISC-346)
         tr.querySelector('.wv-done-amt').textContent = f(+tr.dataset.done);
       });
       w.querySelector('.wv-all').checked = false;
