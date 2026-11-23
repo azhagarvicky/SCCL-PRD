@@ -19,10 +19,10 @@ def rs(v):
     return f"₹{v:,}"
 
 
-def _table(cls="cp-tbl"):
-    rows = "".join(f"<tr><td>{n}</td><td>{rs(a)}</td><td>{rs(w)}</td><td><b>{rs(a - w)}</b></td></tr>" for n, a, w in CHARGES)
-    return (f'<table class="{cls}"><thead><tr><th>Charges</th><th>Amount of Charges</th><th>Waived off</th><th>Payable</th></tr></thead>'
-            f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(TOTAL)}</td><td>{rs(WAIVED)}</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>')
+def _table(cls="cp-tbl"):   # customer view (DISC-352): only what the customer pays for each charge – no waived off / payable columns
+    rows = "".join(f"<tr><td>{n}</td><td>{rs(a - w)}</td></tr>" for n, a, w in CHARGES if a - w > 0)
+    return (f'<table class="{cls}"><thead><tr><th>Charges</th><th>Amount</th></tr></thead>'
+            f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>')
 
 
 HDR = ('<header class="hdr cp-hdr"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>'
