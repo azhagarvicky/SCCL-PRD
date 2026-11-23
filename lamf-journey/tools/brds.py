@@ -377,22 +377,26 @@ format</a> (Internal communications, alert 15).</li>
 <li><b>DRAFT, SUBMITTED and ACCOUNT OPENED loans:</b> the waive-off is done under the <b>Approvals</b> tab of the LAN (section 4.1) –
 for SUBMITTED and ACCOUNT OPENED loans the same Waive-off charges table, with the same maker → checker → Treasury approval, is added
 above the existing Decline and Approve actions.</li>
-<li><b>ACTIVE loans</b> (scenario 7): the waive-off is done from the <b>≡ menu</b> at the top right of the LAN page (next to “Go to
-Simulator”). The menu has Disbursal, Repayment, Soft Freeze, Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI,
-Foreclose, <b>Waive-off</b> and Add Credit Note. <b>Waive-off</b> navigates to the next page, <b>Waive-off</b>, for that LAN:
-  <ul><li>a table with a checkbox (and select all), <b>Charge Type</b> (for example, Processing fee, Pledge, Stamp duty, Collateral
-  release), <b>Date</b>, <b>From</b>, <b>To</b>, <b>Amount</b> and <b>Amount to be waived off</b>;</li>
-  <li>the <b>Waive-off</b> button at the top right, enabled once a charge is selected with an amount; the amount cannot be more than
-  the charge;</li>
-  <li>the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off / Yes, Waive Off / ×);</li>
-  <li>the waived amount is posted in the Statement of Account with a waiver narration; the Amount shows the balance, and a fully
-  waived charge cannot be selected again.</li></ul></li>
+<li><b>ACTIVE loans</b> (scenario 7): <b>the only difference is where the option is</b> – the same waive-off is on a separate page.
+It is opened from the <b>≡ menu</b> at the top right of the LAN page (next to “Go to Simulator”: Disbursal, Repayment, Soft Freeze,
+Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI, Foreclose, <b>Waive-off</b>, Add Credit Note). <b>Waive-off</b>
+navigates to the <b>Waive-off</b> page of that LAN:
+  <ul><li>the existing columns are kept: a checkbox (and select all), <b>Charge Type</b> (for example, Processing fee, Pledge, Stamp duty,
+  Collateral release), <b>Date</b>, <b>From</b>, <b>To</b>, <b>Amount</b> and <b>Amount to be waived off</b>, with the <b>Waive-off</b>
+  button at the top right;</li>
+  <li><b>the rest of the functionality is the same as in section 4.1</b>: single / multiple selection, the three waive-off types, no
+  amount above the charge, the reconfirmation pop-up “Are you sure you want to waive off the selected charges?” (No, Don’t Waive Off /
+  Yes, Waive Off / ×) with the type of waive-off, and the <b>maker → checker → Treasury</b> approval by the sanction loan amount (maker:
+  note and file mandatory; checker: note mandatory, file too if the amounts are changed; Treasury: approve or decline only; a decline
+  cancels the request), with the internal mails and the Audit;</li>
+  <li>there is no rejection for an active loan: on the Treasury approval the waived amount is posted in the Statement of Account with a
+  waiver narration and the Amount shows the balance; a fully waived charge cannot be selected again.</li></ul></li>
 </ul>
 <p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active LAN → ≡ → Waive-off).</p>
 {fig('22_active_menu.png', 'Active LAN – ≡ menu with Waive-off')}
 {fig('23_active_waive.png', 'Active LAN – Waive-off page')}
 <div class="brd-figs">
-{fig('24_active_pop.png', 'Active LAN – waive-off reconfirmation pop-up', 'sm')}
+{fig('24_active_pop.png', 'Active LAN – maker’s reconfirmation pop-up (goes to the checker)', 'sm')}
 </div>
 <h3>Charges and amounts</h3>
 {charges}
@@ -400,8 +404,7 @@ Foreclose, <b>Waive-off</b> and Add Credit Note. <b>Waive-off</b> navigates to t
 {scen}
 <h2>12. Open points</h2>
 <ul><li>What happens if the customer does not pay (time limit, reminders); the units stay lien-marked meanwhile.</li>
-<li>Active loans (scenario 7): does the same maker → checker → Treasury approval apply to the waive-off from the ≡ menu, and are
-the notes / file needed there?</li>
+<li>Active loans: the internal mail templates for the active waive-off (checker / Treasury approval required, approved).</li>
 <li>Roles for approving with a waive-off in scenario 6.</li>
 <li>Does the same maker → checker → Treasury approval apply to the waive-off with a rejection of SUBMITTED and ACCOUNT OPENED loans (scenarios 5 and 6)?</li>
 <li>Should the maker get a mail when the checker or Treasury declines (today: Audit entry only)?</li></ul>
