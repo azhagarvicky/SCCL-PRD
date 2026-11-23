@@ -83,22 +83,27 @@ Waived Off, Payable Charges, Total), who waived it off and when.
 <figure class='brd-fig '><a href='assets/img/brd/waiver/06b_table_full.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/06b_table_full.png' alt='Lien Removal Charges then waived in full – stays in the table with Payable ₹0 and the checkbox disabled' loading='lazy'></a><figcaption>Lien Removal Charges then waived in full – stays in the table with Payable ₹0 and the checkbox disabled</figcaption></figure>
 <h2>7. Reject:</h2>
 <ul>
-<li>Today OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so
+<li>Today, OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so
 that the units can be de-pledged (de-pledge is allowed only for a REJECTED or CLOSED LAN).</li>
 <li>The rejection reason is required and is entered in the existing <b>Add a note</b> field. <b>Upload a file</b> is optional.</li>
-<li><b>Who can reject:</b> loan amount below ₹5 lakh – OPS L1 only; ₹5 lakh and above – OPS L2 or L3 only.</li>
+<li>For a sanction loan amount below ₹5 lakh, only <b>OPS L1</b> can reject the request; for a sanction loan amount of ₹5 lakh and
+above, only <b>OPS L2</b> or <b>OPS L3</b> can reject the request.</li>
 <li><b>When:</b> after 30 days from the LAN generated date when the customer has not submitted the application, or earlier when
 the customer asks for the lien to be removed. A DRAFT loan whose units are not pledged within 30 days moves to INACTIVE
 automatically, and Reject is not offered for it (scenario 1).</li>
-<li>On <b>Reject</b>, show the existing reconfirmation pop-up <b>“This action is irreversible. Are you sure you want to
-proceed?”</b> with <b>No</b>, <b>Yes</b> and a close (×) icon. <b>Yes</b> saves the rejection (final, cannot be revoked);
-<b>No</b> or <b>×</b> closes it and nothing changes.</li>
-<li>The LAN status changes from DRAFT to <b>REJECTED</b>. The type of waive-off is fixed from the balance payable at this time.</li>
-<li>CLOSED is only for an ACTIVE loan; a DRAFT loan is never closed.</li>
-<li><b>Internal mail:</b> after the rejection, LMS sends the internal mail <b>“DRAFT Application Rejected”</b> to the OPS team: the
+<li>On <b>Reject</b>, the existing conditions apply: the reconfirmation pop-up <b>“This action is irreversible. Are you sure you
+want to proceed?”</b> (<b>Yes</b> saves the rejection and it cannot be revoked; <b>No</b> or <b>×</b> closes it and nothing
+changes), the Audit update and the note. The LAN status changes from DRAFT to <b>REJECTED</b>.</li>
+<li>An internal auto mail is sent for the DRAFT to REJECTED event: <b>“DRAFT Application Rejected”</b> to the OPS team, with the
 LAN, customer name, type of waive-off, the charges breakup (Amount of Charges, Waived off Charges, Payable Charges, Total), the
 rejection reason, who rejected it and when. <a href="internal/IC-13.html" target="_blank" rel="noopener">View the mail format</a>
 (Internal communications, alert 13).</li>
+<li>A DRAFT loan is never closed; it can only be Rejected or Submitted.</li>
+<li>OPS can reject whether the Payable Charges are zero or not.</li>
+<li>After the rejection, the communication is sent to the customer automatically:
+  <ul><li><b>Payable Charges equal to zero (Full waive-off):</b> the communication is sent <b>without</b> a payment link.</li>
+  <li><b>Payable Charges not equal to zero (Partial waive-off or No waive-off):</b> the communication is sent <b>with</b> a payment
+  link, and the customer has to pay the charges using that link.</li></ul></li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/07_reject_block.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/07_reject_block.png' alt='Bottom of the Approvals tab – Add a note (reason), Upload a file and Reject' loading='lazy'></a><figcaption>Bottom of the Approvals tab – Add a note (reason), Upload a file and Reject</figcaption></figure>
 <div class="brd-figs">
