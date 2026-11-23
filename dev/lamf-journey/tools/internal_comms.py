@@ -333,9 +333,9 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   'Charges of {{Waived Amount}} have been waived off for {{LAN}} of customer {{Customer Name}}. Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Amount Waived Off | Payable Charges\n'
-  '| Lien Marking Charges | 531.00 | 500.00 | 31.00\n'
-  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
-  '| Total | 649.00 | 500.00 | 149.00\n'
+  '| Processing Fee* | 1,178.82 | 500.00 | 678.82\n'
+  '| Total | 1,178.82 | 500.00 | 678.82\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
   'Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} '
   'will be collected from the customer before the units are de-pledged.',
   [('Any Sanction amount',
@@ -363,9 +363,9 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   '{{LAN}} for customer {{Customer Name}} has been REJECTED in DRAFT status (mutual fund units pledged). Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
-  '| Lien Marking Charges | 531.00 | 500.00 | 31.00\n'
-  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
-  '| Total | 649.00 | 500.00 | 149.00\n'
+  '| Processing Fee* | 1,178.82 | 500.00 | 678.82\n'
+  '| Total | 1,178.82 | 500.00 | 678.82\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
   'Rejection reason: {{Rejection Reason}}\n'
   'Rejected by {{OPS User Name}} on {{Rejection Date & Time}}. The rejection SMS and mail with the payment link for {{Balance Payable}} '
   'have been sent to the customer. The units will be de-pledged after the customer pays and Treasury confirms the payment.',
@@ -388,9 +388,9 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   'Customer {{Customer Name}} has paid charges of {{Amount Paid}} for {{LAN}} (REJECTED).\n'
   '| Charges Name | Amount of Charges | Waived off Charges | Amount Paid\n'
-  '| Lien Marking Charges | 531.00 | 500.00 | 31.00\n'
-  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
-  '| Total | 649.00 | 500.00 | 149.00\n'
+  '| Processing Fee* | 1,178.82 | 500.00 | 678.82\n'
+  '| Total | 1,178.82 | 500.00 | 678.82\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST.\n'
   'Transaction ID: {{Transaction ID}}. Paid on: {{Payment Date & Time}}. Receipt No.: {{Receipt No}} (saved in the Documents tab of the LAN). '
   'The accounting entries have been posted in UNO.\n'
   'Please verify the payment and confirm it in LMS (Approvals tab of the LAN). The de-pledge of the units can be initiated only after '

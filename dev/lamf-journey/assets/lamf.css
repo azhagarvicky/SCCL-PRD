@@ -1504,3 +1504,4 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .wv-depledge { background: #0A0A0A; color: #FFCB08; border: 0; }
 .wv-depledge:disabled { background: #E9EAEB; color: #A4A7AE; cursor: not-allowed; }
 .doc-table .doc-new td { background: #FFFBEA; } .doc-table a { color: #1D4ED8; }
+.cp-incl { font-size: 12px; color: var(--muted); margin-top: 6px; }

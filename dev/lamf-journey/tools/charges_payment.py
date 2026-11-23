@@ -4,25 +4,28 @@ charges-payment.html: a clickable mock-up of the customer's steps – payment li
 (total charges with the breakup, one Pay CTA, no partial payment) → payment gateway (simulated) → success (lien removal will be
 initiated soon, receipt) or failure (nothing changes – back to the Pay Charges page).
 charges-receipt.html: the payment receipt – generated on payment, stored in the LMS Documents tab and sent to the customer.
-Sample values are the same as the LMS prototype (DRAFT LAN SCCLMF20261100079: Lien Marking ₹531 with ₹500 waived, Lien Removal ₹118).
+Sample values are the same as the LMS prototype (DRAFT LAN SCCLMF20261100079: Processing Fee ₹1,178.82 with ₹500 waived) – the
+Processing Fee includes the Lien Marking, Lien Removal and Stamp Duty charges and GST (DISC-354).
 """
 
 LAN = "SCCLMF20261100079"
-CHARGES = [("Lien Marking Charges", 531, 500), ("Lien Removal Charges", 118, 0)]   # (charge, amount, waived off)
+CHARGES = [("Processing Fee*", 1178.82, 500)]   # (charge, amount, waived off) – one charge only (DISC-354)
+INCL = "*One-time Processing Fee, inclusive of Lien Marking, Lien Removal and Stamp Duty charges and GST"
 TOTAL = sum(a for _, a, _ in CHARGES)
 WAIVED = sum(w for _, _, w in CHARGES)
-PAYABLE = TOTAL - WAIVED
+PAYABLE = round(TOTAL - WAIVED, 2)
 TXN, RCPT, PAID_ON = "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/000149", "23-11-2026 11:42 AM"
 
 
 def rs(v):
-    return f"₹{v:,}"
+    v = round(v, 2)
+    return f"₹{v:,.2f}" if v % 1 else f"₹{int(v):,}"
 
 
 def _table(cls="cp-tbl"):   # customer view (DISC-352): only what the customer pays for each charge – no waived off / payable columns
-    rows = "".join(f"<tr><td>{n}</td><td>{rs(a - w)}</td></tr>" for n, a, w in CHARGES if a - w > 0)
+    rows = "".join(f"<tr><td>{n}</td><td>{rs(a - w)}</td></tr>" for n, a, w in CHARGES if round(a - w, 2) > 0)
     return (f'<table class="{cls}"><thead><tr><th>Charges</th><th>Amount</th></tr></thead>'
-            f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>')
+            f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(PAYABLE)}</td></tr></tfoot></table><p class="cp-incl">{INCL}</p>')
 
 
 HDR = ('<header class="hdr cp-hdr"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>'
@@ -33,7 +36,7 @@ def body():
     steps = ["Payment link", "OTP verification", "Pay Charges", "Payment gateway", "Payment result"]
     bar = "".join(f'<button type="button" class="cp-step" data-go="{k}">{k + 1}. {s}</button>' for k, s in enumerate(steps))
     sms = (f"Dear AZHAGARSAMY, Your LAMF application has been rejected. To unpledge your MF units, please pay the charges of "
-           f"Rs. {PAYABLE} here: <a class='cp-link' data-go='1'>https://lamf.shriramcredit.in/user/loans/</a> - Shriram Credit")
+           f"Rs. {PAYABLE:,.2f} here: <a class='cp-link' data-go='1'>https://lamf.shriramcredit.in/user/loans/</a> - Shriram Credit")
     s0 = (f'<section class="cp-s" data-s="0"><div class="cp-phone"><p class="cp-ph-h">SGRCDT-T</p><div class="cp-bubble">{sms}</div>'
           '<p class="cp-ph-n">The same link is in the rejection mail (Pay Charges button). Tap the link.</p></div></section>')
     s1 = (f'<section class="cp-s" data-s="1" hidden>{HDR.format(right="")}<main class="cp-main"><div class="card cp-card cp-otp">'
@@ -115,8 +118,8 @@ tfoot td{{font-weight:bold}} .w{{margin:14px 0 0;font-size:14px}} .n{{margin:18p
 </div>
 <table><thead><tr><th>Charges</th><th>Amount of Charges</th><th>Waived off</th><th>Amount Paid</th></tr></thead><tbody>{rows}</tbody>
 <tfoot><tr><td>Total</td><td>{rs(TOTAL)}</td><td>{rs(WAIVED)}</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>
-<p class="w">Amount received in words: <b>Rupees One Hundred Forty-Nine Only</b></p>
-<p class="n">Charges are inclusive of GST. This is a system-generated receipt and does not need a signature. The lien on your Mutual Fund
+<p class="w">Amount received in words: <b>Rupees Six Hundred Seventy-Eight and Paise Eighty-Two Only</b></p>
+<p class="n">{INCL}. This is a system-generated receipt and does not need a signature. The lien on your Mutual Fund
 units will be removed after the payment is confirmed.</p></div>
 <div class="f">Sample receipt for the prototype (Waiver BRD) – generated on payment, stored in the LMS Documents tab and sent to the customer.</div>
 </div></body></html>

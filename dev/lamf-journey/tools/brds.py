@@ -13,18 +13,17 @@ TBD = '<span class="brd-tbd">To be defined</span>'
 # screen detail (DISC-272).
 # ---------------------------------------------------------------------------------------------------------------------------
 CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by the owner (DISC-289); GST at 18%
-    ("Lien Marking Charge", "₹450 + GST (₹531)", "When the mutual fund units are pledged (lien marked)"),
-    ("Lien Removal Charge", "₹100 + GST (₹118)", "When the lien is removed (units de-pledged)"),
-    ("Processing Fee Charge", "As per the sanction letter + GST", "From the Sanction Letter generation"),
-    ("Stamp Duty Charge", "₹200 + GST (₹236)", "From the Loan Agreement e-Sign"),
+    # DISC-354: Lien Marking, Lien Removal and Stamp Duty charges are included in the Processing Fee – not charged separately
+    ("Processing Fee Charge", "One-time fee, as per the sanction letter + GST (sample ₹999 + GST = ₹1,178.82) – inclusive of the "
+     "Lien Marking, Lien Removal and Stamp Duty charges and GST", "When the mutual fund units are pledged"),
     ("Bounce Charge", "₹100 + GST (₹118) per instance", "Active loan, when an EMI bounces"),
     ("Penal Charge", "36% a year on the unpaid interest / EMI", "Active loan, on a delay or default"),
     ("Loan Renewal Charge", "₹999 + GST (₹1,178.82)", "Active loan, on renewal"),
     ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,178.82)", "Active loan, every year"),
     ("Bank Swap Charge", "₹250 + GST (₹295)", "Active loan, when the repayment bank account is changed"),
 ]
-LM, LR, PF, SD = "Lien Marking Charge", "Lien Removal Charge", "Processing Fee Charge", "Stamp Duty Charge"
-ACTIVE_CH = [LM, LR, PF, SD, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Annual Maintenance Charge (AMC)", "Bank Swap Charge"]
+PF = "Processing Fee Charge"
+ACTIVE_CH = [PF, "Bounce Charge", "Penal Charge", "Loan Renewal Charge", "Annual Maintenance Charge (AMC)", "Bank Swap Charge"]
 
 # The 7 scenarios from the owner's LAMF_Charges_Waiver_V1.xlsx (DISC-274) – outcomes, Product Construct and Treasury Remarks
 # (accounting) per scenario. Layout on the owner's request (DISC-290): Purpose → Summary of scenarios → Common changes →
@@ -43,15 +42,15 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
 ]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, OPS options in the Approvals tab, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action needed. The loan moves to INACTIVE automatically after 30 days.", []),
-    (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
-    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
-    (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF, LM, LR, SD],
+    (2, "DRAFT", "After pledging the mutual funds", [PF], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
+    (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF], "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
+    (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF],
      "Reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.", REJ_OUTCOMES),
-    (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF, LM, LR, SD],
+    (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF],
      "Approve the Loan Account Opening (the loan continues), or reject the application. Before rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.",
      [("Approved", "OPS approves the Loan Account Opening. LAN → ACCOUNT OPENED. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage.")] + REJ_OUTCOMES),
-    (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF, LM, LR, SD],
+    (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF],
      "Approve the Loan Lodgement (the loan continues), or reject the application. Before approving or rejecting, OPS can proceed with Full Waive-off or Partial Waive-off or Without waive-off.",
      [("Approved – no waive-off", "OPS approves the Loan Lodgement without waiving any charge. The loan goes to lodgement. No charges are collected at this stage.",
        "Existing communication.", "Not applicable – the loan continues.", "No entry at this stage."),
@@ -146,12 +145,14 @@ button at the bottom. A DRAFT loan cannot be approved, so there is no Approve bu
 <li>Single selection of the charges and select all options of the charges needed.</li>
 <li>Before waive-off reconfirming option needed.</li>
 <li>Waive-off type is <b>No waive-off, Full waive-off, Partial waive-off.</b></li>
-<li>User cannot be entering the waive-off amount greater than charges of each.</li>
+<li>User cannot enter the waive-off amount greater than the actual amount of the charges.</li>
+<li>The only charge here is the <b>Processing Fee</b>. The Lien Marking, Lien Removal and Stamp Duty charges are included in the
+Processing Fee (with GST) and are not shown or charged separately.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
 <tr><td>Checkbox</td><td>Selects one charge. The checkbox in the header selects all the charges.</td></tr>
-<tr><td>Charges Name</td><td>Each charge incurred so far (for example, Lien Marking Charges, Lien Removal Charges)</td></tr>
-<tr><td>Amount of Charges</td><td>The charge including GST (for example, ₹531 and ₹118). It does not change after a waive-off.</td></tr>
+<tr><td>Charges Name</td><td>Processing Fee (inclusive of the Lien Marking, Lien Removal and Stamp Duty charges and GST)</td></tr>
+<tr><td>Amount of Charges</td><td>The Processing Fee including GST (sample ₹1,178.82). It does not change after a waive-off.</td></tr>
 <tr><td>Waived off Charges</td><td>The amount already waived off for that charge (₹0 until a waive-off is done). It goes up after
 every waive-off of that charge.</td></tr>
 <tr><td>Amount to be waived off</td><td>0 by default and not editable. OPS can enter the amount only after selecting the checkbox of
@@ -169,7 +170,7 @@ that charge; it cannot be more than the balance (Amount of Charges – Waived of
 <tr><td>0 (every charge waived in full)</td><td>Full waive-off</td></tr>
 </tbody></table>
 {fig('02_table_default.png', 'Default – nothing selected, Waive-off button disabled')}
-{fig('03_table_selected.png', 'Lien Marking Charges selected and ₹500 entered – Payable ₹31, Waive-off button enabled')}
+{fig('03_table_selected.png', 'Processing Fee selected and ₹500 entered – Payable ₹678.82, Waive-off button enabled')}
 <h2>5. Waive-off reconfirmation:</h2>
 <ul>
 <li>On <b>Waive-off</b>, show the pop-up <b>“Are you sure you want to waive-off selected charges?”</b> with <b>No, don’t</b>,
@@ -198,8 +199,8 @@ the product team in Cc: the LAN, customer name, amount waived, type of waive-off
 Waived Off, Payable Charges, Total), who waived it off and when.
 <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 12).</li>
 </ul>
-{fig('06_table_balance.png', 'After waiving ₹500 of Lien Marking Charges – Waived off Charges ₹500, Payable Charges ₹31')}
-{fig('06b_table_full.png', 'Lien Removal Charges then waived in full – stays in the table with Payable ₹0 and the checkbox disabled')}
+{fig('06_table_balance.png', 'After waiving ₹500 of the Processing Fee – Waived off Charges ₹500, Payable Charges ₹678.82')}
+{fig('06b_table_full.png', 'The balance then waived in full – the charge stays in the table with Payable ₹0 and the checkbox disabled')}
 <h2>7. Reject:</h2>
 <ul>
 <li>Today, OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so
@@ -237,9 +238,9 @@ rejection reason, who rejected it and when. <a href="internal/IC-13.html" target
 <ul>
 <li>Every waive-off and the rejection are recorded in the Audit tab of the LAN, in the existing format (date and time, message,
 Approved by, Initiated by with the note). Examples:
-  <ul><li>“Pledge charge of ₹531.00 has been waived off (full waive-off); balance ₹0.00”</li>
-  <li>“Pledge charge of ₹500.00 has been waived off (partial waive-off); balance ₹31.00”</li>
-  <li>“Application rejected – LAN status changed from DRAFT to REJECTED (partial waive-off; charges payable ₹149.00)”</li></ul></li>
+  <ul><li>“Processing fee charge of ₹500.00 has been waived off (partial waive-off); balance ₹678.82”</li>
+  <li>“Processing fee charge of ₹678.82 has been waived off (full waive-off); balance ₹0.00”</li>
+  <li>“Application rejected – LAN status changed from DRAFT to REJECTED (partial waive-off; charges payable ₹678.82)”</li></ul></li>
 </ul>
 {fig('10_audit.png', 'Audit tab – waive-off and rejection entries')}
 <h2>9. Charges payment by the customer:</h2>
