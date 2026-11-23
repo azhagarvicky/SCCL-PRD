@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 23-11-2026 10:24 IST
+**Last Updated:** 23-11-2026 10:36 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -377,6 +377,7 @@
 | DISC-342 | 23-11-2026 | brd-waive-off.html | Waiver BRD restyled as per the owner's draft | Owner: “the waive off BRD i need like this” (image “BRD - Charges Waiver & Post-Pledge Drop-off”) | Renamed to “Charges Waiver & Post-Pledge Drop-off” (updated 23-11-2026). Short headed sections in the owner's style: 3 Approvals Tab:, 4 Waive-off charges: (owner's 5 bullets verbatim, column table, type of waive-off table), 5 Waive-off reconfirmation:, 6 After the waive-off:, 7 Reject:, 8 Audit tab:, 9 After the rejection:, 10 Waive-off for Submitted / Account Opened / Active loans (with charges table), 11 Scenarios, 12 Open points. 10 screenshots of the LMS prototype (DRAFT LAN, Lien Marking ₹531 + Lien Removal ₹118) added under the sections (assets/img/brd/waiver/). DRAFT LAN Rejection BRD references renamed. | Implemented |
 | DISC-343 | 23-11-2026 | internal-communications.html, internal/IC-12.html, brd-waive-off.html | Internal mail after a waive-off | Owner: “After the waive-off the internal communication has to send so create the content format” | New internal alert 12 “Charges Waived Off” (tools/internal_comms.py): trigger – OPS waives off charges in the Approvals tab of a pledged DRAFT LAN (after Yes, waive-off); subject “Status Update | {{LAN}} | Charges Waived Off”; body – amount waived, LAN, customer, type of waive-off, breakup table (Charges Name / Amount of Charges / Amount Waived Off / Payable Charges / Total), waived off by and when, balance collected after the rejection before the de-pledge. To Treasury (Natarajan K), Cc OPS and product team – recipients to be confirmed. Mail view supports a breakup table (lines starting with “|”). Waiver BRD section 6 gets an “Internal mail” bullet with a link to the format. | Implemented |
 | DISC-344 | 23-11-2026 | internal/IC-12.html | Charges Waived Off mail – last line reworded | Owner gave the line: “Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} will be collected from the customer before the units are de-pledged.” | Removed “after the rejection,” from the last line of alert 12. | Implemented |
+| DISC-345 | 23-11-2026 | lms.html, brd-waive-off.html | “Waived off Charges” column in the Waive-off charges table | Owner (screenshot of the table): “here add one more column that waived off charges” | New column after Amount of Charges: Waived off Charges – amount already waived for that charge (₹0 at first, goes up after each waive-off), with a total. Amount of Charges now stays the original charge; Amount to be waived off is capped at the balance; Payable Charges = Amount of Charges – Waived off Charges – Amount to be waived off. A fully waived charge is still removed from the table. LMS prototype and Waiver BRD (column table, section 6, scenario tables, screenshots 02 / 03 / 06) updated. | Implemented |
 
 ---
 

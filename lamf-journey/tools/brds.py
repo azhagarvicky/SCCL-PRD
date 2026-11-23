@@ -111,9 +111,9 @@ def _waiver_body():
                         "not pledged within 30 days from the LAN generated date.</li>"
                         "<li><b>Customer communication:</b> none.</li>"
                         "<li><b>Accounting:</b> no entries.</li></ul>")
-        chs = ("<table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Amount to be waived off</th>"
+        chs = ("<table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th>"
                "<th>Payable Charges</th></tr></thead><tbody>"
-               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Amount to be waived off</td></tr>" for c in ch)
+               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Already waived off (0 at first)</td><td>Entered by OPS after selecting the checkbox (0 by default)</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr>" for c in ch)
                + "</tbody></table>")
         out = ("<table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th>"
                "<th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody>"
@@ -151,10 +151,12 @@ button at the bottom. A DRAFT loan cannot be approved, so there is no Approve bu
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
 <tr><td>Checkbox</td><td>Selects one charge. The checkbox in the header selects all the charges.</td></tr>
 <tr><td>Charges Name</td><td>Each charge incurred so far (for example, Lien Marking Charges, Lien Removal Charges)</td></tr>
-<tr><td>Amount of Charges</td><td>The charge including GST (for example, ₹531 and ₹118)</td></tr>
+<tr><td>Amount of Charges</td><td>The charge including GST (for example, ₹531 and ₹118). It does not change after a waive-off.</td></tr>
+<tr><td>Waived off Charges</td><td>The amount already waived off for that charge (₹0 until a waive-off is done). It goes up after
+every waive-off of that charge.</td></tr>
 <tr><td>Amount to be waived off</td><td>0 by default and not editable. OPS can enter the amount only after selecting the checkbox of
-that charge; it cannot be more than the Amount of Charges. Unselecting the checkbox sets it back to 0.</td></tr>
-<tr><td>Payable Charges</td><td>Amount of Charges – Amount to be waived off</td></tr>
+that charge; it cannot be more than the balance (Amount of Charges – Waived off Charges). Unselecting the checkbox sets it back to 0.</td></tr>
+<tr><td>Payable Charges</td><td>Amount of Charges – Waived off Charges – Amount to be waived off</td></tr>
 <tr><td>Total</td><td>Total of each column</td></tr>
 </tbody></table>
 <ul>
@@ -182,10 +184,11 @@ waived and the balance payable. OK closes it.</li>
 </div>
 <h2>6. After the waive-off:</h2>
 <ul>
-<li>Only the balance is shown in the table.</li>
+<li>The <b>Waived off Charges</b> column shows the amount waived off and <b>Payable Charges</b> shows the balance.</li>
 <li><b>Full waive-off of a charge:</b> the charge is removed from the table and is not shown again.</li>
-<li><b>Partial waive-off of a charge:</b> the charge stays with only its balance as the Amount of Charges; the checkbox is cleared and
-the amount goes back to 0, so the balance can be waived again later.</li>
+<li><b>Partial waive-off of a charge:</b> the charge stays with the original Amount of Charges, the amount waived in Waived off
+Charges and the balance in Payable Charges; the checkbox is cleared and the amount goes back to 0, so the balance can be waived again
+later.</li>
 <li>When all the charges are waived in full, the table shows “All charges have been waived off – nothing is payable.”</li>
 <li>Waive-off and rejection are separate actions: OPS can waive off first and reject afterwards.</li>
 <li><b>Internal mail:</b> after every waive-off, LMS sends the internal mail <b>“Charges Waived Off”</b> to Treasury, with OPS and
@@ -193,7 +196,7 @@ the product team in Cc: the LAN, customer name, amount waived, type of waive-off
 Waived Off, Payable Charges, Total), who waived it off and when.
 <a href="internal/IC-12.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 12).</li>
 </ul>
-{fig('06_table_balance.png', 'After waiving ₹500 of Lien Marking Charges – only the balance ₹31 is shown')}
+{fig('06_table_balance.png', 'After waiving ₹500 of Lien Marking Charges – Waived off Charges ₹500, Payable Charges ₹31')}
 <h2>7. Reject:</h2>
 <ul>
 <li>Today OPS can reject a loan only after it is SUBMITTED. Need the reject option for a DRAFT loan whose units are pledged, so

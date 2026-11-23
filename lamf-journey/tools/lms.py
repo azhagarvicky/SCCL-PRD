@@ -122,7 +122,9 @@ def draft_approvals(r, tid):
     note, file upload and a Reject button only at the bottom, with the existing reconfirmation pop-up."""
     k = START["draft"] - int(r["LAN"][-2:])
     sc = 2 if k < 4 else 3 if k < 7 else 4
-    rows = "".join(f'<tr data-name="{n}"><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td><td class="num wv-chg">₹{_amt(a)}</td>'
+    # DISC-345: “Waived off Charges” column – what is already waived; Amount of Charges stays the original charge
+    rows = "".join(f'<tr data-name="{n}" data-chg="{a}" data-done="0"><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td>'
+                   f'<td class="num wv-chg">₹{_amt(a)}</td><td class="num wv-done-amt">₹0</td>'
                    f'<td><input class="wv-amt" type="number" min="0" step="0.01" value="0" data-max="{a}" disabled></td>'
                    f'<td class="num wv-pay">₹{_amt(a)}</td></tr>' for n, a in DRAFT_CHARGES[sc])
     total = sum(a for _, a in DRAFT_CHARGES[sc])
@@ -131,9 +133,9 @@ def draft_approvals(r, tid):
             'Not in the live LMS yet.</p>'
             '<div class="wv-head"><h3>Waive-off charges</h3><button type="button" class="wv-waive" disabled>Waive-off</button></div>'
             '<table class="lms-table wv-table"><thead><tr><th><input type="checkbox" class="wv-all" aria-label="Select all"></th>'
-            '<th>Charges Name</th><th class="num">Amount of Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
+            '<th>Charges Name</th><th class="num">Amount of Charges</th><th class="num">Waived off Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
             f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b class="wv-ctot">₹{_amt(total)}</b></td>'
-            f'<td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
+            f'<td class="num"><b class="wv-dtot">₹0</b></td><td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
             '<p class="wv-allgone" hidden>All charges have been waived off – nothing is payable.</p>'
             '<p class="wv-type">Type of waive-off: <b>No waive-off</b></p>'
             '<label class="wv-lbl">Add a note <span>(rejection reason – recorded in the Audit)</span></label>'
@@ -185,15 +187,15 @@ WAIVER_JS = """<script>
   var now = function () { var d = new Date(), p = function (x) { return String(x).padStart(2, '0'); };
     return p(d.getDate()) + '-' + p(d.getMonth() + 1) + '-' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()); };
   function calc(w) {
-    var tw = 0, bal = 0, pend = 0;
+    var tw = 0, bal = 0, pend = 0, chg = 0, done = 0;
     w.querySelectorAll('tbody tr').forEach(function (tr) {
       var a = tr.querySelector('.wv-amt'), max = +a.dataset.max, v = +a.value || 0;
       if (v > max) { a.value = max; v = max; } if (v < 0) { a.value = 0; v = 0; }
-      tw += v; bal += max; tr.querySelector('.wv-pay').textContent = f(max - v);
+      tw += v; bal += max; chg += +tr.dataset.chg; done += +tr.dataset.done; tr.querySelector('.wv-pay').textContent = f(max - v);
       if (tr.querySelector('.wv-chk').checked && v > 0) pend++;
     });
     var after = bal - tw, orig = +w.dataset.orig;
-    w.querySelector('.wv-ctot').textContent = f(bal); w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(after);
+    w.querySelector('.wv-ctot').textContent = f(chg); w.querySelector('.wv-dtot').textContent = f(done); w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(after);
     var t = after <= 0 ? 'Full waive-off' : after < orig ? 'Partial waive-off' : 'No waive-off';
     w.querySelector('.wv-type b').textContent = t;
     w.querySelector('.wv-waive').disabled = !pend || w.classList.contains('closed');
@@ -236,7 +238,8 @@ WAIVER_JS = """<script>
                  ' waive-off); balance ' + f2(left), note);
         if (left <= 0) { tr.remove(); return; }                       // fully waived – not shown again
         a.dataset.max = left; a.value = 0; a.disabled = true; chk.checked = false;
-        tr.querySelector('.wv-chg').textContent = f(left);            // partly waived – only the balance is shown
+        tr.dataset.done = r2(+tr.dataset.done + v);                   // partly waived – Waived off Charges goes up, Payable shows the balance
+        tr.querySelector('.wv-done-amt').textContent = f(+tr.dataset.done);
       });
       w.querySelector('.wv-all').checked = false;
       var r = calc(w);
