@@ -164,6 +164,21 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       LIEN_PROCESS.replace("{STATUS}", "Lien release process initiated"),
       SUPPORT],
      "DRAFT LAN rejected with Payable Charges equal to zero (full waive-off) – Waiver BRD."),
+    # DISC-351 – the customer paid the charges after the DRAFT rejection (LOS payment link); the receipt is attached.
+    ("08_Charges_Payment_Received", "Payment Received",
+     "Payment Received: Charges for Your LAMF Application {{LOAN_ID}}",
+     "We have received your payment. The receipt is attached.",
+     ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{AMOUNT_PAID}}", "{{TRANSACTION_ID}}", "{{PAYMENT_DATE}}", "{{RECEIPT_NO}}"],
+     [badge("Payment received successfully", "ok"),
+      para("Thank you. We have received your payment towards the charges for your Loan Against Mutual Fund application "
+           "(<b>{{LOAN_ID}}</b>) with Shriram Credit Company Limited (SCCL).", pad="22px 48px 0 48px"),
+      details("Payment Details", [("Loan Application ID", "{{LOAN_ID}}"), ("Amount Paid", "&#8377;{{AMOUNT_PAID}}"),
+                                  ("Transaction ID", "{{TRANSACTION_ID}}"), ("Paid on", "{{PAYMENT_DATE}}"), ("Receipt No.", "{{RECEIPT_NO}}")]),
+      para("Your payment receipt is attached to this email.", pad="22px 48px 0 48px"),
+      para("The lien removal of your pledged Mutual Fund units will be initiated soon. You will receive a separate notification from "
+           "CAMS/KFintech once your units are fully unlocked."),
+      SUPPORT],
+     "Sent after the customer pays the charges (DRAFT rejection, Waiver BRD). Attachment: Payment Receipt PDF."),
 ]
 
 

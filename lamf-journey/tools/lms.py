@@ -143,10 +143,18 @@ def draft_approvals(r, tid):
             '<label class="wv-lbl">Upload a file</label><div class="wv-drop">Drop files here or <u>click</u></div>'
             '<p class="wv-hint">PDF, PNG or JPG. Max 5MB</p>'
             '<div class="wv-ctas"><button type="button" class="wv-reject">Reject</button></div><div class="wv-done" hidden></div>'
+            # DISC-351: after the rejection – customer payment (from the LOS), Treasury confirmation, then de-pledge
+            '<div class="wv-pay-box" hidden><h3>Charges payment</h3><p class="wv-pay-st"></p>'
+            '<div class="wv-pay-ctas"><button type="button" class="wv-sim">Simulate customer payment (prototype)</button>'
+            '<button type="button" class="wv-confirm" hidden>Confirm Payment</button>'
+            '<button type="button" class="wv-depledge" disabled>Initiate De-pledge</button></div>'
+            '<p class="wv-hint wv-dp-hint">De-pledge is enabled only after Treasury confirms the payment.</p></div>'
             + pop('wv-pw', '<h3>Are you sure you want to waive-off selected charges?</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No, don’t</button><button type="button" class="wv-yes-w">Yes, waive-off</button></div>')
             + pop('wv-ps', '<div class="wv-tick">✓</div><h3>Charges waived off successfully</h3><p class="wv-ps-txt"></p>'
                   '<div class="wv-pbtns one"><button type="button" class="wv-ok">OK</button></div>')
+            + pop('wv-pc', '<h3>Are you sure you want to confirm the payment received from the customer?</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-c">Yes, confirm</button></div>')
             + pop('wv-pr', '<h3>This action is irreversible. Are you sure you want to proceed?</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes</button></div>')
             + '</div>')
@@ -161,6 +169,13 @@ def _aud(ts, msg, approved="-", init="System", at=None, note="-"):
     at = at or ts
     return (f'<details class="aud"><summary><span class="aud-t">{ts}</span><span class="aud-m">{msg}</span></summary>'
             f'<p>→ Approved by {approved}</p><p>→ Initiated by “{init}” at “{at}” - “{note}”</p></details>')
+
+
+def draft_documents(r):
+    """Draft LAN Documents tab (DISC-351): the charges payment receipt is added here when the customer pays (LOS)."""
+    return ('<p class="lms-new">The charges payment receipt is new (Waiver BRD) – not in the live LMS yet.</p>'
+            '<table class="lms-table doc-table"><thead><tr><th>Document</th><th>Reference</th><th>Uploaded on</th><th>Uploaded by</th><th></th></tr></thead>'
+            '<tbody><tr class="doc-none"><td colspan="5">No documents yet.</td></tr></tbody></table>')
 
 
 def draft_audit(r):
@@ -262,6 +277,42 @@ WAIVER_JS = """<script>
         (q.tp > 0 ? 'Payable charges ' + f(q.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
                   : 'Nothing payable – rejection SMS and mail sent without a payment link; the units can be de-pledged now.');
       var st = w.closest('.lms-lanpage').querySelector('.lms-lanhead .lms-st'); st.textContent = 'Rejected'; st.className = 'lms-st st-rejected';
+      /* DISC-351: charges payment block – payable: wait for the customer's payment; nothing payable: de-pledge now */
+      var pb = w.querySelector('.wv-pay-box'); pb.hidden = false; w.dataset.due = q.tp;
+      pb.querySelectorAll('button').forEach(function (x) { x.disabled = false; });
+      if (q.tp > 0) {
+        pb.querySelector('.wv-pay-st').innerHTML = 'Awaiting the customer’s payment of <b>' + f(q.tp) + '</b> – payment link sent (SMS and mail). Full payment only.';
+        pb.querySelector('.wv-depledge').disabled = true;
+      } else {
+        pb.querySelector('.wv-pay-st').innerHTML = 'Nothing payable (full waive-off) – the units can be de-pledged now.';
+        pb.querySelector('.wv-sim').hidden = true; pb.querySelector('.wv-dp-hint').hidden = true;
+      }
+    }
+    if (c.contains('wv-sim')) {          /* the customer pays in the LOS – LMS gets the payment, receipt and UNO entries */
+      var pb2 = w.querySelector('.wv-pay-box'), amt = f2(+w.dataset.due), ts = stamp();
+      pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
+        'Receipt RCPT/LAMF/2026/000149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
+      e.target.hidden = true; pb2.querySelector('.wv-confirm').hidden = false;
+      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/000149 generated', '-');
+      var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
+      if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
+        var tr = document.createElement('tr'); tr.className = 'doc-new';
+        tr.innerHTML = '<td>Charges Payment Receipt</td><td>RCPT/LAMF/2026/000149</td><td></td><td>System</td>' +
+          '<td><a href="charges-receipt.html" target="_blank" rel="noopener">View</a></td>';
+        tr.children[2].textContent = ts; docs.prepend(tr); }
+    }
+    if (c.contains('wv-confirm')) show(w, '.wv-pc', true);
+    if (c.contains('wv-yes-c')) {
+      show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box');
+      pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment confirmed by Treasury</b> on ' + stamp() + '. De-pledge can be initiated.');
+      pb3.querySelector('.wv-pay-st').innerHTML = pb3.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
+      pb3.querySelector('.wv-confirm').hidden = true; pb3.querySelector('.wv-depledge').disabled = false; pb3.querySelector('.wv-dp-hint').hidden = true;
+      audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' confirmed by Treasury', '-');
+    }
+    if (c.contains('wv-depledge')) {
+      var pb4 = w.querySelector('.wv-pay-box'); e.target.disabled = true; e.target.textContent = 'De-pledge initiated';
+      pb4.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>De-pledge initiated</b> on ' + stamp() + '.');
+      audit(w, 'De-pledge of the pledged Mutual Fund units initiated', '-');
     }
   });
 })();
@@ -306,7 +357,7 @@ def lan_detail(view, r):
                    f'<label for="t-{tid}-{k}">{t}</label>' for k, t in enumerate(tab_list))
     panes = ('<div class="lms-pane p0"><div class="lms-card2"><h3>Loan Details</h3><div class="lms-grid">' + grid + '</div></div>'
              '<div class="lms-card2"><h3>Collection Details</h3><div class="lms-grid g3">' + coll + '</div></div></div>'
-             + "".join(f'<div class="lms-pane p{k}">{draft_approvals(r, tid) if (view == "draft" and k == 1) else draft_audit(r) if (view == "draft" and tab_list[k] == "Audit") else TBA}</div>'
+             + "".join(f'<div class="lms-pane p{k}">{draft_approvals(r, tid) if (view == "draft" and k == 1) else draft_audit(r) if (view == "draft" and tab_list[k] == "Audit") else draft_documents(r) if (view == "draft" and tab_list[k] == "Documents") else TBA}</div>'
                        for k in range(1, len(tab_list))))
     return (f'<section id="lan-{tid}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" href="#m-loans-{view}" '
             f'title="Back to the list">←</a><h2>LAN Number: {r["LAN"]}</h2><span class="lms-st st-{status.lower()}">{status}</span>{risk}'
