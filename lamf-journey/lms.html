@@ -131,7 +131,7 @@
       w.querySelectorAll('.wv-fname').forEach(function (x) { x.textContent = ''; });
       show(w, '.wv-ck', false); show(w, '.wv-appr', false); calc(w); setSt(w, 'Draft');
       var d0 = w.querySelector('.wv-done'); d0.hidden = false; d0.className = 'wv-done wv-cancel';
-      d0.innerHTML = '<b>Request declined by ' + who + ' – cancelled.</b> LAN status stays DRAFT; nothing is waived. The maker can submit a new request.';
+      d0.innerHTML = '<b>Request declined by ' + who + ' – cancelled.</b> LAN status stays DRAFT; nothing is waived. Mail sent to the maker: <i>Waive-off Request Declined</i>. The maker can submit a new request.';
     }
     if (c.contains('wv-approve')) show(w, '.wv-pa', true);
     if (c.contains('wv-yes-a')) {          /* Treasury approves – waive-off and rejection applied together */
@@ -258,13 +258,13 @@
     if (c.contains('wa-dec')) { if (!Q(w, '.wa-tnote').value.trim()) { Q(w, '.wa-terr').textContent = 'Please add the remark to decline.'; return; }
       w.dataset.dec = w.dataset.tr; Q(w, '.wa-pd').hidden = false; }
     if (c.contains('wa-yes-d')) { Q(w, '.wa-pd').hidden = true;
-      reset(w, '<b>Waive-off request declined by ' + w.dataset.dec + ' – cancelled.</b> Nothing is waived. The maker can submit a new request.'); }
+      reset(w, '<b>Waive-off request declined by ' + w.dataset.dec + ' – cancelled.</b> Nothing is waived. Mail sent to the maker: <i>Waive-off Request Declined</i>. The maker can submit a new request.'); }
     if (c.contains('wa-app')) pop(w, '.wa-pa');
     if (c.contains('wa-yes-a')) { Q(w, '.wa-pa').hidden = true; var q3 = calc(w);
       w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wa-chk'), a = tr.querySelector('.wa-amt'), v = +a.value || 0;
         if (!ck.checked || v <= 0) return; var left = r2(+a.dataset.max - v); a.dataset.max = left; tr.querySelector('.wa-bal').textContent = f(left); });
       reset(w, '<b>Approved by ' + w.dataset.ck + ' (Checker) and ' + w.dataset.tr + ' – ' + f(q3.tw) + ' waived off (' + q3.type.toLowerCase() + ').</b> ' +
-        'The waiver is posted in the Statement of Account with a waiver narration; the Amount column shows the balance.');
+        'The waiver is posted in the Statement of Account with a waiver narration; the Amount column shows the balance. Mail sent: <i>Waive-off Approved</i>.');
       Q(w, '.wa-done').className = 'wv-done wa-done'; }
   });
 })();
