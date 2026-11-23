@@ -249,8 +249,8 @@ payable and the units can be de-pledged right after the rejection.
 <ul>
 <li>The customer clicks the payment link in the rejection SMS or mail and is taken to the LOS, where the mobile number is verified
 with an OTP.</li>
-<li>After the OTP is verified, the LOS shows the <b>Pay Charges</b> page: the total charges with the breakup (Charges, Amount of
-Charges, Waived off, Payable, Total), the Total Payable and a <b>Pay</b> button. There is <b>no option for partial payment</b> – the
+<li>After the OTP is verified, the LOS shows the <b>Pay Charges</b> page: the charges to be paid with the breakup (Charges and
+Amount – the amount payable for each charge – and Total; the waived amounts are not shown to the customer), the Total Payable and a <b>Pay</b> button. There is <b>no option for partial payment</b> – the
 full amount is paid in one payment. After the rejection, paying the charges is the only option for this application in the LOS; the Curated Offers page
 shows a fresh product card to start a new application.</li>
 <li><b>Payment failed:</b> nothing changes – no update in the LOS or LMS, no communication, no accounting entry. The customer is back
