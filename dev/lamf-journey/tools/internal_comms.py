@@ -322,4 +322,30 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])]),
+ # DISC-343 – Waiver BRD: sent after every waive-off in the Approvals tab of a DRAFT LAN (after “Yes, waive-off”).
+ # Lines starting with “|” are shown as the breakup table in the mail view. Recipients to be confirmed by the owner.
+ ('DRAFT',
+  'NA',
+  'OPS waives off charges in the Approvals tab of a pledged DRAFT LAN (after “Yes, waive-off” on the reconfirmation pop-up)',
+  'Status Update | {{LAN}} | Charges Waived Off',
+  'Charges Waived Off',
+  '{{To User Name}}',
+  'Charges of {{Waived Amount}} have been waived off for {{LAN}} of customer {{Customer Name}}. Type of waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Amount Waived Off | Payable Charges\n'
+  '| Lien Marking Charges | 531.00 | 500.00 | 31.00\n'
+  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
+  '| Total | 649.00 | 500.00 | 149.00\n'
+  'Waived off by {{OPS User Name}} on {{Waive-off Date & Time}}. The LAN is still in DRAFT status. The balance payable of {{Balance Payable}} '
+  'will be collected from the customer after the rejection, before the units are de-pledged.',
+  [('Any Sanction amount',
+    ['k.natarajan@shriramcredit.in'],
+    ['satyaparida@shriramcredit.in',
+     'richajayswal@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'nadanakumar@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in'])])]

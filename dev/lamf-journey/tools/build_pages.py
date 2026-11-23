@@ -817,9 +817,28 @@ def comms_body(home):          # one table: SMS and mail together; the separate 
 # Internal communications – LMS mail alerts to the OPS / Treasury teams (DISC-267); data in tools/internal_comms.py
 from internal_comms import INTERNAL, NAMES, GREET_ONLY
 IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagarsamy Subburaj", "{{Customer Name}}": "Azhagarsamy Subburaj",
-             "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00"}
+             "{{Sanction Amount}}": "1000000.00", "{{Disbursement Amount}}": "100000.00",
+             # Charges Waived Off alert (DISC-343) – same sample as the LMS prototype (Lien Marking 531 + Lien Removal 118, 500 waived)
+             "{{Waived Amount}}": "500.00", "{{Waive-off Type}}": "Partial waive-off", "{{OPS User Name}}": "OPS user",
+             "{{Waive-off Date & Time}}": "23-11-2026 11:20 AM", "{{Balance Payable}}": "149.00"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"
 IC_FILE = lambda n: f"internal/IC-{n:02d}.html"
+
+def ic_mail_body(text):     # mail view: “\n” starts a new paragraph, lines starting with “|” form a table (DISC-343)
+    out, rows = [], []
+    def flush():
+        if rows:
+            cell = lambda tag, c, i: f'<{tag} style="border:1px solid #ddd;padding:6px 10px;text-align:{"left" if i == 0 else "right"}">{c}</{tag}>'
+            body = "".join("<tr>" + "".join(cell("th" if r == 0 or r == len(rows) - 1 and rows[r][0].strip() == "Total" else "td", c.strip(), i)
+                                            for i, c in enumerate(row)) + "</tr>" for r, row in enumerate(rows))
+            out.append(f'<table style="border-collapse:collapse;width:100%;margin:6px 0 14px;font-size:14px">{body}</table>'); rows.clear()
+    for line in text.split("\n"):
+        if line.startswith("|"):
+            rows.append(ic_fill(line[1:]).split("|"))
+        else:
+            flush(); out.append(f"<p>{ic_fill(line)}</p>")
+    flush()
+    return "".join(out)
 
 def ic_fill(text, bold=True):    # sample values in a structure; in the mail body the values and statuses are bold
     t = html.escape(text, quote=False)
@@ -878,7 +897,7 @@ h1.subj{{font-size:24px;font-weight:400;margin:10px 28px 14px}}
 <div class="wrap"><div class="mail">
 <div class="logo"><img src="../assets/img/shriram-logo.png" alt="Shriram Credit"></div><div class="rule"></div>
 <div class="band">{title}</div>
-<div class="body"><p class="dear">Dear <span id="dear">{greet}</span>,</p><p>{body}</p><p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
+<div class="body"><p class="dear">Dear <span id="dear">{greet}</span>,</p>{body}<p class="reg">Regards,<br><b>Team Shriram Credit</b></p></div>
 <div class="disc">This is a system-generated email. Please do not reply.</div>
 <div class="foot">© 2026 Shriram Credit Company Limited. All rights reserved.</div>
 </div></div></div>{script}
@@ -904,7 +923,7 @@ def write_internal_mails():
         with open(os.path.join(ROOT, IC_FILE(n)), "w") as f:
             f.write(IC_PAGE.format(title=html.escape(title), subject=ic_fill(subj, bold=False).strip(), switch=switch,
                                    to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]), greet=html.escape(rec[0]["dear"]),
-                                   body=ic_fill(body), script=script))
+                                   body=ic_mail_body(body), script=script))
 
 def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257, DISC-263)
     opt = lambda vals, sel=None: "".join(f'<option{" selected" if v == sel else ""}>{v}</option>' for v in vals)
