@@ -121,8 +121,9 @@ def _amt(v):
 
 
 def draft_approvals(r, tid):
-    """Draft loan Approvals tab (DISC-338): waive-off table with its own Waive-off button, confirmation and success pop-ups;
-    note, file upload and a Reject button only at the bottom, with the existing reconfirmation pop-up."""
+    """Draft loan Approvals tab. DISC-361: waive-off and rejection are ONE request – OPS enters the amounts to waive and the reason
+    and clicks Reject; the request goes to Treasury, who approves (waive-off and rejection applied together) or declines (request
+    cancelled, LAN stays DRAFT). No separate Waive-off button."""
     k = START["draft"] - int(r["LAN"][-2:])
     sc = 2 if k < 4 else 3 if k < 7 else 4
     # DISC-345: “Waived off Charges” column – what is already waived; Amount of Charges stays the original charge
@@ -134,7 +135,7 @@ def draft_approvals(r, tid):
     pop = lambda cls, body: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{body}</div></div>'
     return (f'<div class="wv" data-tid="{tid}" data-orig="{total}"><p class="lms-new">New – as per the Waiver BRD (Waiver BRD scenario {sc}). '
             'Not in the live LMS yet.</p>'
-            '<div class="wv-head"><h3>Waive-off charges</h3><button type="button" class="wv-waive" disabled>Waive-off</button></div>'
+            '<div class="wv-head"><h3>Waive-off charges</h3></div>'
             '<table class="lms-table wv-table"><thead><tr><th><input type="checkbox" class="wv-all" aria-label="Select all"></th>'
             '<th>Charges Name</th><th class="num">Amount of Charges</th><th class="num">Waived off Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
             f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b class="wv-ctot">₹{_amt(total)}</b></td>'
@@ -146,21 +147,29 @@ def draft_approvals(r, tid):
             '<textarea class="wv-note" rows="2" placeholder="Add a note"></textarea><p class="wv-err"></p>'
             '<label class="wv-lbl">Upload a file</label><div class="wv-drop">Drop files here or <u>click</u></div>'
             '<p class="wv-hint">PDF, PNG or JPG. Max 5MB</p>'
-            '<div class="wv-ctas"><button type="button" class="wv-reject">Reject</button></div><div class="wv-done" hidden></div>'
+            '<div class="wv-ctas"><button type="button" class="wv-reject">Reject</button></div>'
+            # DISC-361: the waive-off + rejection request waits for the Treasury approval
+            '<div class="wv-appr" hidden><h3>Waive-off &amp; Rejection – pending Treasury approval</h3><p class="wv-appr-st"></p>'
+            '<label class="wv-lbl">Treasury remark <span>(required to decline)</span></label>'
+            '<textarea class="wv-tnote" rows="2" placeholder="Add a remark"></textarea><p class="wv-terr"></p>'
+            '<div class="wv-appr-ctas"><button type="button" class="wv-decline">Decline</button><button type="button" class="wv-approve">Approve</button></div>'
+            '<p class="wv-hint">Treasury team only.</p></div>'
+            '<div class="wv-done" hidden></div>'
             # DISC-351: after the rejection – customer payment (from the LOS), Treasury confirmation, then de-pledge
             '<div class="wv-pay-box" hidden><h3>Charges payment</h3><p class="wv-pay-st"></p>'
             '<div class="wv-pay-ctas"><button type="button" class="wv-sim">Simulate customer payment (prototype)</button>'
             '<button type="button" class="wv-confirm" hidden>Confirm Payment</button>'
             '<button type="button" class="wv-depledge" disabled>Initiate De-pledge</button></div>'
             '<p class="wv-hint wv-dp-hint">De-pledge is enabled only after Treasury confirms the payment.</p></div>'
-            + pop('wv-pw', '<h3>Are you sure you want to waive-off selected charges?</h3>'
-                  '<div class="wv-pbtns"><button type="button" class="wv-no">No, don’t</button><button type="button" class="wv-yes-w">Yes, waive-off</button></div>')
-            + pop('wv-ps', '<div class="wv-tick">✓</div><h3>Charges waived off successfully</h3><p class="wv-ps-txt"></p>'
-                  '<div class="wv-pbtns one"><button type="button" class="wv-ok">OK</button></div>')
+            + pop('wv-pr', '<h3>Are you sure you want to reject the application with the selected waive-off?</h3>'
+                  '<p class="wv-ps-txt">The request will be sent to Treasury for approval.</p>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes, submit</button></div>')
+            + pop('wv-pa', '<h3>This action is irreversible. Are you sure you want to proceed?</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-a">Yes</button></div>')
+            + pop('wv-pd', '<h3>Are you sure you want to decline? The waive-off and rejection request will be cancelled.</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-d">Yes, decline</button></div>')
             + pop('wv-pc', '<h3>Are you sure you want to confirm the payment received from the customer?</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-c">Yes, confirm</button></div>')
-            + pop('wv-pr', '<h3>This action is irreversible. Are you sure you want to proceed?</h3>'
-                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes</button></div>')
             + '</div>')
 
 
@@ -196,9 +205,10 @@ def draft_audit(r):
 
 
 WAIVER_JS = """<script>
-/* Draft loan Approvals tab (DISC-339). Tick a charge → amount to waive (≤ balance) → Waive-off → confirm → success.
-   After a waive-off the row shows the amount waived (Waived off Charges) and the balance (Payable); a fully waived charge stays with Payable 0.
-   Each waive-off and the rejection are written to the Audit tab. Reject needs the reason (note) and the reconfirmation. */
+/* Draft loan Approvals tab (DISC-361). Waive-off and rejection are one request: tick a charge → amount to waive (≤ the charge) →
+   reason (note) → Reject → confirm → pending Treasury approval. Treasury Approve (irreversible pop-up) → the waive-off is applied
+   (Waived off Charges), LAN → REJECTED, customer communication, charges payment. Treasury Decline (remark) → request cancelled,
+   LAN stays DRAFT, OPS can submit a new request. Every step is written to the Audit tab. */
 (function () {
   var r2 = function (v) { return Math.round(v * 100) / 100; };
   var f = function (v) { return '₹' + r2(v).toLocaleString('en-IN', { maximumFractionDigits: 2 }); };
@@ -217,7 +227,6 @@ WAIVER_JS = """<script>
     w.querySelector('.wv-ctot').textContent = f(chg); w.querySelector('.wv-dtot').textContent = f(done); w.querySelector('.wv-wtot').textContent = f(tw); w.querySelector('.wv-ptot').textContent = f(after);
     var t = after <= 0 ? 'Full waive-off' : after < orig ? 'Partial waive-off' : 'No waive-off';
     w.querySelector('.wv-type b').textContent = t;
-    w.querySelector('.wv-waive').disabled = !pend || w.classList.contains('closed');
     w.querySelector('.wv-allgone').hidden = bal > 0;          // DISC-346: fully waived charges stay in the table
     return { tw: tw, tp: after, type: t };
   }
@@ -225,12 +234,13 @@ WAIVER_JS = """<script>
     return p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ', ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()); }
   var AN = { 'Processing Fee*': 'Processing fee charge', 'Processing Fee': 'Processing fee charge', 'Lien Marking Charges': 'Pledge charge',
              'Lien Removal Charges': 'Collateral release charge', 'Stamp Duty Charges': 'Stamp duty charge' };
-  function audit(w, msg, note) {          /* LMS-style Audit entry: “date, time ▸ message” → Approved by / Initiated by (DISC-340) */
+  function audit(w, msg, note, by, appr) {   /* LMS-style Audit entry: “date, time ▸ message” → Approved by / Initiated by (DISC-340) */
     var list = w.closest('.lms-lanpage').querySelector('.aud-list'); if (!list) return;
     var ts = stamp(), el = document.createElement('details'); el.className = 'aud new';
-    el.innerHTML = '<summary><span class="aud-t"></span><span class="aud-m"></span></summary><p>→ Approved by -</p><p class="aud-i"></p>';
+    el.innerHTML = '<summary><span class="aud-t"></span><span class="aud-m"></span></summary><p class="aud-a"></p><p class="aud-i"></p>';
+    el.querySelector('.aud-a').textContent = '→ Approved by ' + (appr || '-');
     el.querySelector('.aud-t').textContent = ts; el.querySelector('.aud-m').textContent = msg;
-    el.querySelector('.aud-i').textContent = '→ Initiated by “OPS user” at “' + ts + '” - “' + (note || '-') + '”';
+    el.querySelector('.aud-i').textContent = '→ Initiated by “' + (by || 'OPS user') + '” at “' + ts + '” - “' + (note || '-') + '”';
     list.prepend(el);
   }
   var show = function (w, c, on) { w.querySelector(c).hidden = !on; };
@@ -245,39 +255,60 @@ WAIVER_JS = """<script>
   document.addEventListener('click', function (e) {
     var w = e.target.closest('.wv'), c = e.target.classList; if (!w) return;
     if (c.contains('wv-x') || c.contains('wv-no') || c.contains('wv-ok')) e.target.closest('.wv-pop').hidden = true;
-    if (c.contains('wv-waive')) show(w, '.wv-pw', true);
-    if (c.contains('wv-yes-w')) {
-      show(w, '.wv-pw', false); var n = 0, tot = 0, when = now(), note = w.querySelector('.wv-note').value.trim();
-      w.querySelectorAll('tbody tr').forEach(function (tr) {
-        var a = tr.querySelector('.wv-amt'), chk = tr.querySelector('.wv-chk'), max = +a.dataset.max, v = Math.min(+a.value || 0, max);
-        if (!chk.checked || v <= 0) return;
-        var left = r2(max - v); n++; tot += v;
-        audit(w, (AN[tr.dataset.name] || tr.dataset.name) + ' of ' + f2(v) + ' has been waived off (' + (left > 0 ? 'partial' : 'full') +
-                 ' waive-off); balance ' + f2(left), note);
-        a.dataset.max = left; a.value = 0; a.disabled = true; chk.checked = false;
-        tr.dataset.done = r2(+tr.dataset.done + v);                   // Waived off Charges goes up, Payable shows the balance
-        if (left <= 0) { chk.disabled = true; tr.classList.add('wv-full'); }   // fully waived – stays in the table, nothing left to select (DISC-346)
-        tr.querySelector('.wv-done-amt').textContent = f(+tr.dataset.done);
-      });
-      w.querySelector('.wv-all').checked = false;
-      var r = calc(w);
-      w.querySelector('.wv-ps-txt').textContent = n + ' charge(s) waived off – ' + f(tot) + '. Balance payable ' + f(r.tp) + '. Recorded in the Audit tab.';
-      show(w, '.wv-ps', true);
-    }
     if (c.contains('wv-reject')) {
       var err = w.querySelector('.wv-err');
       if (!w.querySelector('.wv-note').value.trim()) { err.textContent = 'Please add the rejection reason in the note.'; return; }
       err.textContent = ''; show(w, '.wv-pr', true);
     }
-    if (c.contains('wv-yes-r')) {
-      show(w, '.wv-pr', false);
-      w.querySelectorAll('tbody tr').forEach(function (tr) { tr.querySelector('.wv-chk').checked = false; tr.querySelector('.wv-amt').value = 0; });
-      var q = calc(w); w.classList.add('closed');
-      w.querySelectorAll('input, textarea, .wv-reject, .wv-waive').forEach(function (x) { x.disabled = true; });
+    if (c.contains('wv-yes-r')) {          /* OPS submits the waive-off + rejection request to Treasury */
+      show(w, '.wv-pr', false); var q = calc(w), note = w.querySelector('.wv-note').value.trim(), ts = stamp();
+      w.dataset.q = JSON.stringify(q);
+      w.querySelectorAll('.wv-table input, .wv-note, .wv-reject').forEach(function (x) { x.disabled = true; });
+      var ap = w.querySelector('.wv-appr'); ap.hidden = false; w.querySelector('.wv-terr').textContent = '';
+      ap.querySelector('.wv-appr-st').innerHTML = 'Submitted by <b>OPS user</b> on ' + ts + '. Type of waive-off: <b>' + q.type + '</b>. ' +
+        'Amount to be waived off: <b>' + f(q.tw) + '</b>. Payable charges: <b>' + f(q.tp) + '</b>.<br>Rejection reason: <span class="wv-rsn"></span>' +
+        '<br>Mail sent to Treasury: <i>Approval Required – Waive-off &amp; Rejection</i>.';
+      ap.querySelector('.wv-rsn').textContent = note;
+      var st0 = w.closest('.lms-lanpage').querySelector('.lms-lanhead .lms-st'); st0.textContent = 'Draft – Pending approval';
+      audit(w, 'Waive-off and rejection submitted for Treasury approval (' + q.type.toLowerCase() + '; amount to be waived off ' + f2(q.tw) +
+            '; charges payable ' + f2(q.tp) + ')', note);
+    }
+    if (c.contains('wv-decline')) {
+      var te = w.querySelector('.wv-terr');
+      if (!w.querySelector('.wv-tnote').value.trim()) { te.textContent = 'Please add the remark to decline.'; return; }
+      te.textContent = ''; show(w, '.wv-pd', true);
+    }
+    if (c.contains('wv-yes-d')) {          /* Treasury declines – the request is cancelled, the LAN stays DRAFT */
+      show(w, '.wv-pd', false); var rm = w.querySelector('.wv-tnote').value.trim();
+      audit(w, 'Waive-off and rejection request declined by Treasury – request cancelled; LAN stays in DRAFT', rm, 'Treasury user', '-');
+      w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wv-chk'), am = tr.querySelector('.wv-amt');
+        ck.checked = false; ck.disabled = false; am.value = 0; am.disabled = true; });
+      w.querySelector('.wv-all').checked = false; w.querySelector('.wv-all').disabled = false;
+      w.querySelector('.wv-note').disabled = false; w.querySelector('.wv-note').value = ''; w.querySelector('.wv-reject').disabled = false;
+      w.querySelector('.wv-tnote').value = ''; show(w, '.wv-appr', false); calc(w);
+      var st1 = w.closest('.lms-lanpage').querySelector('.lms-lanhead .lms-st'); st1.textContent = 'Draft';
+      var d0 = w.querySelector('.wv-done'); d0.hidden = false; d0.className = 'wv-done wv-cancel';
+      d0.innerHTML = '<b>Request declined by Treasury – cancelled.</b> LAN status stays DRAFT; nothing is waived. OPS can submit a new request.';
+    }
+    if (c.contains('wv-approve')) show(w, '.wv-pa', true);
+    if (c.contains('wv-yes-a')) {          /* Treasury approves – waive-off and rejection applied together */
+      show(w, '.wv-pa', false); var note2 = w.querySelector('.wv-note').value.trim();
+      w.querySelectorAll('tbody tr').forEach(function (tr) {
+        var a = tr.querySelector('.wv-amt'), max = +a.dataset.max, v = Math.min(+a.value || 0, max);
+        if (v <= 0) return;
+        var left = r2(max - v);
+        audit(w, (AN[tr.dataset.name] || tr.dataset.name) + ' of ' + f2(v) + ' has been waived off (' + (left > 0 ? 'partial' : 'full') +
+                 ' waive-off); balance ' + f2(left), note2, 'OPS user', 'Treasury user');
+        a.dataset.max = left; a.value = 0; tr.dataset.done = r2(+tr.dataset.done + v);
+        tr.querySelector('.wv-done-amt').textContent = f(+tr.dataset.done);
+      });
+      var q = calc(w); w.classList.add('closed'); show(w, '.wv-appr', false);
+      w.querySelectorAll('input, textarea, .wv-reject').forEach(function (x) { x.disabled = true; });
       audit(w, 'Application rejected – LAN status changed from DRAFT to REJECTED (' + q.type.toLowerCase() + '; charges payable ' + f2(q.tp) + ')',
-            w.querySelector('.wv-note').value.trim());
-      var d = w.querySelector('.wv-done'); d.hidden = false;
-      d.innerHTML = '<b>Application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + q.type + '</b>. ' +
+            note2, 'OPS user', 'Treasury user');
+      var d = w.querySelector('.wv-done'); d.hidden = false; d.className = 'wv-done';
+      d.innerHTML = '<b>Approved by Treasury – application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + q.type + '</b>. ' +
+        'Mail sent to OPS and Treasury: <i>Waive-off &amp; Rejection Approved</i>. ' +
         (q.tp > 0 ? 'Payable charges ' + f(q.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
                   : 'Nothing payable – rejection SMS and mail sent without a payment link; the units can be de-pledged now.');
       var st = w.closest('.lms-lanpage').querySelector('.lms-lanhead .lms-st'); st.textContent = 'Rejected'; st.className = 'lms-st st-rejected';
@@ -297,7 +328,7 @@ WAIVER_JS = """<script>
       pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
         'Receipt RCPT/LAMF/2026/11/000149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
       e.target.hidden = true; pb2.querySelector('.wv-confirm').hidden = false;
-      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/000149 generated', '-');
+      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/000149 generated', '-', 'System', '-');
       var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
       if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
         var tr = document.createElement('tr'); tr.className = 'doc-new';
@@ -311,7 +342,7 @@ WAIVER_JS = """<script>
       pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment confirmed by Treasury</b> on ' + stamp() + '. Mail sent to OPS to initiate the de-pledge (Charges Received – Initiate De-pledge).');
       pb3.querySelector('.wv-pay-st').innerHTML = pb3.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
       pb3.querySelector('.wv-confirm').hidden = true; pb3.querySelector('.wv-depledge').disabled = false; pb3.querySelector('.wv-dp-hint').hidden = true;
-      audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' confirmed by Treasury', '-');
+      audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' confirmed by Treasury', '-', 'Treasury user', 'Treasury user');
     }
     if (c.contains('wv-depledge')) {
       var pb4 = w.querySelector('.wv-pay-box'); e.target.disabled = true; e.target.textContent = 'De-pledge initiated';
