@@ -1516,3 +1516,16 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .wv-approve { background: #1D4ED8; color: #fff; border: 0; }
 .wv-done.wv-cancel { background: #F3F4F6; border-color: #D1D5DB; color: #374151; }
 .wv-tnote { width: 100%; box-sizing: border-box; background: #fff; border: 1px solid #E6E8EC; border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 14px; margin-top: 6px; }
+/* LMS draft – maker → checker → Treasury (DISC-362) */
+.wv-role { font-size: 13px; color: #555; margin: 14px 0 4px; }
+.wv-ck { margin-top: 18px; border: 1px solid #BFD3FB; background: #F3F7FF; border-radius: 10px; padding: 16px 18px; }
+.wv-ck h3 { font-size: 17px; margin-bottom: 8px; } .wv-ck-st { font-size: 14px; line-height: 1.6; margin-bottom: 8px; }
+.wv-cnote { width: 100%; box-sizing: border-box; background: #fff; border: 1px solid #E6E8EC; border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 14px; margin-top: 6px; }
+.wv-ck .wv-drop { background: #fff; }
+.wv-fname { font-size: 13px; color: #1D4ED8; margin-top: 4px; min-height: 2px; }
+.wv-err, .wv-cerr { color: #C0392B; font-size: 13px; min-height: 4px; margin-top: 4px; }
+.wv-ck-dec { background: #fff; color: #C0392B; border: 1.5px solid #C0392B; }
+.wv-ck-app { background: #1D4ED8; color: #fff; border: 0; }
+.wv-drop { cursor: pointer; display: block; }
+.wv-ptype { font-size: 15px; line-height: 1.6; margin: 10px 0 4px; text-align: center; } .wv-ptype b { color: #1D4ED8; }
+.wv-ptype { margin-bottom: 12px !important; } .wv-ptype + .wv-ps-txt { margin-top: 0; }

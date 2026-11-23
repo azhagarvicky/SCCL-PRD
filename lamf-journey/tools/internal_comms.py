@@ -328,20 +328,21 @@ INTERNAL = [('DRAFT→SUBMITTED',
  # Recipients: 12 as the old Charges Waived Off alert (DISC-347), 13 as the De-pledge alert (DISC-360) – to be confirmed.
  ('DRAFT',
   'NA',
-  'OPS submits the waive-off and rejection request for a pledged DRAFT LAN in the Approvals tab (Reject → “Yes, submit”)',
+  'The OPS checker (OPS L2 below ₹5L / OPS L3 at ₹5L and above) approves the waive-off and rejection request – Treasury approval pending (DISC-362)',
   'Action Required | {{LAN}} | Approval Required – Waive-off & Rejection',
   'Approval Required – Waive-off & Rejection',
   '{{To User Name}}',
-  'A waive-off and rejection request for {{LAN}} of customer {{Customer Name}} (DRAFT, mutual fund units pledged) is pending your approval. '
-  'Type of waive-off: {{Waive-off Type}}.\n'
+  'A waive-off and rejection request for {{LAN}} of customer {{Customer Name}} (DRAFT, mutual fund units pledged) has been approved by the '
+  'OPS checker and is pending your approval. Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Amount to be Waived Off | Payable Charges\n'
   '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
   'Rejection reason: {{Rejection Reason}}\n'
-  'Submitted by {{OPS User Name}} on {{Submitted Date & Time}}. Please approve or decline the request in LMS (Approvals tab of the LAN). '
-  'On approval, the waive-off is applied and the LAN is rejected; on decline, the request is cancelled and the LAN stays in DRAFT.',
-  [('Any Sanction amount',
+  'Maker: {{OPS Maker Name}} on {{Submitted Date & Time}}. Checker: {{OPS Checker Name}} on {{Checker Approval Date & Time}}. '
+  'Please approve or decline the request in LMS (Approvals tab of the LAN). On approval, the waive-off is applied and the LAN is rejected; '
+  'on decline, the request is cancelled and the LAN stays in DRAFT.',
+  [('If Sanction amount <5L (Treasury L1)',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
      'richajayswal@shriramcredit.in',
@@ -355,7 +356,22 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'nithin.ganga@shriramcredit.in',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
-     'sarathananthan.m@shriramcredit.in'])]),
+     'sarathananthan.m@shriramcredit.in']),
+   ('If Sanction amount >=5L (Treasury L2)',
+    ['nadanakumar@shriramcredit.in'],
+    ['satyaparida@shriramcredit.in',
+     'richajayswal@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'vijayamr@shriramcredit.in',
+     'satyanarayan@shriramcredit.in',
+     'ganga@shriramcredit.in',
+     'lalithak@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in',
+     'k.natarajan@shriramcredit.in'])]),
  ('DRAFT→REJECTED',
   'NA',
   'Treasury approves the waive-off and rejection request in LMS (Approve → “Yes”) – the waive-off is applied and the LAN is rejected',
@@ -369,7 +385,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
   'Rejection reason: {{Rejection Reason}}\n'
-  'Submitted by {{OPS User Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The rejection SMS and mail with the '
+  'Maker: {{OPS Maker Name}}; checker: {{OPS Checker Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The rejection SMS and mail with the '
   'payment link for {{Balance Payable}} have been sent to the customer. The units will be de-pledged after the customer pays and Treasury '
   'confirms the payment.',
   [('Any Sanction amount',
@@ -438,6 +454,53 @@ INTERNAL = [('DRAFT→SUBMITTED',
   [('Any Sanction amount',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'vijayamr@shriramcredit.in',
+     'satyanarayan@shriramcredit.in',
+     'ganga@shriramcredit.in',
+     'lalithak@shriramcredit.in',
+     'nadanakumar@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in',
+     'k.natarajan@shriramcredit.in'])]),
+ # DISC-362 – Waiver BRD: the OPS maker (OPS L1 below ₹5L / OPS L2 at ₹5L and above) submits the waive-off and rejection request –
+ # mail to the OPS checker (OPS L2 / OPS L3). Recipients as the OPS disbursement approval alert (<5L / >=5L) – to be confirmed.
+ ('DRAFT',
+  'NA',
+  'The OPS maker submits the waive-off and rejection request for a pledged DRAFT LAN in the Approvals tab (Reject → “Yes, submit”)',
+  'Action Required | {{LAN}} | Checker Approval Required – Waive-off & Rejection',
+  'Checker Approval Required – Waive-off & Rejection',
+  '{{To User Name}}',
+  'A waive-off and rejection request for {{LAN}} of customer {{Customer Name}} (DRAFT, mutual fund units pledged) has been submitted by '
+  '{{OPS Maker Name}} on {{Submitted Date & Time}} and is pending your approval as the checker. Type of waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Amount to be Waived Off | Payable Charges\n'
+  '| Processing Fee* | 1,768.82 | 500.00 | 1,268.82\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
+  '*Inclusive of Lien Marking, Lien Removal and Stamp Duty\n'
+  'Rejection reason: {{Rejection Reason}}\n'
+  'Please review the request in LMS (Approvals tab of the LAN): approve it (it then goes to Treasury), change the amounts (the note and a '
+  'file are required) or decline it (the request is cancelled).',
+  [('If Sanction amount <5L (OPS L2)',
+    ['richajayswal@shriramcredit.in'],
+    ['satyaparida@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'vijayamr@shriramcredit.in',
+     'satyanarayan@shriramcredit.in',
+     'ganga@shriramcredit.in',
+     'lalithak@shriramcredit.in',
+     'nadanakumar@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in',
+     'k.natarajan@shriramcredit.in']),
+   ('If Sanction amount >=5L (OPS L3)',
+    ['satyaparida@shriramcredit.in'],
+    ['richajayswal@shriramcredit.in',
      'ashok@shriramcredit.in',
      'vijayamr@shriramcredit.in',
      'satyanarayan@shriramcredit.in',
