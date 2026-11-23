@@ -64,6 +64,12 @@ def charges_table(title):   # DRAFT rejection mails (DISC-350): one row per char
             + row(["Total", "&#8377;{{TOTAL_CHARGES}}", "&#8377;{{TOTAL_WAIVED}}", "&#8377;{{TOTAL_PAYABLE}}"], True)
             + "</table></td></tr>")
 
+def attachment(name, text):   # attachment notice – same box as the Sanction Letter mail (mails/03_Loan_Sanction_Letter.html), DISC-358
+    return (f'<tr><td class="px" style="padding:20px 48px 0 48px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" '
+            f'width="100%" style="background-color:#FFF7DF;border:1px solid #FFC20E;border-radius:8px;"><tr><td style="padding:16px 20px;">'
+            f'<p style="margin:0;{FONT}font-size:14px;line-height:22px;color:#1a1a1a;">&#128196;&nbsp;<span style="font-weight:bold;">'
+            f'{name} attached</span> — {text}</p></td></tr></table></td></tr>')
+
 SUPPORT = para('Should you have any questions, require clarification, or assistance, please feel free to reach out to our customer support at '
                '<a href="mailto:lassupport@shriramcredit.in" style="color:#0b5ed7;text-decoration:underline;">lassupport@shriramcredit.in</a>. '
                'Our team will be happy to assist you.', pad="22px 48px 0 48px")
@@ -176,7 +182,8 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
            "(<b>{{LOAN_ID}}</b>) with Shriram Credit Company Limited (SCCL).", pad="22px 48px 0 48px"),
       details("Payment Details", [("Loan Application ID", "{{LOAN_ID}}"), ("Amount Paid", "&#8377;{{AMOUNT_PAID}}"),
                                   ("Transaction ID", "{{TRANSACTION_ID}}"), ("Paid on", "{{PAYMENT_DATE}}"), ("Receipt No.", "{{RECEIPT_NO}}")]),
-      para("Your payment receipt is attached to this email.", pad="22px 48px 0 48px"),
+      attachment("Payment Receipt", "please find the receipt for your payment, with the receipt number, transaction ID and the "
+                 "charges paid."),
       para("The lien removal of your pledged Mutual Fund units will be initiated soon. You will receive a separate notification from "
            "CAMS/KFintech once your units are fully unlocked."),
       SUPPORT],
@@ -192,7 +199,7 @@ def mail_html(m):
   SHRIRAM CREDIT LAMF - {fname.split('_', 1)[0]}. {_h.unescape(title).upper()}
   ============================================================
   Placeholders: {', '.join(ph)}
-  Subject: {subject}
+  Subject: {subject}{chr(10) + '  Attachment: Payment Receipt PDF' if fname.startswith('08_') else ''}
   LOGO: Host shriram-credit-logo.png on your CDN and replace the src.
   ============================================================
 -->
