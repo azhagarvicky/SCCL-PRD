@@ -278,7 +278,7 @@ on the Pay Charges page and can pay again.</li>
   <ul><li>The LOS shows <b>“Payment successful”</b> with the amount paid, transaction ID, date and receipt number, and the message
   <b>“Your lien removal will be initiated soon.”</b></li>
   <li>The accounting entries are posted in <b>UNO immediately</b> – only for what the customer paid. Waived charges never go into UNO.</li>
-  <li>The <b>receipt</b> is generated and stored in the LMS, in the <b>Documents</b> tab of the LAN.</li>
+  <li>The <b>receipt</b> is generated and stored in the LMS, in the <b>Documents</b> tab of the LAN. Receipt number format: <b>RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts}}}}</b> – for example, RCPT/LAMF/2026/11/000149.</li>
   <li>An internal event mail <b>“Charges Payment Received”</b> is sent to Treasury and OPS, asking Treasury to confirm the payment
   in LMS. <a href="internal/IC-14.html" target="_blank" rel="noopener">View the mail format</a> (Internal communications, alert 14).</li>
   <li>The customer gets the <b>payment received SMS and mail with the receipt attached</b>.
