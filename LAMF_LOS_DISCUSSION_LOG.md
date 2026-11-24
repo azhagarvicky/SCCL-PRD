@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 16:34 IST
+**Last Updated:** 24-11-2026 16:38 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -431,6 +431,7 @@
 | DISC-396 | 24-11-2026 | brd-waive-off.html | No “existing process” in the BRD | Owner: this is a BRD, so “as per the existing process” must not be written | Every “existing process / existing communication” replaced by the actual behaviour: Approve – full / balance / no charges deducted from the first disbursement (per the LMS SOP: first disbursal is net of all charges), charges posted in UNO at the first disbursement; customer SMS and mail – loan account opened (S 5) or loan lodgement approved (S 6); S 7 – no communication, charges posted in UNO when collected. Applied in 2.5, 2.5.1 – 2.5.3, the scenario tables and the flows. Word file regenerated. | Implemented |
 | DISC-397 | 24-11-2026 | exports/Waiver_BRD_Accounting_Entries.xlsx | Accounting entries as Excel | Owner: show the account entries as excel | New tools/export_waiver_entries_xlsx.py reads the Waiver BRD page and writes 3 sheets: Scenario entries (S 2 – S 6, each reject sub-scenario in the UNO format with Debit / Credit totals and a Balanced check; full waive-off shown as no entry), Reference format (owner's entry, debit 885) and Account codes. All 10 entry sets balance. | Implemented |
 | DISC-398 | 24-11-2026 | brd-waive-off-scenarios.html, exports/BRD_Charges_Waiver_Scenario-wise.docx | Scenario-wise version of the Waiver BRD | Owner: create another version of the BRD scenario-wise, point by point | New BRD (Draft) next to the Waiver BRD: 1 Purpose; 2 Common Rules (Approvals tab, who approves, waive-off table, payment and de-pledge); 3 Scenarios S 1 – S 7, each with charges, what OPS can do, LAN status, and every sub-scenario as numbered steps (maker → checker → Treasury, mails as placeholders, payment, receipt, de-pledge maker / checker) with its UNO entry. Uses the owner's Final copy points: receipt number 4 digits, day-30 wording, charges deducted from the first disbursement on approval. brd_to_docx.py: numbered steps in Word, web link per file. Word file 16 pages. | Implemented |
+| DISC-399 | 24-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Final scenario list | Owner gave the scenario list the BRD has to cover: S 1 (no sub-scenarios); S 2 – S 4 Reject Without / With Full / With Partial Waive-off; S 5.1 Approve and S 5.2 – 5.4 Reject Without / Full / Partial; S 6.1 – 6.3 Approve Without / Full / Partial and S 6.4 – 6.6 Reject; S 7.1 – 7.3 Without / Full / Partial (loan can't be rejected) | S 5 now has one Approve (no waive-off with the approval; full charges deducted from the first disbursement) – replaces the three S 5 approve options of DISC-377; reject codes S 5.2 – 5.4. Scenario descriptions use the owner's text. Both Waiver BRDs (summary table, flows, UNO entries, section 2.5), both Word files and the entries Excel updated. The LMS prototype still lets OPS waive with a SUBMITTED approval – not changed. | Implemented |
 
 ---
 
