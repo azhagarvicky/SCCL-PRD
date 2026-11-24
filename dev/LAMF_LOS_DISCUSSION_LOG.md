@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 06:38 IST
+**Last Updated:** 24-11-2026 06:44 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -421,6 +421,7 @@
 | DISC-386 | 24-11-2026 | brd-waive-off.html | Accounting entries for lien marking / lien removal; keep the Summary of scenarios | Owner shared the UNO entries (SBR bank 165042 Dr 135; SJV 800110 Lien Marking Cr 450, 800098 Lien Removal Cr 100, 800111 Stamp Duty Cr 200, 715110 IGST Cr 135; subdoctype HLFCH / HLTFC; subaccd Loan Account Number) and asked to keep the Summary of scenarios table | Section 7 numbered: 7.1 Summary of scenarios (kept), 7.2 LAN status changes, 7.3 Accounting entries – charges received from the customer (owner’s table as given, with SBR / SJV explained and the partial-payment rule), 7.4 Scenario details, 7.5 Charges and amounts, 7.6 Open points. Open point added: credits total ₹885 but the bank debit is ₹135 – confirm; also the entry for S 3 onwards (Processing Fee*) and whether Stamp Duty applies in S 2. | Implemented |
 | DISC-387 | 24-11-2026 | brd-waive-off.html | UNO entries for every scenario | Owner: bank debit is ₹885 (yes); Stamp Duty does not apply in S 2; use the attached format (SBR bank debit, SJV income and IGST credits) for all charges in the scenarios section | 7.3 reference table: bank debit corrected to 885 (owner’s format for the three charges). 7.4 scenario details now end with “Accounting entries (UNO)” for each reject sub-scenario in the owner’s format (date 05-Nov-2026, subdoctype HLFCH / HLTFC, subaccd Loan Account Number): S 2.1 – Dr bank 649, Cr Lien Marking 800110 450, Lien Removal 800098 100, IGST 715110 99; S 2.2 – no entry; S 2.3 (example LM waived, LR paid) – Dr 118, Cr LR 100, IGST 18; S 3 – S 6 reject – Dr 1,768.82, Cr Processing Fee 1,499 (A/c code to be confirmed), IGST 269.82; full – no entry; partial (₹500 waived) – Dr 1,268.82, Cr PF 1,075.27, IGST 193.55; S 5 / S 6 approve – no entry at this stage. Open point: UNO account code for the Processing Fee*. | Implemented |
 | DISC-388 | 24-11-2026 | brd-waive-off.html | UNO account codes | Owner gave the income account codes: 800110 Lien Marking, 800111 Stamp Duty, 800098 Lien Removal, 800102 Loan Processing Fees, 800113 EMI / Instalment Bounce, 800114 AMC, 800115 Penal Interest (all P&L Income) | Processing Fee line in all scenario entries now 800102 “LOAN PROCESSING FEES A/C-1”. New table “UNO account codes for the charges” in 7.3 (the seven income codes plus IGST 715110 and bank 165042). Open point on the Processing Fee code closed. | Implemented |
+| DISC-389 | 24-11-2026 | brd-waive-off.html | Purpose of the approval mails | Owner: when the maker initiates a waive-off with rejection, the checker needs a mail alert to log in to LMS and approve or reject; our team users are added in Cc | Confirmed that alerts 16 / 12 / 13 / 17 / 18 – 21 already do this (To = the person who must act, Cc = the team list). BRD 3.1 steps 1 and 2 now say the mail alert is to log in to LMS and approve or reject, with the team in Cc. Waiting for any additional Cc users from the owner. | Implemented |
 
 ---
 
