@@ -102,7 +102,7 @@ def _waiver_body():
     BANK = ("SBR", "BS_Asset", "165042", "AXIS BANK - A/C 025010200017480", "HLFCH")
     INC = {"LM": ("SJV", "P&amp;L_Income", "800110", "LIEN MARKING CHARGES LAS/LAMF Loan-1"),
            "LR": ("SJV", "P&amp;L_Income", "800098", "LIEN REMOVAL CHARGES-1"),
-           "PF": ("SJV", "P&amp;L_Income", "To be confirmed", "PROCESSING FEE LAS/LAMF Loan-1"),
+           "PF": ("SJV", "P&amp;L_Income", "800102", "LOAN PROCESSING FEES A/C-1"),
            "GST": ("SJV", "BS_Liability", "715110", "IGST At Loan-1")}
 
     def uno(title, lines):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
@@ -453,6 +453,18 @@ amount is never posted.</li>
 income and the GST to the IGST liability account.</li>
 <li>For a partial waive-off, only the balance actually paid is posted; the waived part is not posted.</li>
 </ul>
+<p><b>UNO account codes for the charges</b></p>
+<table class="brd-table"><thead><tr><th>A/c code</th><th>Description</th><th>A/c Nature</th></tr></thead><tbody>
+<tr><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF LOAN-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF LOAN-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800102</td><td>LOAN PROCESSING FEES A/C-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800113</td><td>EMI/ INSTALMENT BOUNCE CHARGES-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800114</td><td>AMC-ANNUAL MAINTENANCE CHARGES-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800115</td><td>PENAL INTEREST-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>715110</td><td>IGST At Loan-1</td><td>Balance sheet – Liability</td></tr>
+<tr><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>Balance sheet – Asset</td></tr>
+</tbody></table>
 <h3>7.4 Scenario details</h3>
 {scen}
 <h3>7.5 Charges and amounts</h3>
@@ -460,7 +472,7 @@ income and the GST to the IGST liability account.</li>
 <h3>7.6 Open points</h3>
 <ul><li>Confirm the recipients of internal mails 16 – 21.</li>
 <li>Approve and register the new SMS (rows 38, 39 and 40).</li>
-<li>Account code in UNO for the Processing Fee* income line (S 3 onwards).</li></ul>
+</ul>
 """
 
 
