@@ -42,10 +42,12 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
      "Right after the rejection", "No entry."),
 ]
 def _approve(to):
-    return [("Approved – no waive-off", f"Loan approved without any waive-off. LAN → {to}.", "Existing communication.", "Not applicable – loan continues.", "No entry."),
-            ("Approved – partial waive-off", f"Loan approved and part of the charges waived. LAN → {to}.", "Existing communication.",
+    cm = "SMS and mail – loan account opened." if to == "ACCOUNT OPENED" else "SMS and mail – loan lodgement approved."
+    return [("Approved – no waive-off", f"Loan approved without any waive-off. LAN → {to}. Full charges deducted from the first disbursement.", cm,
+             "Not applicable – loan continues.", "Charges posted in UNO at the first disbursement."),
+            ("Approved – partial waive-off", f"Loan approved and part of the charges waived. LAN → {to}. Balance charges deducted from the first disbursement.", cm,
              "Not applicable – loan continues.", "Waived amount is not posted."),
-            ("Approved – full waive-off", f"Loan approved and all the charges waived. LAN → {to}.", "Existing communication.",
+            ("Approved – full waive-off", f"Loan approved and all the charges waived. LAN → {to}. Nothing deducted from the first disbursement.", cm,
              "Not applicable – loan continues.", "Waived amount is not posted.")]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OPS can do, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action. The LAN moves to INACTIVE after 30 days.", []),
@@ -55,12 +57,12 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OP
     (5, "SUBMITTED", "After the E-Mandate", [PF], "Approve or reject the loan, with or without waive-off.", _approve("ACCOUNT OPENED") + REJ_OUTCOMES),
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF], "Approve or reject the loan, with or without waive-off.", _approve("ACTIVE") + REJ_OUTCOMES),
     (7, "ACTIVE", "After the Loan Lodgement", ACTIVE_CH, "Waive-off only, from the ≡ menu. The loan cannot be approved or rejected.",
-     [("Without waive-off", "Nothing waived. The charges stay in the SOA and are collected before the loan is closed.", "Existing communication.",
-       "At loan closure.", "Existing process."),
-      ("With full waive-off", "Full charge waived. The SOA is updated with a waiver narration.", "Existing communication.", "At loan closure.",
+     [("Without waive-off", "Nothing waived. The charges stay in the SOA and are collected before the loan is closed.", "No communication.",
+       "At loan closure.", "Charges posted in UNO when collected."),
+      ("With full waive-off", "Full charge waived. The SOA is updated with a waiver narration.", "No communication.", "At loan closure.",
        "Waived amount is not posted."),
       ("With partial waive-off", "Part of the charge waived. The SOA is updated with a waiver narration. The balance is collected before the loan is closed.",
-       "Existing communication.", "At loan closure.", "Waived amount is not posted.")]),
+       "No communication.", "At loan closure.", "Waived amount is not posted.")]),
 ]
 
 
@@ -130,7 +132,7 @@ def _waiver_body():
                 + uno(f"S {n}.{k} – Reject Without Waive-off", nw)
                 + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw)
                 + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw)
-                + ("<p>Approve (S {0}.1 – S {0}.3): no entry at this stage – the charges are collected as per the existing process; a waived "
+                + ("<p>Approve (S {0}.1 – S {0}.3): no entry at this stage – the charges are deducted from the first disbursement and posted in UNO then; a waived "
                    "amount is never posted.</p>".format(n) if n in (5, 6) else ""))
 
     # Process flow for each sub-scenario (DISC-393) – owner's format: step → step → step
@@ -158,16 +160,16 @@ def _waiver_body():
         wt = {"no": "No", "full": "Full", "partial": "Partial"}[k]
         if n == 7:
             if k == "no":
-                steps = START[7] + ["No waive-off – charges stay in the SOA", "Charges collected as per the existing process before loan closure"]
+                steps = START[7] + ["No waive-off – charges stay in the SOA", "Charges collected before loan closure"]
             else:
                 steps = START[7] + chain(f"OPS maker initiates {wt} Waive-off (≡ menu)") + [
                     "Waived amount posted in the SOA with a waiver narration", "LAN stays ACTIVE"] + (
-                    ["Balance collected as per the existing process before loan closure"] if k == "partial" else [])
+                    ["Balance collected before loan closure"] if k == "partial" else [])
         elif o.startswith("Approved"):
             to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
-            steps = START[n] + chain(f"OPS maker initiates Approval with {wt} Waive-off") + [f"LAN status {to}", C("Existing customer communication")] + (
-                ["Charges collected as per the existing process"] if k == "no" else
-                ["Balance charges collected as per the existing process"] if k == "partial" else [])
+            steps = START[n] + chain(f"OPS maker initiates Approval with {wt} Waive-off") + [f"LAN status {to}", C("Customer SMS and mail – " + ("loan account opened" if n == 5 else "loan lodgement approved"))] + (
+                ["Full charges deducted from the first disbursement"] if k == "no" else
+                ["Balance charges deducted from the first disbursement"] if k == "partial" else ["Nothing deducted from the first disbursement"])
         else:
             steps = START[n] + chain(f"OPS maker initiates Rejection with {wt} Waive-off") + ["LAN status REJECTED"] + (
                 [C("Customer SMS and mail – application rejected, no payment link")] + DEPLEDGE if k == "full" else PAY)
@@ -301,7 +303,7 @@ off (partial waive-off); balance ₹1,268.82”.</li>
 <li>Once the loan is ACTIVE, the waive-off should be a separate request, not linked to an approve or reject of the loan.</li>
 <li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page for that
 LAN.</li>
-<li>The page should keep the existing columns: Charge Type, Date, From, To, Amount and Amount to be waived off, with the Waive-off button
+<li>The page should show the columns: Charge Type, Date, From, To, Amount and Amount to be waived off, with the Waive-off button
 at the top right.</li>
 <li>The rules should be the same as in section 2.1.1: select the charges, enter the amounts, the maker → checker → Treasury approval, and
 the note and file rules.</li>
@@ -396,24 +398,25 @@ in the same way as a reject. The details of each approval type are in sections 2
 <ul>
 <li>The approval should go through the same maker → checker → Treasury steps (section 2.1.1). LMS should change the LAN status only after
 Treasury approves.</li>
-<li>The loan continues, so there should be no de-pledge and no payment link. The existing communication should be sent.</li>
+<li>The loan continues, so there should be no de-pledge and no payment link. The system should send the customer an SMS and mail –
+loan account opened (SUBMITTED loan) or loan lodgement approved (ACCOUNT OPENED loan).</li>
 </ul>
 
 <h4>2.5.1 Approval with No Waive-off</h4>
 <ul>
-<li>OPS approves the loan without waiving any charge. The charges should be collected as per the existing process.</li>
-<li>No accounting entry should be posted at this stage.</li>
+<li>OPS approves the loan without waiving any charge. LMS should deduct the full charges from the first disbursement.</li>
+<li>The charges should be posted in UNO at the first disbursement.</li>
 </ul>
 
 <h4>2.5.2 Approval with Partial Waive-off</h4>
 <ul>
-<li>OPS approves the loan and waives part of the charges. Only the balance should be collected as per the existing process.</li>
+<li>OPS approves the loan and waives part of the charges. LMS should deduct only the balance charges from the first disbursement.</li>
 <li>The waived amount should never be posted in UNO.</li>
 </ul>
 
 <h4>2.5.3 Approval with Full Waive-off</h4>
 <ul>
-<li>OPS approves the loan and waives all the charges. Nothing should be collected for these charges.</li>
+<li>OPS approves the loan and waives all the charges. LMS should not deduct any charges from the first disbursement.</li>
 <li>No accounting entry should be posted for the waived charges.</li>
 </ul>
 
