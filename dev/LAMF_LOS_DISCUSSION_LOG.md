@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 06:48 IST
+**Last Updated:** 24-11-2026 07:11 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -424,6 +424,7 @@
 | DISC-389 | 24-11-2026 | brd-waive-off.html | Purpose of the approval mails | Owner: when the maker initiates a waive-off with rejection, the checker needs a mail alert to log in to LMS and approve or reject; our team users are added in Cc | Confirmed that alerts 16 / 12 / 13 / 17 / 18 – 21 already do this (To = the person who must act, Cc = the team list). BRD 3.1 steps 1 and 2 now say the mail alert is to log in to LMS and approve or reject, with the team in Cc. Waiting for any additional Cc users from the owner. | Implemented |
 | DISC-390 | 24-11-2026 | brd-waive-off.html | DLT not needed for internal mails | Owner: for the internal mail communication the DLT approval is not required | Open points reworded: internal mails 12 – 21 need only the recipients confirmed (no DLT); DLT registration applies only to the customer SMS (rows 38 – 40). | Implemented |
 | DISC-391 | 24-11-2026 | brd-waive-off.html | Mail templates as placeholders in the Waiver BRD | Owner: for the mail add a placeholder; we will create them after the BRD is created – the BRD is the main focus now | Every internal mail and customer SMS / mail "View" link in the Waiver BRD replaced by a [Template – to be added] placeholder (mail subjects kept). Open points: recipients / SMS approval removed; one line says the templates come after the BRD is final. Draft templates stay on the Communications pages. | Implemented |
+| DISC-392 | 24-11-2026 | brd-waive-off.html | Waiver BRD written as requirements | Owner: “OPS can select one charge…” reads like a PRD; a BRD needs lines like “OPS maker needs an option to select one charge or select all charges” | Sections 1 – 6 reworded as requirements: “OPS maker / OPS checker / Treasury needs an option to …”, “LMS should …”, “The system should send …”. Logic, tables, screenshots and placeholders unchanged. | Implemented |
 
 ---
 
