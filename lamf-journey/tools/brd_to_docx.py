@@ -171,6 +171,8 @@ def block(el):
             d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 2')
         elif n == 'h3':
             d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 3')
+        elif n == 'h4':
+            d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 4')
         elif n == 'p':
             p = d.add_paragraph(); inline(p, ch)
         elif n in ('ul', 'ol'):
