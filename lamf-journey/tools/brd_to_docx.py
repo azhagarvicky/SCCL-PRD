@@ -194,7 +194,11 @@ def block(el):
             d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 4')
         elif n == 'p':
             p = d.add_paragraph(); inline(p, ch)
-        elif n in ('ul', 'ol'):
+        elif n == 'ol':   # numbered steps (DISC-398)
+            for i, li in enumerate(ch.find_all('li', recursive=False), 1):
+                q = d.add_paragraph(style='List Paragraph'); q.paragraph_format.left_indent = Inches(0.35)
+                q.paragraph_format.first_line_indent = Inches(-0.25); add_run(q, f'{i}.\t'); inline(q, li)
+        elif n == 'ul':
             for li in ch.find_all('li', recursive=False):
                 bullet(li, 0)
         elif n == 'table':
@@ -212,7 +216,7 @@ title = soup.find('h1').get_text(strip=True)
 d.add_paragraph(title, style='Heading 1')
 meta = soup.find(class_='brd-meta')
 p = d.add_paragraph(); add_run(p, norm(meta.get_text(' ')).strip() if meta else '', size=10)
-add_run(p, ' | Web: ', size=10); add_link(p, SITE + 'brd-waive-off.html', 'Waiver BRD', 10)
+add_run(p, ' | Web: ', size=10); add_link(p, SITE + __import__('os').path.basename(SRC), 'Web page', 10)
 block(soup.find(class_='brd-body'))
 d.save(OUT)
 print('saved', OUT)
