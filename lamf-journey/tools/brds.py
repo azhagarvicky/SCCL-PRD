@@ -472,8 +472,8 @@ income and the GST to the IGST liability account.</li>
 <h3>7.5 Charges and amounts</h3>
 {charges}
 <h3>7.6 Open points</h3>
-<ul><li>Confirm the recipients of internal mails 16 – 21.</li>
-<li>Approve and register the new SMS (rows 38, 39 and 40).</li>
+<ul><li>Confirm the recipients (To and the additional Cc users) of internal mails 12 – 21. Internal mails do not need DLT approval.</li>
+<li>Approve the new customer SMS (rows 38, 39 and 40) and register them on DLT – DLT applies only to SMS sent to customers.</li>
 </ul>
 """
 
