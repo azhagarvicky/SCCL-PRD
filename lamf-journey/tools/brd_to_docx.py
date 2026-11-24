@@ -64,6 +64,10 @@ def inline(p, node, bold=False, italic=False, size=11):
                 inline(p, ch, bold, True, size)
             elif ch.name == 'small':
                 inline(p, ch, bold, italic, size - 1)
+            elif ch.name == 'span' and set(ch.get('class') or []) & {'brd-ph', 'm', 'c'}:
+                k = [c for c in ch.get('class') if c in ('brd-ph', 'm', 'c')][0]
+                r = p.add_run(norm(ch.get_text())); r.bold = True; r.font.name = FONT; r.font.size = Pt(size)
+                r.font.color.rgb = {'m': RGBColor(0x37, 0x30, 0xA3), 'c': RGBColor(0x06, 0x5F, 0x46)}.get(k, RGBColor(0xB4, 0x53, 0x09))
             elif ch.name == 'br':
                 p.add_run().add_break()
             elif ch.name == 'a':
@@ -162,6 +166,21 @@ def figure(f):
         r.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
 
 
+COL = {'m': RGBColor(0x37, 0x30, 0xA3), 'c': RGBColor(0x06, 0x5F, 0x46), 'brd-ph': RGBColor(0xB4, 0x53, 0x09)}
+
+
+def flow(f):
+    """process flow (DISC-393): bold sub-scenario title, then the steps joined by arrows; mails in colour."""
+    p = d.add_paragraph(); add_run(p, norm(f.find('b').get_text()).strip(), bold=True, size=10)
+    p.paragraph_format.space_after = Pt(0); p.paragraph_format.keep_with_next = True
+    q = d.add_paragraph()
+    for i, sp in enumerate(f.select('.fl > span')):
+        if i: add_run(q, '  →  ', size=9)
+        cls = [c for c in (sp.get('class') or []) if c in COL]
+        r = q.add_run(norm(sp.get_text())); r.font.name = FONT; r.font.size = Pt(9)
+        if cls: r.font.color.rgb = COL[cls[0]]; r.bold = True
+
+
 def block(el):
     for ch in el.children:
         if not isinstance(ch, Tag):
@@ -182,6 +201,8 @@ def block(el):
             table(ch)
         elif n == 'figure':
             figure(ch)
+        elif n == 'div' and 'brd-flow' in (ch.get('class') or []):
+            flow(ch)
         elif n == 'div':
             block(ch)
 
