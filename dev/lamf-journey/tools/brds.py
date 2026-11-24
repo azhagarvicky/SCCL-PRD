@@ -99,6 +99,40 @@ def _waiver_body():
         else: idx = {"no": 1, "full": 2, "partial": 3}[k]
         return f"S {n}.{idx} – "
 
+    BANK = ("SBR", "BS_Asset", "165042", "AXIS BANK - A/C 025010200017480", "HLFCH")
+    INC = {"LM": ("SJV", "P&amp;L_Income", "800110", "LIEN MARKING CHARGES LAS/LAMF Loan-1"),
+           "LR": ("SJV", "P&amp;L_Income", "800098", "LIEN REMOVAL CHARGES-1"),
+           "PF": ("SJV", "P&amp;L_Income", "To be confirmed", "PROCESSING FEE LAS/LAMF Loan-1"),
+           "GST": ("SJV", "BS_Liability", "715110", "IGST At Loan-1")}
+
+    def uno(title, lines):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
+        if not lines:
+            return f"<p><b>{title}</b> – no accounting entry (nothing is received).</p>"
+        tot = round(sum(a for _, a in lines), 2)
+        f = lambda v: f"{v:,.2f}".rstrip("0").rstrip(".") if v % 1 else f"{int(v):,}"
+        rows = [f"<tr><td>{BANK[0]}</td><td>{BANK[1]}</td><td>{BANK[2]}</td><td>{BANK[3]}</td><td>05-Nov-2026</td><td>{f(tot)}</td><td></td>"
+                f"<td>{BANK[4]}</td><td>Loan Account Number</td></tr>"]
+        rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td>05-Nov-2026</td><td></td>"
+                 f"<td>{f(a)}</td><td>HLTFC</td><td>Loan Account Number</td></tr>" for k, a in lines]
+        return (f"<p><b>{title}</b></p><table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th>"
+                "<th>Description</th><th>Doc. Dt</th><th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead>"
+                f"<tbody>{''.join(rows)}</tbody></table>")
+
+    def entries(n):   # UNO entries for each reject sub-scenario (S 2 – S 6), sample amounts
+        if n == 2:
+            nw, fw, pw = [("LM", 450), ("LR", 100), ("GST", 99)], [], [("LR", 100), ("GST", 18)]
+            pnote = "example – Lien Marking ₹531 waived in full, Lien Removal ₹118 paid"
+        else:
+            nw, fw, pw = [("PF", 1499), ("GST", 269.82)], [], [("PF", 1075.27), ("GST", 193.55)]
+            pnote = "example – ₹500 waived, ₹1,268.82 paid"
+        k = 4 if n in (5, 6) else 1
+        return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays; sample amounts</p>"
+                + uno(f"S {n}.{k} – Reject Without Waive-off", nw)
+                + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw)
+                + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw)
+                + ("<p>Approve (S {0}.1 – S {0}.3): no entry at this stage – the charges are collected as per the existing process; a waived "
+                   "amount is never posted.</p>".format(n) if n in (5, 6) else ""))
+
     def scenario(n, st, sc, ch, op, outs):
         h = f"<h4>S {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h4>"
         if not ch:
@@ -114,7 +148,7 @@ def _waiver_body():
                + "".join(f"<tr><td><b>{code(n, o)}{o}</b></td><td>{w}</td><td>{c}</td><td>{d}</td><td>{u}</td></tr>"
                          for o, w, c, d, u in sorted(outs, key=lambda x: float(code(n, x[0])[2:-3])))
                + "</tbody></table>")
-        return h + f"<p><b>What OPS can do:</b> {op}</p>" + chs + out
+        return h + f"<p><b>What OPS can do:</b> {op}</p>" + chs + out + (entries(n) if 2 <= n <= 6 else "")
 
     scen = "\n".join(scenario(*x) for x in WAIVER_SCENARIOS)
     def fig(f, cap, cls=""):   # screenshots of the LMS prototype (lms.html, DRAFT LAN) – DISC-342
@@ -404,11 +438,11 @@ day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to 
 <ul>
 <li>These entries are posted in UNO when the customer pays the charges (section 6). Only the amount actually paid is posted; a waived
 amount is never posted.</li>
-<li>Example below: Lien Marking, Lien Removal and Stamp Duty charges with IGST, posted against the Loan Account Number.</li>
+<li>Reference format from the owner: how the three charges (Lien Marking, Lien Removal and Stamp Duty) with IGST post in UNO against the Loan Account Number. The entries for each scenario are in 7.4.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
 <th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>
-<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>135</td><td></td><td>HLFCH</td><td>Loan Account Number</td></tr>
+<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>885</td><td></td><td>HLFCH</td><td>Loan Account Number</td></tr>
 <tr><td>SJV</td><td>P&amp;L_Income</td><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>450</td><td>HLTFC</td><td>Loan Account Number</td></tr>
 <tr><td>SJV</td><td>P&amp;L_Income</td><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>05-Nov-2026</td><td></td><td>100</td><td>HLTFC</td><td>Loan Account Number</td></tr>
 <tr><td>SJV</td><td>P&amp;L_Income</td><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>200</td><td>HLTFC</td><td>Loan Account Number</td></tr>
@@ -426,8 +460,7 @@ income and the GST to the IGST liability account.</li>
 <h3>7.6 Open points</h3>
 <ul><li>Confirm the recipients of internal mails 16 – 21.</li>
 <li>Approve and register the new SMS (rows 38, 39 and 40).</li>
-<li>Accounting entry (7.3): the credits total ₹885 (₹450 + ₹100 + ₹200 + IGST ₹135) but the bank debit shows ₹135 – confirm the debit
-amount. Also confirm the entry for S 3 onwards (Processing Fee*) and whether Stamp Duty applies in S 2.</li></ul>
+<li>Account code in UNO for the Processing Fee* income line (S 3 onwards).</li></ul>
 """
 
 
