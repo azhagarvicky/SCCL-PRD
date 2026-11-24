@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 12:01 IST
+**Last Updated:** 24-11-2026 14:23 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -428,6 +428,7 @@
 | DISC-393 | 24-11-2026 | brd-waive-off.html | Process flow for each sub-scenario | Owner: add the flow like Customer Start → LAN Status DRAFT → Pledged → OPS maker Initiate Rejection with Full Waive-off → Internal mail → OPS Checker approval → Internal mail → Treasury approval → … → De-pledge approved by OPS checker | Section 7.4: a Process flow (step → step boxes; internal mails and customer SMS / mails coloured) for all 24 sub-scenarios S 2.1 – S 7.3. Full waive-off has no payment steps (goes straight to the rejection mail and the de-pledge). Section 6 follows the owner's order: customer receipt mail after the Treasury confirmation; OPS maker checks pending charges and initiates the de-pledge, OPS checker approves it. | Implemented |
 | DISC-394 | 24-11-2026 | exports/BRD_Charges_Waiver_Post-Pledge_Drop-off.docx | Waiver BRD as Word | Owner: give me the word docs | Word file regenerated from the current Waiver BRD (32 pages). brd_to_docx.py now writes the process flows (steps joined by arrows, internal mails blue, customer SMS / mails green) and the [Template – to be added] placeholders in orange. | Implemented |
 | DISC-395 | 24-11-2026 | brd-waive-off.html | Waiver BRD sections merged | Owner: 5 into 2.5, 4 into 2.4 and 3 into 2.1 | Waive-off Charges → 2.1.1 / 2.1.2; Loan Rejection → 2.4 (2.4.1 – 2.4.3); Loan Approval → 2.5 (2.5.1 – 2.5.3); duplicate opening lines removed. Charges Payment is now section 3 and Scenarios section 4 (4.1 – 4.6); all cross-references renumbered. Word file regenerated. | Implemented |
+| DISC-396 | 24-11-2026 | brd-waive-off.html | No “existing process” in the BRD | Owner: this is a BRD, so “as per the existing process” must not be written | Every “existing process / existing communication” replaced by the actual behaviour: Approve – full / balance / no charges deducted from the first disbursement (per the LMS SOP: first disbursal is net of all charges), charges posted in UNO at the first disbursement; customer SMS and mail – loan account opened (S 5) or loan lodgement approved (S 6); S 7 – no communication, charges posted in UNO when collected. Applied in 2.5, 2.5.1 – 2.5.3, the scenario tables and the flows. Word file regenerated. | Implemented |
 
 ---
 
