@@ -266,49 +266,7 @@ separately because they are included in the Processing Fee*.</li>
 {fig('02_table_default.png', 'Waive-off charges – nothing selected')}
 {fig('03_table_selected.png', 'Processing Fee* selected with ₹500 to waive – Payable ₹1,268.82, Partial waive-off')}
 
-<h3>2.2 Add a Note</h3>
-<ul>
-<li>OPS maker, OPS checker and Treasury need an option to add a note.</li>
-<li><b>Maker:</b> the note should be mandatory. The maker writes the reason for the reject or approve and the waive-off.</li>
-<li><b>Checker:</b> the note should be mandatory, whether the checker approves, changes or rejects the request.</li>
-<li><b>Treasury:</b> the note should be mandatory to approve and to reject.</li>
-<li>LMS should save every note in the Audit tab of the LAN with the user name, date and time.</li>
-</ul>
-
-<h3>2.3 Upload a File</h3>
-<ul>
-<li>OPS maker and OPS checker need an option to upload a supporting file (PDF, PNG or JPG, up to 5 MB).</li>
-<li><b>Maker:</b> the file should be mandatory before submitting.</li>
-<li><b>Checker:</b> the file should be mandatory only if the checker changes the waive-off amounts. If nothing is changed, only the
-note is needed.</li>
-<li><b>Treasury:</b> no file upload option is needed.</li>
-<li>If the maker submits without the note or the file, LMS should show “Please add the note and upload a file.”</li>
-</ul>
-{fig('07_reject_block.png', 'Maker – Add a note and Upload a file are mandatory')}
-
-<h3>2.4 Reject</h3>
-<ul>
-<li>OPS maker needs an option to reject DRAFT (units pledged), SUBMITTED and ACCOUNT OPENED loans.</li>
-<li>Today a DRAFT loan cannot be rejected. LMS needs the Reject option for a pledged DRAFT loan, because the units can be de-pledged
-only after the LAN is rejected.</li>
-<li>On Reject, LMS should show a confirmation pop-up: “Are you sure you want to reject the application with the selected waive-off?”
-The pop-up should show the waive-off type, the amount to be waived off and the payable amount, with the buttons No, Yes, submit and ×.</li>
-<li>On Yes, submit, LMS should send the request to the checker (section 3.1). The details of each rejection type are in section 4.</li>
-</ul>
-<div class="brd-figs">
-{fig('04_pop_submit.png', 'Reject pop-up showing the waive-off type and amounts', 'sm')}
-</div>
-
-<h3>2.5 Approve</h3>
-<ul>
-<li>OPS maker needs an option to approve SUBMITTED and ACCOUNT OPENED loans. LMS should not show Approve for a DRAFT loan.</li>
-<li>SUBMITTED: Approve means the Loan Account Opening. ACCOUNT OPENED: Approve means the Loan Lodgement.</li>
-<li>OPS maker needs an option to select the waive-off with the approval also. LMS should send the request to the checker and Treasury
-in the same way as a reject. The details of each approval type are in section 5.</li>
-</ul>
-
-<h2>3. Waive-off Charges</h2>
-<h3>3.1 Before the Loan Becomes ACTIVE</h3>
+<h4>2.1.1 Before the Loan Becomes ACTIVE</h4>
 <ul>
 <li>For DRAFT, SUBMITTED and ACCOUNT OPENED loans, the waive-off should not be a separate action. The waive-off and the reject (or
 approve) should go as one request.</li>
@@ -338,14 +296,14 @@ off (partial waive-off); balance ₹1,268.82”.</li>
 {fig('06_declined.png', 'Request rejected by Treasury – cancelled, LAN stays DRAFT')}
 {fig('10_audit.png', 'Audit tab')}
 
-<h3>3.2 After the Loan Becomes ACTIVE</h3>
+<h4>2.1.2 After the Loan Becomes ACTIVE</h4>
 <ul>
 <li>Once the loan is ACTIVE, the waive-off should be a separate request, not linked to an approve or reject of the loan.</li>
 <li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page for that
 LAN.</li>
 <li>The page should keep the existing columns: Charge Type, Date, From, To, Amount and Amount to be waived off, with the Waive-off button
 at the top right.</li>
-<li>The rules should be the same as in section 3.1: select the charges, enter the amounts, the maker → checker → Treasury approval, and
+<li>The rules should be the same as in section 2.1.1: select the charges, enter the amounts, the maker → checker → Treasury approval, and
 the note and file rules.</li>
 <li>LMS should show a confirmation pop-up: “Are you sure you want to waive off the selected charges?” with the buttons No, Don’t Waive
 Off, Yes, Waive Off and ×.</li>
@@ -360,10 +318,35 @@ should show the balance. The LAN should stay ACTIVE.</li>
 {fig('24_active_pop.png', 'Active loan – waive-off pop-up', 'sm')}
 </div>
 
-<h2>4. Loan Rejection</h2>
+<h3>2.2 Add a Note</h3>
 <ul>
-<li>OPS maker needs an option to reject a DRAFT (units pledged), SUBMITTED or ACCOUNT OPENED loan. LMS should change the LAN status to
-REJECTED only after Treasury approves.</li>
+<li>OPS maker, OPS checker and Treasury need an option to add a note.</li>
+<li><b>Maker:</b> the note should be mandatory. The maker writes the reason for the reject or approve and the waive-off.</li>
+<li><b>Checker:</b> the note should be mandatory, whether the checker approves, changes or rejects the request.</li>
+<li><b>Treasury:</b> the note should be mandatory to approve and to reject.</li>
+<li>LMS should save every note in the Audit tab of the LAN with the user name, date and time.</li>
+</ul>
+
+<h3>2.3 Upload a File</h3>
+<ul>
+<li>OPS maker and OPS checker need an option to upload a supporting file (PDF, PNG or JPG, up to 5 MB).</li>
+<li><b>Maker:</b> the file should be mandatory before submitting.</li>
+<li><b>Checker:</b> the file should be mandatory only if the checker changes the waive-off amounts. If nothing is changed, only the
+note is needed.</li>
+<li><b>Treasury:</b> no file upload option is needed.</li>
+<li>If the maker submits without the note or the file, LMS should show “Please add the note and upload a file.”</li>
+</ul>
+{fig('07_reject_block.png', 'Maker – Add a note and Upload a file are mandatory')}
+
+<h3>2.4 Reject</h3>
+<ul>
+<li>OPS maker needs an option to reject DRAFT (units pledged), SUBMITTED and ACCOUNT OPENED loans.</li>
+<li>Today a DRAFT loan cannot be rejected. LMS needs the Reject option for a pledged DRAFT loan, because the units can be de-pledged
+only after the LAN is rejected.</li>
+<li>On Reject, LMS should show a confirmation pop-up: “Are you sure you want to reject the application with the selected waive-off?”
+The pop-up should show the waive-off type, the amount to be waived off and the payable amount, with the buttons No, Yes, submit and ×.</li>
+<li>On Yes, submit, LMS should send the request to the checker (section 2.1.1). The details of each rejection type are in sections 2.4.1 – 2.4.3.</li>
+<li>LMS should change the LAN status to REJECTED only after Treasury approves.</li>
 <li><b>When to reject a DRAFT loan:</b> after 30 days from the LAN created date if the customer has not completed the journey, or earlier
 if the customer asks to remove the lien.</li>
 <li><b>Day 30:</b> the system should send the customer an SMS and mail – “Your application will be rejected tomorrow. Complete it now.”
@@ -372,26 +355,29 @@ if the customer asks to remove the lien.</li>
 <span class="brd-ph">[Template – to be added]</span></li>
 <li>LMS should allow the de-pledge of the units only after the LAN is REJECTED.</li>
 </ul>
+<div class="brd-figs">
+{fig('04_pop_submit.png', 'Reject pop-up showing the waive-off type and amounts', 'sm')}
+</div>
 {fig('09_rejected.png', 'Approved by the checker and Treasury – waive-off applied, LAN rejected')}
 
-<h3>4.1 Rejection with No Waive-off</h3>
+<h4>2.4.1 Rejection with No Waive-off</h4>
 <ul>
 <li>OPS rejects the loan without waiving any charge. The customer has to pay the full charges.</li>
 <li>The system should send the customer an SMS and mail with the payment link for the full amount.
 <span class="brd-ph">[Template – to be added]</span></li>
-<li>LMS should allow the de-pledge only after the customer pays and Treasury confirms the payment (section 6).</li>
+<li>LMS should allow the de-pledge only after the customer pays and Treasury confirms the payment (section 3).</li>
 </ul>
 
-<h3>4.2 Rejection with Partial Waive-off</h3>
+<h4>2.4.2 Rejection with Partial Waive-off</h4>
 <ul>
 <li>OPS rejects the loan and waives part of the charges. The customer has to pay the balance.</li>
 <li>The system should send the customer an SMS and mail with the payment link for the balance amount.
 <span class="brd-ph">[Template – to be added]</span></li>
-<li>LMS should allow the de-pledge only after the customer pays and Treasury confirms the payment (section 6).</li>
+<li>LMS should allow the de-pledge only after the customer pays and Treasury confirms the payment (section 3).</li>
 <li>The waived amount should never be posted in UNO.</li>
 </ul>
 
-<h3>4.3 Rejection with Full Waive-off</h3>
+<h4>2.4.3 Rejection with Full Waive-off</h4>
 <ul>
 <li>OPS rejects the loan and waives all the charges. Nothing is payable.</li>
 <li>The system should send the customer an SMS and mail that the application is rejected, without a payment link.
@@ -400,36 +386,40 @@ if the customer asks to remove the lien.</li>
 <li>No accounting entry should be posted in UNO.</li>
 </ul>
 
-<h2>5. Loan Approval</h2>
+<h3>2.5 Approve</h3>
 <ul>
-<li>OPS maker needs an option to approve a SUBMITTED loan (Loan Account Opening → ACCOUNT OPENED) or an ACCOUNT OPENED loan (Loan
-Lodgement → ACTIVE).</li>
-<li>The approval should go through the same maker → checker → Treasury steps (section 3.1). LMS should change the LAN status only after
+<li>OPS maker needs an option to approve SUBMITTED and ACCOUNT OPENED loans. LMS should not show Approve for a DRAFT loan.</li>
+<li>SUBMITTED: Approve means the Loan Account Opening. ACCOUNT OPENED: Approve means the Loan Lodgement.</li>
+<li>OPS maker needs an option to select the waive-off with the approval also. LMS should send the request to the checker and Treasury
+in the same way as a reject. The details of each approval type are in sections 2.5.1 – 2.5.3.</li>
+</ul>
+<ul>
+<li>The approval should go through the same maker → checker → Treasury steps (section 2.1.1). LMS should change the LAN status only after
 Treasury approves.</li>
 <li>The loan continues, so there should be no de-pledge and no payment link. The existing communication should be sent.</li>
 </ul>
 
-<h3>5.1 Approval with No Waive-off</h3>
+<h4>2.5.1 Approval with No Waive-off</h4>
 <ul>
 <li>OPS approves the loan without waiving any charge. The charges should be collected as per the existing process.</li>
 <li>No accounting entry should be posted at this stage.</li>
 </ul>
 
-<h3>5.2 Approval with Partial Waive-off</h3>
+<h4>2.5.2 Approval with Partial Waive-off</h4>
 <ul>
 <li>OPS approves the loan and waives part of the charges. Only the balance should be collected as per the existing process.</li>
 <li>The waived amount should never be posted in UNO.</li>
 </ul>
 
-<h3>5.3 Approval with Full Waive-off</h3>
+<h4>2.5.3 Approval with Full Waive-off</h4>
 <ul>
 <li>OPS approves the loan and waives all the charges. Nothing should be collected for these charges.</li>
 <li>No accounting entry should be posted for the waived charges.</li>
 </ul>
 
-<h2>6. Charges Payment by the Customer</h2>
+<h2>3. Charges Payment by the Customer</h2>
 <ul>
-<li>This applies only when some amount is payable after the rejection (sections 4.1 and 4.2).</li>
+<li>This applies only when some amount is payable after the rejection (sections 2.4.1 and 2.4.2).</li>
 <li>The customer needs an option to pay the charges through the payment link in the SMS or mail. The link should open the LOS and
 verify the mobile number with an OTP.</li>
 <li>The LOS should show a <b>Pay Charges</b> page with each charge, its amount and the total. The waived amounts should not be shown to
@@ -477,11 +467,11 @@ pledged until then.
 {fig('20_lms_confirmed.png', 'LMS – payment confirmed by Treasury, de-pledge enabled')}
 {fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
 
-<h2>7. Scenarios and Corresponding Accounting Entries</h2>
-<h3>7.1 Summary of scenarios</h3>
+<h2>4. Scenarios and Corresponding Accounting Entries</h2>
+<h3>4.1 Summary of scenarios</h3>
 {summary}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
-<h3>7.2 LAN status changes</h3>
+<h3>4.2 LAN status changes</h3>
 <ul>
 <li><b>DRAFT → INACTIVE:</b> When the MF units are not pledged, the LAN moves to INACTIVE automatically after 30 days from the LAN
 created date. There are no charges and OPS does not need to do anything. The customer receives a communication on the 30th day.</li>
@@ -496,11 +486,11 @@ day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to 
 <li><b>ACTIVE → CLOSED:</b> On foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
 <li>The pledged units can be de-pledged only when the LAN is REJECTED or CLOSED.</li>
 </ul>
-<h3>7.3 Accounting entries – charges received from the customer</h3>
+<h3>4.3 Accounting entries – charges received from the customer</h3>
 <ul>
-<li>These entries are posted in UNO when the customer pays the charges (section 6). Only the amount actually paid is posted; a waived
+<li>These entries are posted in UNO when the customer pays the charges (section 3). Only the amount actually paid is posted; a waived
 amount is never posted.</li>
-<li>Reference format from the owner: how the three charges (Lien Marking, Lien Removal and Stamp Duty) with IGST post in UNO against the Loan Account Number. The entries for each scenario are in 7.4.</li>
+<li>Reference format from the owner: how the three charges (Lien Marking, Lien Removal and Stamp Duty) with IGST post in UNO against the Loan Account Number. The entries for each scenario are in 4.4.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
 <th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>
@@ -527,11 +517,11 @@ income and the GST to the IGST liability account.</li>
 <tr><td>715110</td><td>IGST At Loan-1</td><td>Balance sheet – Liability</td></tr>
 <tr><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>Balance sheet – Asset</td></tr>
 </tbody></table>
-<h3>7.4 Scenario details</h3>
+<h3>4.4 Scenario details</h3>
 {scen}
-<h3>7.5 Charges and amounts</h3>
+<h3>4.5 Charges and amounts</h3>
 {charges}
-<h3>7.6 Open points</h3>
+<h3>4.6 Open points</h3>
 <ul><li>The internal mail and customer SMS / mail templates marked [Template – to be added] will be created after this BRD is final.
 Internal mails do not need DLT approval; customer SMS need DLT registration.</li>
 </ul>
