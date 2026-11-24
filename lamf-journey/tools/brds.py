@@ -382,10 +382,10 @@ Initiate De-pledge button stays disabled until then.</li>
 {fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
 
 <h2>7. Scenarios and Corresponding Accounting Entries</h2>
-<h3>Summary of scenarios</h3>
+<h3>7.1 Summary of scenarios</h3>
 {summary}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
-<h3>LAN status changes</h3>
+<h3>7.2 LAN status changes</h3>
 <ul>
 <li><b>DRAFT → INACTIVE:</b> When the MF units are not pledged, the LAN moves to INACTIVE automatically after 30 days from the LAN
 created date. There are no charges and OPS does not need to do anything. The customer receives a communication on the 30th day.</li>
@@ -400,13 +400,34 @@ day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to 
 <li><b>ACTIVE → CLOSED:</b> On foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
 <li>The pledged units can be de-pledged only when the LAN is REJECTED or CLOSED.</li>
 </ul>
-<h3>Scenario details and accounting entries</h3>
+<h3>7.3 Accounting entries – charges received from the customer</h3>
+<ul>
+<li>These entries are posted in UNO when the customer pays the charges (section 6). Only the amount actually paid is posted; a waived
+amount is never posted.</li>
+<li>Example below: Lien Marking, Lien Removal and Stamp Duty charges with IGST, posted against the Loan Account Number.</li>
+</ul>
+<table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
+<th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>
+<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>135</td><td></td><td>HLFCH</td><td>Loan Account Number</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>450</td><td>HLTFC</td><td>Loan Account Number</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>05-Nov-2026</td><td></td><td>100</td><td>HLTFC</td><td>Loan Account Number</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>200</td><td>HLTFC</td><td>Loan Account Number</td></tr>
+<tr><td>SJV</td><td>BS_Liability</td><td>715110</td><td>IGST At Loan-1</td><td>05-Nov-2026</td><td></td><td>135</td><td>HLTFC</td><td>Loan Account Number</td></tr>
+</tbody></table>
+<ul>
+<li><b>SBR</b> – bank receipt: the amount received is debited to the bank account. <b>SJV</b> – journal: the charges are credited to
+income and the GST to the IGST liability account.</li>
+<li>For a partial waive-off, only the balance actually paid is posted; the waived part is not posted.</li>
+</ul>
+<h3>7.4 Scenario details</h3>
 {scen}
-<h3>Charges and amounts</h3>
+<h3>7.5 Charges and amounts</h3>
 {charges}
-<h3>Open points</h3>
+<h3>7.6 Open points</h3>
 <ul><li>Confirm the recipients of internal mails 16 – 21.</li>
-<li>Approve and register the new SMS (rows 38, 39 and 40).</li></ul>
+<li>Approve and register the new SMS (rows 38, 39 and 40).</li>
+<li>Accounting entry (7.3): the credits total ₹885 (₹450 + ₹100 + ₹200 + IGST ₹135) but the bank debit shows ₹135 – confirm the debit
+amount. Also confirm the entry for S 3 onwards (Processing Fee*) and whether Stamp Duty applies in S 2.</li></ul>
 """
 
 
