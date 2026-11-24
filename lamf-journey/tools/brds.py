@@ -133,6 +133,50 @@ def _waiver_body():
                 + ("<p>Approve (S {0}.1 – S {0}.3): no entry at this stage – the charges are collected as per the existing process; a waived "
                    "amount is never posted.</p>".format(n) if n in (5, 6) else ""))
 
+    # Process flow for each sub-scenario (DISC-393) – owner's format: step → step → step
+    START = {2: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged"],
+             3: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated"],
+             4: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated", "Loan Agreement e-Signed"],
+             5: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated", "Loan Agreement e-Signed",
+                 "E-Mandate completed", "LAN status SUBMITTED"],
+             6: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated", "Loan Agreement e-Signed",
+                 "E-Mandate completed", "LAN status SUBMITTED", "Loan Account Opening", "LAN status ACCOUNT OPENED"],
+             7: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "LAN status SUBMITTED", "LAN status ACCOUNT OPENED",
+                 "Loan Lodgement", "LAN status ACTIVE"]}
+    M = lambda t: ("m", t)          # internal mail
+    C = lambda t: ("c", t)          # customer SMS / mail
+    def chain(first):
+        return [first, M("Internal mail to OPS checker"), "OPS checker verifies and approves", M("Internal mail to Treasury"),
+                "Treasury approves", M("Internal mail to OPS and Treasury")]
+    DEPLEDGE = ["Check pending charges", "De-pledge initiated by OPS maker", "De-pledge approved by OPS checker"]
+    PAY = [C("Customer SMS and mail with the payment link"), "Customer pays the charges in LOS", "Payment receipt generated",
+           "Accounting entries posted in UNO", M("Internal mail to Treasury and OPS – payment received"),
+           "Treasury confirms the payment in LMS", M("Internal mail to OPS – initiate de-pledge"),
+           C("Customer SMS and mail with the payment receipt")] + DEPLEDGE
+    def flow(n, o):
+        k = "no" if ("no waive-off" in o.lower() or o.startswith("Without")) else "full" if "full" in o.lower() else "partial"
+        wt = {"no": "No", "full": "Full", "partial": "Partial"}[k]
+        if n == 7:
+            if k == "no":
+                steps = START[7] + ["No waive-off – charges stay in the SOA", "Charges collected as per the existing process before loan closure"]
+            else:
+                steps = START[7] + chain(f"OPS maker initiates {wt} Waive-off (≡ menu)") + [
+                    "Waived amount posted in the SOA with a waiver narration", "LAN stays ACTIVE"] + (
+                    ["Balance collected as per the existing process before loan closure"] if k == "partial" else [])
+        elif o.startswith("Approved"):
+            to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
+            steps = START[n] + chain(f"OPS maker initiates Approval with {wt} Waive-off") + [f"LAN status {to}", C("Existing customer communication")] + (
+                ["Charges collected as per the existing process"] if k == "no" else
+                ["Balance charges collected as per the existing process"] if k == "partial" else [])
+        else:
+            steps = START[n] + chain(f"OPS maker initiates Rejection with {wt} Waive-off") + ["LAN status REJECTED"] + (
+                [C("Customer SMS and mail – application rejected, no payment link")] + DEPLEDGE if k == "full" else PAY)
+        def box(x):
+            cls, t = x if isinstance(x, tuple) else ("", x)
+            return f"<span class='fs {cls}'>{t}</span>"
+        return (f"<div class='brd-flow'><b>{code(n, o)}{o}</b><div class='fl'>"
+                + "<i>→</i>".join(box(x) for x in steps) + "</div></div>")
+
     def scenario(n, st, sc, ch, op, outs):
         h = f"<h4>S {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h4>"
         if not ch:
@@ -148,7 +192,9 @@ def _waiver_body():
                + "".join(f"<tr><td><b>{code(n, o)}{o}</b></td><td>{w}</td><td>{c}</td><td>{d}</td><td>{u}</td></tr>"
                          for o, w, c, d, u in sorted(outs, key=lambda x: float(code(n, x[0])[2:-3])))
                + "</tbody></table>")
-        return h + f"<p><b>What OPS can do:</b> {op}</p>" + chs + out + (entries(n) if 2 <= n <= 6 else "")
+        fl = ("<p><b>Process flow</b> – <span class='fs m'>internal mail</span> <span class='fs c'>customer SMS / mail</span></p>"
+              + "".join(flow(n, o) for o, *_ in sorted(outs, key=lambda x: float(code(n, x[0])[2:-3]))))
+        return h + f"<p><b>What OPS can do:</b> {op}</p>" + chs + out + fl + (entries(n) if 2 <= n <= 6 else "")
 
     scen = "\n".join(scenario(*x) for x in WAIVER_SCENARIOS)
     def fig(f, cap, cls=""):   # screenshots of the LMS prototype (lms.html, DRAFT LAN) – DISC-342
@@ -399,14 +445,15 @@ should be able to pay again.</li>
   <li>The system should generate a receipt and save it in the Documents tab of the LAN in LMS. Receipt number format:
   RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts}}}}.</li>
   <li>The system should send a mail to Treasury and OPS – “Charges Payment Received”.
-  <span class="brd-ph">[Template – to be added]</span></li>
-  <li>The system should send the customer an SMS and mail with the receipt attached.
   <span class="brd-ph">[Template – to be added]</span></li></ul></li>
 <li><b>Treasury confirmation:</b> Treasury needs a Confirm Payment option in the Approvals tab. The payment should not be final in LMS
 until Treasury confirms it, and the Initiate De-pledge button should stay disabled until then.</li>
-<li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and OPS needs an option to initiate
-the de-pledge.
+<li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge”.
 <span class="brd-ph">[Template – to be added]</span></li>
+<li>After Treasury confirms, the system should send the customer an SMS and mail with the payment receipt attached.
+<span class="brd-ph">[Template – to be added]</span></li>
+<li>Before the de-pledge, OPS maker should check that no charges are pending. OPS maker needs an option to initiate the de-pledge, and
+OPS checker needs an option to approve it.</li>
 <li><b>Customer does not pay:</b> the system should send a reminder SMS and mail once a month until the customer pays. The units stay
 pledged until then.
 <span class="brd-ph">[Template – to be added]</span></li>

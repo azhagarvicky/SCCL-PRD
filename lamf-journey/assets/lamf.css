@@ -1543,3 +1543,10 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .page-brd .brd-body h4 { font-size: 16px; font-weight: 700; margin: 22px 0 8px; }
 /* Waiver BRD – placeholder for mail / SMS templates still to be created (DISC-391) */
 .brd-ph{display:inline-block;padding:0 6px;border:1px dashed #b45309;border-radius:4px;background:#fff7ed;color:#b45309;font-size:12px;font-weight:600}
+/* Waiver BRD – process flow per sub-scenario (DISC-393) */
+.brd-flow{margin:8px 0 12px;padding:8px 10px;border:1px solid #dbe2ea;border-radius:6px;background:#f8fafc;font-size:12.5px}
+.brd-flow .fl{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;margin-top:6px}
+.brd-flow i{font-style:normal;color:#64748b;padding:0 2px}
+.fs{display:inline-block;padding:2px 7px;border:1px solid #cbd5e1;border-radius:4px;background:#fff;color:#1e293b}
+.fs.m{background:#eef2ff;border-color:#a5b4fc;color:#3730a3}
+.fs.c{background:#ecfdf5;border-color:#6ee7b7;color:#065f46}

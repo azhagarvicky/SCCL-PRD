@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 07:11 IST
+**Last Updated:** 24-11-2026 08:59 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -425,6 +425,7 @@
 | DISC-390 | 24-11-2026 | brd-waive-off.html | DLT not needed for internal mails | Owner: for the internal mail communication the DLT approval is not required | Open points reworded: internal mails 12 – 21 need only the recipients confirmed (no DLT); DLT registration applies only to the customer SMS (rows 38 – 40). | Implemented |
 | DISC-391 | 24-11-2026 | brd-waive-off.html | Mail templates as placeholders in the Waiver BRD | Owner: for the mail add a placeholder; we will create them after the BRD is created – the BRD is the main focus now | Every internal mail and customer SMS / mail "View" link in the Waiver BRD replaced by a [Template – to be added] placeholder (mail subjects kept). Open points: recipients / SMS approval removed; one line says the templates come after the BRD is final. Draft templates stay on the Communications pages. | Implemented |
 | DISC-392 | 24-11-2026 | brd-waive-off.html | Waiver BRD written as requirements | Owner: “OPS can select one charge…” reads like a PRD; a BRD needs lines like “OPS maker needs an option to select one charge or select all charges” | Sections 1 – 6 reworded as requirements: “OPS maker / OPS checker / Treasury needs an option to …”, “LMS should …”, “The system should send …”. Logic, tables, screenshots and placeholders unchanged. | Implemented |
+| DISC-393 | 24-11-2026 | brd-waive-off.html | Process flow for each sub-scenario | Owner: add the flow like Customer Start → LAN Status DRAFT → Pledged → OPS maker Initiate Rejection with Full Waive-off → Internal mail → OPS Checker approval → Internal mail → Treasury approval → … → De-pledge approved by OPS checker | Section 7.4: a Process flow (step → step boxes; internal mails and customer SMS / mails coloured) for all 24 sub-scenarios S 2.1 – S 7.3. Full waive-off has no payment steps (goes straight to the rejection mail and the de-pledge). Section 6 follows the owner's order: customer receipt mail after the Treasury confirmation; OPS maker checks pending charges and initiates the de-pledge, OPS checker approves it. | Implemented |
 
 ---
 
