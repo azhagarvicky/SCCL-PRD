@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 24-11-2026 06:44 IST
+**Last Updated:** 24-11-2026 06:48 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -423,6 +423,7 @@
 | DISC-388 | 24-11-2026 | brd-waive-off.html | UNO account codes | Owner gave the income account codes: 800110 Lien Marking, 800111 Stamp Duty, 800098 Lien Removal, 800102 Loan Processing Fees, 800113 EMI / Instalment Bounce, 800114 AMC, 800115 Penal Interest (all P&L Income) | Processing Fee line in all scenario entries now 800102 “LOAN PROCESSING FEES A/C-1”. New table “UNO account codes for the charges” in 7.3 (the seven income codes plus IGST 715110 and bank 165042). Open point on the Processing Fee code closed. | Implemented |
 | DISC-389 | 24-11-2026 | brd-waive-off.html | Purpose of the approval mails | Owner: when the maker initiates a waive-off with rejection, the checker needs a mail alert to log in to LMS and approve or reject; our team users are added in Cc | Confirmed that alerts 16 / 12 / 13 / 17 / 18 – 21 already do this (To = the person who must act, Cc = the team list). BRD 3.1 steps 1 and 2 now say the mail alert is to log in to LMS and approve or reject, with the team in Cc. Waiting for any additional Cc users from the owner. | Implemented |
 | DISC-390 | 24-11-2026 | brd-waive-off.html | DLT not needed for internal mails | Owner: for the internal mail communication the DLT approval is not required | Open points reworded: internal mails 12 – 21 need only the recipients confirmed (no DLT); DLT registration applies only to the customer SMS (rows 38 – 40). | Implemented |
+| DISC-391 | 24-11-2026 | brd-waive-off.html | Mail templates as placeholders in the Waiver BRD | Owner: for the mail add a placeholder; we will create them after the BRD is created – the BRD is the main focus now | Every internal mail and customer SMS / mail "View" link in the Waiver BRD replaced by a [Template – to be added] placeholder (mail subjects kept). Open points: recipients / SMS approval removed; one line says the templates come after the BRD is final. Draft templates stay on the Communications pages. | Implemented |
 
 ---
 
