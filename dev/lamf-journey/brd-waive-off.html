@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=7f29222">
+<link rel="stylesheet" href="assets/lamf.css?v=1c9e6bc">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -153,7 +153,11 @@ section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 5.1, 6.1),
 Treasury.<ul><li>With no waive-off, LMS should deduct the full charges from the first disbursement.</li>
   <li>With a partial waive-off, LMS should deduct only the balance charges from the first disbursement.</li>
   <li>With a full waive-off, LMS should not deduct any charges from the first disbursement.</li></ul></li>
-<li>The loan continues, so there is no de-pledge and no payment link. The system should send the customer an SMS and mail that the loan account is opened (SUBMITTED) or the loan lodgement is approved (ACCOUNT OPENED). <a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></li>
+<li>After the approval the loan continues, so there is no de-pledge and no payment link.</li>
+<li>When an ACCOUNT OPENED loan is approved (Loan Lodgement), the system should send the customer the Loan Lodgement Approval SMS and mail,
+which are already in use today. <a href="communications.html" target="_blank" rel="noopener">View the Loan Lodgement Approval SMS and mail</a></li>
+<li>When a SUBMITTED loan is approved (Loan Account Opening), the customer gets no SMS or mail today. A new SMS and mail saying that the loan
+account is opened is to be created. <span class="brd-tbc">To be created</span></li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
 <p>Same as section 2.1.1.5, without the day 30 and day 31 mails. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
@@ -278,7 +282,8 @@ waive-off).</li>
 <tr><td>Treasury confirms the payment</td><td>OPS</td><td>Internal mail – initiate de-pledge</td><td><a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Treasury confirms the payment</td><td>Customer</td><td>SMS and mail with the receipt</td><td><a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Not paid – every month</td><td>Customer</td><td>SMS and mail – reminder</td><td><a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Loan approved – SUBMITTED / ACCOUNT OPENED</td><td>Customer</td><td>SMS and mail – loan account opened / loan lodgement approved</td><td><a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACCOUNT OPENED loan approved (Loan Lodgement)</td><td>Customer</td><td>SMS and mail – loan lodgement approved</td><td><a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval</a> <span class="brd-tbc">Already in use</span></td></tr>
+<tr><td>SUBMITTED loan approved (Loan Account Opening)</td><td>Customer</td><td>SMS and mail – loan account opened</td><td><span class="brd-tbc">To be created</span></td></tr>
 <tr><td>ACTIVE loan – waive-off request, checker and Treasury approval</td><td>OPS checker, Treasury, OPS</td><td>Internal mail only – no customer communication</td><td><a href="internal/IC-18.html" target="_blank" rel="noopener">Sample – alert 18</a> · <a href="internal/IC-19.html" target="_blank" rel="noopener">Sample – alert 19</a> · <a href="internal/IC-20.html" target="_blank" rel="noopener">Sample – alert 20</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
@@ -318,7 +323,7 @@ A pledged DRAFT LAN never moves to INACTIVE.</li>
 <li>Customer communication when a SUBMITTED loan is approved (loan account opened) – template to be created.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=7f29222"></script>
-<script src="assets/colresize.js?v=7f29222"></script>
+<script src="assets/review.js?v=1c9e6bc"></script>
+<script src="assets/colresize.js?v=1c9e6bc"></script>
 </body>
 </html>

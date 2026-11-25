@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 15:24 IST
+**Last Updated:** 25-11-2026 17:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -447,6 +447,7 @@
 | DISC-412 | 25-11-2026 | brd-waive-off.html | S 5 with three Approve options again | Owner: S 5 also needs S 5.1, S 5.2, S 5.3 like S 6.1 – 6.3, updated in 8.1 Summary of scenarios | S 5.1 – 5.3 Approve Without / With Full / With Partial Waive-off and S 5.4 – 5.6 Reject (replaces the single S 5 Approve of DISC-399). 8.1 summary, scenario details, flows and UNO notes updated. 2.1.2.1: waive-off can be selected with Reject and with Approve. 2.1.2.4: without a waive-off (S 5.1, 6.1) only OPS maker and checker approve; with a waive-off (S 5.2, 5.3, 6.2, 6.3) maker, checker and Treasury. Scenario-wise BRD, both Word files and the entries Excel updated. | Implemented |
 | DISC-413 | 25-11-2026 | brd-waive-off.html | 2.1.1.4 – approval is for the rejection request, not the loan | Owner: a DRAFT LAN has no Approve option; once the maker initiates the rejection with any waive-off type, the checker (and Treasury) approve that request – not the LAN status | 2.1.1.4 renamed “Approval of the Rejection Request”; new first point (DRAFT has no Approve; the approval is only for the rejection request raised with the waive-off); the maker's Reject only raises the request; the checker approves or declines and the LAN status still does not change; Treasury's final approval changes DRAFT to REJECTED; decline keeps the LAN in DRAFT. “Reject” for the request changed to “decline” so it is not confused with the loan rejection; figure captions updated. Word file regenerated. | Implemented |
 | DISC-414 | 25-11-2026 | internal/IC-17.html | No “submitted” in the decline mail | Owner: the waive-off with rejection request declined mail must not use the word submitted – it confuses users (SUBMITTED is a LAN status) | Alert 17 body: “submitted by you on {{Submitted Date & Time}}” → “raised by you on {{Request Date & Time}}”; “submit a new request” → “raise a new request”. New placeholder {{Request Date & Time}} added to the sample values. | Implemented |
+| DISC-415 | 25-11-2026 | brd-waive-off.html | 2.1.2.4 approval communication made clear | Owner could not understand the line about the approval SMS and mail (loan account opened / loan lodgement approved, existing / to be created) | Split into three plain points: after the approval the loan continues (no de-pledge, no payment link); ACCOUNT OPENED approved → the Loan Lodgement Approval SMS and mail already in use (link); SUBMITTED approved → no SMS or mail today, a new loan account opened SMS and mail to be created. Communication table split into the same two rows (Already in use / To be created). Word file regenerated. | Implemented |
 
 ---
 
