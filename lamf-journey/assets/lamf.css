@@ -1554,3 +1554,5 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .brd-steps{margin:6px 0 10px 22px}
 .brd-steps li{margin:3px 0}
 .brd-note{background:#f8fafc;border-left:3px solid #94a3b8;padding:6px 10px}
+/* Waiver BRD – level-5 headings (2.1.1.1 …) (DISC-400) */
+.page-brd .brd-body h5 { font-size: 14px; font-weight: 700; margin: 14px 0 6px; color: #1f3864; }

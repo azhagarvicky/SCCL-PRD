@@ -192,6 +192,8 @@ def block(el):
             d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 3')
         elif n == 'h4':
             d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 4')
+        elif n == 'h5':
+            d.add_paragraph(norm(ch.get_text()).strip(), style='Heading 5')
         elif n == 'p':
             p = d.add_paragraph(); inline(p, ch)
         elif n == 'ol':   # numbered steps (DISC-398)
