@@ -612,18 +612,19 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in',
      'k.natarajan@shriramcredit.in'])]),
- # DISC-381 – Waiver BRD: a pledged DRAFT LAN is not submitted within 30 days – mail to OPS on day 31 to initiate the rejection.
+ # DISC-381 / DISC-410 – Waiver BRD: a pledged DRAFT LAN is not submitted within 30 days – mail to OPS on day 31 to follow up with the
+ # customer (no rejection unless the customer asks to remove the lien).
  # Recipients as the OPS alerts (<5L / >=5L) – to be confirmed.
  ('DRAFT',
   'NA',
   'Day 31 from the LAN creation – the units are pledged but the customer has not completed the journey (LAN still in DRAFT)',
-  'Action Required | {{LAN}} | Initiate Rejection – 30 Days Completed',
-  'Initiate Rejection – 30 Days Completed',
+  'Action Required | {{LAN}} | 30 Days Completed – Journey Not Completed, Lien Marked',
+  '30 Days Completed – Journey Not Completed',
   '{{To User Name}}',
   '{{LAN}} of customer {{Customer Name}} was created on {{LAN Created Date}}. The mutual fund units are pledged, but the customer has '
-  'not completed the journey. 30 days are completed and the LAN is still in DRAFT.\n'
-  'Please initiate the rejection in LMS (Approvals tab of the LAN), with or without waive-off. The request goes to the OPS checker and '
-  'then to Treasury for approval.',
+  'not completed the journey. 30 days are completed, the LAN is still in DRAFT and the lien is marked.\n'
+  'Please check with the customer to complete the journey, or the customer needs to send a mail to de-pledge the units. Until then, '
+  'the lien stays marked with SCCL.',
   [('Any Sanction amount (OPS L1)',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
