@@ -26,6 +26,7 @@ for any sanctioned amount.</li>
 <li>Lien Marking, Lien Removal and Stamp Duty can only be waived in full, so OPS can only select or unselect these charges and cannot waive a
 part of the amount.</li>
 <li>The Processing Fee and all the other charges can be waived in full or in part, so OPS can enter any amount up to the charge.</li>
+<li>When a charge is waived, the GST on it is also waived, so no GST credit note is needed.</li>
 <li>The customer sees one Processing Fee* (*inclusive of Lien Marking, Lien Removal and Stamp Duty), but LMS should show it in four rows
 (Processing Fee, Lien Marking, Lien Removal and Stamp Duty) so that OPS can waive each one.</li>
 <li>LMS first deducts Lien Marking (₹450), Lien Removal (₹100) and Stamp Duty (₹200) from the Processing Fee* and shows the balance plus GST
@@ -103,14 +104,14 @@ payable amounts for each charge and in total.</li>
 <h5>2.1.1.4 Approval of the Rejection &amp; Waive-off</h5>
 <ul>
 <li><b>Maker (OPS L1):</b> selects the charges, adds the note and the file, and clicks Reject. LMS should not waive anything or change the
-LAN status at this step, and should send a mail to the checker. <span class="brd-ph">[Template – to be added]</span></li>
+LAN status at this step, and should send a mail to the checker. <a href="internal/IC-16.html" target="_blank" rel="noopener">Sample – alert 16</a> <span class="brd-tbc">To be confirmed</span></li>
 <li><b>Checker (OPS L2 or L3):</b> sees the request (maker, waive-off type, amounts and note), can change the waive-off, and approves or
-rejects. On approval, LMS should send a mail to Treasury. <span class="brd-ph">[Template – to be added]</span></li>
+rejects. On approval, LMS should send a mail to Treasury. <a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></li>
 <li><b>Treasury (L1, L2 or L3):</b> can only approve or reject; cannot change the waive-off. On approval, LMS should show “This action is
 irreversible. Are you sure you want to proceed?”; on Yes, LMS should apply the waive-off, change the LAN status to REJECTED and send a
-mail to OPS and Treasury. <span class="brd-ph">[Template – to be added]</span></li>
+mail to OPS and Treasury. <a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></li>
 <li><b>Rejected by the checker or Treasury:</b> LMS should cancel the request – nothing is waived and the LAN status does not change – and
-send a mail to the maker, who can raise a new request. <span class="brd-ph">[Template – to be added]</span></li>
+send a mail to the maker, who can raise a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>LMS should record every step in the Audit tab.</li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – can change the waive-off, then approve or reject' loading='lazy'></a><figcaption>Checker – can change the waive-off, then approve or reject</figcaption></figure>
@@ -126,8 +127,8 @@ de-pledged only after the LAN is REJECTED. A DRAFT loan has no Approve option.</
 <li>OPS maker should reject a pledged DRAFT loan when the customer has not completed the journey within 30 days of the LAN creation date,
 or earlier if the customer asks to remove the lien.</li>
 <li><b>Day 30</b> from the LAN creation date, if the LAN is not submitted: the system should send the customer an SMS and mail – “Your
-application will be rejected tomorrow. Complete it now.” <span class="brd-ph">[Template – to be added]</span></li>
-<li><b>Day 31:</b> LMS should send OPS a mail – “30 days are completed. Please initiate the rejection.” <span class="brd-ph">[Template – to be added]</span></li>
+application will be rejected tomorrow. Complete it now.” <a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></li>
+<li><b>Day 31:</b> LMS should send OPS a mail – “30 days are completed. Please initiate the rejection.” <a href="internal/IC-21.html" target="_blank" rel="noopener">Sample – alert 21</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>On Reject, LMS should show “Are you sure you want to reject the application with the selected waive-off?” with the waive-off type, the
 amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
 <li>After Treasury approves, by the waive-off type:
@@ -152,13 +153,13 @@ only with Reject – not with Approve.</p>
 <li><b>SUBMITTED loan (S 5.1):</b> Approve means the Loan Account Opening. No waive-off. OPS maker approves and OPS checker approves – no
 Treasury approval. The LAN status changes to ACCOUNT OPENED and the full charges are deducted from the first disbursement.</li>
 <li><b>ACCOUNT OPENED loan (S 6.1 – 6.3):</b> Approve means the Loan Lodgement. OPS maker needs an option to select the waive-off with the
-approval. With a waive-off, the request follows section 2.1.1.4 (maker → checker → Treasury); without a waive-off, OPS maker and OPS checker
-approve. The LAN status changes to ACTIVE.
+approval. With a waive-off, the request follows section 2.1.1.4 (maker → checker → Treasury); without a waive-off (S 6.1), only the OPS maker
+and OPS checker approve, as in S 5.1. The LAN status changes to ACTIVE.
   <ul><li>No waive-off: LMS should deduct the full charges from the first disbursement.</li>
   <li>Partial waive-off: LMS should deduct only the balance charges from the first disbursement.</li>
   <li>Full waive-off: LMS should not deduct any charges from the first disbursement.</li></ul></li>
 <li>The loan continues: there is no de-pledge and no payment link. The system should send the customer an SMS and mail – loan account
-opened (SUBMITTED) or loan lodgement approved (ACCOUNT OPENED). <span class="brd-ph">[Template – to be added]</span></li>
+opened (SUBMITTED) or loan lodgement approved (ACCOUNT OPENED). <a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
 <p>Same as section 2.1.1.5, without the day 30 / day 31 rule. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
@@ -184,14 +185,14 @@ other charges by any amount.</li>
 <p>Same as section 2.1.1.3.</p>
 <h4>2.2.4 Approval</h4>
 <ul>
-<li>The request follows section 2.1.1.4: maker → checker → Treasury, with a mail at each step. <span class="brd-ph">[Template – to be added]</span></li>
+<li>The request follows section 2.1.1.4: maker → checker → Treasury, with an internal mail at each step. The customer gets no communication. <a href="internal/IC-18.html" target="_blank" rel="noopener">Sample – alert 18</a> · <a href="internal/IC-19.html" target="_blank" rel="noopener">Sample – alert 19</a> · <a href="internal/IC-20.html" target="_blank" rel="noopener">Sample – alert 20</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>After Treasury approves, LMS should post the waived amount in the Statement of Account with a waiver narration, and the Amount column
 should show the balance. The LAN stays ACTIVE. The waived amount is never posted in UNO.</li>
 </ul>
 <h4>2.2.5 Rejection of the Waive-off Request</h4>
 <ul>
 <li>If the checker or Treasury rejects the request, LMS should cancel it – nothing is waived – and send a mail to the maker, who can raise
-a new request. <span class="brd-ph">[Template – to be added]</span></li>
+a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 
 <h2>3. Charges Payment by the Customer</h2>
@@ -207,7 +208,7 @@ application from the Curated Offers page.</li>
 <li><b>Payment failed:</b> nothing changes – no update, no communication, no accounting entry. The customer can pay again.</li>
 <li><b>Payment successful:</b> the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 4).</li>
 <li><b>Customer does not pay:</b> the system should send a reminder SMS and mail once a month until the customer pays. The units stay
-pledged until then. <span class="brd-ph">[Template – to be added]</span></li>
+pledged until then. <a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <p><a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
 <div class="brd-figs">
@@ -224,11 +225,12 @@ pledged until then. <span class="brd-ph">[Template – to be added]</span></li>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. Receipt number:
 RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts as 4 digits}} – for example RCPT/LAMF/2026/11/0149.</li>
-<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted; the waived amount is never posted.</li>
-<li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. <span class="brd-ph">[Template – to be added]</span></li>
+<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted; the waived amount and its GST are never
+posted.</li>
+<li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. <a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>Treasury needs a <b>Confirm Payment</b> option in the Approvals tab. The payment is not final in LMS until Treasury confirms it.</li>
 <li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer
-an SMS and mail with the payment receipt attached. <span class="brd-ph">[Template – to be added]</span></li>
+an SMS and mail with the payment receipt attached. <a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> · <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/16_receipt.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/16_receipt.png' alt='Payment receipt' loading='lazy'></a><figcaption>Payment receipt</figcaption></figure></div>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/17_lms_await.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/17_lms_await.png' alt='LMS – waiting for the customer’s payment, de-pledge disabled' loading='lazy'></a><figcaption>LMS – waiting for the customer’s payment, de-pledge disabled</figcaption></figure>
@@ -273,21 +275,21 @@ waive-off).</li>
 </ul>
 
 <h2>6. Communication – Internal and Customer</h2>
-<table class="brd-table"><thead><tr><th>When</th><th>To</th><th>Type</th><th>Template</th></tr></thead><tbody>
-<tr><td>Maker submits a request</td><td>OPS checker (team users in Cc)</td><td>Internal mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Checker approves</td><td>Treasury</td><td>Internal mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Treasury approves</td><td>OPS and Treasury</td><td>Internal mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Checker or Treasury rejects the request</td><td>OPS maker</td><td>Internal mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Day 31 – pledged DRAFT LAN not submitted</td><td>OPS</td><td>Internal mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Rejected – no or partial waive-off</td><td>Customer</td><td>SMS and mail with the payment link</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Rejected – full waive-off</td><td>Customer</td><td>SMS and mail, no payment link</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Customer pays</td><td>Treasury and OPS</td><td>Internal mail</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Treasury confirms the payment</td><td>OPS</td><td>Internal mail – initiate de-pledge</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Treasury confirms the payment</td><td>Customer</td><td>SMS and mail with the receipt</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Not paid – every month</td><td>Customer</td><td>SMS and mail – reminder</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>Loan approved – SUBMITTED / ACCOUNT OPENED</td><td>Customer</td><td>SMS and mail – loan account opened / loan lodgement approved</td><td><span class="brd-ph">[Template – to be added]</span></td></tr>
-<tr><td>ACTIVE loan – waive-off approved</td><td>Customer</td><td>To be discussed</td><td>–</td></tr>
+<table class="brd-table"><thead><tr><th>When</th><th>To</th><th>Type</th><th>Sample template and status</th></tr></thead><tbody>
+<tr><td>Maker submits a request</td><td>OPS checker (team users in Cc)</td><td>Internal mail</td><td><a href="internal/IC-16.html" target="_blank" rel="noopener">Sample – alert 16</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Checker approves</td><td>Treasury</td><td>Internal mail</td><td><a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury approves</td><td>OPS and Treasury</td><td>Internal mail</td><td><a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Checker or Treasury rejects the request</td><td>OPS maker</td><td>Internal mail</td><td><a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail</td><td><a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 31 – pledged DRAFT LAN not submitted</td><td>OPS</td><td>Internal mail</td><td><a href="internal/IC-21.html" target="_blank" rel="noopener">Sample – alert 21</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Rejected – no or partial waive-off</td><td>Customer</td><td>SMS and mail with the payment link</td><td><a href="new-mails/06_Draft_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 36</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Rejected – full waive-off</td><td>Customer</td><td>SMS and mail, no payment link</td><td><a href="new-mails/07_Draft_Application_Rejected.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 37</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Customer pays</td><td>Treasury and OPS</td><td>Internal mail</td><td><a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury confirms the payment</td><td>OPS</td><td>Internal mail – initiate de-pledge</td><td><a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury confirms the payment</td><td>Customer</td><td>SMS and mail with the receipt</td><td><a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Not paid – every month</td><td>Customer</td><td>SMS and mail – reminder</td><td><a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Loan approved – SUBMITTED / ACCOUNT OPENED</td><td>Customer</td><td>SMS and mail – loan account opened / loan lodgement approved</td><td><a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – waive-off request, checker and Treasury approval</td><td>OPS checker, Treasury, OPS</td><td>Internal mail only – no customer communication</td><td><a href="internal/IC-18.html" target="_blank" rel="noopener">Sample – alert 18</a> · <a href="internal/IC-19.html" target="_blank" rel="noopener">Sample – alert 19</a> · <a href="internal/IC-20.html" target="_blank" rel="noopener">Sample – alert 20</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
 
@@ -324,10 +326,8 @@ day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to 
 
 <h2>9. Open Points</h2>
 <ul>
-<li>GST on a waived charge – is the GST also waived, or is a GST credit note needed? To be confirmed by Treasury.</li>
-<li>ACTIVE loan waive-off – customer communication to be discussed.</li>
-<li>ACCOUNT OPENED loan approved without a waive-off (S 6.1) – OPS maker and OPS checker only, like S 5.1? To be confirmed.</li>
-<li>The mail and SMS templates marked [Template – to be added] will be created after this BRD is final.</li>
+<li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
+<li>Customer communication when a SUBMITTED loan is approved (loan account opened) – template to be created.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
 <script src="assets/review.js"></script>
