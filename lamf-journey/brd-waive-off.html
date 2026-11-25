@@ -20,7 +20,18 @@ accounting entries in UNO for each payment.</li>
 </ul>
 
 <h2>2. Waive-off</h2>
-<p><b>Who approves</b> – the same for any sanctioned amount</p>
+<ul>
+<li><b>Approvals:</b> every waive-off is raised by the maker, <b>OPS L1</b>, reviewed by the checker, <b>OPS L2 or OPS L3</b>, and finally
+approved by <b>Treasury L1, L2 or L3</b>. This is the same for any sanctioned amount.</li>
+<li><b>Lien Marking, Lien Removal and Stamp Duty</b> can only be waived in full – OPS selects or unselects the charge; a part of the amount
+cannot be waived.</li>
+<li><b>Processing Fee and all the other charges</b> can be waived in full or in part – OPS enters any amount up to the charge.</li>
+<li><b>Processing Fee:</b> the customer sees one <b>Processing Fee*</b> (*inclusive of Lien Marking, Lien Removal and Stamp Duty). LMS should
+show it split into four rows – Processing Fee, Lien Marking, Lien Removal and Stamp Duty – so that OPS can waive each one. LMS first
+deducts Lien Marking (₹450), Lien Removal (₹100) and Stamp Duty (₹200) from the Processing Fee* and shows the balance in the Processing
+Fee row (Processing Fee* − ₹750, + GST).</li>
+</ul>
+<p><b>Who approves</b></p>
 <table class="brd-table"><thead><tr><th>Maker (raises the request)</th><th>Checker (reviews)</th><th>Final approval</th></tr></thead><tbody>
 <tr><td>OPS L1</td><td>OPS L2 or OPS L3</td><td>Treasury L1, L2 or L3</td></tr>
 </tbody></table>
@@ -29,14 +40,10 @@ accounting entries in UNO for each payment.</li>
 <tr><td>Lien Marking</td><td>₹450 + GST = ₹531</td><td>S 2 (units pledged)</td><td>Full only – select or unselect</td></tr>
 <tr><td>Lien Removal</td><td>₹100 + GST = ₹118</td><td>S 2 (units pledged)</td><td>Full only – select or unselect</td></tr>
 <tr><td>Stamp Duty</td><td>₹200 + GST = ₹236</td><td>S 3 (Sanction Letter generated)</td><td>Full only – select or unselect</td></tr>
-<tr><td>Processing Fee</td><td>₹749 + GST = ₹883.82</td><td>S 3 (Sanction Letter generated)</td><td>Any amount</td></tr>
-<tr><td>Bounce, Penal, Loan Renewal, AMC, Bank Swap</td><td>As charged</td><td>S 7 (ACTIVE)</td><td>Any amount</td></tr>
+<tr><td>Processing Fee</td><td>₹749 + GST = ₹883.82</td><td>S 3 (Sanction Letter generated)</td><td>Full or part – any amount</td></tr>
+<tr><td>Bounce, Penal, Loan Renewal, AMC, Bank Swap</td><td>As charged</td><td>S 7 (ACTIVE)</td><td>Full or part – any amount</td></tr>
 </tbody></table>
-<ul>
-<li><b>Customer view:</b> the customer sees one <b>Processing Fee*</b> (*inclusive of Lien Marking, Lien Removal and Stamp Duty), as per the
-structure below. <b>LMS</b> should show it split into four rows – Processing Fee, Lien Marking, Lien Removal and Stamp Duty – so that OPS can
-waive each one. The LMS Processing Fee row = Processing Fee* − ₹750.</li>
-</ul>
+<p><b>Processing Fee* structure and the split in LMS</b></p>
 <table class="brd-table"><thead><tr><th>Sanctioned amount</th><th>Processing Fee* (exclusive of GST)</th><th>Sample split in LMS (+ 18% GST)</th></tr></thead><tbody>
 <tr><td>Below ₹1,50,000</td><td>₹1,499</td><td>Processing Fee ₹749 · Lien Marking ₹450 · Lien Removal ₹100 · Stamp Duty ₹200</td></tr>
 <tr><td>₹1,50,000 to ₹10,00,000</td><td>1%</td><td>₹5,00,000 → ₹5,000: Processing Fee ₹4,250 + the three charges ₹750</td></tr>
