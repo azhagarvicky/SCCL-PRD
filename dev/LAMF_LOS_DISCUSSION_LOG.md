@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 17:53 IST
+**Last Updated:** 25-11-2026 17:59 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -449,6 +449,7 @@
 | DISC-414 | 25-11-2026 | internal/IC-17.html | No “submitted” in the decline mail | Owner: the waive-off with rejection request declined mail must not use the word submitted – it confuses users (SUBMITTED is a LAN status) | Alert 17 body: “submitted by you on {{Submitted Date & Time}}” → “raised by you on {{Request Date & Time}}”; “submit a new request” → “raise a new request”. New placeholder {{Request Date & Time}} added to the sample values. | Implemented |
 | DISC-415 | 25-11-2026 | brd-waive-off.html | 2.1.2.4 approval communication made clear | Owner could not understand the line about the approval SMS and mail (loan account opened / loan lodgement approved, existing / to be created) | Split into three plain points: after the approval the loan continues (no de-pledge, no payment link); ACCOUNT OPENED approved → the Loan Lodgement Approval SMS and mail already in use (link); SUBMITTED approved → no SMS or mail today, a new loan account opened SMS and mail to be created. Communication table split into the same two rows (Already in use / To be created). Word file regenerated. | Implemented |
 | DISC-416 | 25-11-2026 | brd-waive-off.html | No customer communication for SUBMITTED → ACCOUNT OPENED | Owner: the customer communication is sent only after the loan lodgement (ACCOUNT OPENED → ACTIVE), not for SUBMITTED → ACCOUNT OPENED | 2.1.2.4: the customer gets the existing Loan Lodgement Approval SMS and mail only when an ACCOUNT OPENED loan is approved and becomes ACTIVE; no SMS or mail when a SUBMITTED loan is approved. Communication table row = No communication; open point removed; S 5.1 – 5.3 outcome tables, flows and the scenario-wise BRD updated. Word files regenerated. | Implemented |
+| DISC-417 | 25-11-2026 | brd-waive-off.html | 2.1.2.5 Loan Rejection written in full | Owner: give the details instead of “Same as section 2.1.1.5, without the day 30 and day 31 mails …” | 2.1.2.5 now lists: Reject option for SUBMITTED / ACCOUNT OPENED with no, partial or full waive-off; the reject pop-up; the same approval as 2.1.1.4; LAN → REJECTED after Treasury; decline keeps the LAN status; customer communication by waive-off type with the existing Loan Account Opening / Loan Lodgement Rejection mails 28 (with payment link) and 29 (without) and their SMS; de-pledge after payment and Treasury confirmation; day 30 / 31 mails do not apply. Word file regenerated. | Implemented |
 
 ---
 
