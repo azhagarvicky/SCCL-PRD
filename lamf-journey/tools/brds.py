@@ -365,7 +365,11 @@ section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 5.1, 6.1),
 Treasury.<ul><li>With no waive-off, LMS should deduct the full charges from the first disbursement.</li>
   <li>With a partial waive-off, LMS should deduct only the balance charges from the first disbursement.</li>
   <li>With a full waive-off, LMS should not deduct any charges from the first disbursement.</li></ul></li>
-<li>The loan continues, so there is no de-pledge and no payment link. The system should send the customer an SMS and mail that the loan account is opened (SUBMITTED) or the loan lodgement is approved (ACCOUNT OPENED). {T(lk('communications.html', 'Loan Lodgement Approval – existing'), 'Loan account opened – to be created')}</li>
+<li>After the approval the loan continues, so there is no de-pledge and no payment link.</li>
+<li>When an ACCOUNT OPENED loan is approved (Loan Lodgement), the system should send the customer the Loan Lodgement Approval SMS and mail,
+which are already in use today. {lk('communications.html', 'View the Loan Lodgement Approval SMS and mail')}</li>
+<li>When a SUBMITTED loan is approved (Loan Account Opening), the customer gets no SMS or mail today. A new SMS and mail saying that the loan
+account is opened is to be created. <span class="brd-tbc">To be created</span></li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
 <p>Same as section 2.1.1.5, without the day 30 and day 31 mails. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
@@ -490,7 +494,8 @@ waive-off).</li>
 <tr><td>Treasury confirms the payment</td><td>OPS</td><td>Internal mail – initiate de-pledge</td><td>{T(IC(15))}</td></tr>
 <tr><td>Treasury confirms the payment</td><td>Customer</td><td>SMS and mail with the receipt</td><td>{T(NM('08_Charges_Payment_Received', 38))}</td></tr>
 <tr><td>Not paid – every month</td><td>Customer</td><td>SMS and mail – reminder</td><td>{T(NM('09_Charges_Payment_Reminder', 39))}</td></tr>
-<tr><td>Loan approved – SUBMITTED / ACCOUNT OPENED</td><td>Customer</td><td>SMS and mail – loan account opened / loan lodgement approved</td><td>{T(lk('communications.html', 'Loan Lodgement Approval – existing'), 'Loan account opened – to be created')}</td></tr>
+<tr><td>ACCOUNT OPENED loan approved (Loan Lodgement)</td><td>Customer</td><td>SMS and mail – loan lodgement approved</td><td>{lk('communications.html', 'Loan Lodgement Approval')} <span class="brd-tbc">Already in use</span></td></tr>
+<tr><td>SUBMITTED loan approved (Loan Account Opening)</td><td>Customer</td><td>SMS and mail – loan account opened</td><td><span class="brd-tbc">To be created</span></td></tr>
 <tr><td>ACTIVE loan – waive-off request, checker and Treasury approval</td><td>OPS checker, Treasury, OPS</td><td>Internal mail only – no customer communication</td><td>{T(IC(18), IC(19), IC(20))}</td></tr>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
