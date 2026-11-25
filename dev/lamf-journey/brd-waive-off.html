@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=63721ac">
+<link rel="stylesheet" href="assets/lamf.css?v=d5165f3">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -159,8 +159,15 @@ system should send the Loan Lodgement Approval SMS and mail, which are already i
 <li>When a SUBMITTED loan is approved (Loan Account Opening) and the LAN status changes to ACCOUNT OPENED, the customer gets no SMS or mail.</li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
-<p>Same as section 2.1.1.5, without the day 30 and day 31 mails. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
-OPENED to REJECTED.</p>
+<ul>
+<li>The rejection works the same way as section 2.1.1.5. OPS maker raises the rejection request with no, partial or full waive-off, and the
+checker and Treasury approve it as in section 2.1.1.4.</li>
+<li>After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT OPENED to REJECTED. If the checker or Treasury declines, the
+LAN status does not change.</li>
+<li>The customer gets the rejection SMS and mail as in section 2.1.1.5, with the payment link for no or partial waive-off and without it
+for full waive-off.</li>
+<li>The day 30 and day 31 mails do not apply, because the customer has already completed the journey.</li>
+</ul>
 
 <h3>2.2 After LAN Active (ACTIVE)</h3>
 <h4>2.2.1 Waive-off Charges (≡ menu → Waive-off page)</h4>
@@ -321,7 +328,7 @@ A pledged DRAFT LAN never moves to INACTIVE.</li>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=63721ac"></script>
-<script src="assets/colresize.js?v=63721ac"></script>
+<script src="assets/review.js?v=d5165f3"></script>
+<script src="assets/colresize.js?v=d5165f3"></script>
 </body>
 </html>
