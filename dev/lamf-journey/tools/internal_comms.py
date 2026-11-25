@@ -525,19 +525,18 @@ INTERNAL = [('DRAFT→SUBMITTED',
  # Approvals-tab waive-off; recipients as alerts 16 / 12 / 13 – to be confirmed.
  ('ACTIVE',
   'NA',
-  'The OPS maker submits a waive-off request for an ACTIVE loan (≡ menu → Waive-off → “Yes, Waive Off”)',
+  'The OPS maker raises a waive-off request for an ACTIVE loan (≡ menu → Waive-off → “Yes, Waive Off”) – it goes to the Approvals tab',
   'Action Required | {{LAN}} | Checker Approval Required – Waive-off',
   'Checker Approval Required – Waive-off',
   '{{To User Name}}',
-  'A waive-off request for the active loan {{LAN}} of customer {{Customer Name}} has been submitted by {{OPS Maker Name}} on '
+  'A waive-off request for the active loan {{LAN}} of customer {{Customer Name}} has been raised by {{OPS Maker Name}} on '
   '{{Submitted Date & Time}} and is pending your approval as the checker. Type of waive-off: {{Waive-off Type}}.\n'
   '| Charges Name | Amount of Charges | Amount to be Waived Off | Payable Charges\n'
   '| Processing Fee | 883.82 | 300.00 | 583.82\n'
   '| Stamp Duty Charges | 236.00 | 236.00 | 0.00\n'
   '| Total | 1,119.82 | 536.00 | 583.82\n'
-  'Reason: {{Waive-off Reason}}\n'
-  'Please review the request in LMS (LAN → ≡ → Waive-off): approve it (it then goes to Treasury), change the amounts (the note and a file are '
-  'required) or decline it (the request is cancelled).',
+  'Please review the request in LMS (Approvals tab of the LAN) and approve it with a note (it then goes to Treasury) or decline it with a '
+  'note (the request is cancelled).',
   [('Any Sanction amount (OPS)',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
@@ -565,9 +564,8 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Processing Fee | 883.82 | 300.00 | 583.82\n'
   '| Stamp Duty Charges | 236.00 | 236.00 | 0.00\n'
   '| Total | 1,119.82 | 536.00 | 583.82\n'
-  'Reason: {{Waive-off Reason}}\n'
   'Maker: {{OPS Maker Name}}. Checker: {{OPS Checker Name}} on {{Checker Approval Date & Time}}. Please approve or decline the request in LMS '
-  '(LAN → ≡ → Waive-off). On approval, the waiver is posted in the Statement of Account; on decline, the request is cancelled.',
+  '(Approvals tab of the LAN). On approval, the waiver is posted in the Statement of Account; on decline, the request is cancelled.',
   [('Any Sanction amount (Treasury L1 / L2 / L3)',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',

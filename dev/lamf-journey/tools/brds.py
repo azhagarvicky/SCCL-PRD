@@ -388,35 +388,51 @@ full waive-off. {T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample 
 <h3>2.2 After LAN Active (ACTIVE)</h3>
 <h4>2.2.1 Waive-off Charges (≡ menu → Waive-off page)</h4>
 <ul>
-<li>The waive-off is a separate request; the loan cannot be rejected at this stage.</li>
-<li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page, with the
-Waive-off button at the top right.</li>
-<li>The Waive-off page should have the same table as the Approvals tab (section 2.1.1.1), with the columns Checkbox, Charges Name, Amount of
-Charges, Waived off Charges, Amount to be waived off and Payable Charges, and the total of each column.</li>
-<li>The table lists all the charges of the loan, for example Processing Fee, Lien Marking, Lien Removal, Stamp Duty, Bounce, Penal, Loan
-Renewal, AMC and Bank Swap charges.</li>
+<li>Once the LAN is ACTIVE, the waive-off is a standalone request, and the loan cannot be rejected at this stage.</li>
+<li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page.</li>
+<li>The Waive-off page should have only the waive-off table and the Waive-off button at the top right. There is no Add a note or Upload a file
+on this page.</li>
+<li>The table is the same as in the Approvals tab (section 2.1.1.1), with the columns Checkbox, Charges Name, Amount of Charges, Waived off
+Charges, Amount to be waived off and Payable Charges, and the total of each column. It lists all the charges of the loan, for example
+Processing Fee, Lien Marking, Lien Removal, Stamp Duty, Bounce, Penal, Loan Renewal, AMC and Bank Swap charges.</li>
 <li>The same rule applies here, so Lien Marking, Lien Removal and Stamp Duty are waived in full and the other charges by any amount.</li>
-<li>After Treasury approves, the waived amount moves to the Waived off Charges column and the Payable Charges column shows the balance.</li>
-<li>On Waive-off, LMS should show “Are you sure you want to waive off the selected charges?” (buttons No, Don’t Waive Off, Yes, Waive Off and ×).</li>
+<li>Only a full or partial waive-off can be raised here. If nothing is selected, it is treated as no waive-off, so the Waive-off button stays
+disabled and no request is raised.</li>
+<li>On Waive-off, LMS should show “Are you sure you want to waive off the selected charges?” (buttons No, Don’t Waive Off, Yes, Waive Off
+and ×). On Yes, the waive-off request goes to the Approvals tab of the LAN for approval.</li>
 </ul>
-<p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off).</p>
+<p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off,
+then the Approvals tab).</p>
 {fig('22_active_menu.png', 'Active loan – ≡ menu with Waive-off')}
-{fig('23_active_waive.png', 'Active loan – Waive-off page with the same table as the Approvals tab')}
+{fig('23_active_waive.png', 'Active loan – Waive-off page with only the waive-off table and the Waive-off button')}
 <div class="brd-figs">{fig('24_active_pop.png', 'Active loan – waive-off pop-up', 'sm')}</div>
 <h4>2.2.2 Add a Note</h4>
-{SAME('2.1.1.2')}
+<ul>
+<li>The maker does not add a note on the Waive-off page.</li>
+<li>The checker and Treasury add the note in the Approvals tab when they approve or decline the request, and the note is mandatory for both.
+LMS should save every note in the Audit tab of the LAN.</li>
+</ul>
 <h4>2.2.3 Upload a File</h4>
-{SAME('2.1.1.3')}
+<ul>
+<li>There is no file upload for the standalone waive-off request.</li>
+</ul>
 <h4>2.2.4 Approval</h4>
 <ul>
-<li>The request follows section 2.1.1.4 (maker, checker and Treasury), with an internal mail at each step. The customer gets no communication. {T(IC(18), IC(19), IC(20))}</li>
-<li>After Treasury approves, LMS should post the waived amount in the Statement of Account with a waiver narration, and the Amount column
-should show the balance. The LAN stays ACTIVE. The waived amount is never posted in UNO.</li>
+<li>The waive-off request is shown in the Approvals tab of the LAN with the maker, the waive-off type and the selected charges (amount, amount
+to be waived off and payable).</li>
+<li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
+<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note. On approval, LMS should show “This action
+is irreversible. Are you sure you want to proceed?”.</li>
+<li>After Treasury approves, LMS should post the waived amount in the Statement of Account with a waiver narration. On the Waive-off page,
+the waived amount moves to the Waived off Charges column and the Payable Charges column shows the balance. The LAN stays ACTIVE, and the
+waived amount is never posted in UNO.</li>
+<li>LMS sends an internal mail at each step. The customer gets no communication. {T(IC(18), IC(19), IC(20))}</li>
 </ul>
+{fig('25_active_approvals.png', 'Active loan – Approvals tab with the waive-off request for the checker and Treasury')}
 <h4>2.2.5 Rejection of the Waive-off Request</h4>
 <ul>
-<li>If the checker or Treasury rejects the request, LMS should cancel it – nothing is waived – and send a mail to the maker, who can raise
-a new request. {T(IC(17))}</li>
+<li>If the checker or Treasury declines the request in the Approvals tab, LMS should cancel it, so nothing is waived, and send a mail to the
+maker, who can raise a new request from the Waive-off page. {T(IC(17))}</li>
 </ul>
 
 <h2>3. Charges Payment by the Customer</h2>
@@ -1421,7 +1437,7 @@ Only the full amount in one payment; partial payment is not allowed.</li>
 <h4>S 7.1 – Without Waive-off</h4>
 {ol(["The charges stay in the Statement of Account and are collected before the loan is closed.", "No approval, no communication."])}
 <h4>S 7.2 – With Full Waive-off</h4>
-{ol(["OPS maker opens ≡ → Waive-off, selects the charges, enters the full amount, adds the note, uploads the file and clicks Waive-off.",
+{ol(["OPS maker opens ≡ → Waive-off, selects the charges, enters the full amount and clicks Waive-off. The request goes to the Approvals tab.",
      f"LMS sends a mail to the OPS checker. {PH}", f"OPS checker verifies and approves. LMS sends a mail to Treasury. {PH}",
      f"Treasury approves. The waived amount is posted in the Statement of Account with a waiver narration. LMS sends a mail to OPS and Treasury. {PH}",
      "The LAN stays ACTIVE. The waived amount is never posted in UNO."])}
