@@ -743,7 +743,7 @@ for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges P
   "09_Charges_Payment_Reminder", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{TOTAL_PAYABLE}}": "1,268.82", "{{REJECTION_DATE}}": "23-11-2026"}),
   (None, "Application Pending – Lien Marked (Day 30)",
   "On day 30 from the LAN creation, when the units are pledged but the customer has not completed the journey (LAN still in DRAFT) – a reminder to complete the journey; the application is not rejected. Waiver BRD.",
-  "10_Application_Rejection_Tomorrow", {"{{LOAN_ID}}": "SCCLMF20261100073"})]:   # added at the end so the existing row numbers stay
+  "10_Application_Pending_Lien_Marked", {"{{LOAN_ID}}": "SCCLMF20261100073"})]:   # added at the end so the existing row numbers stay
     base = (None, None, None, "SMS, Mail", "SCCL",   # reminder SMS drafted by Claude for approval (DISC-372)
         "Dear {#alp#}, Reminder: charges of Rs. {#alp#} for your rejected LAMF application are pending. Pay here to unpledge your MF units: {#urg#} - Shriram Credit",
         "Dear AZHAGARSAMY, Reminder: charges of Rs. 1,268.82 for your rejected LAMF application are pending. Pay here to unpledge your MF units: https://lamf.shriramcredit.in/user/loans/ - Shriram Credit",
