@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 18:30 IST
+**Last Updated:** 25-11-2026 19:02 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -452,6 +452,7 @@
 | DISC-417 | 25-11-2026 | brd-waive-off.html | 2.1.2.5 Loan Rejection written in full | Owner: give the details instead of “Same as section 2.1.1.5, without the day 30 and day 31 mails …” | 2.1.2.5 now lists: Reject option for SUBMITTED / ACCOUNT OPENED with no, partial or full waive-off; the reject pop-up; the same approval as 2.1.1.4; LAN → REJECTED after Treasury; decline keeps the LAN status; customer communication by waive-off type with the existing Loan Account Opening / Loan Lodgement Rejection mails 28 (with payment link) and 29 (without) and their SMS; de-pledge after payment and Treasury confirmation; day 30 / 31 mails do not apply. Word file regenerated. | Implemented |
 | DISC-418 | 25-11-2026 | brd-waive-off.html | 2.1.2.5 back to the short version | Owner: keep 2.1.2.5 as before – “Same as section 2.1.1.5, without the day 30 and day 31 mails. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT OPENED to REJECTED.” | DISC-417 detail removed; 2.1.2.5 restored to the one-line version. Word file regenerated. | Implemented |
 | DISC-419 | 25-11-2026 | brd-waive-off.html | 2.1.2.5 a little clearer | Owner: extend the short 2.1.2.5 a little bit, clearly | 2.1.2.5 now four short points: same as 2.1.1.5 (maker raises the request with no / partial / full waive-off, approved as in 2.1.1.4); after Treasury approves SUBMITTED or ACCOUNT OPENED → REJECTED, decline = no change; customer rejection SMS and mail with or without the payment link; day 30 / 31 mails do not apply (journey already completed). Word file regenerated. | Implemented |
+| DISC-420 | 25-11-2026 | brd-waive-off.html, internal/IC-22, IC-23 | SUBMITTED / ACCOUNT OPENED rejection – internal and customer communication | Owner: today the reject sends an internal mail – it has to show the waive-off type; add it as to be added without revising the existing one (so the change can be seen); there was no customer communication before – use the newly created one on the Customer Communications page | Alerts 3 and 5 (Loan Account Opening / Loan Lodgement Rejected) left unchanged. New alerts 22 and 23 (TO BE ADDED, revised alerts 3 / 5): same recipients, subject with the waive-off type, body with the waive-off type, the four-row charges table, rejection reason, maker / checker / Treasury, and the customer payment-link note. BRD 2.1.2.5: two new points – internal mail (alerts 3 / 5 today → samples 22 / 23, To be confirmed) and customer SMS and mail (the new Loan Account Opening / Loan Lodgement Rejection rows, mails 28 with link / 29 without). Section 6 table: two new rows. Word file regenerated. | Implemented |
 
 ---
 
