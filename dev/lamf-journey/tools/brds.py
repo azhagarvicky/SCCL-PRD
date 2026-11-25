@@ -389,14 +389,19 @@ full waive-off. {T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample 
 <h4>2.2.1 Waive-off Charges (≡ menu → Waive-off page)</h4>
 <ul>
 <li>The waive-off is a separate request; the loan cannot be rejected at this stage.</li>
-<li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page with the
-columns Charge Type, Date, From, To, Amount and Amount to be waived off, and the Waive-off button at the top right.</li>
-<li>The same rule applies here, so Pledge (Lien Marking), Stamp duty and Collateral release (Lien Removal) are waived in full and the other charges by any amount.</li>
+<li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page, with the
+Waive-off button at the top right.</li>
+<li>The Waive-off page should have the same table as the Approvals tab (section 2.1.1.1), with the columns Checkbox, Charges Name, Amount of
+Charges, Waived off Charges, Amount to be waived off and Payable Charges, and the total of each column.</li>
+<li>The table lists all the charges of the loan, for example Processing Fee, Lien Marking, Lien Removal, Stamp Duty, Bounce, Penal, Loan
+Renewal, AMC and Bank Swap charges.</li>
+<li>The same rule applies here, so Lien Marking, Lien Removal and Stamp Duty are waived in full and the other charges by any amount.</li>
+<li>After Treasury approves, the waived amount moves to the Waived off Charges column and the Payable Charges column shows the balance.</li>
 <li>On Waive-off, LMS should show “Are you sure you want to waive off the selected charges?” (buttons No, Don’t Waive Off, Yes, Waive Off and ×).</li>
 </ul>
 <p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off).</p>
 {fig('22_active_menu.png', 'Active loan – ≡ menu with Waive-off')}
-{fig('23_active_waive.png', 'Active loan – Waive-off page')}
+{fig('23_active_waive.png', 'Active loan – Waive-off page with the same table as the Approvals tab')}
 <div class="brd-figs">{fig('24_active_pop.png', 'Active loan – waive-off pop-up', 'sm')}</div>
 <h4>2.2.2 Add a Note</h4>
 {SAME('2.1.1.2')}
