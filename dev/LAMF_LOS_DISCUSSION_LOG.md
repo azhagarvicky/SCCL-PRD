@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 12:58 IST
+**Last Updated:** 25-11-2026 13:58 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -444,6 +444,7 @@
 | DISC-409 | 25-11-2026 | brd-waive-off.html, new-mails/10, communications.html | Day 30 is a reminder only; reject only on the customer's request | Owner: on day 30 tell the customer the application is not submitted but the lien is marked, so please complete the journey – no mention of rejection; a pledged DRAFT is rejected only when the customer asks to remove the lien | BRD 2.1.1.5: OPS maker rejects a pledged DRAFT loan only when the customer asks to remove the lien; day 30 SMS and mail = reminder to complete the journey (not rejected because of it); day 31 OPS mail removed (also from the communication table); 2.1.2.5 and section 7 updated; scenario-wise BRD updated. Mail 10 rewritten (subject “Action Required: Complete Your LAMF Application”, no rejection text; file name kept). Communications row 40 renamed “Application Pending – Lien Marked (Day 30)” with the new SMS draft; Excel export refreshed. Internal alert 21 is no longer used by the BRD. Word files and the entries Excel regenerated. | Implemented |
 | DISC-410 | 25-11-2026 | brd-waive-off.html, internal/IC-21 | Day 31 internal mail kept as a follow-up | Owner: day 31 internal mail – 30 days completed but the journey is not completed and the lien is marked; check with the customer to complete the journey, or the customer has to send a mail to de-pledge; until then the lien stays marked with SCCL | BRD 2.1.1.5 day 31 point restored with this text (alert 21, To be confirmed); communication table row back; 2.1.2.5 and section 7 updated; scenario-wise BRD updated. Internal alert 21 rewritten: subject “30 Days Completed – Journey Not Completed, Lien Marked”, no rejection instruction. Word files regenerated. | Implemented |
 | DISC-411 | 25-11-2026 | new-mails/10_Application_Pending_Lien_Marked.html | Day 30 mail – no “rejection tomorrow” anywhere | Owner: the mail 10 link still shows rejection tomorrow – no need, a DRAFT loan is not rejected until the customer asks to de-pledge | Mail 10 file renamed from 10_Application_Rejection_Tomorrow to 10_Application_Pending_Lien_Marked (content already without rejection since DISC-409); links in the BRD, the new-mails list and the Communications page updated; old file removed. Communications Excel and Word file refreshed. | Implemented |
+| DISC-412 | 25-11-2026 | brd-waive-off.html | S 5 with three Approve options again | Owner: S 5 also needs S 5.1, S 5.2, S 5.3 like S 6.1 – 6.3, updated in 8.1 Summary of scenarios | S 5.1 – 5.3 Approve Without / With Full / With Partial Waive-off and S 5.4 – 5.6 Reject (replaces the single S 5 Approve of DISC-399). 8.1 summary, scenario details, flows and UNO notes updated. 2.1.2.1: waive-off can be selected with Reject and with Approve. 2.1.2.4: without a waive-off (S 5.1, 6.1) only OPS maker and checker approve; with a waive-off (S 5.2, 5.3, 6.2, 6.3) maker, checker and Treasury. Scenario-wise BRD, both Word files and the entries Excel updated. | Implemented |
 
 ---
 
