@@ -232,15 +232,15 @@ accounting entries in UNO for each payment.</li>
 
 <h2>2. Waive-off</h2>
 <ul>
-<li><b>Approvals:</b> every waive-off is raised by the maker, <b>OPS L1</b>, reviewed by the checker, <b>OPS L2 or OPS L3</b>, and finally
-approved by <b>Treasury L1, L2 or L3</b>. This is the same for any sanctioned amount.</li>
-<li><b>Lien Marking, Lien Removal and Stamp Duty</b> can only be waived in full – OPS selects or unselects the charge; a part of the amount
-cannot be waived.</li>
-<li><b>Processing Fee and all the other charges</b> can be waived in full or in part – OPS enters any amount up to the charge.</li>
-<li><b>Processing Fee:</b> the customer sees one <b>Processing Fee*</b> (*inclusive of Lien Marking, Lien Removal and Stamp Duty). LMS should
-show it split into four rows – Processing Fee, Lien Marking, Lien Removal and Stamp Duty – so that OPS can waive each one. LMS first
-deducts Lien Marking (₹450), Lien Removal (₹100) and Stamp Duty (₹200) from the Processing Fee* and shows the balance in the Processing
-Fee row (Processing Fee* − ₹750, + GST).</li>
+<li>Every waive-off is raised by the maker OPS L1, reviewed by the checker OPS L2 or OPS L3, and finally approved by Treasury L1, L2 or L3,
+for any sanctioned amount.</li>
+<li>Lien Marking, Lien Removal and Stamp Duty can only be waived in full, so OPS can only select or unselect these charges and cannot waive a
+part of the amount.</li>
+<li>The Processing Fee and all the other charges can be waived in full or in part, so OPS can enter any amount up to the charge.</li>
+<li>The customer sees one Processing Fee* (*inclusive of Lien Marking, Lien Removal and Stamp Duty), but LMS should show it in four rows
+(Processing Fee, Lien Marking, Lien Removal and Stamp Duty) so that OPS can waive each one.</li>
+<li>LMS first deducts Lien Marking (₹450), Lien Removal (₹100) and Stamp Duty (₹200) from the Processing Fee* and shows the balance plus GST
+in the Processing Fee row.</li>
 </ul>
 <p><b>Who approves</b></p>
 <table class="brd-table"><thead><tr><th>Maker (raises the request)</th><th>Checker (reviews)</th><th>Final approval</th></tr></thead><tbody>
