@@ -501,7 +501,7 @@ an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Pay
 <tr><td>715110</td><td>IGST At Loan-1</td><td>Balance sheet – Liability</td></tr>
 <tr><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>Balance sheet – Asset</td></tr>
 </tbody></table>
-<p>The entries for each scenario are in section 8.2.</p>
+<p>The entries for each scenario are in section 7.2.</p>
 
 <h2>5. De-pledge</h2>
 <ul>
@@ -533,30 +533,16 @@ waive-off).</li>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
 
-<h2>7. LAN Status Changes</h2>
-<ul>
-<li>A DRAFT LAN moves to INACTIVE automatically 30 days after the LAN creation date when the MF units are not pledged. There are no charges,
-OPS does not need to do anything, and the customer receives a communication on the 30th day.</li>
-<li>A DRAFT LAN moves to SUBMITTED automatically when the customer completes the journey.</li>
-<li>A pledged DRAFT LAN moves to REJECTED only when the customer asks to remove the lien and OPS rejects it. If the customer has not
-completed the journey by day 30, the customer gets a reminder to complete it, and on day 31 OPS gets a mail to check with the customer.
-A pledged DRAFT LAN never moves to INACTIVE.</li>
-<li>A SUBMITTED LAN moves to ACCOUNT OPENED when OPS approves the Loan Account Opening, or to REJECTED when OPS rejects the loan.</li>
-<li>An ACCOUNT OPENED LAN moves to ACTIVE when OPS approves the Loan Lodgement, or to REJECTED when OPS rejects the loan.</li>
-<li>An ACTIVE LAN moves to CLOSED on foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
-<li>The pledged units can be de-pledged only when the LAN is REJECTED or CLOSED.</li>
-</ul>
-
-<h2>8. Scenarios</h2>
-<h3>8.1 Summary of scenarios</h3>
+<h2>7. Scenarios</h2>
+<h3>7.1 Summary of scenarios</h3>
 {summary}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
-<h3>8.2 Scenario details – process flow and accounting entries</h3>
+<h3>7.2 Scenario details – process flow and accounting entries</h3>
 {scen}
-<h3>8.3 Charges and amounts</h3>
+<h3>7.3 Charges and amounts</h3>
 {charges}
 
-<h2>9. Open Points</h2>
+<h2>8. Open Points</h2>
 <ul>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
 </ul>
