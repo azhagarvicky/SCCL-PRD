@@ -110,10 +110,15 @@ def _rs(n, dec=False):
 # Charges depend on how far the customer went (Waiver BRD scenarios 2 – 4); amounts include 18% GST.
 # DISC-354: Lien Marking, Lien Removal and Stamp Duty are included in the Processing Fee – one charge only (sample ₹1,499 + GST – sanctioned amount below ₹1.5 lakh, DISC-355)
 # DISC-356: scenario 2 (pledged, no Sanction Letter yet) – Lien Marking + Lien Removal; from the Sanction Letter – Processing Fee* only
-DRAFT_CHARGES = {2: [("Lien Marking Charges", 531), ("Lien Removal Charges", 118)], 3: [("Processing Fee*", 1768.82)], 4: [("Processing Fee*", 1768.82)]}
+# DISC-400: in LMS the Processing Fee* is shown split – Processing Fee (₹1,499 − ₹750 = ₹749 + GST) + Lien Marking + Lien Removal + Stamp Duty
+_SPLIT = [("Processing Fee", 883.82), ("Lien Marking Charges", 531), ("Lien Removal Charges", 118), ("Stamp Duty Charges", 236)]
+DRAFT_CHARGES = {2: [("Lien Marking Charges", 531), ("Lien Removal Charges", 118)], 3: _SPLIT, 4: _SPLIT}
+FX = ' data-fixed="1"'
+FIXED = {"Lien Marking Charges", "Lien Removal Charges", "Stamp Duty Charges", "Pledge", "Stamp duty", "Collateral release"}   # DISC-400: full waive-off only
 
 
-FOOT = "*Inclusive of Lien Marking, Lien Removal and Stamp Duty"   # DISC-356
+FOOT = ("Lien Marking, Lien Removal and Stamp Duty can only be waived in full – select or unselect. Other charges: enter any amount. "
+        "The customer sees one Processing Fee* (inclusive of Lien Marking, Lien Removal and Stamp Duty).")   # DISC-400
 
 
 def _amt(v):
@@ -127,10 +132,9 @@ def draft_approvals(r, tid):
     k = START["draft"] - int(r["LAN"][-2:])
     sc = 2 if k < 4 else 3 if k < 7 else 4
     # DISC-362: maker → checker → Treasury by the sanctioned amount (a draft with no sanctioned amount yet is taken as below ₹5 lakh)
-    big = (_num(r["Sanction Amount"]) or 0) >= 500000
-    mk, ck, tr = ("OPS L2", "OPS L3", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3")   # DISC-373   # DISC-365
+    mk, ck, tr = "OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3"   # DISC-400: same for any sanctioned amount
     # DISC-345: “Waived off Charges” column – what is already waived; Amount of Charges stays the original charge
-    rows = "".join(f'<tr data-name="{n}" data-chg="{a}" data-done="0"><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td>'
+    rows = "".join(f'<tr data-name="{n}" data-chg="{a}" data-done="0"{FX if n in FIXED else ""}><td><input type="checkbox" class="wv-chk" aria-label="Select {n}"></td><td>{n}</td>'
                    f'<td class="num wv-chg">₹{_amt(a)}</td><td class="num wv-done-amt">₹0</td>'
                    f'<td><input class="wv-amt" type="number" min="0" step="0.01" value="0" data-max="{a}" disabled></td>'
                    f'<td class="num wv-pay">₹{_amt(a)}</td></tr>' for n, a in DRAFT_CHARGES[sc])
@@ -143,10 +147,10 @@ def draft_approvals(r, tid):
             '<th>Charges Name</th><th class="num">Amount of Charges</th><th class="num">Waived off Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
             f'<tbody>{rows}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b class="wv-ctot">₹{_amt(total)}</b></td>'
             f'<td class="num"><b class="wv-dtot">₹0</b></td><td><b class="wv-wtot">₹0</b></td><td class="num"><b class="wv-ptot">₹{_amt(total)}</b></td></tr></tfoot></table>'
-            + (f'<p class="wv-hint">{FOOT}</p>' if sc > 2 else '') +
+            + f'<p class="wv-hint">{FOOT}</p>' +
             '<p class="wv-allgone" hidden>All charges have been waived off – nothing is payable.</p>'
             '<p class="wv-type">Type of waive-off: <b>No waive-off</b></p>'
-            f'<p class="wv-role">Maker: <b>{mk}</b> → Checker: <b>{ck}</b> → <b>{tr}</b> (sanctioned amount {"₹5 lakh and above" if big else "below ₹5 lakh"})</p>'
+            f'<p class="wv-role">Maker: <b>{mk}</b> → Checker: <b>{ck}</b> → <b>{tr}</b> (any sanctioned amount)</p>'
             '<label class="wv-lbl">Add a note <span>(required – rejection reason, recorded in the Audit)</span></label>'
             '<textarea class="wv-note" rows="2" placeholder="Add a note"></textarea>'
             '<label class="wv-lbl">Upload a file <span>(required)</span></label>'
@@ -271,7 +275,8 @@ WAIVER_JS = """<script>
     var w = e.target.closest('.wv'); if (!w) return;
     if (e.target.classList.contains('wv-all'))
       w.querySelectorAll('tbody .wv-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked; c.dispatchEvent(new Event('change', { bubbles: true })); });
-    if (e.target.classList.contains('wv-chk')) { var a = e.target.closest('tr').querySelector('.wv-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
+    if (e.target.classList.contains('wv-chk')) { var a = e.target.closest('tr').querySelector('.wv-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0;
+      if (e.target.closest('tr').dataset.fixed) { a.disabled = true; a.value = e.target.checked ? a.dataset.max : 0; } }   /* DISC-400: full waive-off only */
     calc(w);
   });
   document.addEventListener('change', function (e) {     /* show the chosen file name under the upload box */
@@ -387,13 +392,13 @@ WAIVER_JS = """<script>
     if (c.contains('wv-sim')) {          /* the customer pays in the LOS – LMS gets the payment, receipt and UNO entries */
       var pb2 = w.querySelector('.wv-pay-box'), amt = f2(+w.dataset.due), ts = stamp();
       pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
-        'Receipt RCPT/LAMF/2026/11/000149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
+        'Receipt RCPT/LAMF/2026/11/0149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
       e.target.hidden = true; pb2.querySelector('.wv-confirm').hidden = false;
-      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/000149 generated', '-', 'System', '-');
+      audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/0149 generated', '-', 'System', '-');
       var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
       if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
         var tr = document.createElement('tr'); tr.className = 'doc-new';
-        tr.innerHTML = '<td>Charges Payment Receipt</td><td>RCPT/LAMF/2026/11/000149</td><td></td><td>System</td>' +
+        tr.innerHTML = '<td>Charges Payment Receipt</td><td>RCPT/LAMF/2026/11/0149</td><td></td><td>System</td>' +
           '<td><a href="charges-receipt.html" target="_blank" rel="noopener">View</a></td>';
         tr.children[2].textContent = ts; docs.prepend(tr); }
     }
@@ -478,11 +483,10 @@ def active_waive(r):
     Amount, Amount to be waived off); same functionality as the Approvals-tab waive-off – maker (note + file) → checker (note; file
     if changed) → Treasury (approve or decline only). On the Treasury approval the waiver is posted in the SOA; no rejection."""
     amt = _num(r["Sanction Amount"]) or 0
-    big = amt >= 500000
-    mk, ck, tr = ("OPS L2", "OPS L3", "Treasury L2 / L3") if big else ("OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3")   # DISC-373
+    mk, ck, tr = "OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3"   # DISC-400: same for any sanctioned amount
     end = r["End Date"].replace("/", "-")
     rows = [("Processing fee", round(amt * 0.0187)), ("Pledge", 531), ("Stamp duty", 236), ("Collateral release", 118)]
-    body = "".join(f'<tr><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
+    body = "".join(f'<tr{FX if n in FIXED else ""}><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
                    f'<td>-</td><td>-</td><td class="num wa-bal">{_rs(a)}</td><td><input class="wa-amt" type="number" min="0" step="0.01" value="0" '
                    f'data-max="{a}" disabled></td></tr>' for n, a in rows)
     pop = lambda cls, b: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{b}</div></div>'
@@ -494,8 +498,9 @@ def active_waive(r):
             '<div class="wv-head"><span></span><button type="button" class="wv-waive wa-btn" disabled>Waive-off</button></div>'
             '<table class="lms-table wa-table"><thead><tr><th><input type="checkbox" class="wa-all" aria-label="Select all"></th><th>Charge Type</th>'
             '<th>Date</th><th>From</th><th>To</th><th class="num">Amount</th><th>Amount to be waived off</th></tr></thead>'
-            f'<tbody>{body}</tbody></table>'
-            f'<p class="wv-role">Maker: <b>{mk}</b> → Checker: <b>{ck}</b> → <b>{tr}</b> (sanctioned amount {"₹5 lakh and above" if big else "below ₹5 lakh"})</p>'
+            f'<tbody>{body}</tbody></table><p class="wv-hint">Pledge, Stamp duty and Collateral release can only be waived in full – select or unselect. '
+            'Other charges: enter any amount.</p>'
+            f'<p class="wv-role">Maker: <b>{mk}</b> → Checker: <b>{ck}</b> → <b>{tr}</b> (any sanctioned amount)</p>'
             '<label class="wv-lbl">Add a note <span>(required – reason for the waive-off)</span></label>'
             '<textarea class="wv-note wa-note" rows="2" placeholder="Add a note"></textarea>'
             '<label class="wv-lbl">Upload a file <span>(required)</span></label>' + upload("wa-file") + '<p class="wv-err wa-err"></p>'
@@ -554,9 +559,11 @@ WAIVE_ACTIVE_JS = """<script>
     if (e.target.classList.contains('wa-file') || e.target.classList.contains('wa-cfile')) {
       e.target.closest('.wv-drop').nextElementSibling.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : '';
       Q(w, e.target.classList.contains('wa-file') ? '.wa-err' : '.wa-cerr').textContent = ''; return; }
+    var fx = function (c) { var tr = c.closest('tr'), a = tr.querySelector('.wa-amt');   /* DISC-400: full waive-off only */
+      if (tr.dataset.fixed) { a.disabled = true; a.value = c.checked ? a.dataset.max : 0; } };
     if (e.target.classList.contains('wa-all')) w.querySelectorAll('tbody .wa-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked;
-      var a = c.closest('tr').querySelector('.wa-amt'); a.disabled = !c.checked; if (!c.checked) a.value = 0; });
-    if (e.target.classList.contains('wa-chk')) { var a = e.target.closest('tr').querySelector('.wa-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; }
+      var a = c.closest('tr').querySelector('.wa-amt'); a.disabled = !c.checked; if (!c.checked) a.value = 0; fx(c); });
+    if (e.target.classList.contains('wa-chk')) { var a = e.target.closest('tr').querySelector('.wa-amt'); a.disabled = !e.target.checked; if (!e.target.checked) a.value = 0; fx(e.target); }
     calc(w); });
   document.addEventListener('input', function (e) { var w = e.target.closest('.wa'); if (!w) return;
     if (e.target.classList.contains('wa-amt')) calc(w);

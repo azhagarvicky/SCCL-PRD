@@ -737,7 +737,7 @@ DRAFT_REJECTION_COMMS = [   # (copy SMS of row, stage, scenario, mail file, samp
 for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges Payment Received",
   "When the customer pays the charges in the LOS through the payment link after the DRAFT LAN is rejected (payment successful) – the receipt is generated, stored in the LMS Documents tab and attached to the mail. Waiver BRD.",
   "08_Charges_Payment_Received", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{AMOUNT_PAID}}": "1,268.82", "{{TRANSACTION_ID}}": "pay_SCCL7Q2X9K4M1B",
-                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/11/000149"}),
+                                  "{{PAYMENT_DATE}}": "23-11-2026 11:42 AM", "{{RECEIPT_NO}}": "RCPT/LAMF/2026/11/0149"}),
   (None, "Charges Payment Reminder",
   "Once a month after the rejection, until the customer pays the charges through the payment link (partial or no waive-off). The units stay lien-marked until the payment. Waiver BRD.",
   "09_Charges_Payment_Reminder", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{TOTAL_PAYABLE}}": "1,268.82", "{{REJECTION_DATE}}": "23-11-2026"}),
@@ -875,7 +875,7 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              # Decline and Active waive-off alerts (DISC-372)
              "{{LAN Created Date}}": "24-10-2026", "{{Declined By}}": "Treasury L1 (Natarajan K)", "{{Declined Date & Time}}": "23-11-2026 12:10 PM", "{{Decline Remark}}": "Waive-off amount not justified", "{{Waive-off Reason}}": "Customer goodwill – charges waived",
              # Charges Payment Received alert (DISC-351)
-             "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/000149",
+             "{{Amount Paid}}": "1,268.82", "{{Transaction ID}}": "pay_SCCL7Q2X9K4M1B", "{{Payment Date & Time}}": "23-11-2026 11:42 AM", "{{Receipt No}}": "RCPT/LAMF/2026/11/0149",
              # Charges Received – Initiate De-pledge alert (DISC-359)
              "{{Treasury User Name}}": "Natarajan K", "{{Confirmation Date & Time}}": "23-11-2026 03:10 PM"}
 IC_STATUS = r"\b(PENDING DISBURSEMENT|ACCOUNT OPENED|SUBMITTED|REJECTED|ACTIVE|CLOSED|REQUESTED|APPROVED)\b"

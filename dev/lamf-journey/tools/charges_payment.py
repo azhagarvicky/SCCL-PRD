@@ -14,7 +14,7 @@ INCL = "*Inclusive of Lien Marking, Lien Removal and Stamp Duty"   # DISC-356
 TOTAL = sum(a for _, a, _ in CHARGES)
 WAIVED = sum(w for _, _, w in CHARGES)
 PAYABLE = round(TOTAL - WAIVED, 2)
-TXN, RCPT, PAID_ON = "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/11/000149", "23-11-2026 11:42 AM"
+TXN, RCPT, PAID_ON = "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/11/0149", "23-11-2026 11:42 AM"
 
 
 def rs(v):

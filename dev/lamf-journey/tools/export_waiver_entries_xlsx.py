@@ -76,10 +76,10 @@ for el in sec.find_all_next(['h4', 'p', 'table']):
 widths(ws, [10, 14, 10, 40, 13, 12, 12, 12, 20]); ws.freeze_panes = 'A4'
 
 # ---- Sheet 2: the owner's reference format and Sheet 3: account codes (section 4.3)
-s43 = body.find('h3', string=re.compile(r'Accounting entries'))
+s43 = body.find('h2', string=re.compile(r'Accounting Entry'))   # section 4 (DISC-400)
 tables = []
-for el in s43.find_all_next(['h3', 'table']):
-    if el.name == 'h3':
+for el in s43.find_all_next(['h2', 'table']):
+    if el.name == 'h2':
         break
     tables.append(el)
 for name, t in (('Reference format', tables[0]), ('Account codes', tables[1])):
