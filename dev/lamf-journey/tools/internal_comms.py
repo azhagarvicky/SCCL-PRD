@@ -501,11 +501,11 @@ INTERNAL = [('DRAFT→SUBMITTED',
   'Declined | {{LAN}} | Waive-off Request',
   'Waive-off Request Declined',
   '{{To User Name}}',
-  'The waive-off request for {{LAN}} of customer {{Customer Name}} submitted by you on {{Submitted Date & Time}} has been DECLINED by '
+  'The waive-off request for {{LAN}} of customer {{Customer Name}} raised by you on {{Request Date & Time}} has been DECLINED by '
   '{{Declined By}} on {{Declined Date & Time}}. The request is cancelled – nothing is waived and the LAN status is not changed.\n'
   'Type of waive-off requested: {{Waive-off Type}}. Amount requested to be waived off: {{Waived Amount}}.\n'
   'Remark: {{Decline Remark}}\n'
-  'You can submit a new request in LMS if needed.',
+  'You can raise a new request in LMS if needed.',
   [('Any Sanction amount (OPS)',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
