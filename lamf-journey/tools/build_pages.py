@@ -870,7 +870,7 @@ IC_SAMPLE = {"{{LAN}}": "SCCLMF20261100017", "{{Customer Full Name}}": "Azhagars
              # DRAFT Application Rejected alert (DISC-348)
              "{{Rejection Reason}}": "Customer asked for lien removal", "{{Rejection Date & Time}}": "23-11-2026 11:25 AM",
              # Waive-off & Rejection approval alerts (DISC-361)
-             "{{Submitted Date & Time}}": "23-11-2026 11:25 AM", "{{Approval Date & Time}}": "23-11-2026 12:05 PM",
+             "{{Submitted Date & Time}}": "23-11-2026 11:25 AM", "{{Request Date & Time}}": "23-11-2026 11:25 AM", "{{Approval Date & Time}}": "23-11-2026 12:05 PM",
              "{{OPS Maker Name}}": "OPS L1 user", "{{OPS Checker Name}}": "OPS L2 user", "{{Checker Approval Date & Time}}": "23-11-2026 11:45 AM",
              # Decline and Active waive-off alerts (DISC-372)
              "{{LAN Created Date}}": "24-10-2026", "{{Declined By}}": "Treasury L1 (Natarajan K)", "{{Declined Date & Time}}": "23-11-2026 12:10 PM", "{{Decline Remark}}": "Waive-off amount not justified", "{{Waive-off Reason}}": "Customer goodwill – charges waived",
