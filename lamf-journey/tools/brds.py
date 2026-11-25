@@ -59,7 +59,7 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OP
     (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR, SD], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF, LM, LR, SD], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
     (5, "SUBMITTED", "After the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", [PF, LM, LR, SD],
-     "Approve the loan (no waive-off), or reject it with or without waive-off.", _approve_only("ACCOUNT OPENED") + REJ_OUTCOMES),
+     "Approve or reject the loan, with or without waive-off.", _approve("ACCOUNT OPENED") + REJ_OUTCOMES),   # S 5.1 – 5.3 approve again (DISC-412)
     (6, "ACCOUNT OPENED", "After the Loan Account Opening", [PF, LM, LR, SD], "Approve or reject the loan, with or without waive-off.", _approve("ACTIVE") + REJ_OUTCOMES),
     (7, "ACTIVE", "After the Loan Lodgement (loan account active)", ACTIVE_CH, "Waive-off only, from the ≡ menu. The loan can't be rejected at this stage.",
      [("Without waive-off", "Nothing waived. The charges stay in the SOA and are collected before the loan is closed.", "No communication.",
@@ -84,11 +84,7 @@ def _waiver_body():
         if n in (2, 3, 4):
             r = [sub(i + 1, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
             return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{opc(3)}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
-        if n == 5:   # one Approve, three Reject (DISC-399)
-            r5 = [sub(i + 2, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
-            return (f"<tr>{rs(4, lead)}<td class='wo'>Approve</td><td class='wo'>S 5.1 – Approve</td><td class='to'>ACCOUNT OPENED</td>{opc(4)}</tr>"
-                    f"<tr><td rowspan='3' class='wo'>Reject</td>{r5[0]}</tr><tr>{r5[1]}</tr><tr>{r5[2]}</tr>")
-        if n == 6:
+        if n in (5, 6):   # three Approve and three Reject options (DISC-377 / DISC-412)
             a6 = [sub(i + 1, "Approve " + w, "ACCOUNT OPENED" if n == 5 else "ACTIVE") for i, w in enumerate(W)]
             r6 = [sub(i + 4, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
             return (f"<tr>{rs(6, lead)}<td rowspan='3' class='wo'>Approve</td>{a6[0]}{opc(6)}</tr><tr>{a6[1]}</tr><tr>{a6[2]}</tr>"
@@ -106,8 +102,7 @@ def _waiver_body():
     def code(n, o):   # outcome → S code (DISC-370)
         k = "no" if "no waive-off" in o.lower() or o.startswith("Without") else "full" if "full" in o.lower() else "partial" if "partial" in o.lower() else "approve"
         if n in (2, 3, 4): idx = {"no": 1, "full": 2, "partial": 3}[k]
-        elif n == 5: idx = 1 if k == "approve" else {"no": 2, "full": 3, "partial": 4}[k]
-        elif n == 6: idx = {"no": 1, "full": 2, "partial": 3}[k] + (3 if o.startswith("Rejected") else 0)
+        elif n in (5, 6): idx = {"no": 1, "full": 2, "partial": 3}[k] + (3 if o.startswith("Rejected") else 0)
         else: idx = {"no": 1, "full": 2, "partial": 3}[k]
         return f"S {n}.{idx} – "
 
@@ -139,13 +134,13 @@ def _waiver_body():
             nw = [("PF", 749), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 269.82)]   # DISC-400: Processing Fee shown split
             fw, pw = [], [("PF", 325.27), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 193.55)]
             pnote = "example – ₹500 of the Processing Fee waived, ₹1,268.82 paid"
-        k = 2 if n == 5 else 4 if n == 6 else 1
+        k = 4 if n in (5, 6) else 1
         return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays; sample amounts</p>"
                 + uno(f"S {n}.{k} – Reject Without Waive-off", nw)
                 + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw)
                 + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw)
                 + ("<p>Approve ({1}): no entry at this stage – the charges are deducted from the first disbursement and posted in UNO then; a waived "
-                   "amount is never posted.</p>".format(n, "S 5.1" if n == 5 else "S 6.1 – S 6.3") if n in (5, 6) else ""))
+                   "amount is never posted.</p>".format(n, f"S {n}.1 – S {n}.3") if n in (5, 6) else ""))
 
     # Process flow for each sub-scenario (DISC-393) – owner's format: step → step → step
     START = {2: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged"],
@@ -348,16 +343,19 @@ amount to be waived off and the payable amount (buttons No, Yes, submit and ×).
 
 <h4>2.1.2 After Submitted (SUBMITTED, ACCOUNT OPENED)</h4>
 <h5>2.1.2.1 Waive-off Charges</h5>
-<p>Same as section 2.1.1.1 (Processing Fee, Lien Marking, Lien Removal and Stamp Duty). For a SUBMITTED loan, the waive-off can be selected
-only with Reject – not with Approve.</p>
+<p>Same as section 2.1.1.1 (Processing Fee, Lien Marking, Lien Removal and Stamp Duty). The waive-off can be selected with Reject and with
+Approve.</p>
 <h5>2.1.2.2 Add a Note</h5>
 {SAME('2.1.1.2')}
 <h5>2.1.2.3 Upload a File</h5>
 {SAME('2.1.1.3')}
 <h5>2.1.2.4 Loan Approval</h5>
 <ul>
-<li>For a SUBMITTED loan (S 5.1), Approve means the Loan Account Opening and there is no waive-off. Only the OPS maker and the OPS checker approve, without Treasury. The LAN status changes to ACCOUNT OPENED and the full charges are deducted from the first disbursement.</li>
-<li>For an ACCOUNT OPENED loan (S 6.1 – 6.3), Approve means the Loan Lodgement, and OPS maker needs an option to select the waive-off with the approval. With a waive-off, the request follows section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 6.1), only the OPS maker and OPS checker approve, as in S 5.1. The LAN status changes to ACTIVE.<ul><li>With no waive-off, LMS should deduct the full charges from the first disbursement.</li>
+<li>For a SUBMITTED loan (S 5.1 – 5.3), Approve means the Loan Account Opening and the LAN status changes to ACCOUNT OPENED. For an ACCOUNT
+OPENED loan (S 6.1 – 6.3), Approve means the Loan Lodgement and the LAN status changes to ACTIVE.</li>
+<li>OPS maker needs an option to select the waive-off with the approval. With a waive-off (S 5.2, 5.3, 6.2, 6.3), the request follows
+section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 5.1, 6.1), only the OPS maker and the OPS checker approve, without
+Treasury.<ul><li>With no waive-off, LMS should deduct the full charges from the first disbursement.</li>
   <li>With a partial waive-off, LMS should deduct only the balance charges from the first disbursement.</li>
   <li>With a full waive-off, LMS should not deduct any charges from the first disbursement.</li></ul></li>
 <li>The loan continues, so there is no de-pledge and no payment link. The system should send the customer an SMS and mail that the loan account is opened (SUBMITTED) or the loan lodgement is approved (ACCOUNT OPENED). {T(lk('communications.html', 'Loan Lodgement Approval – existing'), 'Loan account opened – to be created')}</li>
@@ -1288,17 +1286,6 @@ def _waiver_scen_body():
                 + ol(approvals("reject", "REJECTED") + PAY(part_paid)) + uno(e_part) + DECLINE)
 
     def approve_subs(n):
-        if n == 5:   # S 5.1 – Approve only, no waive-off (DISC-399)
-            return ("<h4>S 5.1 – Approve</h4>"
-                    + ol(["OPS maker adds the note, uploads the file and clicks <b>Approve</b> (Loan Account Opening). There is no waive-off "
-                          "option with this approval. The LAN status does not change yet.",
-                          f"LMS sends a mail to the OPS checker to log in and approve or reject the request. {PH}",
-                          f"OPS checker verifies the request, adds the note and approves. LMS sends a mail to Treasury. {PH}",
-                          "Treasury adds the note and approves. The LAN status changes to <b>ACCOUNT OPENED</b>. LMS sends a mail to OPS and "
-                          f"Treasury. {PH}",
-                          f"The system sends the customer an SMS and mail – loan account opened. {PH}",
-                          "LMS deducts the full charges (₹1,768.82) from the first disbursement and posts them in UNO then.",
-                          "There is no de-pledge and no payment link – the loan continues."]))
         to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
         cm = "loan account opened" if n == 5 else "loan lodgement approved"
         tail = lambda ded: [f"The system sends the customer an SMS and mail – {cm}. {PH}", ded,
@@ -1392,9 +1379,9 @@ Only the full amount in one payment; partial payment is not allowed.</li>
 {reject_subs(4, 1, False)}
 
 {head(5, "SUBMITTED", "after the E-Mandate (units pledged, Sanction Letter submitted, Loan Agreement e-Signed)", PF_,
-      "Approve (no waive-off), or reject with no, full or partial waive-off.", "ACCOUNT OPENED (approve) or REJECTED (reject)")}
+      "Approve or reject, with no, full or partial waive-off.", "ACCOUNT OPENED (approve) or REJECTED (reject)")}
 {approve_subs(5)}
-{reject_subs(5, 2, False)}
+{reject_subs(5, 4, False)}
 
 {head(6, "ACCOUNT OPENED", "after the Loan Account Opening", PF_, "Approve or reject, with no, full or partial waive-off.", "ACTIVE (approve) or REJECTED (reject)")}
 {approve_subs(6)}
