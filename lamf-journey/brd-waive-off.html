@@ -97,18 +97,25 @@ other charges. LMS should not allow an amount more than the charge.</li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/07_reject_block.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/07_reject_block.png' alt='Maker – Add a note and Upload a file are mandatory' loading='lazy'></a><figcaption>Maker – Add a note and Upload a file are mandatory</figcaption></figure>
 
-<h5>2.1.1.4 Approval of the Rejection &amp; Waive-off</h5>
+<h5>2.1.1.4 Approval of the Rejection Request</h5>
 <ul>
-<li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. LMS should not waive anything or change the LAN status at this step, and should send a mail to the checker. <a href="internal/IC-16.html" target="_blank" rel="noopener">Sample – alert 16</a> <span class="brd-tbc">To be confirmed</span></li>
-<li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and approves or rejects it. On approval, LMS should send a mail to Treasury. <a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></li>
-<li>Treasury (L1, L2 or L3) can only approve or reject the request and cannot change the waive-off. On approval, LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status to REJECTED and send a mail to OPS and Treasury. <a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></li>
-<li>If the checker or Treasury rejects the request, LMS should cancel it, so nothing is waived and the LAN status does not change, and send a mail to the maker, who can raise a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>A DRAFT loan has no Approve option, because the loan itself cannot be approved. The approval in this section is only for the rejection
+request that the maker raises with the waive-off (no, partial or full waive-off), not for the loan.</li>
+<li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. This only raises the rejection request. LMS should
+not waive anything or change the LAN status at this step, and should send a mail to the checker. <a href="internal/IC-16.html" target="_blank" rel="noopener">Sample – alert 16</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and
+approves or declines the request. On approval, LMS should send a mail to Treasury. The LAN status still does not change. <a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline the request, without changing the waive-off. On approval,
+LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status
+from DRAFT to REJECTED and send a mail to OPS and Treasury. <a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>If the checker or Treasury declines the request, LMS should cancel it, so nothing is waived and the LAN stays in DRAFT, and send a mail to
+the maker, who can raise a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>LMS should record every step in the Audit tab.</li>
 </ul>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – can change the waive-off, then approve or reject' loading='lazy'></a><figcaption>Checker – can change the waive-off, then approve or reject</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/05_pending.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_pending.png' alt='Treasury – approve or reject only' loading='lazy'></a><figcaption>Treasury – approve or reject only</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – can change the waive-off, then approve or decline the rejection request' loading='lazy'></a><figcaption>Checker – can change the waive-off, then approve or decline the rejection request</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/05_pending.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_pending.png' alt='Treasury – approve or decline the rejection request only' loading='lazy'></a><figcaption>Treasury – approve or decline the rejection request only</figcaption></figure>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/08_pop_approve.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/08_pop_approve.png' alt='Treasury approval pop-up' loading='lazy'></a><figcaption>Treasury approval pop-up</figcaption></figure></div>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/06_declined.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/06_declined.png' alt='Request rejected by Treasury – cancelled, LAN stays DRAFT' loading='lazy'></a><figcaption>Request rejected by Treasury – cancelled, LAN stays DRAFT</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/06_declined.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/06_declined.png' alt='Rejection request declined by Treasury – cancelled, LAN stays DRAFT' loading='lazy'></a><figcaption>Rejection request declined by Treasury – cancelled, LAN stays DRAFT</figcaption></figure>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/10_audit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/10_audit.png' alt='Audit tab' loading='lazy'></a><figcaption>Audit tab</figcaption></figure>
 
 <h5>2.1.1.5 Loan Rejection</h5>

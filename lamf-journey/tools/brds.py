@@ -309,18 +309,25 @@ other charges. LMS should not allow an amount more than the charge.</li>
 </ul>
 {fig('07_reject_block.png', 'Maker – Add a note and Upload a file are mandatory')}
 
-<h5>2.1.1.4 Approval of the Rejection &amp; Waive-off</h5>
+<h5>2.1.1.4 Approval of the Rejection Request</h5>
 <ul>
-<li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. LMS should not waive anything or change the LAN status at this step, and should send a mail to the checker. {T(IC(16))}</li>
-<li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and approves or rejects it. On approval, LMS should send a mail to Treasury. {T(IC(12))}</li>
-<li>Treasury (L1, L2 or L3) can only approve or reject the request and cannot change the waive-off. On approval, LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status to REJECTED and send a mail to OPS and Treasury. {T(IC(13))}</li>
-<li>If the checker or Treasury rejects the request, LMS should cancel it, so nothing is waived and the LAN status does not change, and send a mail to the maker, who can raise a new request. {T(IC(17))}</li>
+<li>A DRAFT loan has no Approve option, because the loan itself cannot be approved. The approval in this section is only for the rejection
+request that the maker raises with the waive-off (no, partial or full waive-off), not for the loan.</li>
+<li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. This only raises the rejection request. LMS should
+not waive anything or change the LAN status at this step, and should send a mail to the checker. {T(IC(16))}</li>
+<li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and
+approves or declines the request. On approval, LMS should send a mail to Treasury. The LAN status still does not change. {T(IC(12))}</li>
+<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline the request, without changing the waive-off. On approval,
+LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status
+from DRAFT to REJECTED and send a mail to OPS and Treasury. {T(IC(13))}</li>
+<li>If the checker or Treasury declines the request, LMS should cancel it, so nothing is waived and the LAN stays in DRAFT, and send a mail to
+the maker, who can raise a new request. {T(IC(17))}</li>
 <li>LMS should record every step in the Audit tab.</li>
 </ul>
-{fig('05_checker.png', 'Checker – can change the waive-off, then approve or reject')}
-{fig('05_pending.png', 'Treasury – approve or reject only')}
+{fig('05_checker.png', 'Checker – can change the waive-off, then approve or decline the rejection request')}
+{fig('05_pending.png', 'Treasury – approve or decline the rejection request only')}
 <div class="brd-figs">{fig('08_pop_approve.png', 'Treasury approval pop-up', 'sm')}</div>
-{fig('06_declined.png', 'Request rejected by Treasury – cancelled, LAN stays DRAFT')}
+{fig('06_declined.png', 'Rejection request declined by Treasury – cancelled, LAN stays DRAFT')}
 {fig('10_audit.png', 'Audit tab')}
 
 <h5>2.1.1.5 Loan Rejection</h5>
