@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 10:45 IST
+**Last Updated:** 25-11-2026 10:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -436,6 +436,7 @@
 | DISC-401 | 25-11-2026 | brd-waive-off.html | Section 2.1 screenshot replaced | Owner: replace the image in section 2.1 with the attached one (DRAFT LAN header with the Approvals tab selected) | assets/img/brd/waiver/01_tabs.png replaced by the owner's image (converted to PNG). Word file regenerated. | Implemented |
 | DISC-402 | 25-11-2026 | brd-waive-off.html | Purpose rewritten | Owner gave the Purpose points: charges incurred when the customer drops off after pledging (SCCL bears them, no option to repay); OPS reject / approve with waive-off; communication, repayment with receipt and accounting entries covered; SOA update covered; customer pays online, OPS de-pledges after confirmation | Section 1 rewritten from the owner's points in simple sentences (5 points). Word file regenerated. | Implemented |
 | DISC-403 | 25-11-2026 | brd-waive-off.html | Section 2 opening points | Owner: add to section 2 – maker OPS L1 → checker OPS L2 / L3 → final Treasury L1 / L2 / L3; Lien Marking, Lien Removal and Stamp Duty full waive-off only, Processing Fee and the rest any amount; customer sees Processing Fee*, LMS shows four rows | Section 2 now opens with four points (approvals, full-only charges, any-amount charges, Processing Fee split – LMS first deducts ₹450 + ₹100 + ₹200 and shows the balance), followed by the Who approves, Charges and Processing Fee* structure tables. Word file regenerated. | Implemented |
+| DISC-404 | 25-11-2026 | brd-waive-off.html | Section 2 points as plain sentences | Owner: do not split the sentence with “:” – write it as one sentence | The section 2 opening points rewritten as plain full sentences, with no bold labels, colons or dashes (5 points). Word file regenerated. | Implemented |
 
 ---
 
