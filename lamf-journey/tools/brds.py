@@ -220,12 +220,14 @@ def _waiver_body():
     return f"""
 <h2>1. Purpose</h2>
 <ul>
-<li>When a customer pledges the mutual fund units and then does not complete the loan journey, charges are already incurred (lien
-marking, lien removal, stamp duty or processing fee). Today SCCL bears these charges.</li>
+<li>When a customer pledges the mutual fund units and then drops off the journey, charges are already incurred (lien marking, lien
+removal, stamp duty or processing fee). Today SCCL bears these charges, and the customer has no option to pay them.</li>
 <li>OPS needs an option in LMS to reject or approve such a loan and, in the same request, waive these charges fully, partly or not at all.</li>
 <li>The customer needs an option to pay the balance charges online, and OPS needs an option to de-pledge the units after the payment is
 confirmed.</li>
-<li>Every waive-off has to be approved by three users: an OPS maker, an OPS checker and Treasury.</li>
+<li>This BRD also covers the internal and customer communication for each event, the customer payment with the receipt, and the
+accounting entries in UNO for each payment.</li>
+<li>For an ACTIVE loan, it covers the Statement of Account (SOA) update when a charge is waived.</li>
 </ul>
 
 <h2>2. Waive-off</h2>
