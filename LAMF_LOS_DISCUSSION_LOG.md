@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 11:22 IST
+**Last Updated:** 25-11-2026 11:25 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -438,6 +438,7 @@
 | DISC-403 | 25-11-2026 | brd-waive-off.html | Section 2 opening points | Owner: add to section 2 – maker OPS L1 → checker OPS L2 / L3 → final Treasury L1 / L2 / L3; Lien Marking, Lien Removal and Stamp Duty full waive-off only, Processing Fee and the rest any amount; customer sees Processing Fee*, LMS shows four rows | Section 2 now opens with four points (approvals, full-only charges, any-amount charges, Processing Fee split – LMS first deducts ₹450 + ₹100 + ₹200 and shows the balance), followed by the Who approves, Charges and Processing Fee* structure tables. Word file regenerated. | Implemented |
 | DISC-404 | 25-11-2026 | brd-waive-off.html | Section 2 points as plain sentences | Owner: do not split the sentence with “:” – write it as one sentence | The section 2 opening points rewritten as plain full sentences, with no bold labels, colons or dashes (5 points). Word file regenerated. | Implemented |
 | DISC-405 | 25-11-2026 | brd-waive-off.html, internal/IC-12 – 21 | Open points answered; sample templates | Owner: GST on a waived charge is also waived; ACTIVE loan waive-off – no customer communication, internal only; S 6.1 approve without waive-off – OPS maker and checker only (yes); for the templates show the sample template and mark the status To be confirmed | BRD: GST waived with the charge (no credit note; waived GST never posted in UNO); ACTIVE waive-off internal mails only (alerts 18 – 20); S 6.1 OPS maker → checker only. Every [Template – to be added] replaced by a link to the sample (internal alerts 12 – 21, customer mails 06 – 10 with their SMS rows 36 – 40) and the status To be confirmed; communication table column renamed Sample template and status. Open points now: confirm the samples (and DLT for SMS); customer communication for a SUBMITTED approval (loan account opened) to be created. Internal samples 12 – 21 updated: four charge rows (Processing Fee 883.82, Lien Marking 531, Lien Removal 118, Stamp Duty 236) and one recipient set for any sanctioned amount. Word file regenerated. | Implemented |
+| DISC-406 | 25-11-2026 | brd-waive-off.html | Processing Fee example in section 2 | Owner: if the Processing Fee is 1499, LMS shows the Processing Fee after deducting Lien Marking ₹450, Lien Removal ₹100 and Stamp Duty ₹200, balance plus GST in the Processing Fee row | Last section 2 point now ends with the example: Processing Fee* ₹1,499 → Processing Fee row ₹749 plus GST = ₹883.82. Word file regenerated. | Implemented |
 
 ---
 
