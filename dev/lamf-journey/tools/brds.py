@@ -43,7 +43,7 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
      "Right after the rejection", "No entry."),
 ]
 def _approve(to):
-    cm = "SMS and mail – loan account opened." if to == "ACCOUNT OPENED" else "SMS and mail – loan lodgement approved."
+    cm = "No communication." if to == "ACCOUNT OPENED" else "SMS and mail – loan lodgement approved."   # DISC-416
     return [("Approved – no waive-off", f"Loan approved without any waive-off. LAN → {to}. Full charges deducted from the first disbursement.", cm,
              "Not applicable – loan continues.", "Charges posted in UNO at the first disbursement."),
             ("Approved – partial waive-off", f"Loan approved and part of the charges waived. LAN → {to}. Balance charges deducted from the first disbursement.", cm,
@@ -52,7 +52,7 @@ def _approve(to):
              "Not applicable – loan continues.", "Waived amount is not posted.")]
 def _approve_only(to):   # S 5.1 – Approve only, no waive-off with the approval (DISC-399)
     return [("Approved", f"Loan approved (Loan Account Opening), no waive-off. LAN → {to}. Full charges deducted from the first disbursement.",
-             "SMS and mail – loan account opened.", "Not applicable – loan continues.", "Charges posted in UNO at the first disbursement.")]
+             "No communication.", "Not applicable – loan continues.", "Charges posted in UNO at the first disbursement.")]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OPS can do, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action. The LAN moves to INACTIVE after 30 days.", []),
     (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
@@ -175,7 +175,7 @@ def _waiver_body():
         elif o.startswith("Approved"):
             to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
             steps = START[n] + (["OPS maker initiates Approval (no waive-off)", M("Internal mail to OPS checker"), "OPS checker verifies and approves"]
-                                if k == "no" else chain(f"OPS maker initiates Approval with {wt} Waive-off")) + [f"LAN status {to}", C("Customer SMS and mail – " + ("loan account opened" if n == 5 else "loan lodgement approved"))] + (
+                                if k == "no" else chain(f"OPS maker initiates Approval with {wt} Waive-off")) + [f"LAN status {to}"] + ([] if n == 5 else [C("Customer SMS and mail – loan lodgement approved")]) + (
                 ["Full charges deducted from the first disbursement"] if k == "no" else
                 ["Balance charges deducted from the first disbursement"] if k == "partial" else ["Nothing deducted from the first disbursement"])
         else:
@@ -366,10 +366,9 @@ Treasury.<ul><li>With no waive-off, LMS should deduct the full charges from the 
   <li>With a partial waive-off, LMS should deduct only the balance charges from the first disbursement.</li>
   <li>With a full waive-off, LMS should not deduct any charges from the first disbursement.</li></ul></li>
 <li>After the approval the loan continues, so there is no de-pledge and no payment link.</li>
-<li>When an ACCOUNT OPENED loan is approved (Loan Lodgement), the system should send the customer the Loan Lodgement Approval SMS and mail,
-which are already in use today. {lk('communications.html', 'View the Loan Lodgement Approval SMS and mail')}</li>
-<li>When a SUBMITTED loan is approved (Loan Account Opening), the customer gets no SMS or mail today. A new SMS and mail saying that the loan
-account is opened is to be created. <span class="brd-tbc">To be created</span></li>
+<li>The customer gets an SMS and mail only when an ACCOUNT OPENED loan is approved (Loan Lodgement) and the LAN status changes to ACTIVE. The
+system should send the Loan Lodgement Approval SMS and mail, which are already in use today. {lk('communications.html', 'View the Loan Lodgement Approval SMS and mail')}</li>
+<li>When a SUBMITTED loan is approved (Loan Account Opening) and the LAN status changes to ACCOUNT OPENED, the customer gets no SMS or mail.</li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
 <p>Same as section 2.1.1.5, without the day 30 and day 31 mails. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
@@ -495,7 +494,7 @@ waive-off).</li>
 <tr><td>Treasury confirms the payment</td><td>Customer</td><td>SMS and mail with the receipt</td><td>{T(NM('08_Charges_Payment_Received', 38))}</td></tr>
 <tr><td>Not paid – every month</td><td>Customer</td><td>SMS and mail – reminder</td><td>{T(NM('09_Charges_Payment_Reminder', 39))}</td></tr>
 <tr><td>ACCOUNT OPENED loan approved (Loan Lodgement)</td><td>Customer</td><td>SMS and mail – loan lodgement approved</td><td>{lk('communications.html', 'Loan Lodgement Approval')} <span class="brd-tbc">Already in use</span></td></tr>
-<tr><td>SUBMITTED loan approved (Loan Account Opening)</td><td>Customer</td><td>SMS and mail – loan account opened</td><td><span class="brd-tbc">To be created</span></td></tr>
+<tr><td>SUBMITTED loan approved (Loan Account Opening)</td><td>Customer</td><td>No communication</td><td>–</td></tr>
 <tr><td>ACTIVE loan – waive-off request, checker and Treasury approval</td><td>OPS checker, Treasury, OPS</td><td>Internal mail only – no customer communication</td><td>{T(IC(18), IC(19), IC(20))}</td></tr>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
@@ -526,7 +525,6 @@ A pledged DRAFT LAN never moves to INACTIVE.</li>
 <h2>9. Open Points</h2>
 <ul>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
-<li>Customer communication when a SUBMITTED loan is approved (loan account opened) – template to be created.</li>
 </ul>
 """
 
@@ -1299,8 +1297,9 @@ def _waiver_scen_body():
 
     def approve_subs(n):
         to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
-        cm = "loan account opened" if n == 5 else "loan lodgement approved"
-        tail = lambda ded: [f"The system sends the customer an SMS and mail – {cm}. {PH}", ded,
+        first = ("The customer gets no SMS or mail at this stage." if n == 5
+                 else f"The system sends the customer the Loan Lodgement Approval SMS and mail. {PH}")   # DISC-416
+        tail = lambda ded: [first, ded,
                             "There is no de-pledge and no payment link – the loan continues."]
         return (f"<h4>S {n}.1 – Approve Without Waive-off</h4>"
                 + ol(approvals("approve", to) + tail("LMS deducts the full charges (₹1,768.82) from the first disbursement and posts them in UNO then.")) 
