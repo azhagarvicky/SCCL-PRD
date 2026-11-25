@@ -208,7 +208,7 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
      "Sent once a month until the customer pays the charges (Waiver BRD section 9)."),
     # DISC-381 / DISC-409 – day 30 from the LAN creation, units pledged, journey not completed: reminder to complete the journey
     # (no rejection – a pledged DRAFT is rejected only when the customer asks to remove the lien). File name kept so links stay valid.
-    ("10_Application_Rejection_Tomorrow", "Complete Your Application",
+    ("10_Application_Pending_Lien_Marked", "Complete Your Application",
      "Action Required: Complete Your LAMF Application {{LOAN_ID}}",
      "Your Loan Against Mutual Fund application is not complete, and your Mutual Fund units are pledged.",
      ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{JOURNEY_LINK}}"],
