@@ -64,8 +64,8 @@ def inline(p, node, bold=False, italic=False, size=11):
                 inline(p, ch, bold, True, size)
             elif ch.name == 'small':
                 inline(p, ch, bold, italic, size - 1)
-            elif ch.name == 'span' and set(ch.get('class') or []) & {'brd-ph', 'm', 'c'}:
-                k = [c for c in ch.get('class') if c in ('brd-ph', 'm', 'c')][0]
+            elif ch.name == 'span' and set(ch.get('class') or []) & {'brd-ph', 'brd-tbc', 'm', 'c'}:
+                k = [c for c in ch.get('class') if c in ('brd-ph', 'brd-tbc', 'm', 'c')][0]
                 r = p.add_run(norm(ch.get_text())); r.bold = True; r.font.name = FONT; r.font.size = Pt(size)
                 r.font.color.rgb = {'m': RGBColor(0x37, 0x30, 0xA3), 'c': RGBColor(0x06, 0x5F, 0x46)}.get(k, RGBColor(0xB4, 0x53, 0x09))
             elif ch.name == 'br':
