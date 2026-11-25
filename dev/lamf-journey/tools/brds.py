@@ -343,7 +343,7 @@ stays marked with SCCL. {T(IC(21))}</li>
 amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
 <li>After Treasury approves, the customer communication depends on the waive-off type.<ul><li>With no waive-off, the customer gets an SMS and mail with the payment link for the full charges (section 3).</li>
   <li>With a partial waive-off, the customer gets an SMS and mail with the payment link for the balance (section 3).</li>
-  <li>With a full waive-off, the customer gets an SMS and mail that the application is rejected, without a payment link, and OPS can de-pledge straight away (section 5).</li></ul></li>
+  <li>With a full waive-off, the customer gets an SMS and mail that the application is rejected, without a payment link, and OPS can de-pledge straight away (section 4).</li></ul></li>
 </ul>
 <div class="brd-figs">{fig('04_pop_submit.png', 'Reject pop-up showing the waive-off type and amounts', 'sm')}</div>
 {fig('09_rejected.png', 'Approved by the checker and Treasury – waive-off applied, LAN rejected')}
@@ -435,7 +435,8 @@ waived amount is never posted in UNO.</li>
 maker, who can raise a new request from the Waive-off page. {T(IC(17))}</li>
 </ul>
 
-<h2>3. Charges Payment by the Customer</h2>
+<h2>3. Charges Payment, Receipt &amp; Accounting Entry (UNO)</h2>
+<h3>3.1 Charges Payment by the Customer</h3>
 <ul>
 <li>This applies only when some amount is payable after the rejection (no or partial waive-off).</li>
 <li>The customer needs an option to pay through the payment link in the SMS or mail. The link should open the LOS and verify the mobile
@@ -446,7 +447,7 @@ Removal and Stamp Duty). The waived amounts should not be shown.</li>
 <li>After the rejection, paying the charges should be the only action for this application in the LOS. The customer can start a new
 application from the Curated Offers page.</li>
 <li>If the payment fails, nothing changes. There is no update, no communication and no accounting entry, and the customer can pay again.</li>
-<li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 4).</li>
+<li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 3.2).</li>
 <li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. {T(NM('09_Charges_Payment_Reminder', 39))}</li>
 </ul>
 <p><a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
@@ -460,7 +461,7 @@ application from the Curated Offers page.</li>
 {fig('15_los_success.png', 'LOS – payment successful', 'sm')}
 </div>
 
-<h2>4. Payment Receipt &amp; Accounting Entry (UNO)</h2>
+<h3>3.2 Payment Receipt &amp; Accounting Entry (UNO)</h3>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts as 4 digits}}}}, for example RCPT/LAMF/2026/11/0149.</li>
 <li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted; the waived amount and its GST are never
@@ -501,9 +502,9 @@ an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Pay
 <tr><td>715110</td><td>IGST At Loan-1</td><td>Balance sheet – Liability</td></tr>
 <tr><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>Balance sheet – Asset</td></tr>
 </tbody></table>
-<p>The entries for each scenario are in section 7.2.</p>
+<p>The entries for each scenario are in section 6.2.</p>
 
-<h2>5. De-pledge</h2>
+<h2>4. De-pledge</h2>
 <ul>
 <li>LMS should allow the de-pledge only when the LAN is REJECTED and either Treasury has confirmed the payment or nothing is payable (full
 waive-off).</li>
@@ -511,7 +512,7 @@ waive-off).</li>
 <li>OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge.</li>
 </ul>
 
-<h2>6. Communication – Internal and Customer</h2>
+<h2>5. Communication – Internal and Customer</h2>
 <table class="brd-table"><thead><tr><th>When</th><th>To</th><th>Type</th><th>Sample template and status</th></tr></thead><tbody>
 <tr><td>Maker submits a request</td><td>OPS checker (team users in Cc)</td><td>Internal mail</td><td>{T(IC(16))}</td></tr>
 <tr><td>Checker approves</td><td>Treasury</td><td>Internal mail</td><td>{T(IC(12))}</td></tr>
@@ -533,16 +534,16 @@ waive-off).</li>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
 
-<h2>7. Scenarios</h2>
-<h3>7.1 Summary of scenarios</h3>
+<h2>6. Scenarios</h2>
+<h3>6.1 Summary of scenarios</h3>
 {summary}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
-<h3>7.2 Scenario details – process flow and accounting entries</h3>
+<h3>6.2 Scenario details – process flow and accounting entries</h3>
 {scen}
-<h3>7.3 Charges and amounts</h3>
+<h3>6.3 Charges and amounts</h3>
 {charges}
 
-<h2>8. Open Points</h2>
+<h2>7. Open Points</h2>
 <ul>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
 </ul>
