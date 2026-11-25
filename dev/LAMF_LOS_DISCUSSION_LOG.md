@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 13:58 IST
+**Last Updated:** 25-11-2026 14:27 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -445,6 +445,7 @@
 | DISC-410 | 25-11-2026 | brd-waive-off.html, internal/IC-21 | Day 31 internal mail kept as a follow-up | Owner: day 31 internal mail – 30 days completed but the journey is not completed and the lien is marked; check with the customer to complete the journey, or the customer has to send a mail to de-pledge; until then the lien stays marked with SCCL | BRD 2.1.1.5 day 31 point restored with this text (alert 21, To be confirmed); communication table row back; 2.1.2.5 and section 7 updated; scenario-wise BRD updated. Internal alert 21 rewritten: subject “30 Days Completed – Journey Not Completed, Lien Marked”, no rejection instruction. Word files regenerated. | Implemented |
 | DISC-411 | 25-11-2026 | new-mails/10_Application_Pending_Lien_Marked.html | Day 30 mail – no “rejection tomorrow” anywhere | Owner: the mail 10 link still shows rejection tomorrow – no need, a DRAFT loan is not rejected until the customer asks to de-pledge | Mail 10 file renamed from 10_Application_Rejection_Tomorrow to 10_Application_Pending_Lien_Marked (content already without rejection since DISC-409); links in the BRD, the new-mails list and the Communications page updated; old file removed. Communications Excel and Word file refreshed. | Implemented |
 | DISC-412 | 25-11-2026 | brd-waive-off.html | S 5 with three Approve options again | Owner: S 5 also needs S 5.1, S 5.2, S 5.3 like S 6.1 – 6.3, updated in 8.1 Summary of scenarios | S 5.1 – 5.3 Approve Without / With Full / With Partial Waive-off and S 5.4 – 5.6 Reject (replaces the single S 5 Approve of DISC-399). 8.1 summary, scenario details, flows and UNO notes updated. 2.1.2.1: waive-off can be selected with Reject and with Approve. 2.1.2.4: without a waive-off (S 5.1, 6.1) only OPS maker and checker approve; with a waive-off (S 5.2, 5.3, 6.2, 6.3) maker, checker and Treasury. Scenario-wise BRD, both Word files and the entries Excel updated. | Implemented |
+| DISC-413 | 25-11-2026 | brd-waive-off.html | 2.1.1.4 – approval is for the rejection request, not the loan | Owner: a DRAFT LAN has no Approve option; once the maker initiates the rejection with any waive-off type, the checker (and Treasury) approve that request – not the LAN status | 2.1.1.4 renamed “Approval of the Rejection Request”; new first point (DRAFT has no Approve; the approval is only for the rejection request raised with the waive-off); the maker's Reject only raises the request; the checker approves or declines and the LAN status still does not change; Treasury's final approval changes DRAFT to REJECTED; decline keeps the LAN in DRAFT. “Reject” for the request changed to “decline” so it is not confused with the loan rejection; figure captions updated. Word file regenerated. | Implemented |
 
 ---
 
