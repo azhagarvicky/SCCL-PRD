@@ -741,17 +741,17 @@ for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges P
   (None, "Charges Payment Reminder",
   "Once a month after the rejection, until the customer pays the charges through the payment link (partial or no waive-off). The units stay lien-marked until the payment. Waiver BRD.",
   "09_Charges_Payment_Reminder", {"{{LOAN_ID}}": "SCCLMF20261100073", "{{TOTAL_PAYABLE}}": "1,268.82", "{{REJECTION_DATE}}": "23-11-2026"}),
-  (None, "Application Rejection Tomorrow (Day 30)",
-  "On day 30 from the LAN creation, when the units are pledged but the customer has not completed the journey (LAN still in DRAFT) – the application will be rejected the next day. Waiver BRD.",
+  (None, "Application Pending – Lien Marked (Day 30)",
+  "On day 30 from the LAN creation, when the units are pledged but the customer has not completed the journey (LAN still in DRAFT) – a reminder to complete the journey; the application is not rejected. Waiver BRD.",
   "10_Application_Rejection_Tomorrow", {"{{LOAN_ID}}": "SCCLMF20261100073"})]:   # added at the end so the existing row numbers stay
     base = (None, None, None, "SMS, Mail", "SCCL",   # reminder SMS drafted by Claude for approval (DISC-372)
         "Dear {#alp#}, Reminder: charges of Rs. {#alp#} for your rejected LAMF application are pending. Pay here to unpledge your MF units: {#urg#} - Shriram Credit",
         "Dear AZHAGARSAMY, Reminder: charges of Rs. 1,268.82 for your rejected LAMF application are pending. Pay here to unpledge your MF units: https://lamf.shriramcredit.in/user/loans/ - Shriram Credit",
         "SGRCDT-T", "No – to be created", "Required") if stage == "Charges Payment Reminder" else \
         (None, None, None, "SMS, Mail", "SCCL",   # day-30 SMS drafted by Claude for approval (DISC-381)
-        "Dear {#alp#}, Your LAMF application {#alp#} is not complete. It will be rejected tomorrow. Complete it now: {#urg#} - Shriram Credit",
-        "Dear AZHAGARSAMY, Your LAMF application SCCLMF20261100073 is not complete. It will be rejected tomorrow. Complete it now: https://lamf.shriramcredit.in/ - Shriram Credit",
-        "SGRCDT-T", "No – to be created", "Required") if stage == "Application Rejection Tomorrow (Day 30)" else \
+        "Dear {#alp#}, Your LAMF application {#alp#} is not complete and your MF units are pledged. Please complete it here: {#urg#} - Shriram Credit",
+        "Dear AZHAGARSAMY, Your LAMF application SCCLMF20261100073 is not complete and your MF units are pledged. Please complete it here: https://lamf.shriramcredit.in/ - Shriram Credit",
+        "SGRCDT-T", "No – to be created", "Required") if stage == "Application Pending – Lien Marked (Day 30)" else \
         next(r for r in COMMS if r[0] == _src) if _src else (None, None, None, "SMS, Mail", "SCCL",
         # SMS drafted by Claude for approval – to be created and registered (DISC-351)
         "Dear {#alp#}, We have received your payment of Rs. {#alp#} for your LAMF application charges. The receipt is sent to your registered email. Your MF units lien removal will be initiated soon - Shriram Credit",
@@ -763,7 +763,7 @@ for _src, stage, scen, fname, subs in DRAFT_REJECTION_COMMS + [(None, "Charges P
     for k, v in subs.items():
         sample = sample.replace(k, v)
     subj = m[2]
-    COMMS.append((stage, scen, "LOS" if stage in ("Charges Payment Received", "Charges Payment Reminder", "Application Rejection Tomorrow (Day 30)") else "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
+    COMMS.append((stage, scen, "LOS" if stage in ("Charges Payment Received", "Charges Payment Reminder", "Application Pending – Lien Marked (Day 30)") else "LMS") + base[3:10] + (subj, subj.replace("{{LOAN_ID}}", subs["{{LOAN_ID}}"]), body, sample,
                                                        f"No – to be created [[view:new-mails/{fname}.html]]", "Required"))
 assert all(len(r) == len(COMMS_COLS) - 1 for r in COMMS)
 # SMS Status “Not Required” → Mail Status “Not Required” too (DISC-242)

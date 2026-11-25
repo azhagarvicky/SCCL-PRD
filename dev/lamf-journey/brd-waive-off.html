@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=f9074db">
+<link rel="stylesheet" href="assets/lamf.css?v=6c0894a">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -115,10 +115,8 @@ other charges. LMS should not allow an amount more than the charge.</li>
 <ul>
 <li>Today a DRAFT loan cannot be rejected. OPS maker needs a <b>Reject</b> option for a pledged DRAFT loan, because the units can be
 de-pledged only after the LAN is REJECTED. A DRAFT loan has no Approve option.</li>
-<li>OPS maker should reject a pledged DRAFT loan when the customer has not completed the journey within 30 days of the LAN creation date,
-or earlier if the customer asks to remove the lien.</li>
-<li>On day 30 from the LAN creation date, if the LAN is not submitted, the system should send the customer an SMS and mail saying “Your application will be rejected tomorrow. Complete it now.” <a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></li>
-<li>On day 31, LMS should send OPS a mail saying “30 days are completed. Please initiate the rejection.” <a href="internal/IC-21.html" target="_blank" rel="noopener">Sample – alert 21</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>OPS maker should reject a pledged DRAFT loan only when the customer asks to remove the lien.</li>
+<li>On day 30 from the LAN creation date, if the LAN is not submitted, the system should send the customer an SMS and mail saying that the application is not complete and the mutual fund units are pledged, so please complete the journey. The application is not rejected because of this. <a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>On Reject, LMS should show “Are you sure you want to reject the application with the selected waive-off?” with the waive-off type, the
 amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
 <li>After Treasury approves, the customer communication depends on the waive-off type.<ul><li>With no waive-off, the customer gets an SMS and mail with the payment link for the full charges (section 3).</li>
@@ -145,7 +143,7 @@ only with Reject – not with Approve.</p>
 <li>The loan continues, so there is no de-pledge and no payment link. The system should send the customer an SMS and mail that the loan account is opened (SUBMITTED) or the loan lodgement is approved (ACCOUNT OPENED). <a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
-<p>Same as section 2.1.1.5, without the day 30 / day 31 rule. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
+<p>Same as section 2.1.1.5, without the day 30 reminder. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
 OPENED to REJECTED.</p>
 
 <h3>2.2 After LAN Active (ACTIVE)</h3>
@@ -259,8 +257,7 @@ waive-off).</li>
 <tr><td>Checker approves</td><td>Treasury</td><td>Internal mail</td><td><a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Treasury approves</td><td>OPS and Treasury</td><td>Internal mail</td><td><a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Checker or Treasury rejects the request</td><td>OPS maker</td><td>Internal mail</td><td><a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail</td><td><a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Day 31 – pledged DRAFT LAN not submitted</td><td>OPS</td><td>Internal mail</td><td><a href="internal/IC-21.html" target="_blank" rel="noopener">Sample – alert 21</a> <span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail – reminder to complete the journey</td><td><a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Rejected – no or partial waive-off</td><td>Customer</td><td>SMS and mail with the payment link</td><td><a href="new-mails/06_Draft_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 36</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Rejected – full waive-off</td><td>Customer</td><td>SMS and mail, no payment link</td><td><a href="new-mails/07_Draft_Application_Rejected.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 37</a> <span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Customer pays</td><td>Treasury and OPS</td><td>Internal mail</td><td><a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></td></tr>
@@ -277,9 +274,8 @@ waive-off).</li>
 <li>A DRAFT LAN moves to INACTIVE automatically 30 days after the LAN creation date when the MF units are not pledged. There are no charges,
 OPS does not need to do anything, and the customer receives a communication on the 30th day.</li>
 <li>A DRAFT LAN moves to SUBMITTED automatically when the customer completes the journey.</li>
-<li>A DRAFT LAN moves to REJECTED when the MF units are pledged and the customer does not complete the journey. OPS rejects it after 30 days
-from the LAN creation date, or earlier if the customer asks to remove the lien. The customer receives a communication on the 30th day and
-OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE.</li>
+<li>A pledged DRAFT LAN moves to REJECTED only when the customer asks to remove the lien and OPS rejects it. If the customer has not
+completed the journey by day 30, the customer gets a reminder to complete it. A pledged DRAFT LAN never moves to INACTIVE.</li>
 <li>A SUBMITTED LAN moves to ACCOUNT OPENED when OPS approves the Loan Account Opening, or to REJECTED when OPS rejects the loan.</li>
 <li>An ACCOUNT OPENED LAN moves to ACTIVE when OPS approves the Loan Lodgement, or to REJECTED when OPS rejects the loan.</li>
 <li>An ACTIVE LAN moves to CLOSED on foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
@@ -307,7 +303,7 @@ OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE
 <li>Customer communication when a SUBMITTED loan is approved (loan account opened) – template to be created.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=f9074db"></script>
-<script src="assets/colresize.js?v=f9074db"></script>
+<script src="assets/review.js?v=6c0894a"></script>
+<script src="assets/colresize.js?v=6c0894a"></script>
 </body>
 </html>

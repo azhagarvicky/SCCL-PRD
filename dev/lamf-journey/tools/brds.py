@@ -332,10 +332,8 @@ other charges. LMS should not allow an amount more than the charge.</li>
 <ul>
 <li>Today a DRAFT loan cannot be rejected. OPS maker needs a <b>Reject</b> option for a pledged DRAFT loan, because the units can be
 de-pledged only after the LAN is REJECTED. A DRAFT loan has no Approve option.</li>
-<li>OPS maker should reject a pledged DRAFT loan when the customer has not completed the journey within 30 days of the LAN creation date,
-or earlier if the customer asks to remove the lien.</li>
-<li>On day 30 from the LAN creation date, if the LAN is not submitted, the system should send the customer an SMS and mail saying “Your application will be rejected tomorrow. Complete it now.” {T(NM('10_Application_Rejection_Tomorrow', 40))}</li>
-<li>On day 31, LMS should send OPS a mail saying “30 days are completed. Please initiate the rejection.” {T(IC(21))}</li>
+<li>OPS maker should reject a pledged DRAFT loan only when the customer asks to remove the lien.</li>
+<li>On day 30 from the LAN creation date, if the LAN is not submitted, the system should send the customer an SMS and mail saying that the application is not complete and the mutual fund units are pledged, so please complete the journey. The application is not rejected because of this. {T(NM('10_Application_Rejection_Tomorrow', 40))}</li>
 <li>On Reject, LMS should show “Are you sure you want to reject the application with the selected waive-off?” with the waive-off type, the
 amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
 <li>After Treasury approves, the customer communication depends on the waive-off type.<ul><li>With no waive-off, the customer gets an SMS and mail with the payment link for the full charges (section 3).</li>
@@ -362,7 +360,7 @@ only with Reject – not with Approve.</p>
 <li>The loan continues, so there is no de-pledge and no payment link. The system should send the customer an SMS and mail that the loan account is opened (SUBMITTED) or the loan lodgement is approved (ACCOUNT OPENED). {T(lk('communications.html', 'Loan Lodgement Approval – existing'), 'Loan account opened – to be created')}</li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
-<p>Same as section 2.1.1.5, without the day 30 / day 31 rule. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
+<p>Same as section 2.1.1.5, without the day 30 reminder. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
 OPENED to REJECTED.</p>
 
 <h3>2.2 After LAN Active (ACTIVE)</h3>
@@ -476,8 +474,7 @@ waive-off).</li>
 <tr><td>Checker approves</td><td>Treasury</td><td>Internal mail</td><td>{T(IC(12))}</td></tr>
 <tr><td>Treasury approves</td><td>OPS and Treasury</td><td>Internal mail</td><td>{T(IC(13))}</td></tr>
 <tr><td>Checker or Treasury rejects the request</td><td>OPS maker</td><td>Internal mail</td><td>{T(IC(17))}</td></tr>
-<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail</td><td>{T(NM('10_Application_Rejection_Tomorrow', 40))}</td></tr>
-<tr><td>Day 31 – pledged DRAFT LAN not submitted</td><td>OPS</td><td>Internal mail</td><td>{T(IC(21))}</td></tr>
+<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail – reminder to complete the journey</td><td>{T(NM('10_Application_Rejection_Tomorrow', 40))}</td></tr>
 <tr><td>Rejected – no or partial waive-off</td><td>Customer</td><td>SMS and mail with the payment link</td><td>{T(NM('06_Draft_Application_Rejected_Pay_Charges', 36))}</td></tr>
 <tr><td>Rejected – full waive-off</td><td>Customer</td><td>SMS and mail, no payment link</td><td>{T(NM('07_Draft_Application_Rejected', 37))}</td></tr>
 <tr><td>Customer pays</td><td>Treasury and OPS</td><td>Internal mail</td><td>{T(IC(14))}</td></tr>
@@ -494,9 +491,8 @@ waive-off).</li>
 <li>A DRAFT LAN moves to INACTIVE automatically 30 days after the LAN creation date when the MF units are not pledged. There are no charges,
 OPS does not need to do anything, and the customer receives a communication on the 30th day.</li>
 <li>A DRAFT LAN moves to SUBMITTED automatically when the customer completes the journey.</li>
-<li>A DRAFT LAN moves to REJECTED when the MF units are pledged and the customer does not complete the journey. OPS rejects it after 30 days
-from the LAN creation date, or earlier if the customer asks to remove the lien. The customer receives a communication on the 30th day and
-OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE.</li>
+<li>A pledged DRAFT LAN moves to REJECTED only when the customer asks to remove the lien and OPS rejects it. If the customer has not
+completed the journey by day 30, the customer gets a reminder to complete it. A pledged DRAFT LAN never moves to INACTIVE.</li>
 <li>A SUBMITTED LAN moves to ACCOUNT OPENED when OPS approves the Loan Account Opening, or to REJECTED when OPS rejects the loan.</li>
 <li>An ACCOUNT OPENED LAN moves to ACTIVE when OPS approves the Loan Lodgement, or to REJECTED when OPS rejects the loan.</li>
 <li>An ACTIVE LAN moves to CLOSED on foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
@@ -1316,9 +1312,8 @@ def _waiver_scen_body():
                 f"<li><b>LAN status can change to:</b> {to}</li></ul>")
 
     DAY30 = ("<ul><li><b>Day 30</b> from the LAN creation date, if the LAN is not submitted: the system sends the customer an SMS and mail – "
-             f"“Your application will be rejected tomorrow. Complete it now.” {PH}</li>"
-             f"<li><b>Day 31:</b> LMS sends OPS a mail – “30 days are completed. Please initiate the rejection.” {PH}</li>"
-             "<li>OPS maker can also reject earlier if the customer asks to remove the lien.</li></ul>")
+             f"“Your application is not complete and your Mutual Fund units are pledged. Please complete the journey.” {PH}</li>"
+             "<li>The application is not rejected because of this. OPS maker rejects a pledged DRAFT loan only when the customer asks to remove the lien.</li></ul>")
     PF_ = ("Processing Fee ₹883.82 (any amount can be waived), Lien Marking ₹531, Lien Removal ₹118 and Stamp Duty ₹236 (full waive-off only) – "
            "together the Processing Fee* ₹1,499 + GST = ₹1,768.82 the customer sees")
 
