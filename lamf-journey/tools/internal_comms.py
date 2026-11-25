@@ -531,10 +531,10 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   'A waive-off request for the active loan {{LAN}} of customer {{Customer Name}} has been submitted by {{OPS Maker Name}} on '
   '{{Submitted Date & Time}} and is pending your approval as the checker. Type of waive-off: {{Waive-off Type}}.\n'
-  '| Charge Type | Amount | Amount to be Waived Off | Balance\n'
-  '| Processing fee | 2,338.00 | 1,000.00 | 1,338.00\n'
-  '| Pledge | 531.00 | 531.00 | 0.00\n'
-  '| Total | 2,869.00 | 1,531.00 | 1,338.00\n'
+  '| Charges Name | Amount of Charges | Amount to be Waived Off | Payable Charges\n'
+  '| Processing Fee | 883.82 | 300.00 | 583.82\n'
+  '| Stamp Duty Charges | 236.00 | 236.00 | 0.00\n'
+  '| Total | 1,119.82 | 536.00 | 583.82\n'
   'Reason: {{Waive-off Reason}}\n'
   'Please review the request in LMS (LAN → ≡ → Waive-off): approve it (it then goes to Treasury), change the amounts (the note and a file are '
   'required) or decline it (the request is cancelled).',
@@ -561,10 +561,10 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '{{To User Name}}',
   'A waive-off request for the active loan {{LAN}} of customer {{Customer Name}} has been approved by the OPS checker and is pending '
   'your approval. Type of waive-off: {{Waive-off Type}}.\n'
-  '| Charge Type | Amount | Amount to be Waived Off | Balance\n'
-  '| Processing fee | 2,338.00 | 1,000.00 | 1,338.00\n'
-  '| Pledge | 531.00 | 531.00 | 0.00\n'
-  '| Total | 2,869.00 | 1,531.00 | 1,338.00\n'
+  '| Charges Name | Amount of Charges | Amount to be Waived Off | Payable Charges\n'
+  '| Processing Fee | 883.82 | 300.00 | 583.82\n'
+  '| Stamp Duty Charges | 236.00 | 236.00 | 0.00\n'
+  '| Total | 1,119.82 | 536.00 | 583.82\n'
   'Reason: {{Waive-off Reason}}\n'
   'Maker: {{OPS Maker Name}}. Checker: {{OPS Checker Name}} on {{Checker Approval Date & Time}}. Please approve or decline the request in LMS '
   '(LAN → ≡ → Waive-off). On approval, the waiver is posted in the Statement of Account; on decline, the request is cancelled.',

@@ -479,16 +479,16 @@ def active_menu(r):
 
 
 def active_waive(r):
-    """Active LAN Waive-off page (DISC-366 / DISC-367): opened from the ≡ menu; the existing columns (Charge Type, Date, From, To,
-    Amount, Amount to be waived off); same functionality as the Approvals-tab waive-off – maker (note + file) → checker (note; file
+    """Active LAN Waive-off page (DISC-366 / DISC-367): opened from the ≡ menu; the same table as the Approvals tab (DISC-421); same functionality as the Approvals-tab waive-off – maker (note + file) → checker (note; file
     if changed) → Treasury (approve or decline only). On the Treasury approval the waiver is posted in the SOA; no rejection."""
     amt = _num(r["Sanction Amount"]) or 0
     mk, ck, tr = "OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3"   # DISC-400: same for any sanctioned amount
-    end = r["End Date"].replace("/", "-")
-    rows = [("Processing fee", round(amt * 0.0187)), ("Pledge", 531), ("Stamp duty", 236), ("Collateral release", 118)]
-    body = "".join(f'<tr{FX if n in FIXED else ""}><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td><td>{end}</td>'
-                   f'<td>-</td><td>-</td><td class="num wa-bal">{_rs(a)}</td><td><input class="wa-amt" type="number" min="0" step="0.01" value="0" '
-                   f'data-max="{a}" disabled></td></tr>' for n, a in rows)
+    # DISC-421: the same table as the Approvals tab (Charges Name, Amount of Charges, Waived off Charges, Amount to be waived off, Payable)
+    rows = _SPLIT + [("Bounce Charges", 118), ("Annual Maintenance Charges (AMC)", 1178.82)]
+    body = "".join(f'<tr data-done="0"{FX if n in FIXED else ""}><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td>'
+                   f'<td class="num">₹{_amt(a)}</td><td class="num wa-dn">₹0</td><td><input class="wa-amt" type="number" min="0" step="0.01" value="0" '
+                   f'data-max="{a}" disabled></td><td class="num wa-bal">₹{_amt(a)}</td></tr>' for n, a in rows)
+    tot = sum(a for _, a in rows)
     pop = lambda cls, b: f'<div class="wv-pop {cls}" hidden><div class="wv-box"><button type="button" class="wv-x" aria-label="Close">×</button>{b}</div></div>'
     upload = lambda cls: (f'<label class="wv-drop">Drop files here or <u>click</u><input type="file" class="{cls}" hidden></label><p class="wv-fname"></p>')
     return (f'<section id="waive-active-{r["LAN"]}" class="lms-sec lms-lanpage"><div class="lms-lanhead"><a class="lms-back" '
@@ -496,10 +496,11 @@ def active_waive(r):
             f'<div class="wa" data-mk="{mk}" data-ck="{ck}" data-tr="{tr}"><p class="lms-new">Waive-off with maker → checker → Treasury approval '
             '(Waiver BRD) – not in the live LMS yet.</p>'
             '<div class="wv-head"><span></span><button type="button" class="wv-waive wa-btn" disabled>Waive-off</button></div>'
-            '<table class="lms-table wa-table"><thead><tr><th><input type="checkbox" class="wa-all" aria-label="Select all"></th><th>Charge Type</th>'
-            '<th>Date</th><th>From</th><th>To</th><th class="num">Amount</th><th>Amount to be waived off</th></tr></thead>'
-            f'<tbody>{body}</tbody></table><p class="wv-hint">Pledge, Stamp duty and Collateral release can only be waived in full – select or unselect. '
-            'Other charges: enter any amount.</p>'
+            '<table class="lms-table wv-table wa-table"><thead><tr><th><input type="checkbox" class="wa-all" aria-label="Select all"></th><th>Charges Name</th>'
+            '<th class="num">Amount of Charges</th><th class="num">Waived off Charges</th><th>Amount to be waived off</th><th class="num">Payable Charges</th></tr></thead>'
+            f'<tbody>{body}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b>₹{_amt(tot)}</b></td><td class="num"><b class="wa-dtot">₹0</b></td>'
+            f'<td><b class="wa-wtot">₹0</b></td><td class="num"><b class="wa-ptot">₹{_amt(tot)}</b></td></tr></tfoot></table>'
+            f'<p class="wv-hint">{FOOT}</p>'
             f'<p class="wv-role">Maker: <b>{mk}</b> → Checker: <b>{ck}</b> → <b>{tr}</b> (any sanctioned amount)</p>'
             '<label class="wv-lbl">Add a note <span>(required – reason for the waive-off)</span></label>'
             '<textarea class="wv-note wa-note" rows="2" placeholder="Add a note"></textarea>'
@@ -527,7 +528,7 @@ def active_waive(r):
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-a wa-yes-a">Yes</button></div>')
             + pop('wa-pd', '<h3>Are you sure you want to decline? The waive-off request will be cancelled.</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-d wa-yes-d">Yes, decline</button></div>')
-            + '</div><p class="lms-sample">Sample data for the prototype – not real customers. Columns as in the LMS UAT Waive-off page.</p></section>')
+            + '</div><p class="lms-sample">Sample data for the prototype – not real customers. Same table as the Approvals tab (DISC-421).</p></section>')
 
 
 WAIVE_ACTIVE_JS = """<script>
@@ -539,7 +540,10 @@ WAIVE_ACTIVE_JS = """<script>
   var Q = function (w, c) { return w.querySelector(c); };
   function calc(w) { var tw = 0, n = 0, bal = 0;
     w.querySelectorAll('tbody tr').forEach(function (tr) { var a = tr.querySelector('.wa-amt'), mx = +a.dataset.max, v = +a.value || 0;
-      if (v > mx) { a.value = mx; v = mx; } if (v < 0) { a.value = 0; v = 0; } bal += mx; if (tr.querySelector('.wa-chk').checked && v > 0) { tw += v; n++; } });
+      if (v > mx) { a.value = mx; v = mx; } if (v < 0) { a.value = 0; v = 0; } bal += mx; if (tr.querySelector('.wa-chk').checked && v > 0) { tw += v; n++; }
+      tr.querySelector('.wa-bal').textContent = f(mx - v); });   /* DISC-421: same table as the Approvals tab */
+    var dn = 0; w.querySelectorAll('tbody tr').forEach(function (tr) { dn += +tr.dataset.done || 0; });
+    Q(w, '.wa-dtot').textContent = f(dn); Q(w, '.wa-wtot').textContent = f(tw); Q(w, '.wa-ptot').textContent = f(bal - tw);
     Q(w, '.wa-btn').disabled = !n || w.dataset.stage === 'ck' || w.dataset.stage === 'tr';
     var t = !tw ? 'No waive-off' : tw >= bal ? 'Full waive-off' : 'Partial waive-off';
     return { tw: tw, n: n, tp: bal - tw, type: t }; }
@@ -600,9 +604,10 @@ WAIVE_ACTIVE_JS = """<script>
     if (c.contains('wa-app')) { if (!Q(w, '.wa-tnote').value.trim()) { Q(w, '.wa-terr').textContent = 'Please add the note.'; return; } pop(w, '.wa-pa'); }
     if (c.contains('wa-yes-a')) { Q(w, '.wa-pa').hidden = true; var q3 = calc(w);
       w.querySelectorAll('tbody tr').forEach(function (tr) { var ck = tr.querySelector('.wa-chk'), a = tr.querySelector('.wa-amt'), v = +a.value || 0;
-        if (!ck.checked || v <= 0) return; var left = r2(+a.dataset.max - v); a.dataset.max = left; tr.querySelector('.wa-bal').textContent = f(left); });
+        if (!ck.checked || v <= 0) return; var left = r2(+a.dataset.max - v); a.dataset.max = left; tr.querySelector('.wa-bal').textContent = f(left);
+        tr.dataset.done = r2((+tr.dataset.done || 0) + v); tr.querySelector('.wa-dn').textContent = f(tr.dataset.done); });
       reset(w, '<b>Approved by ' + w.dataset.ck + ' (Checker) and ' + w.dataset.tr + ' – ' + f(q3.tw) + ' waived off (' + q3.type.toLowerCase() + ').</b> ' +
-        'The waiver is posted in the Statement of Account with a waiver narration; the Amount column shows the balance. Mail sent: <i>Waive-off Approved</i>.');
+        'The waiver is posted in the Statement of Account with a waiver narration; the Waived off and Payable columns are updated. Mail sent: <i>Waive-off Approved</i>.');
       Q(w, '.wa-done').className = 'wv-done wa-done'; }
   });
 })();
