@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=4379635">
+<link rel="stylesheet" href="assets/lamf.css?v=96049b7">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -66,12 +66,9 @@ ACTIVE loans; LMS needs it for DRAFT loans also.</li>
 <ul>
 <li>LMS should show the Waive-off charges table at the top of the Approvals tab.</li>
 <li>OPS maker needs an option to select single or multiple charges using the checkbox. The checkbox in the header selects all charges.</li>
-<li><b>Lien Marking, Lien Removal and Stamp Duty:</b> select or unselect only. When selected, the full charge is waived (for example, the
-whole ₹531 of Lien Marking); the amount cannot be edited.</li>
-<li><b>Processing Fee and the other charges:</b> OPS maker needs an option to enter the amount to be waived off (for example ₹30 or ₹45 of
-₹100). LMS should not allow an amount more than the charge.</li>
-<li>LMS should show the waive-off type from the amount left to pay: <b>No</b>, <b>Partial</b> or <b>Full</b> waive-off, and the waived and
-payable amounts for each charge and in total.</li>
+<li>Lien Marking, Lien Removal and Stamp Duty can only be selected or unselected. When one is selected, the full charge is waived (for example, the whole ₹531 of Lien Marking), and the amount cannot be edited.</li>
+<li>For the Processing Fee and the other charges, OPS maker needs an option to enter the amount to be waived off (for example ₹30 or ₹45 of ₹100). LMS should not allow an amount more than the charge.</li>
+<li>LMS should show the waive-off type (No, Partial or Full waive-off) from the amount left to pay, and the waived and payable amounts for each charge and in total.</li>
 <li>After the request is approved, LMS should move the waived amount to the Waived off Charges column. A fully waived charge shows Payable
 ₹0 and its checkbox is disabled. When all charges are fully waived, LMS should show “All charges have been waived off – nothing is payable.”</li>
 </ul>
@@ -96,22 +93,17 @@ payable amounts for each charge and in total.</li>
 <h5>2.1.1.3 Upload a File</h5>
 <ul>
 <li>OPS maker and OPS checker need an option to upload a supporting file (PDF, PNG or JPG, up to 5 MB).</li>
-<li><b>Maker:</b> mandatory. <b>Checker:</b> mandatory only if the checker changes the waive-off. <b>Treasury:</b> no file upload.</li>
+<li>The file is mandatory for the maker, and for the checker only if the checker changes the waive-off. Treasury does not upload a file.</li>
 <li>If the maker submits without the note or the file, LMS should show “Please add the note and upload a file.”</li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/07_reject_block.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/07_reject_block.png' alt='Maker – Add a note and Upload a file are mandatory' loading='lazy'></a><figcaption>Maker – Add a note and Upload a file are mandatory</figcaption></figure>
 
 <h5>2.1.1.4 Approval of the Rejection &amp; Waive-off</h5>
 <ul>
-<li><b>Maker (OPS L1):</b> selects the charges, adds the note and the file, and clicks Reject. LMS should not waive anything or change the
-LAN status at this step, and should send a mail to the checker. <a href="internal/IC-16.html" target="_blank" rel="noopener">Sample – alert 16</a> <span class="brd-tbc">To be confirmed</span></li>
-<li><b>Checker (OPS L2 or L3):</b> sees the request (maker, waive-off type, amounts and note), can change the waive-off, and approves or
-rejects. On approval, LMS should send a mail to Treasury. <a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></li>
-<li><b>Treasury (L1, L2 or L3):</b> can only approve or reject; cannot change the waive-off. On approval, LMS should show “This action is
-irreversible. Are you sure you want to proceed?”; on Yes, LMS should apply the waive-off, change the LAN status to REJECTED and send a
-mail to OPS and Treasury. <a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></li>
-<li><b>Rejected by the checker or Treasury:</b> LMS should cancel the request – nothing is waived and the LAN status does not change – and
-send a mail to the maker, who can raise a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. LMS should not waive anything or change the LAN status at this step, and should send a mail to the checker. <a href="internal/IC-16.html" target="_blank" rel="noopener">Sample – alert 16</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and approves or rejects it. On approval, LMS should send a mail to Treasury. <a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>Treasury (L1, L2 or L3) can only approve or reject the request and cannot change the waive-off. On approval, LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status to REJECTED and send a mail to OPS and Treasury. <a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>If the checker or Treasury rejects the request, LMS should cancel it, so nothing is waived and the LAN status does not change, and send a mail to the maker, who can raise a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>LMS should record every step in the Audit tab.</li>
 </ul>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/05_checker.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/05_checker.png' alt='Checker – can change the waive-off, then approve or reject' loading='lazy'></a><figcaption>Checker – can change the waive-off, then approve or reject</figcaption></figure>
@@ -126,16 +118,13 @@ send a mail to the maker, who can raise a new request. <a href="internal/IC-17.h
 de-pledged only after the LAN is REJECTED. A DRAFT loan has no Approve option.</li>
 <li>OPS maker should reject a pledged DRAFT loan when the customer has not completed the journey within 30 days of the LAN creation date,
 or earlier if the customer asks to remove the lien.</li>
-<li><b>Day 30</b> from the LAN creation date, if the LAN is not submitted: the system should send the customer an SMS and mail – “Your
-application will be rejected tomorrow. Complete it now.” <a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></li>
-<li><b>Day 31:</b> LMS should send OPS a mail – “30 days are completed. Please initiate the rejection.” <a href="internal/IC-21.html" target="_blank" rel="noopener">Sample – alert 21</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>On day 30 from the LAN creation date, if the LAN is not submitted, the system should send the customer an SMS and mail saying “Your application will be rejected tomorrow. Complete it now.” <a href="new-mails/10_Application_Rejection_Tomorrow.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 40</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>On day 31, LMS should send OPS a mail saying “30 days are completed. Please initiate the rejection.” <a href="internal/IC-21.html" target="_blank" rel="noopener">Sample – alert 21</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>On Reject, LMS should show “Are you sure you want to reject the application with the selected waive-off?” with the waive-off type, the
 amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
-<li>After Treasury approves, by the waive-off type:
-  <ul><li><b>No waive-off:</b> the customer gets an SMS and mail with the payment link for the full charges (section 3).</li>
-  <li><b>Partial waive-off:</b> the customer gets an SMS and mail with the payment link for the balance (section 3).</li>
-  <li><b>Full waive-off:</b> the customer gets an SMS and mail that the application is rejected, without a payment link; OPS can de-pledge
-  straight away (section 5).</li></ul></li>
+<li>After Treasury approves, the customer communication depends on the waive-off type.<ul><li>With no waive-off, the customer gets an SMS and mail with the payment link for the full charges (section 3).</li>
+  <li>With a partial waive-off, the customer gets an SMS and mail with the payment link for the balance (section 3).</li>
+  <li>With a full waive-off, the customer gets an SMS and mail that the application is rejected, without a payment link, and OPS can de-pledge straight away (section 5).</li></ul></li>
 </ul>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/04_pop_submit.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/04_pop_submit.png' alt='Reject pop-up showing the waive-off type and amounts' loading='lazy'></a><figcaption>Reject pop-up showing the waive-off type and amounts</figcaption></figure></div>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/09_rejected.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/09_rejected.png' alt='Approved by the checker and Treasury – waive-off applied, LAN rejected' loading='lazy'></a><figcaption>Approved by the checker and Treasury – waive-off applied, LAN rejected</figcaption></figure>
@@ -150,16 +139,11 @@ only with Reject – not with Approve.</p>
 <p>Same as section 2.1.1.3.</p>
 <h5>2.1.2.4 Loan Approval</h5>
 <ul>
-<li><b>SUBMITTED loan (S 5.1):</b> Approve means the Loan Account Opening. No waive-off. OPS maker approves and OPS checker approves – no
-Treasury approval. The LAN status changes to ACCOUNT OPENED and the full charges are deducted from the first disbursement.</li>
-<li><b>ACCOUNT OPENED loan (S 6.1 – 6.3):</b> Approve means the Loan Lodgement. OPS maker needs an option to select the waive-off with the
-approval. With a waive-off, the request follows section 2.1.1.4 (maker → checker → Treasury); without a waive-off (S 6.1), only the OPS maker
-and OPS checker approve, as in S 5.1. The LAN status changes to ACTIVE.
-  <ul><li>No waive-off: LMS should deduct the full charges from the first disbursement.</li>
-  <li>Partial waive-off: LMS should deduct only the balance charges from the first disbursement.</li>
-  <li>Full waive-off: LMS should not deduct any charges from the first disbursement.</li></ul></li>
-<li>The loan continues: there is no de-pledge and no payment link. The system should send the customer an SMS and mail – loan account
-opened (SUBMITTED) or loan lodgement approved (ACCOUNT OPENED). <a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></li>
+<li>For a SUBMITTED loan (S 5.1), Approve means the Loan Account Opening and there is no waive-off. Only the OPS maker and the OPS checker approve, without Treasury. The LAN status changes to ACCOUNT OPENED and the full charges are deducted from the first disbursement.</li>
+<li>For an ACCOUNT OPENED loan (S 6.1 – 6.3), Approve means the Loan Lodgement, and OPS maker needs an option to select the waive-off with the approval. With a waive-off, the request follows section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 6.1), only the OPS maker and OPS checker approve, as in S 5.1. The LAN status changes to ACTIVE.<ul><li>With no waive-off, LMS should deduct the full charges from the first disbursement.</li>
+  <li>With a partial waive-off, LMS should deduct only the balance charges from the first disbursement.</li>
+  <li>With a full waive-off, LMS should not deduct any charges from the first disbursement.</li></ul></li>
+<li>The loan continues, so there is no de-pledge and no payment link. The system should send the customer an SMS and mail that the loan account is opened (SUBMITTED) or the loan lodgement is approved (ACCOUNT OPENED). <a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval – existing</a> · Loan account opened – to be created <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
 <p>Same as section 2.1.1.5, without the day 30 / day 31 rule. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
@@ -171,8 +155,7 @@ OPENED to REJECTED.</p>
 <li>The waive-off is a separate request; the loan cannot be rejected at this stage.</li>
 <li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page with the
 columns Charge Type, Date, From, To, Amount and Amount to be waived off, and the Waive-off button at the top right.</li>
-<li>The select-only rule applies here too: Pledge (Lien Marking), Stamp duty and Collateral release (Lien Removal) are waived in full; the
-other charges by any amount.</li>
+<li>The same rule applies here, so Pledge (Lien Marking), Stamp duty and Collateral release (Lien Removal) are waived in full and the other charges by any amount.</li>
 <li>On Waive-off, LMS should show “Are you sure you want to waive off the selected charges?” (buttons No, Don’t Waive Off, Yes, Waive Off and ×).</li>
 </ul>
 <p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off).</p>
@@ -185,7 +168,7 @@ other charges by any amount.</li>
 <p>Same as section 2.1.1.3.</p>
 <h4>2.2.4 Approval</h4>
 <ul>
-<li>The request follows section 2.1.1.4: maker → checker → Treasury, with an internal mail at each step. The customer gets no communication. <a href="internal/IC-18.html" target="_blank" rel="noopener">Sample – alert 18</a> · <a href="internal/IC-19.html" target="_blank" rel="noopener">Sample – alert 19</a> · <a href="internal/IC-20.html" target="_blank" rel="noopener">Sample – alert 20</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>The request follows section 2.1.1.4 (maker, checker and Treasury), with an internal mail at each step. The customer gets no communication. <a href="internal/IC-18.html" target="_blank" rel="noopener">Sample – alert 18</a> · <a href="internal/IC-19.html" target="_blank" rel="noopener">Sample – alert 19</a> · <a href="internal/IC-20.html" target="_blank" rel="noopener">Sample – alert 20</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>After Treasury approves, LMS should post the waived amount in the Statement of Account with a waiver narration, and the Amount column
 should show the balance. The LAN stays ACTIVE. The waived amount is never posted in UNO.</li>
 </ul>
@@ -205,10 +188,9 @@ Removal and Stamp Duty). The waived amounts should not be shown.</li>
 <li>Only the full amount in one payment; partial payment is not allowed.</li>
 <li>After the rejection, paying the charges should be the only action for this application in the LOS. The customer can start a new
 application from the Curated Offers page.</li>
-<li><b>Payment failed:</b> nothing changes – no update, no communication, no accounting entry. The customer can pay again.</li>
-<li><b>Payment successful:</b> the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 4).</li>
-<li><b>Customer does not pay:</b> the system should send a reminder SMS and mail once a month until the customer pays. The units stay
-pledged until then. <a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>If the payment fails, nothing changes. There is no update, no communication and no accounting entry, and the customer can pay again.</li>
+<li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 4).</li>
+<li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. <a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <p><a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
 <div class="brd-figs">
@@ -223,8 +205,7 @@ pledged until then. <a href="new-mails/09_Charges_Payment_Reminder.html" target=
 
 <h2>4. Payment Receipt &amp; Accounting Entry (UNO)</h2>
 <ul>
-<li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. Receipt number:
-RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts as 4 digits}} – for example RCPT/LAMF/2026/11/0149.</li>
+<li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts as 4 digits}}, for example RCPT/LAMF/2026/11/0149.</li>
 <li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted; the waived amount and its GST are never
 posted.</li>
 <li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. <a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></li>
@@ -248,8 +229,7 @@ an SMS and mail with the payment receipt attached. <a href="internal/IC-15.html"
 <tr><td>SJV</td><td>BS_Liability</td><td>715110</td><td>IGST At Loan-1</td><td>05-Nov-2026</td><td></td><td>135</td><td>HLTFC</td><td>Loan Account Number</td></tr>
 </tbody></table>
 <ul>
-<li><b>SBR</b> – bank receipt: the amount received is debited to the bank account. <b>SJV</b> – journal: the charges are credited to
-income and the GST to the IGST liability account.</li>
+<li>SBR is the bank receipt, where the amount received is debited to the bank account. SJV is the journal, where the charges are credited to income and the GST to the IGST liability account.</li>
 <li>For a partial waive-off, only the balance actually paid is posted; the waived part is not posted.</li>
 </ul>
 <p><b>UNO account codes for the charges</b></p>
@@ -295,17 +275,15 @@ waive-off).</li>
 
 <h2>7. LAN Status Changes</h2>
 <ul>
-<li><b>DRAFT → INACTIVE:</b> When the MF units are not pledged, the LAN moves to INACTIVE automatically after 30 days from the LAN
-created date. There are no charges and OPS does not need to do anything. The customer receives a communication on the 30th day.</li>
-<li><b>DRAFT → SUBMITTED:</b> When the customer completes the journey, the LAN status moves to SUBMITTED automatically.</li>
-<li><b>DRAFT → REJECTED:</b> When the MF units are pledged and the customer does not complete the journey, OPS rejects the LAN after 30
-days from the LAN created date (or earlier, if the customer asks to remove the lien). The customer receives a communication on the 30th
-day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE.</li>
-<li><b>SUBMITTED → ACCOUNT OPENED:</b> When OPS approves the Loan Account Opening.</li>
-<li><b>SUBMITTED → REJECTED:</b> When OPS rejects the loan.</li>
-<li><b>ACCOUNT OPENED → ACTIVE:</b> When OPS approves the Loan Lodgement.</li>
-<li><b>ACCOUNT OPENED → REJECTED:</b> When OPS rejects the loan.</li>
-<li><b>ACTIVE → CLOSED:</b> On foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
+<li>A DRAFT LAN moves to INACTIVE automatically 30 days after the LAN creation date when the MF units are not pledged. There are no charges,
+OPS does not need to do anything, and the customer receives a communication on the 30th day.</li>
+<li>A DRAFT LAN moves to SUBMITTED automatically when the customer completes the journey.</li>
+<li>A DRAFT LAN moves to REJECTED when the MF units are pledged and the customer does not complete the journey. OPS rejects it after 30 days
+from the LAN creation date, or earlier if the customer asks to remove the lien. The customer receives a communication on the 30th day and
+OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to INACTIVE.</li>
+<li>A SUBMITTED LAN moves to ACCOUNT OPENED when OPS approves the Loan Account Opening, or to REJECTED when OPS rejects the loan.</li>
+<li>An ACCOUNT OPENED LAN moves to ACTIVE when OPS approves the Loan Lodgement, or to REJECTED when OPS rejects the loan.</li>
+<li>An ACTIVE LAN moves to CLOSED on foreclosure, tenure completion or invocation. Only an ACTIVE LAN can be closed.</li>
 <li>The pledged units can be de-pledged only when the LAN is REJECTED or CLOSED.</li>
 </ul>
 
@@ -330,7 +308,7 @@ day and OPS receives a mail on the 31st day. A pledged DRAFT LAN never moves to 
 <li>Customer communication when a SUBMITTED loan is approved (loan account opened) – template to be created.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=4379635"></script>
-<script src="assets/colresize.js?v=4379635"></script>
+<script src="assets/review.js?v=96049b7"></script>
+<script src="assets/colresize.js?v=96049b7"></script>
 </body>
 </html>
