@@ -226,13 +226,13 @@ def _waiver_body():
     return f"""
 <h2>1. Purpose</h2>
 <ul>
-<li>When a customer pledges the mutual fund units and then drops off the journey, charges are already incurred (lien marking, lien
-removal, stamp duty or processing fee). Today SCCL bears these charges, and the customer has no option to pay them.</li>
+<li>When a customer pledges the mutual fund units and then drops off the journey, charges are already incurred (lien marking, lien removal,
+stamp duty or processing fee). Today SCCL bears these charges, and the customer has no option to pay them.</li>
 <li>OPS needs an option in LMS to reject or approve such a loan and, in the same request, waive these charges fully, partly or not at all.</li>
 <li>The customer needs an option to pay the balance charges online, and OPS needs an option to de-pledge the units after the payment is
 confirmed.</li>
-<li>This BRD also covers the internal and customer communication for each event, the customer payment with the receipt, and the
-accounting entries in UNO for each payment.</li>
+<li>This BRD also covers the internal and customer communication for each event, the customer payment with the receipt, and the accounting
+entries in UNO for each payment.</li>
 <li>For an ACTIVE loan, it covers the Statement of Account (SOA) update when a charge is waived.</li>
 </ul>
 
@@ -243,11 +243,11 @@ for any sanctioned amount.</li>
 <li>Lien Marking, Lien Removal and Stamp Duty can only be waived in full, so OPS can only select or unselect these charges and cannot waive a
 part of the amount.</li>
 <li>The Processing Fee and all the other charges can be waived in full or in part, so OPS can enter any amount up to the charge.</li>
-<li>When a charge is waived, the GST on it is also waived, so no GST credit note is needed.</li>
 <li>The customer sees one Processing Fee* (*inclusive of Lien Marking, Lien Removal and Stamp Duty), but LMS should show it in four rows
 (Processing Fee, Lien Marking, Lien Removal and Stamp Duty) so that OPS can waive each one.</li>
 <li>LMS first deducts Lien Marking (₹450), Lien Removal (₹100) and Stamp Duty (₹200) from the Processing Fee* and shows the balance plus GST
 in the Processing Fee row. For example, if the Processing Fee* is ₹1,499, the Processing Fee row shows ₹749 plus GST, which is ₹883.82.</li>
+<li>The waive-off can occur at two stages, before the LAN status becomes Active and after the LAN status becomes Active.</li>
 </ul>
 <p><b>Who approves</b></p>
 <table class="brd-table"><thead><tr><th>Maker (raises the request)</th><th>Checker (reviews)</th><th>Final approval</th></tr></thead><tbody>
@@ -271,32 +271,31 @@ in the Processing Fee row. For example, if the Processing Fee* is ₹1,499, the 
 
 <h3>2.1 Before LAN Active (DRAFT, SUBMITTED, ACCOUNT OPENED)</h3>
 <ul>
-<li>The waive-off should not be a separate action. The waive-off and the loan rejection (or approval) should go as one request.</li>
-<li>LMS should show the waive-off in the <b>Approvals</b> tab. Today the Approvals tab is available only for SUBMITTED, ACCOUNT OPENED and
-ACTIVE loans; LMS needs it for DRAFT loans also.</li>
+<li>Before the LAN is Active the waive-off should not be a separate action. The waive-off and the loan rejection (or approval) should go as
+one request.</li>
+<li>LMS should show the waive-off in the Approvals tab. Today the Approvals tab is available only for SUBMITTED, ACCOUNT OPENED and ACTIVE
+loans; LMS needs it for DRAFT loans also.</li>
 </ul>
 <p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT loan, Approvals tab).</p>
 {fig('01_tabs.png', 'DRAFT loan – Approvals tab')}
 
 <h4>2.1.1 Before Submitted (DRAFT, units pledged)</h4>
+<p>Before the Submitted stage, the loan application remains in Draft status, but the mutual fund pledge has already been completed.</p>
 <h5>2.1.1.1 Waive-off Charges</h5>
 <ul>
-<li>LMS should show the Waive-off charges table at the top of the Approvals tab.</li>
-<li>OPS maker needs an option to select single or multiple charges using the checkbox. The checkbox in the header selects all charges.</li>
-<li>Lien Marking, Lien Removal and Stamp Duty can only be selected or unselected. When one is selected, the full charge is waived (for example, the whole ₹531 of Lien Marking), and the amount cannot be edited.</li>
-<li>For the Processing Fee and the other charges, OPS maker needs an option to enter the amount to be waived off (for example ₹30 or ₹45 of ₹100). LMS should not allow an amount more than the charge.</li>
-<li>LMS should show the waive-off type (No, Partial or Full waive-off) from the amount left to pay, and the waived and payable amounts for each charge and in total.</li>
-<li>After the request is approved, LMS should move the waived amount to the Waived off Charges column. A fully waived charge shows Payable
-₹0 and its checkbox is disabled. When all charges are fully waived, LMS should show “All charges have been waived off – nothing is payable.”</li>
+<li>OPS maker needs an option to select single or multiple charges using the checkbox.</li>
+<li>The charges of Lien Marking, Lien Removal and Stamp Duty select or unselect only. When selected, the full charge is waived (for example,
+the whole ₹531 of Lien Marking); the amount cannot be edited.</li>
+<li>OPS maker and checker need an option to enter the amount to be waived off (for example ₹30 or ₹45 of ₹100) for the Processing Fee and the
+other charges. LMS should not allow an amount more than the charge.</li>
 </ul>
 <table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
 <tr><td>Checkbox</td><td>Selects a charge. The checkbox in the header selects all charges.</td></tr>
 <tr><td>Charges Name</td><td>S 2: Lien Marking and Lien Removal. S 3 onwards: Processing Fee, Lien Marking, Lien Removal and Stamp Duty.</td></tr>
 <tr><td>Amount of Charges</td><td>The charge including GST. It does not change after a waive-off.</td></tr>
-<tr><td>Waived off Charges</td><td>The amount already waived off. ₹0 until a request is approved.</td></tr>
-<tr><td>Amount to be waived off</td><td>Full charge (fixed) for Lien Marking, Lien Removal and Stamp Duty; the amount entered for the others.</td></tr>
+<tr><td>Waived off Charges</td><td>The amount already waived off. Keep ₹0 until a request is approved by the treasury team.</td></tr>
+<tr><td>Amount to be waived off</td><td>Full charge (fixed) for Lien Marking, Lien Removal and Stamp Duty; the amount entered for rest of all other charges.</td></tr>
 <tr><td>Payable Charges</td><td>Amount of Charges – Waived off Charges – Amount to be waived off.</td></tr>
-<tr><td>Total</td><td>The total of each column.</td></tr>
 </tbody></table>
 {fig('02_table_default.png', 'Waive-off charges (S 3) – nothing selected')}
 {fig('03_table_selected.png', 'Processing Fee selected with ₹500 to waive – Payable ₹1,268.82, Partial waive-off')}
@@ -304,7 +303,7 @@ ACTIVE loans; LMS needs it for DRAFT loans also.</li>
 <h5>2.1.1.2 Add a Note</h5>
 <ul>
 <li>The note should be mandatory for the OPS maker, the OPS checker and Treasury – to submit, approve or reject.</li>
-<li>LMS should save every note in the Audit tab of the LAN with the user name, date and time.</li>
+<li>LMS should save every note in the Audit tab of the LAN with an existing format.</li>
 </ul>
 
 <h5>2.1.1.3 Upload a File</h5>
