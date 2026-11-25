@@ -159,8 +159,25 @@ system should send the Loan Lodgement Approval SMS and mail, which are already i
 <li>When a SUBMITTED loan is approved (Loan Account Opening) and the LAN status changes to ACCOUNT OPENED, the customer gets no SMS or mail.</li>
 </ul>
 <h5>2.1.2.5 Loan Rejection</h5>
-<p>Same as section 2.1.1.5, without the day 30 and day 31 mails. After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT
-OPENED to REJECTED.</p>
+<ul>
+<li>OPS maker needs a Reject option for SUBMITTED and ACCOUNT OPENED loans, with no, partial or full waive-off.</li>
+<li>On Reject, LMS should show “Are you sure you want to reject the application with the selected waive-off?” with the waive-off type, the
+amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
+<li>The rejection request follows the same approval as section 2.1.1.4. The maker raises it, the checker approves or declines it, and
+Treasury gives the final approval. The LAN status does not change until Treasury approves.</li>
+<li>After Treasury approves, LMS should apply the waive-off and change the LAN status from SUBMITTED or ACCOUNT OPENED to REJECTED.</li>
+<li>If the checker or Treasury declines the request, LMS should cancel it, so nothing is waived and the LAN stays in SUBMITTED or ACCOUNT
+OPENED.</li>
+<li>After Treasury approves, the customer communication depends on the waive-off type.<ul>
+  <li>With no waive-off, the customer gets an SMS and mail with the payment link for the full charges (section 3).
+  <a href="mails/28_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – Loan Account Opening / Loan Lodgement Rejection (with payment link)</a> <span class="brd-tbc">To be confirmed</span></li>
+  <li>With a partial waive-off, the customer gets an SMS and mail with the payment link for the balance (section 3).
+  <a href="mails/28_Application_Rejected_Pay_Charges.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – with payment link</a> <span class="brd-tbc">To be confirmed</span></li>
+  <li>With a full waive-off, the customer gets an SMS and mail that the application is rejected, without a payment link, and OPS can de-pledge
+  straight away (section 5). <a href="mails/29_Application_Rejected.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – Loan Account Opening / Loan Lodgement Rejection (without payment link)</a> <span class="brd-tbc">To be confirmed</span></li></ul></li>
+<li>With no or partial waive-off, the units are de-pledged only after the customer pays and Treasury confirms the payment (sections 4 and 5).</li>
+<li>The day 30 and day 31 mails of section 2.1.1.5 do not apply, because the customer has already completed the journey.</li>
+</ul>
 
 <h3>2.2 After LAN Active (ACTIVE)</h3>
 <h4>2.2.1 Waive-off Charges (≡ menu → Waive-off page)</h4>
