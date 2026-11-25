@@ -376,8 +376,12 @@ system should send the Loan Lodgement Approval SMS and mail, which are already i
 checker and Treasury approve it as in section 2.1.1.4.</li>
 <li>After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT OPENED to REJECTED. If the checker or Treasury declines, the
 LAN status does not change.</li>
-<li>The customer gets the rejection SMS and mail as in section 2.1.1.5, with the payment link for no or partial waive-off and without it
-for full waive-off.</li>
+<li>Today, when the loan is rejected, LMS sends the internal mail Loan Account Opening Rejected or Loan Lodgement Rejected ({lk('internal/IC-03.html', 'alert 3')},
+{lk('internal/IC-05.html', 'alert 5')}). This mail should also show the waive-off type and the charges (amount, waived off and payable).
+{T(IC(22), IC(23))}</li>
+<li>Today the customer gets no communication when the loan is rejected at this stage. The new Loan Account Opening / Loan Lodgement Rejection
+SMS and mail on the Customer Communications page should be used, with the payment link for no or partial waive-off and without it for
+full waive-off. {T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail – with payment link'), lk('mails/29_Application_Rejected.html', 'Sample mail – without payment link'), lk('communications.html', 'SMS'))}</li>
 <li>The day 30 and day 31 mails do not apply, because the customer has already completed the journey.</li>
 </ul>
 
@@ -495,6 +499,8 @@ waive-off).</li>
 <tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail – reminder to complete the journey</td><td>{T(NM('10_Application_Pending_Lien_Marked', 40))}</td></tr>
 <tr><td>Day 31 – pledged DRAFT LAN not submitted</td><td>OPS</td><td>Internal mail – check with the customer</td><td>{T(IC(21))}</td></tr>
 <tr><td>Rejected – no or partial waive-off</td><td>Customer</td><td>SMS and mail with the payment link</td><td>{T(NM('06_Draft_Application_Rejected_Pay_Charges', 36))}</td></tr>
+<tr><td>SUBMITTED / ACCOUNT OPENED loan rejected</td><td>OPS (as alerts 3 and 5 today)</td><td>Internal mail with the waive-off type and charges</td><td>{T(IC(22), IC(23))}</td></tr>
+<tr><td>SUBMITTED / ACCOUNT OPENED loan rejected</td><td>Customer</td><td>SMS and mail – with or without the payment link</td><td>{T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail – with link'), lk('mails/29_Application_Rejected.html', 'Sample mail – without link'))}</td></tr>
 <tr><td>Rejected – full waive-off</td><td>Customer</td><td>SMS and mail, no payment link</td><td>{T(NM('07_Draft_Application_Rejected', 37))}</td></tr>
 <tr><td>Customer pays</td><td>Treasury and OPS</td><td>Internal mail</td><td>{T(IC(14))}</td></tr>
 <tr><td>Treasury confirms the payment</td><td>OPS</td><td>Internal mail – initiate de-pledge</td><td>{T(IC(15))}</td></tr>

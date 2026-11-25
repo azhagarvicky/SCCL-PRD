@@ -639,4 +639,64 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'kruthika.s@shriramcredit.in',
      'sachin.patil@shriramcredit.in',
      'sarathananthan.m@shriramcredit.in',
-     'k.natarajan@shriramcredit.in'])])]
+     'k.natarajan@shriramcredit.in'])]),
+ # DISC-420 – Waiver BRD 2.1.2.5: revised version of alert 3 with the waive-off type and the charges – TO BE ADDED. Alert 3 itself is
+ # kept unchanged (as it is today) so the two can be compared; this one replaces it once the Waiver BRD is live.
+ ('SUBMITTED→REJECTED',
+  'NA',
+  'TO BE ADDED (revised alert 3) – Loan Account Opening Approval with the waive-off; Treasury has approved the rejection request',
+  'Rejected Account Opening | {{LAN}} | {{Waive-off Type}}',
+  'Loan Account Opening Rejected – with Waive-off',
+  '{{To User Name}}',
+  '{{LAN}} for customer {{Customer Name}} with a sanction amount of {{Sanction Amount}} has been REJECTED during the Loan Account Opening Approval '
+  'process. Type of waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
+  '| Processing Fee | 883.82 | 500.00 | 383.82\n'
+  '| Lien Marking Charges | 531.00 | 0.00 | 531.00\n'
+  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
+  '| Stamp Duty Charges | 236.00 | 0.00 | 236.00\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
+  'Rejection reason: {{Rejection Reason}}\n'
+  'Maker: {{OPS Maker Name}}; checker: {{OPS Checker Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The '
+  'rejection SMS and mail have been sent to the customer – with the payment link for {{Balance Payable}} (no or partial waive-off) or '
+  'without it (full waive-off). The units will be de-pledged after the customer pays and Treasury confirms the payment, or straight away '
+  'for a full waive-off.',
+  [('Any Sanction amount',
+    ['richajayswal@shriramcredit.in'],
+    ['satyaparida@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])]),
+ # DISC-420 – Waiver BRD 2.1.2.5: revised version of alert 5 with the waive-off type and the charges – TO BE ADDED. Alert 5 itself is
+ # kept unchanged (as it is today) so the two can be compared; this one replaces it once the Waiver BRD is live.
+ ('ACCOUNT OPENED→REJECTED',
+  'NA',
+  'TO BE ADDED (revised alert 5) – Loan Lodgement Approval with the waive-off; Treasury has approved the rejection request',
+  'Rejected Loan Lodgement | {{LAN}} | {{Waive-off Type}}',
+  'Loan Lodgement Rejected – with Waive-off',
+  '{{To User Name}}',
+  '{{LAN}} for customer {{Customer Name}} with a sanction amount of {{Sanction Amount}} has been REJECTED during the Loan Lodgement Approval '
+  'process. Type of waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
+  '| Processing Fee | 883.82 | 500.00 | 383.82\n'
+  '| Lien Marking Charges | 531.00 | 0.00 | 531.00\n'
+  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
+  '| Stamp Duty Charges | 236.00 | 0.00 | 236.00\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
+  'Rejection reason: {{Rejection Reason}}\n'
+  'Maker: {{OPS Maker Name}}; checker: {{OPS Checker Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The '
+  'rejection SMS and mail have been sent to the customer – with the payment link for {{Balance Payable}} (no or partial waive-off) or '
+  'without it (full waive-off). The units will be de-pledged after the customer pays and Treasury confirms the payment, or straight away '
+  'for a full waive-off.',
+  [('Any Sanction amount',
+    ['satyaparida@shriramcredit.in'],
+    ['richajayswal@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])])]
