@@ -206,20 +206,20 @@ NEW_MAILS = [   # (file name, title band, subject, preheader, placeholders, bloc
       para("Once the payment is received, the lien removal of your Mutual Fund units will be initiated.", pad="22px 48px 0 48px"),
       SUPPORT],
      "Sent once a month until the customer pays the charges (Waiver BRD section 9)."),
-    # DISC-381 – day 30 from the LAN creation, units pledged, journey not completed: the application will be rejected tomorrow.
-    ("10_Application_Rejection_Tomorrow", "Complete Your Application Today",
-     "Action Required: Your LAMF Application Will Be Rejected Tomorrow {{LOAN_ID}}",
-     "Your Loan Against Mutual Fund application is not complete. It will be rejected tomorrow.",
+    # DISC-381 / DISC-409 – day 30 from the LAN creation, units pledged, journey not completed: reminder to complete the journey
+    # (no rejection – a pledged DRAFT is rejected only when the customer asks to remove the lien). File name kept so links stay valid.
+    ("10_Application_Rejection_Tomorrow", "Complete Your Application",
+     "Action Required: Complete Your LAMF Application {{LOAN_ID}}",
+     "Your Loan Against Mutual Fund application is not complete, and your Mutual Fund units are pledged.",
      ["{{CUSTOMER_NAME}}", "{{LOAN_ID}}", "{{JOURNEY_LINK}}"],
-     [badge("Your application will be rejected tomorrow", "warn"),
+     [badge("Your application is not complete", "warn"),
       para("Your Loan Against Mutual Fund application (<b>{{LOAN_ID}}</b>) with Shriram Credit Company Limited (SCCL) is not complete. "
            "Your Mutual Fund units are already pledged.", pad="22px 48px 0 48px"),
-      para("If the application is not completed today, it will be rejected tomorrow. After the rejection, the applicable charges have "
-           "to be paid before your units are unpledged."),
+      para("Please complete the remaining steps to get your loan. If you no longer need the loan, contact us to remove the lien on your units."),
       para("Complete your application now:", pad="22px 48px 0 48px"),
       button("Complete Application &rarr;", "{{JOURNEY_LINK}}"),
       SUPPORT],
-     "Sent on day 30 from the LAN creation when the units are pledged and the journey is not completed (Waiver BRD)."),
+     "Sent on day 30 from the LAN creation when the units are pledged and the journey is not completed – a reminder only, no rejection (Waiver BRD)."),
 ]
 
 

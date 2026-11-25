@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 25-11-2026 12:44 IST
+**Last Updated:** 25-11-2026 12:53 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -441,6 +441,7 @@
 | DISC-406 | 25-11-2026 | brd-waive-off.html | Processing Fee example in section 2 | Owner: if the Processing Fee is 1499, LMS shows the Processing Fee after deducting Lien Marking ₹450, Lien Removal ₹100 and Stamp Duty ₹200, balance plus GST in the Processing Fee row | Last section 2 point now ends with the example: Processing Fee* ₹1,499 → Processing Fee row ₹749 plus GST = ₹883.82. Word file regenerated. | Implemented |
 | DISC-407 | 25-11-2026 | brd-waive-off.html | No “label:” sentences in the BRD | Owner: no content written with “:” (for example in 2.1.1.1) | Every point in sections 2 – 7 rewritten as plain sentences without a label and colon (2.1.1.1, 2.1.1.3, 2.1.1.4, 2.1.1.5, 2.1.2.4, 2.2.1, 2.2.4, 3, 4 and the LAN status changes in 7). Checked: no point before section 8 contains a colon. Word file and the entries Excel regenerated. | Implemented |
 | DISC-408 | 25-11-2026 | brd-waive-off.html | Sections 1 – 2.1.1.3 in the owner's words | Owner wrote the text for sections 1 to 2.1.1.3 | Sections 1, 2, 2.1, 2.1.1, 2.1.1.1, 2.1.1.2 and 2.1.1.3 replaced with the owner's text word for word (new: “The waive-off can occur at two stages…”, the 2.1.1 intro line, OPS maker and checker can enter the amount, Waived off Charges ₹0 until approved by the treasury team, note saved in the Audit tab in the existing format). The owner's column list in 2.1.1.1 shown as the Column / What it shows table; the Who approves, Charges and Processing Fee* tables and the screenshots kept. Word file and the entries Excel regenerated. | Implemented |
+| DISC-409 | 25-11-2026 | brd-waive-off.html, new-mails/10, communications.html | Day 30 is a reminder only; reject only on the customer's request | Owner: on day 30 tell the customer the application is not submitted but the lien is marked, so please complete the journey – no mention of rejection; a pledged DRAFT is rejected only when the customer asks to remove the lien | BRD 2.1.1.5: OPS maker rejects a pledged DRAFT loan only when the customer asks to remove the lien; day 30 SMS and mail = reminder to complete the journey (not rejected because of it); day 31 OPS mail removed (also from the communication table); 2.1.2.5 and section 7 updated; scenario-wise BRD updated. Mail 10 rewritten (subject “Action Required: Complete Your LAMF Application”, no rejection text; file name kept). Communications row 40 renamed “Application Pending – Lien Marked (Day 30)” with the new SMS draft; Excel export refreshed. Internal alert 21 is no longer used by the BRD. Word files and the entries Excel regenerated. | Implemented |
 
 ---
 
