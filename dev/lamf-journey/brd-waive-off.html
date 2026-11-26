@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=7976eb6">
+<link rel="stylesheet" href="assets/lamf.css?v=4545f10">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -178,8 +178,7 @@ full waive-off. <a href="mails/28_Application_Rejected_Pay_Charges.html" target=
 <ul>
 <li>Once the LAN is ACTIVE, the waive-off is a standalone request, and the loan cannot be rejected at this stage.</li>
 <li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page.</li>
-<li>The Waive-off page should have only the waive-off table and the Waive-off button at the top right. There is no Add a note or Upload a file
-on this page.</li>
+<li>The Waive-off page should have the waive-off table, Add a note, Upload a file and the Waive-off button at the top right.</li>
 <li>The table is the same as in the Approvals tab (section 2.1.1.1), with the columns Checkbox, Charges Name, Amount of Charges, Waived off
 Charges, Amount to be waived off and Payable Charges, and the total of each column. It lists all the charges of the loan, for example
 Processing Fee, Lien Marking, Lien Removal, Stamp Duty, Bounce, Penal, Loan Renewal, AMC and Bank Swap charges.</li>
@@ -187,27 +186,30 @@ Processing Fee, Lien Marking, Lien Removal, Stamp Duty, Bounce, Penal, Loan Rene
 <li>Only a full or partial waive-off can be raised here. If nothing is selected, it is treated as no waive-off, so the Waive-off button stays
 disabled and no request is raised.</li>
 <li>On Waive-off, LMS should show “Are you sure you want to waive off the selected charges?” (buttons No, Don’t Waive Off, Yes, Waive Off
-and ×). On Yes, the waive-off request goes to the Approvals tab of the LAN for approval.</li>
+and ×). On Yes, the waive-off request goes to the Approvals tab of the LAN for approval, with the maker's note and file.</li>
 </ul>
 <p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off,
 then the Approvals tab).</p>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/22_active_menu.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/22_active_menu.png' alt='Active loan – ≡ menu with Waive-off' loading='lazy'></a><figcaption>Active loan – ≡ menu with Waive-off</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/23_active_waive.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/23_active_waive.png' alt='Active loan – Waive-off page with only the waive-off table and the Waive-off button' loading='lazy'></a><figcaption>Active loan – Waive-off page with only the waive-off table and the Waive-off button</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/23_active_waive.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/23_active_waive.png' alt='Active loan – Waive-off page with the waive-off table, Add a note, Upload a file and the Waive-off button' loading='lazy'></a><figcaption>Active loan – Waive-off page with the waive-off table, Add a note, Upload a file and the Waive-off button</figcaption></figure>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/24_active_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/24_active_pop.png' alt='Active loan – waive-off pop-up' loading='lazy'></a><figcaption>Active loan – waive-off pop-up</figcaption></figure></div>
 <h4>2.2.2 Add a Note</h4>
 <ul>
-<li>The maker does not add a note on the Waive-off page.</li>
-<li>The checker and Treasury add the note in the Approvals tab when they approve or decline the request, and the note is mandatory for both.
-LMS should save every note in the Audit tab of the LAN.</li>
+<li>The note is mandatory for the maker, the checker and Treasury, as in section 2.1.1.2.</li>
+<li>The maker adds the note on the Waive-off page. The checker and Treasury add their note in the Approvals tab when they approve or decline
+the request.</li>
+<li>LMS should save every note in the Audit tab of the LAN.</li>
 </ul>
 <h4>2.2.3 Upload a File</h4>
 <ul>
-<li>There is no file upload for the standalone waive-off request.</li>
+<li>The maker needs an option to upload a supporting file (PDF, PNG or JPG, up to 5 MB) on the Waive-off page, and the file is mandatory.</li>
+<li>If the maker clicks Waive-off without the note or the file, LMS should show “Please add the note and upload a file.”</li>
+<li>The checker and Treasury only approve or decline the request in the Approvals tab, so they do not upload a file.</li>
 </ul>
 <h4>2.2.4 Approval</h4>
 <ul>
-<li>The waive-off request is shown in the Approvals tab of the LAN with the maker, the waive-off type and the selected charges (amount, amount
-to be waived off and payable).</li>
+<li>The waive-off request is shown in the Approvals tab of the LAN with the maker, the maker's note and file, the waive-off type and the
+selected charges (amount, amount to be waived off and payable).</li>
 <li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
 <li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note. On approval, LMS should show “This action
 is irreversible. Are you sure you want to proceed?”.</li>
@@ -347,7 +349,7 @@ waive-off).</li>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=7976eb6"></script>
-<script src="assets/colresize.js?v=7976eb6"></script>
+<script src="assets/review.js?v=4545f10"></script>
+<script src="assets/colresize.js?v=4545f10"></script>
 </body>
 </html>

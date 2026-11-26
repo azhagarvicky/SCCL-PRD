@@ -535,6 +535,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Processing Fee | 883.82 | 300.00 | 583.82\n'
   '| Stamp Duty Charges | 236.00 | 236.00 | 0.00\n'
   '| Total | 1,119.82 | 536.00 | 583.82\n'
+  'Reason: {{Waive-off Reason}}\n'
   'Please review the request in LMS (Approvals tab of the LAN) and approve it with a note (it then goes to Treasury) or decline it with a '
   'note (the request is cancelled).',
   [('Any Sanction amount (OPS)',
@@ -564,6 +565,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Processing Fee | 883.82 | 300.00 | 583.82\n'
   '| Stamp Duty Charges | 236.00 | 236.00 | 0.00\n'
   '| Total | 1,119.82 | 536.00 | 583.82\n'
+  'Reason: {{Waive-off Reason}}\n'
   'Maker: {{OPS Maker Name}}. Checker: {{OPS Checker Name}} on {{Checker Approval Date & Time}}. Please approve or decline the request in LMS '
   '(Approvals tab of the LAN). On approval, the waiver is posted in the Statement of Account; on decline, the request is cancelled.',
   [('Any Sanction amount (Treasury L1 / L2 / L3)',

@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 08:03 IST
+**Last Updated:** 26-11-2026 08:13 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -463,6 +463,7 @@
 | DISC-428 | 26-11-2026 | brd-waive-off.html | Section 5 Communication table restructured | Owner: section 5 with the columns Scenario, Internal or External, Email or SMS, Sample template link and Status | Section 5 table now has 5 columns (Scenario – with the recipient, Internal / External, Email / SMS, Sample template, Status) and 22 rows in the flow order: rejection request approvals, decline, day 30 / day 31, DRAFT and SUBMITTED / ACCOUNT OPENED rejection mails (with / without the payment link), payment received, Treasury confirmation, receipt, monthly reminder, approvals, ACTIVE waive-off mails; statuses To be confirmed / Already in use / No communication. The DLT note line kept under the table. Word file regenerated. | Implemented |
 | DISC-429 | 26-11-2026 | brd-waive-off.html | Section 5 column titles | Owner: say Customer instead of External and change the title; change the Email / SMS title too | Columns renamed “Internal / Customer” and “Communication Type”; “External” → “Customer” in all 10 customer rows. Word file regenerated. | Implemented |
 | DISC-430 | 26-11-2026 | brd-waive-off.html | Section 5 column renamed | Owner: change the heading Internal / Customer | Column heading “Internal / Customer” → “Recipient” (values Internal / Customer kept). Word file regenerated. | Implemented |
+| DISC-431 | 26-11-2026 | brd-waive-off.html, lms.html | ACTIVE Waive-off page – Add a note and Upload a file back | Owner: the separate ACTIVE Waive-off page needs Add a note and Upload a file (said wrongly before) – change it everywhere | Corrects DISC-422: the Waive-off page = table + Add a note + Upload a file (both mandatory for the maker, “Please add the note and upload a file.”) + Waive-off button; the request goes to the Approvals tab with the maker's note and file; the checker and Treasury add their note there (no file). BRD 2.2.1 – 2.2.4, screenshots 23 / 24 / 25, alerts 18 / 19 (Reason line back), scenario-wise S 7.2 updated. Prototype tested (blocked without note / file; note and file shown in the Approvals tab; reset after approval). Word files regenerated. | Implemented |
 
 ---
 
