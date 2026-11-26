@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 00:11 IST
+**Last Updated:** 26-11-2026 07:43 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -457,6 +457,7 @@
 | DISC-422 | 25-11-2026 | brd-waive-off.html, lms.html | ACTIVE waive-off – page with table and button only; approval in the Approvals tab | Owner: the Waive-off page has only the waive-off table and the CTA – no Add a note or Upload a file; after initiating, the request goes to the Approvals tab where the checker and Treasury approve or reject the standalone request; only full and partial waive-off; nothing selected = no waive-off | BRD 2.2.1 – 2.2.5 rewritten (page = table + Waive-off button; full / partial only, nothing selected = button disabled, no request; request goes to the Approvals tab; note only by the checker and Treasury there, mandatory; no file upload; approval and decline in the Approvals tab; SOA and table updated after Treasury approval). Prototype: Waive-off page without note / file / approval boxes; new Approvals tab on ACTIVE LANs with the request (maker, type, selected charges), checker and Treasury approve / decline with a note; tested end to end. New screenshot 25 (Approvals tab); 23 / 24 regenerated. Alerts 18 / 19 point to the Approvals tab (no maker reason, no amount change). Scenario-wise S 7.2 updated. Word files regenerated. | Implemented |
 | DISC-423 | 25-11-2026 | brd-waive-off.html | LAN Status Changes section removed | Owner: section 7 LAN Status Changes is not needed | Section 7 removed; Scenarios is now section 7 (7.1 – 7.3) and Open Points section 8; the section 4 reference updated to 7.2. Word file and the entries Excel regenerated. | Implemented |
 | DISC-424 | 25-11-2026 | brd-waive-off.html | Sections 3 and 4 merged | Owner: 3 and 4 can be merged | New section 3 “Charges Payment, Receipt & Accounting Entry (UNO)” with 3.1 Charges Payment by the Customer and 3.2 Payment Receipt & Accounting Entry (UNO); De-pledge → 4, Communication → 5, Scenarios → 6 (6.1 – 6.3), Open Points → 7; cross-references updated. Word file and the entries Excel regenerated. | Implemented |
+| DISC-425 | 26-11-2026 | charges-receipt.html, exports/Payment_Receipt_Sample.pdf | Customer payment receipt with disclaimer | Owner: create the actual receipt with a disclaimer to send to the customer | Receipt rebuilt: SCCL registered office, CIN, RBI registration, GSTIN placeholder; Payment Successful; receipt details (Receipt No., date and time, customer AZHAGARSAMY, LAN, masked mobile, product); payment details (mode, transaction ID, status, amount, purpose); Processing Fee* with taxable value + IGST 18% (customer view – no waived amount); amount in words (Indian numbering); lien removal message; 7-point disclaimer (computer-generated, charges only, GST included, not refundable except duplicate / excess, subject to realisation, discrepancy within 7 days to lassupport@, grievance mail); Download / Print button, one A4 page. Sample PDF exported; BRD screenshot 16 regenerated; Word file regenerated. GSTIN to be added. | Implemented |
 
 ---
 
