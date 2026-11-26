@@ -500,15 +500,18 @@ received, and needs an option in the Approvals tab to <b>Approve</b> the payment
 <li>When Treasury approves, LMS reduces the balance payable by the amount paid. If it is ₹0, LMS enables the
 <b>Initiate De-pledge</b> CTA, sends OPS an event mail, Cc Treasury – “Charges Received – Initiate De-pledge” – and the customer gets an
 SMS and mail with the payment receipt. {T(IC(15), NM('08_Charges_Payment_Received', 38))}</li>
-<li>If the balance payable is not ₹0 after the approval, more charges were added after the payment link was sent (for example, in
-S 2 the customer generated the Sanction Letter in the meantime, so the Processing Fee was added). The Initiate De-pledge CTA stays disabled.
-LMS sends OPS an event mail, Cc Treasury, that the customer paid the amount but additional charges were added, so the balance is still
-payable. The customer gets the receipt for the amount paid and an SMS and mail with a new payment link for the balance. When the balance is
-paid and approved, it becomes ₹0 and the de-pledge is enabled. <span class="brd-tbc">To be confirmed</span></li>
-<li>If Treasury rejects the payment because it is not received, the balance payable does not change and the Initiate De-pledge CTA stays disabled. LMS sends OPS
-an event mail, Cc Treasury, that the payment is not received. The UNO entry already posted for this payment has to be reversed and the
-receipt marked cancelled. The customer is told that the payment is not received and can pay again with the same link.
-<span class="brd-tbc">To be confirmed</span></li>
+<li>If the balance payable is not ₹0 after the approval, more charges were added after the payment link was sent (for example, in S 2 the
+customer generated the Sanction Letter in the meantime, so the Processing Fee was added). The Initiate De-pledge CTA stays disabled, and LMS
+sends OPS an event mail, Cc Treasury, that the customer paid the amount but additional charges were added. The customer gets the receipt
+for the amount paid and, automatically, an SMS and mail with a new payment link for the balance. The previous payment link stops working, and
+only the new link works. The call centre team contacts the customer to inform them. When the balance is paid and approved, it becomes ₹0
+and the de-pledge is enabled. <span class="brd-ph">[Template – to be added]</span></li>
+<li>If Treasury rejects the payment, the balance payable does not change and the Initiate De-pledge CTA stays disabled. LMS sends an
+internal event mail to OPS, Cc Treasury, that the payment is not received as per the entries.</li>
+<li>The customer gets an SMS and mail that the payment is not received, and that if the amount was debited, it will be returned
+automatically by the payment gateway. The customer can pay again with the same link. <span class="brd-ph">[Template – to be added]</span></li>
+<li>The same customer message is sent even if the payment was received and Treasury still rejects it. Such a case is handled by Treasury in
+the backend.</li>
 <li>This applies to every payment in every scenario.</li>
 </ul>
 <p><a href="charges-receipt.html" target="_blank" rel="noopener">Open the payment receipt</a> (the receipt sent to the customer, with the
@@ -593,9 +596,7 @@ payment. With a full waive-off, nothing is payable, so the CTA is enabled straig
 <h2>7. Open Points</h2>
 <ul>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
-<li>Payment approved but balance payable not ₹0 (additional charges added): new payment link sent to the customer automatically, or OPS
-contacts the customer first?</li>
-<li>Payment rejected by Treasury: reversal of the UNO entry, cancelling the receipt, and the customer message – to be confirmed.</li>
+<li>New customer templates for “new payment link for the balance” and “payment not received” – to be created.</li>
 </ul>
 """
 
@@ -1457,9 +1458,12 @@ SOA.</li>
 <li>After every payment (the UNO entry is posted first, automatically), Treasury cross-checks that it is received and approves or rejects it. LMS
 enables the Initiate De-pledge CTA only when the balance payable is ₹0 (after Treasury approves, or straight away after a full waive-off).
 OPS maker initiates the de-pledge and OPS checker approves it.</li>
-<li>If more charges were added after the payment link was sent, the balance is not ₹0 after the approval: the de-pledge stays disabled,
-OPS gets a mail and the customer gets a new payment link for the balance. If Treasury rejects the payment, the UNO entry is reversed, the
-receipt is cancelled and the customer can pay again. <span class="brd-tbc">To be confirmed</span></li>
+<li>If more charges were added after the payment link was sent, the balance is not ₹0 after the approval. The de-pledge stays disabled,
+OPS gets a mail, and the customer automatically gets a new payment link for the balance (the old link stops working). The call centre
+team informs the customer.</li>
+<li>If Treasury rejects the payment, the balance and the de-pledge do not change. OPS gets an internal mail that the payment is not
+received as per the entries, and the customer is told that the payment is not received and that any debited amount will be returned by the
+payment gateway. If the payment was actually received, Treasury handles it in the backend.</li>
 </ul>
 <p>Each payable case links its own LOS payment journey and receipt (the amounts differ). S 4, S 5 and S 6 have the same amounts as S 3, so
 they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-waive-off.html">main Waiver BRD</a>.</p>
