@@ -44,15 +44,15 @@ REJ_OUTCOMES = [   # (outcome, what happens, customer communication, de-pledge, 
 ]
 def _approve(to):
     cm = "No communication." if to == "ACCOUNT OPENED" else "SMS and mail – loan lodgement approved."   # DISC-416
-    return [("Approved – no waive-off", f"Loan approved without any waive-off. LAN → {to}. Full charges deducted from the first disbursement.", cm,
-             "Not applicable – loan continues.", "Charges posted in UNO at the first disbursement."),
-            ("Approved – partial waive-off", f"Loan approved and part of the charges waived. LAN → {to}. Balance charges deducted from the first disbursement.", cm,
+    return [("Approved – no waive-off", f"Loan approved without any waive-off. LAN → {to}. LMS shows the full charges; posted in UNO at the first withdrawal or repayment.", cm,
+             "Not applicable – loan continues.", "Charges posted in UNO at the first withdrawal or repayment."),
+            ("Approved – partial waive-off", f"Loan approved and part of the charges waived. LAN → {to}. LMS shows the reduced charges; posted in UNO at the first withdrawal or repayment.", cm,
              "Not applicable – loan continues.", "Waived amount is not posted."),
-            ("Approved – full waive-off", f"Loan approved and all the charges waived. LAN → {to}. Nothing deducted from the first disbursement.", cm,
+            ("Approved – full waive-off", f"Loan approved and all the charges waived. LAN → {to}. Nothing payable – no UNO entry.", cm,
              "Not applicable – loan continues.", "Waived amount is not posted.")]
 def _approve_only(to):   # S 5.1 – Approve only, no waive-off with the approval (DISC-399)
-    return [("Approved", f"Loan approved (Loan Account Opening), no waive-off. LAN → {to}. Full charges deducted from the first disbursement.",
-             "No communication.", "Not applicable – loan continues.", "Charges posted in UNO at the first disbursement.")]
+    return [("Approved", f"Loan approved (Loan Account Opening), no waive-off. LAN → {to}. LMS shows the full charges; posted in UNO at the first withdrawal or repayment.",
+             "No communication.", "Not applicable – loan continues.", "Charges posted in UNO at the first withdrawal or repayment.")]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OPS can do, outcomes)
     (1, "DRAFT", "Before pledging the mutual funds", [], "No action. The LAN moves to INACTIVE after 30 days.", []),
     (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
@@ -140,7 +140,7 @@ def _waiver_body():
                 + uno(f"S {n}.{k} – Reject Without Waive-off", nw, sub)
                 + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw, sub)
                 + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw, sub)
-                + ("<p>Approve ({1}): no entry at this stage – the charges are deducted from the first disbursement and posted in UNO then; a waived "
+                + ("<p>Approve ({1}): no entry at approval – LMS shows the charges (reduced by any waive-off), and they are posted in UNO at the first withdrawal or repayment; a waived "
                    "amount is never posted.</p>".format(n, f"S {n}.1 – S {n}.3") if n in (5, 6) else ""))
 
     # Process flow for each sub-scenario (DISC-393) – owner's format: step → step → step
@@ -177,8 +177,8 @@ def _waiver_body():
             to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
             steps = START[n] + (["OPS maker initiates Approval (no waive-off)", M("Internal mail to OPS checker"), "OPS checker verifies and approves"]
                                 if k == "no" else chain(f"OPS maker initiates Approval with {wt} Waive-off")) + [f"LAN status {to}"] + ([] if n == 5 else [C("Customer SMS and mail – loan lodgement approved")]) + (
-                ["Full charges deducted from the first disbursement"] if k == "no" else
-                ["Balance charges deducted from the first disbursement"] if k == "partial" else ["Nothing deducted from the first disbursement"])
+                ["LMS shows the full charges", "Charges posted in UNO at the first withdrawal or repayment"] if k == "no" else
+                ["LMS shows the reduced charges", "Balance charges posted in UNO at the first withdrawal or repayment"] if k == "partial" else ["Nothing payable – no UNO entry"])
         else:
             steps = START[n] + chain(f"OPS maker initiates Rejection with {wt} Waive-off") + ["LAN status REJECTED"] + (
                 [C("Customer SMS and mail – application rejected, no payment link")] + DEPLEDGE if k == "full" else PAY)
@@ -363,9 +363,12 @@ Approve.</p>
 OPENED loan (S 6.1 – 6.3), Approve means the Loan Lodgement and the LAN status changes to ACTIVE.</li>
 <li>OPS maker needs an option to select the waive-off with the approval. With a waive-off (S 5.2, 5.3, 6.2, 6.3), the request follows
 section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 5.1, 6.1), only the OPS maker and the OPS checker approve, without
-Treasury.<ul><li>With no waive-off, LMS should deduct the full charges from the first disbursement.</li>
-  <li>With a partial waive-off, LMS should deduct only the balance charges from the first disbursement.</li>
-  <li>With a full waive-off, LMS should not deduct any charges from the first disbursement.</li></ul></li>
+Treasury.</li>
+<li>At the SUBMITTED and ACCOUNT OPENED stages, LMS only shows the charges; nothing is posted in UNO. When the loan is approved with a waive-off,
+LMS shows the reduced charges.<ul><li>With no waive-off, LMS shows the full charges.</li>
+  <li>With a partial waive-off, LMS shows only the balance charges.</li>
+  <li>With a full waive-off, LMS shows no charges.</li></ul></li>
+<li>The charges shown in LMS are posted in UNO, each charge separately, at the first withdrawal or repayment.</li>
 <li>After the approval the loan continues, so there is no de-pledge and no payment link.</li>
 <li>The customer gets an SMS and mail only when an ACCOUNT OPENED loan is approved (Loan Lodgement) and the LAN status changes to ACTIVE. The
 system should send the Loan Lodgement Approval SMS and mail, which are already in use today. {lk('communications.html', 'View the Loan Lodgement Approval SMS and mail')}</li>
@@ -477,6 +480,7 @@ application from the Curated Offers page.</li>
 800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
 Processing Fee* on the payment page and the receipt.</li>
 <li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. {T(IC(14))}</li>
+<li>A duplicate or excess payment is refunded through the existing refund option in LMS.</li>
 <li>Treasury needs a <b>Confirm Payment</b> option in the Approvals tab. The payment is not final in LMS until Treasury confirms it.</li>
 <li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer
 an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Payment_Received', 38))}</li>
@@ -1341,11 +1345,11 @@ def _waiver_scen_body():
                 + ol(["OPS maker adds the note, uploads the file and clicks <b>Approve</b> without any waive-off. The LAN status does not change yet.",
                       f"LMS sends a mail to the OPS checker to log in and approve or reject the request. {PH}",
                       f"OPS checker verifies the request, adds the note and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."]
-                     + tail("LMS deducts the full charges (₹1,768.82) from the first disbursement and posts them in UNO then."))   # DISC-436
+                     + tail("LMS shows the full charges (₹1,768.82), and they are posted in UNO at the first withdrawal or repayment."))   # DISC-436
                 + f"<h4>S {n}.2 – Approve With Full Waive-off</h4>"
-                + ol(approvals("approve", to) + tail("LMS does not deduct any charges from the first disbursement. No accounting entry."))
+                + ol(approvals("approve", to) + tail("LMS shows no charges. No accounting entry."))
                 + f"<h4>S {n}.3 – Approve With Partial Waive-off</h4><p>Example: ₹500 of the Processing Fee* waived.</p>"
-                + ol(approvals("approve", to) + tail("LMS deducts only the balance (₹1,268.82) from the first disbursement and posts it in UNO then. "
+                + ol(approvals("approve", to) + tail("LMS shows only the balance (₹1,268.82), and it is posted in UNO at the first withdrawal or repayment. "
                                                      "The waived amount is never posted.")))
 
     def head(n, st, drop, charges, ops, to):
