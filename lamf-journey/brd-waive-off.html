@@ -34,6 +34,8 @@ part of the amount.</li>
 Stamp Duty (₹236) from the Processing Fee* and shows the balance in the Processing Fee row. For example, if the Processing Fee* is ₹1,768.82
 (₹1,499 with GST), the Processing Fee row shows ₹883.82.</li>
 <li>The waive-off can occur at two stages, before the LAN status becomes Active and after the LAN status becomes Active.</li>
+<li>Every approve or reject (by the maker, checker or Treasury) asks for confirmation in a pop-up – “This action is irreversible. Are you sure
+you want to proceed?”.</li>
 </ul>
 <p><b>Who approves</b></p>
 <table class="brd-table"><thead><tr><th>Maker (raises the request)</th><th>Checker (reviews)</th><th>Final approval</th></tr></thead><tbody>
@@ -109,7 +111,7 @@ not waive anything or change the LAN status at this step, and should send a mail
 <li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and
 approves or declines the request. On approval, LMS should send a mail to Treasury. The LAN status still does not change. <a href="internal/IC-12.html" target="_blank" rel="noopener">Sample – alert 12</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline the request, without changing the waive-off. On approval,
-LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status
+LMS should apply the waive-off, change the LAN status
 from DRAFT to REJECTED and send a mail to OPS and Treasury. <a href="internal/IC-13.html" target="_blank" rel="noopener">Sample – alert 13</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>If the checker or Treasury declines the request, LMS should cancel it, so nothing is waived and the LAN stays in DRAFT, and send a mail to
 the maker, who can raise a new request. <a href="internal/IC-17.html" target="_blank" rel="noopener">Sample – alert 17</a> <span class="brd-tbc">To be confirmed</span></li>
@@ -216,8 +218,7 @@ the request.</li>
 <li>The waive-off request is shown in the Approvals tab of the LAN with the maker, the maker's note and file, the waive-off type and the
 selected charges (amount, amount to be waived off and payable).</li>
 <li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
-<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note. On approval, LMS should show “This action
-is irreversible. Are you sure you want to proceed?”.</li>
+<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note.</li>
 <li>After Treasury approves, LMS updates the Statement of Account (SOA) with the waiver. Nothing is posted in UNO for the waiver.</li>
 <li>The Waive-off page then shows the waived amount in the Waived off Charges column and the balance in the Payable Charges column. The LAN
 stays ACTIVE.</li>
