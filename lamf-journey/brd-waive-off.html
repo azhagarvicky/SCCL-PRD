@@ -282,21 +282,27 @@ Processing Fee* on the payment page and the receipt.</li>
 <li>After the payment, LMS sends an event mail to Treasury, Cc OPS – “Charges Payment Received” – to confirm that the payment is really
 received. <a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>A duplicate or excess payment is refunded through the existing refund option in LMS.</li>
-<li>Treasury checks in the payment portal that the payment is received, and needs an option in the Approvals tab to <b>Approve</b> the
-payment if it is received, or <b>Reject</b> it if it is not received. The payment is not final in LMS until Treasury approves it.</li>
-<li>After Treasury approves, LMS enables the <b>Initiate De-pledge</b> CTA only when the balance payable is ₹0. If any amount is still
-payable, the CTA stays disabled.</li>
-<li>If Treasury rejects the payment (not received), the de-pledge stays disabled, the amount stays payable and the customer can pay again.
-LMS sends a mail to OPS, Cc Treasury.</li>
-<li>After Treasury approves, LMS sends OPS a mail, Cc Treasury – “Charges Received – Initiate De-pledge” (when the balance payable is ₹0) – and
-the customer gets an SMS and mail with the payment receipt attached. <a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> · <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>The UNO entry is posted automatically as soon as the customer pays. Treasury then does a manual cross-check that the payment is
+received, and needs an option in the Approvals tab to <b>Approve</b> the payment (received) or <b>Reject</b> it (not received).</li>
+<li>When Treasury approves, LMS reduces the balance payable by the amount paid. If it is ₹0, LMS enables the
+<b>Initiate De-pledge</b> CTA, sends OPS an event mail, Cc Treasury – “Charges Received – Initiate De-pledge” – and the customer gets an
+SMS and mail with the payment receipt. <a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> · <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>If the balance payable is not ₹0 after the approval, more charges were added after the payment link was sent (for example, in
+S 2 the customer generated the Sanction Letter in the meantime, so the Processing Fee was added). The Initiate De-pledge CTA stays disabled.
+LMS sends OPS an event mail, Cc Treasury, that the customer paid the amount but additional charges were added, so the balance is still
+payable. The customer gets the receipt for the amount paid and an SMS and mail with a new payment link for the balance. When the balance is
+paid and approved, it becomes ₹0 and the de-pledge is enabled. <span class="brd-tbc">To be confirmed</span></li>
+<li>If Treasury rejects the payment because it is not received, the balance payable does not change and the Initiate De-pledge CTA stays disabled. LMS sends OPS
+an event mail, Cc Treasury, that the payment is not received. The UNO entry already posted for this payment has to be reversed and the
+receipt marked cancelled. The customer is told that the payment is not received and can pay again with the same link.
+<span class="brd-tbc">To be confirmed</span></li>
 <li>This applies to every payment in every scenario.</li>
 </ul>
 <p><a href="charges-receipt.html" target="_blank" rel="noopener">Open the payment receipt</a> (the receipt sent to the customer, with the
 disclaimer; Download / Print).</p>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/16_receipt.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/16_receipt.png' alt='Payment receipt' loading='lazy'></a><figcaption>Payment receipt</figcaption></figure></div>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/17_lms_await.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/17_lms_await.png' alt='LMS – waiting for the customer’s payment, de-pledge disabled' loading='lazy'></a><figcaption>LMS – waiting for the customer’s payment, de-pledge disabled</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/18_lms_received.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/18_lms_received.png' alt='LMS – payment received: Treasury approves or rejects after checking the payment portal' loading='lazy'></a><figcaption>LMS – payment received: Treasury approves or rejects after checking the payment portal</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/18_lms_received.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/18_lms_received.png' alt='LMS – payment received: Treasury cross-checks and approves or rejects' loading='lazy'></a><figcaption>LMS – payment received: Treasury cross-checks and approves or rejects</figcaption></figure>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/19_lms_confirm_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/19_lms_confirm_pop.png' alt='Treasury confirmation pop-up' loading='lazy'></a><figcaption>Treasury confirmation pop-up</figcaption></figure></div>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/20_lms_confirmed.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/20_lms_confirmed.png' alt='LMS – payment approved, balance payable ₹0, Initiate De-pledge enabled' loading='lazy'></a><figcaption>LMS – payment approved, balance payable ₹0, Initiate De-pledge enabled</figcaption></figure>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/21_lms_documents.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/21_lms_documents.png' alt='LMS Documents tab – the receipt' loading='lazy'></a><figcaption>LMS Documents tab – the receipt</figcaption></figure>
@@ -380,6 +386,9 @@ payment. With a full waive-off, nothing is payable, so the CTA is enabled straig
 <h2>7. Open Points</h2>
 <ul>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
+<li>Payment approved but balance payable not ₹0 (additional charges added): new payment link sent to the customer automatically, or OPS
+contacts the customer first?</li>
+<li>Payment rejected by Treasury: reversal of the UNO entry, cancelling the receipt, and the customer message – to be confirmed.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
 <script src="assets/review.js"></script>
