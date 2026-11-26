@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 07:53 IST
+**Last Updated:** 26-11-2026 08:00 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -460,6 +460,7 @@
 | DISC-425 | 26-11-2026 | charges-receipt.html, exports/Payment_Receipt_Sample.pdf | Customer payment receipt with disclaimer | Owner: create the actual receipt with a disclaimer to send to the customer | Receipt rebuilt: SCCL registered office, CIN, RBI registration, GSTIN placeholder; Payment Successful; receipt details (Receipt No., date and time, customer AZHAGARSAMY, LAN, masked mobile, product); payment details (mode, transaction ID, status, amount, purpose); Processing Fee* with taxable value + IGST 18% (customer view – no waived amount); amount in words (Indian numbering); lien removal message; 7-point disclaimer (computer-generated, charges only, GST included, not refundable except duplicate / excess, subject to realisation, discrepancy within 7 days to lassupport@, grievance mail); Download / Print button, one A4 page. Sample PDF exported; BRD screenshot 16 regenerated; Word file regenerated. GSTIN to be added. | Implemented |
 | DISC-426 | 26-11-2026 | charges-receipt.html | Receipt footer like the mails | Owner: finish the receipt like the mail footer (dark bar © 2026 Shriram Credit Company Limited. All rights reserved.) | Receipt ends with the yellow address line and a dark bar “© 2026 Shriram Credit Company Limited. All rights reserved.”. Sample PDF (one page), BRD screenshot 16 and Word file regenerated. | Implemented |
 | DISC-427 | 26-11-2026 | charges-receipt.html | Receipt – address line removed, disclaimer on yellow | Owner: remove the bottom address line (the address is at the top) and mark the disclaimer with the yellow background | Bottom yellow address line removed; the disclaimer is now a full-width yellow block just above the dark © bar (as in the mails). Sample PDF (one page), BRD screenshot 16 and Word file regenerated. | Implemented |
+| DISC-428 | 26-11-2026 | brd-waive-off.html | Section 5 Communication table restructured | Owner: section 5 with the columns Scenario, Internal or External, Email or SMS, Sample template link and Status | Section 5 table now has 5 columns (Scenario – with the recipient, Internal / External, Email / SMS, Sample template, Status) and 22 rows in the flow order: rejection request approvals, decline, day 30 / day 31, DRAFT and SUBMITTED / ACCOUNT OPENED rejection mails (with / without the payment link), payment received, Treasury confirmation, receipt, monthly reminder, approvals, ACTIVE waive-off mails; statuses To be confirmed / Already in use / No communication. The DLT note line removed. Word file regenerated. | Implemented |
 
 ---
 
