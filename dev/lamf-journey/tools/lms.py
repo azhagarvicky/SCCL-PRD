@@ -180,7 +180,7 @@ def draft_approvals(r, tid):
             '<button type="button" class="wv-depledge" disabled>Initiate De-pledge</button></div>'
             # DISC-453: Treasury confirms the payment – Approve (received) or Reject (not received); LMS enables the de-pledge when the balance payable is ₹0
             '<div class="wv-tc" hidden><h4>Treasury – payment confirmation</h4>'
-            '<p class="wv-hint">Check in the payment portal that the payment is received, then approve or reject.</p>'
+            '<p class="wv-hint">Cross-check that the payment is received, then approve or reject.</p>'
             '<div class="wv-appr-ctas"><button type="button" class="wv-tc-rej">Reject – payment not received</button>'
             '<button type="button" class="wv-confirm">Approve – payment received</button></div></div>'
             '<p class="wv-hint wv-dp-hint">De-pledge is enabled only when the balance payable is ₹0 (after Treasury approves the payment).</p></div>'
