@@ -410,7 +410,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
   'Transaction ID: {{Transaction ID}}. Paid on: {{Payment Date & Time}}. Receipt No.: {{Receipt No}} (saved in the Documents tab of the LAN). '
   'The accounting entries have been posted in UNO.\n'
   'Please check that the payment is really received and Approve it in LMS (Approvals tab of the LAN), or Reject it if it is not received. '
-  'While approving, tick Enable de-pledge only if no amount is payable – the de-pledge is enabled only then.',
+  'The Initiate De-pledge option is enabled when the balance payable is 0.',
   [('Any Sanction amount',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',

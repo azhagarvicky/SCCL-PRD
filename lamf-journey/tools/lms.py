@@ -178,12 +178,12 @@ def draft_approvals(r, tid):
             '<div class="wv-pay-box" hidden><h3>Charges payment</h3><p class="wv-pay-st"></p>'
             '<div class="wv-pay-ctas"><button type="button" class="wv-sim">Simulate customer payment (prototype)</button>'
             '<button type="button" class="wv-depledge" disabled>Initiate De-pledge</button></div>'
-            # DISC-452: Treasury confirms the payment – Approve (received) or Reject (not received); Enable de-pledge only if nothing is payable
+            # DISC-453: Treasury confirms the payment – Approve (received) or Reject (not received); LMS enables the de-pledge when the balance payable is ₹0
             '<div class="wv-tc" hidden><h4>Treasury – payment confirmation</h4>'
-            '<label class="wv-chkl"><input type="checkbox" class="wv-endp"> Enable de-pledge <span>(tick only if no amount is payable)</span></label>'
+            '<p class="wv-hint">Check in the payment portal that the payment is received, then approve or reject.</p>'
             '<div class="wv-appr-ctas"><button type="button" class="wv-tc-rej">Reject – payment not received</button>'
             '<button type="button" class="wv-confirm">Approve – payment received</button></div></div>'
-            '<p class="wv-hint wv-dp-hint">De-pledge is enabled only when Treasury approves the payment with “Enable de-pledge” ticked.</p></div>'
+            '<p class="wv-hint wv-dp-hint">De-pledge is enabled only when the balance payable is ₹0 (after Treasury approves the payment).</p></div>'
             + pop('wv-pr', '<h3>Are you sure you want to reject the application with the selected waive-off?</h3>' '<p class="wv-ptype"></p>'
                   f'<p class="wv-ps-txt">The request will be sent to {ck} (Checker) for approval.</p>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes, submit</button></div>')
@@ -400,7 +400,7 @@ WAIVER_JS = """<script>
       pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
         'Receipt RCPT/LAMF/2026/11/0149 (Documents tab) · UNO entries posted.<br>Mail sent to Treasury, Cc OPS: <i>Charges Payment Received</i> – ' +
         'please confirm the payment. <b>Pending Treasury confirmation.</b>';
-      e.target.hidden = true; pb2.querySelector('.wv-tc').hidden = false; pb2.querySelector('.wv-endp').checked = false; pb2.querySelector('.wv-endp').disabled = false;
+      e.target.hidden = true; pb2.querySelector('.wv-tc').hidden = false;
       audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/0149 generated', '-', 'System', '-');
       var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
       if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
@@ -410,12 +410,12 @@ WAIVER_JS = """<script>
         tr.children[2].textContent = ts; docs.prepend(tr); }
     }
     if (c.contains('wv-confirm')) show(w, '.wv-pc', true);
-    if (c.contains('wv-yes-c')) {          /* Treasury approves – payment received; de-pledge only if “Enable de-pledge” is ticked (DISC-452) */
-      show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box'), en = pb3.querySelector('.wv-endp').checked;
+    if (c.contains('wv-yes-c')) {          /* Treasury approves – payment received; LMS enables the de-pledge when the balance payable is ₹0 (DISC-453) */
+      show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box'), bal = 0, en = bal <= 0;   /* the full amount is paid in one payment */
       pb3.querySelector('.wv-pay-st').innerHTML = pb3.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
       pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment approved by Treasury</b> (received) on ' + stamp() + '. ' +
-        (en ? 'De-pledge enabled. Mail sent to OPS, Cc Treasury: <i>Charges Received – Initiate De-pledge</i>.'
-            : 'De-pledge not enabled – an amount is still payable.'));
+        (en ? 'Balance payable ₹0 – De-pledge enabled. Mail sent to OPS, Cc Treasury: <i>Charges Received – Initiate De-pledge</i>.'
+            : 'An amount is still payable – De-pledge not enabled.'));
       pb3.querySelector('.wv-tc').hidden = true; pb3.querySelector('.wv-depledge').disabled = !en; pb3.querySelector('.wv-dp-hint').hidden = en;
       audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' approved by Treasury (received)' + (en ? '; de-pledge enabled' : '; de-pledge not enabled'), '-', 'Treasury user', 'Treasury user');
     }

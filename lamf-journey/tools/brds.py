@@ -495,14 +495,13 @@ Processing Fee* on the payment page and the receipt.</li>
 <li>After the payment, LMS sends an event mail to Treasury, Cc OPS – “Charges Payment Received” – to confirm that the payment is really
 received. {T(IC(14))}</li>
 <li>A duplicate or excess payment is refunded through the existing refund option in LMS.</li>
-<li>Treasury needs an option in the Approvals tab to <b>Approve</b> the payment if it is received, or <b>Reject</b> it if it is not
-received. The payment is not final in LMS until Treasury approves it.</li>
-<li>While approving, Treasury needs an <b>Enable de-pledge</b> checkbox. Treasury ticks it only when no amount is payable, and then the
-de-pledge is enabled. If an amount is still payable, Treasury approves without ticking it, so only the payment is confirmed and the
-de-pledge stays disabled.</li>
+<li>Treasury checks in the payment portal that the payment is received, and needs an option in the Approvals tab to <b>Approve</b> the
+payment if it is received, or <b>Reject</b> it if it is not received. The payment is not final in LMS until Treasury approves it.</li>
+<li>After Treasury approves, LMS enables the <b>Initiate De-pledge</b> CTA only when the balance payable is ₹0. If any amount is still
+payable, the CTA stays disabled.</li>
 <li>If Treasury rejects the payment (not received), the de-pledge stays disabled, the amount stays payable and the customer can pay again.
 LMS sends a mail to OPS, Cc Treasury.</li>
-<li>After Treasury approves, LMS sends OPS a mail, Cc Treasury – “Charges Received – Initiate De-pledge” (when the de-pledge is enabled) – and
+<li>After Treasury approves, LMS sends OPS a mail, Cc Treasury – “Charges Received – Initiate De-pledge” (when the balance payable is ₹0) – and
 the customer gets an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Payment_Received', 38))}</li>
 <li>This applies to every payment in every scenario.</li>
 </ul>
@@ -510,9 +509,9 @@ the customer gets an SMS and mail with the payment receipt attached. {T(IC(15), 
 disclaimer; Download / Print).</p>
 <div class="brd-figs">{fig('16_receipt.png', 'Payment receipt', 'sm')}</div>
 {fig('17_lms_await.png', 'LMS – waiting for the customer’s payment, de-pledge disabled')}
-{fig('18_lms_received.png', 'LMS – payment received: Treasury approves or rejects, with the Enable de-pledge checkbox')}
+{fig('18_lms_received.png', 'LMS – payment received: Treasury approves or rejects after checking the payment portal')}
 <div class="brd-figs">{fig('19_lms_confirm_pop.png', 'Treasury confirmation pop-up', 'sm')}</div>
-{fig('20_lms_confirmed.png', 'LMS – payment approved with Enable de-pledge ticked, de-pledge enabled')}
+{fig('20_lms_confirmed.png', 'LMS – payment approved, balance payable ₹0, Initiate De-pledge enabled')}
 {fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
 <p><b>Reference format</b> – how the charges with IGST post in UNO against the LAN</p>
 <table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
@@ -543,8 +542,8 @@ disclaimer; Download / Print).</p>
 
 <h2>4. De-pledge</h2>
 <ul>
-<li>LMS should allow the de-pledge only when no amount is payable. After a payment, this means Treasury has approved the payment with
-<b>Enable de-pledge</b> ticked. With a full waive-off, nothing is payable, so the de-pledge is allowed straight away.</li>
+<li>LMS enables the Initiate De-pledge CTA only when the balance payable is ₹0. After a payment, this is checked when Treasury approves the
+payment. With a full waive-off, nothing is payable, so the CTA is enabled straight away.</li>
 <li>The Initiate De-pledge button should stay disabled until then.</li>
 <li>OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge.</li>
 </ul>
@@ -1345,8 +1344,8 @@ def _waiver_scen_body():
         f"({lk(f'charges-payment-{key}.html', 'LOS payment journey')} · {lk(f'charges-receipt-{key}.html', 'receipt')})",
         "The paid amount is posted in UNO (each charge separately, entry below). The SOA is not updated, as the LAN is not ACTIVE. The receipt is saved "
         "in the LMS Documents tab. LMS event mail triggered to <b>Treasury</b>, Cc <b>OPS</b>, to confirm the payment is received." + S(IC(14)),
-        "Treasury checks that the payment is really received and approves it (or rejects it if it is not received). As nothing more is "
-        "payable, Treasury ticks <b>Enable de-pledge</b> while approving. " + INFO("OPS", "Treasury") + " The customer gets an SMS and mail "
+        "Treasury checks in the payment portal that the payment is received and approves it (or rejects it if it is not received). The "
+        "balance payable is now ₹0, so LMS enables the Initiate De-pledge CTA. " + INFO("OPS", "Treasury") + " The customer gets an SMS and mail "
         "with the receipt." + S(IC(15), NM("08_Charges_Payment_Received", 38)),
         "OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge."]
     NOPAY = lambda mail: [f"The customer gets an SMS and mail that the application is rejected, without a payment link." + S(*mail),
@@ -1446,9 +1445,9 @@ the customer can pay again. If the customer does not pay, a reminder SMS and mai
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>
 <li>The SOA is updated only when the LAN status is ACTIVE. For a DRAFT, SUBMITTED or ACCOUNT OPENED loan, a payment updates UNO only, not the
 SOA.</li>
-<li>After every payment, Treasury approves it (received) or rejects it (not received). While approving, Treasury ticks <b>Enable
-de-pledge</b> only when no amount is payable; otherwise only the payment is confirmed. De-pledge is allowed only when it is enabled (or
-after a full waive-off). OPS maker initiates it and OPS checker approves it.</li>
+<li>After every payment, Treasury checks the payment portal and approves the payment (received) or rejects it (not received). LMS
+enables the Initiate De-pledge CTA only when the balance payable is ₹0 (after Treasury approves, or straight away after a full waive-off).
+OPS maker initiates the de-pledge and OPS checker approves it.</li>
 </ul>
 <p>Each payable case links its own LOS payment journey and receipt (the amounts differ). S 4, S 5 and S 6 have the same amounts as S 3, so
 they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-waive-off.html">main Waiver BRD</a>.</p>
