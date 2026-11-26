@@ -478,7 +478,9 @@ application from the Curated Offers page.</li>
 <h3>3.2 Payment Receipt &amp; Accounting Entry (UNO)</h3>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts as 4 digits}}}}, for example RCPT/LAMF/2026/11/0149.</li>
-<li>The paid amount should be posted in UNO immediately, and the SOA is updated at the same time. Only the amount actually paid is posted.</li>
+<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted.</li>
+<li>The SOA is not updated for these payments, because the SOA is updated only when the LAN status is ACTIVE. At the DRAFT, SUBMITTED and
+ACCOUNT OPENED stages, only UNO is updated.</li>
 <li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
 800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
 Processing Fee* on the payment page and the receipt.</li>
@@ -1320,7 +1322,7 @@ def _waiver_scen_body():
     PAY = lambda amt, mail: [
         f"The customer gets an SMS and mail with the payment link for <b>₹{amt}</b>." + S(*mail),
         "The customer opens the link, verifies the mobile number with an OTP in the LOS and pays the full amount in one payment.",
-        "The paid amount is posted in UNO (each charge separately, entry below) and the SOA is updated at the same time. The receipt is saved "
+        "The paid amount is posted in UNO (each charge separately, entry below). The SOA is not updated, as the LAN is not ACTIVE. The receipt is saved "
         "in the LMS Documents tab, and LMS sends a mail to Treasury and OPS." + S(IC(14), lk("charges-receipt.html", "receipt")),
         "Treasury confirms the payment in LMS. LMS sends a mail to OPS to initiate the de-pledge, and the customer gets an SMS and mail with "
         "the receipt." + S(IC(15), NM("08_Charges_Payment_Received", 38)),
@@ -1416,8 +1418,10 @@ separate request from the ≡ menu → Waive-off page, approved in the Approvals
 <ul>
 <li>The customer pays the full payable amount through the payment link (LOS, OTP, Pay Charges page). A failed payment changes nothing, and
 the customer can pay again. If the customer does not pay, a reminder SMS and mail is sent every month.{S(NM("09_Charges_Payment_Reminder", 39))}</li>
-<li>On a successful payment, UNO (each charge separately, one IGST line, Subaccd = LAN) and the SOA are updated at the same time, and a
+<li>On a successful payment, the amount is posted in UNO (each charge separately, one IGST line, Subaccd = LAN), and a
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>
+<li>The SOA is updated only when the LAN status is ACTIVE. For a DRAFT, SUBMITTED or ACCOUNT OPENED loan, a payment updates UNO only, not the
+SOA.</li>
 <li>De-pledge is allowed only after Treasury confirms the payment and no amount is payable. OPS maker initiates it and OPS checker approves it.</li>
 </ul>
 

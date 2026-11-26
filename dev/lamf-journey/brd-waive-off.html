@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=2f48c6c">
+<link rel="stylesheet" href="assets/lamf.css?v=bce3b97">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <p class="brd-cta"><a class="brd-cta-btn" href="brd-waive-off-scenarios.html">Scenario-wise BRD →</a>
@@ -265,7 +265,9 @@ application from the Curated Offers page.</li>
 <h3>3.2 Payment Receipt &amp; Accounting Entry (UNO)</h3>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts as 4 digits}}, for example RCPT/LAMF/2026/11/0149.</li>
-<li>The paid amount should be posted in UNO immediately, and the SOA is updated at the same time. Only the amount actually paid is posted.</li>
+<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted.</li>
+<li>The SOA is not updated for these payments, because the SOA is updated only when the LAN status is ACTIVE. At the DRAFT, SUBMITTED and
+ACCOUNT OPENED stages, only UNO is updated.</li>
 <li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
 800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
 Processing Fee* on the payment page and the receipt.</li>
@@ -363,7 +365,7 @@ confirmed the payment, or nothing was payable because of a full waive-off.</li>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=2f48c6c"></script>
-<script src="assets/colresize.js?v=2f48c6c"></script>
+<script src="assets/review.js?v=bce3b97"></script>
+<script src="assets/colresize.js?v=bce3b97"></script>
 </body>
 </html>
