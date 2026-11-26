@@ -91,36 +91,107 @@ JS = """<script>
 </script>"""
 
 
+_ONES = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen",
+         "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"]
+_TENS = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+
+
+def _w2(n):
+    return _ONES[n] if n < 20 else _TENS[n // 10] + ("-" + _ONES[n % 10] if n % 10 else "")
+
+
+def _w3(n):
+    return (_ONES[n // 100] + " Hundred" + (" " + _w2(n % 100) if n % 100 else "")) if n >= 100 else _w2(n)
+
+
+def in_words(v):
+    """Indian numbering – Rupees … and Paise … Only."""
+    r, p = int(v), round((v - int(v)) * 100)
+    parts = []
+    for div, name in ((10000000, "Crore"), (100000, "Lakh"), (1000, "Thousand")):
+        if r >= div:
+            parts.append(_w3(r // div) + " " + name); r %= div
+    if r:
+        parts.append(_w3(r))
+    return "Rupees " + (" ".join(parts) or "Zero") + (f" and Paise {_w2(p)}" if p else "") + " Only"
+
+
 def receipt():
-    rows = "".join(f"<tr><td>{n}</td><td>{rs(a)}</td><td>{rs(w)}</td><td>{rs(a - w)}</td></tr>" for n, a, w in CHARGES)
+    """Payment receipt sent to the customer (DISC-425): company details, receipt and payment details, the amount paid with the GST
+    breakup (customer view – no waived amount, DISC-352), amount in words and the disclaimer. Printable / Save as PDF."""
+    taxable = round(PAYABLE / 1.18, 2)
+    gst = round(PAYABLE - taxable, 2)
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Payment Receipt – {RCPT}</title>
 <style>
 body{{margin:0;background:#efeeec;font-family:Arial,Helvetica,sans-serif;color:#1a1a1a}}
-.r{{width:680px;max-width:calc(100% - 24px);margin:28px auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}}
-.h{{display:flex;justify-content:space-between;align-items:center;padding:24px 32px;border-bottom:5px solid #FFC20E}} .h img{{width:170px}}
-.h p{{margin:0;font-size:12px;line-height:18px;color:#555;text-align:right}}
-.t{{background:#1a1a1a;color:#FFC20E;text-align:center;font-weight:bold;font-size:18px;padding:14px}}
-.b{{padding:24px 32px}} .kv{{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-size:14px;margin-bottom:20px}}
-.kv span{{color:#666;display:block;font-size:12px}} table{{width:100%;border-collapse:collapse;font-size:14px}}
-th,td{{border:1px solid #e2e2e2;padding:8px 10px;text-align:right}} th:first-child,td:first-child{{text-align:left}} th{{background:#FAFAF8}}
-tfoot td{{font-weight:bold}} .w{{margin:14px 0 0;font-size:14px}} .n{{margin:18px 0 0;font-size:12px;color:#666;line-height:18px}}
-.f{{background:#FFC20E;padding:12px 32px;font-size:12px}}
-</style></head><body><div class="r">
-<div class="h"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"><p><b>Shriram Credit Company Limited</b><br>Payment Receipt</p></div>
-<div class="t">Payment Receipt</div>
-<div class="b"><div class="kv">
-<div><span>Receipt No.</span>{RCPT}</div><div><span>Receipt Date</span>{PAID_ON}</div>
-<div><span>Customer Name</span>AZHAGARSAMY SUBBURAJ</div><div><span>Loan Application ID (LAN)</span>{LAN}</div>
-<div><span>Payment Mode</span>Online – payment gateway</div><div><span>Transaction ID</span>{TXN}</div>
-<div><span>Purpose</span>Charges on rejection of the Loan Against Mutual Fund application</div><div><span>Amount Received</span><b>{rs(PAYABLE)}</b></div>
+.bar{{width:760px;max-width:calc(100% - 24px);margin:18px auto 0;display:flex;justify-content:flex-end}}
+.bar button{{background:#1a1a1a;color:#fff;border:0;border-radius:6px;padding:9px 16px;font-size:13px;cursor:pointer}}
+.r{{width:760px;max-width:calc(100% - 24px);margin:12px auto 28px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}}
+.h{{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:24px 32px;border-bottom:5px solid #FFC20E}} .h img{{width:170px}}
+.h p{{margin:0;font-size:11.5px;line-height:17px;color:#555;text-align:right}} .h p b{{color:#1a1a1a;font-size:13px}}
+.t{{display:flex;justify-content:space-between;align-items:center;background:#1a1a1a;color:#FFC20E;font-weight:bold;font-size:18px;padding:12px 32px}}
+.t span{{background:#1e7d32;color:#fff;font-size:12px;border-radius:12px;padding:3px 10px}}
+.b{{padding:22px 32px}} h3{{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:#666;margin:0 0 10px}}
+.kv{{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-size:14px;margin-bottom:22px}}
+.kv span{{color:#666;display:block;font-size:12px;margin-bottom:2px}}
+table{{width:100%;border-collapse:collapse;font-size:14px}} th,td{{border:1px solid #e2e2e2;padding:8px 10px;text-align:right}}
+th:first-child,td:first-child{{text-align:left}} th{{background:#FAFAF8}} tfoot td{{font-weight:bold;background:#FFF8E1}}
+.w{{margin:12px 0 0;font-size:14px}} .incl{{margin:6px 0 0;font-size:12px;color:#666}}
+.msg{{margin:18px 0 0;padding:12px 14px;background:#F1F8F2;border-left:4px solid #1e7d32;font-size:13px;line-height:19px}}
+.d{{margin:22px 0 0;padding:14px 16px;border:1px solid #e2e2e2;border-radius:6px;background:#FAFAF8}}
+.d h3{{margin-bottom:8px}} .d ol{{margin:0;padding-left:18px;font-size:12px;line-height:18px;color:#444}} .d li{{margin:3px 0}}
+.f{{background:#FFC20E;padding:12px 32px;font-size:11.5px;line-height:17px}}
+.note{{width:760px;max-width:calc(100% - 24px);margin:0 auto 24px;font-size:12px;color:#666}}
+@media (max-width:600px){{.kv{{grid-template-columns:1fr}} .h{{flex-direction:column}} .h p{{text-align:left}}}}
+@page{{size:A4;margin:8mm}}
+@media print{{body{{background:#fff}} .bar,.note{{display:none}} .r{{box-shadow:none;margin:0 auto;width:100%;max-width:none;zoom:.82}}
+  .h,.t,.f,tfoot td,.msg,.d{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}}}
+</style></head><body>
+<div class="bar"><button type="button" onclick="window.print()">Download / Print receipt</button></div>
+<div class="r">
+<div class="h"><img src="assets/img/shriram-logo.png" alt="Shriram Credit">
+<p><b>Shriram Credit Company Limited</b><br>Registered Office: Shriram House, No. 4, Burkit Road, T. Nagar, Chennai 600017<br>
+CIN: U65993TN1980PLC008215 · RBI Registration No.: B-07.00709<br>GSTIN: {{{{SCCL GSTIN}}}}</p></div>
+<div class="t">Payment Receipt <span>Payment Successful</span></div>
+<div class="b">
+<h3>Receipt details</h3>
+<div class="kv">
+<div><span>Receipt No.</span><b>{RCPT}</b></div><div><span>Receipt Date &amp; Time</span>{PAID_ON}</div>
+<div><span>Customer Name</span>AZHAGARSAMY</div><div><span>Loan Application No. (LAN)</span>{LAN}</div>
+<div><span>Registered Mobile No.</span>XXXXXX7890</div><div><span>Product</span>Loan Against Mutual Funds (LAMF)</div>
 </div>
-<table><thead><tr><th>Charges</th><th>Amount of Charges</th><th>Waived off</th><th>Amount Paid</th></tr></thead><tbody>{rows}</tbody>
-<tfoot><tr><td>Total</td><td>{rs(TOTAL)}</td><td>{rs(WAIVED)}</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>
-<p class="w">Amount received in words: <b>Rupees One Thousand Two Hundred Sixty-Eight and Paise Eighty-Two Only</b></p>
-<p class="n">{INCL}. This is a system-generated receipt and does not need a signature. The lien on your Mutual Fund
-units will be removed after the payment is confirmed.</p></div>
-<div class="f">Sample receipt for the prototype (Waiver BRD) – generated on payment, stored in the LMS Documents tab and sent to the customer. Receipt No. format: <b>RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts}}}}</b> (DISC-357).</div>
-</div></body></html>
+<h3>Payment details</h3>
+<div class="kv">
+<div><span>Payment Mode</span>Online – payment gateway (UPI / Net Banking / Debit Card)</div><div><span>Transaction ID</span>{TXN}</div>
+<div><span>Payment Status</span>Successful</div><div><span>Amount Received</span><b>{rs(PAYABLE)}</b></div>
+<div style="grid-column:1/-1"><span>Purpose of Payment</span>Charges payable on the rejection of the Loan Against Mutual Funds application</div>
+</div>
+<table><thead><tr><th>Charges</th><th>Taxable Value</th><th>IGST @ 18%</th><th>Amount Paid</th></tr></thead>
+<tbody><tr><td>Processing Fee*</td><td>{rs(taxable)}</td><td>{rs(gst)}</td><td>{rs(PAYABLE)}</td></tr></tbody>
+<tfoot><tr><td>Total</td><td>{rs(taxable)}</td><td>{rs(gst)}</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>
+<p class="incl">{INCL}</p>
+<p class="w">Amount received in words: <b>{in_words(PAYABLE)}</b></p>
+<p class="msg">Thank you. We have received your payment. The removal of the lien on your Mutual Fund units will be initiated after the
+payment is confirmed, and you will receive a separate confirmation from CAMS / KFintech once the units are released.</p>
+<div class="d"><h3>Disclaimer</h3><ol>
+<li>This is a computer-generated receipt and does not require a signature.</li>
+<li>This receipt is issued towards the charges for the above loan application only. It is not a payment towards any loan account.</li>
+<li>The charges include GST at the applicable rate. The Processing Fee* is inclusive of the Lien Marking, Lien Removal and Stamp Duty charges.</li>
+<li>The amount paid is not refundable, except in case of a duplicate or excess payment, which will be refunded to the source account after
+verification.</li>
+<li>This receipt is subject to the realisation of the payment. If the transaction is reversed by the bank or the payment gateway, this receipt
+stands cancelled.</li>
+<li>Please check the details in this receipt. In case of any discrepancy, write to lassupport@shriramcredit.in within 7 days of the receipt
+date, quoting the Receipt No. and the LAN.</li>
+<li>For grievances, write to grievanceredressal@shriramcredit.in. Please keep this receipt for your records.</li>
+</ol></div>
+</div>
+<div class="f">Shriram Credit Company Limited · Shriram House, No. 4, Burkit Road, T. Nagar, Chennai 600017 · lassupport@shriramcredit.in</div>
+</div>
+<p class="note">Prototype (Waiver BRD) – the receipt is generated on payment, saved in the LMS Documents tab and sent to the customer with the
+Charges Payment Received mail. Receipt No. format: RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts as 4 digits}}}}.
+GSTIN to be added.</p>
+</body></html>
 """
