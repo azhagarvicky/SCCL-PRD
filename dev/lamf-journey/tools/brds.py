@@ -491,6 +491,8 @@ Processing Fee* on the payment page and the receipt.</li>
 <li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer
 an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Payment_Received', 38))}</li>
 </ul>
+<p><a href="charges-receipt.html" target="_blank" rel="noopener">Open the payment receipt</a> (the receipt sent to the customer, with the
+disclaimer; Download / Print).</p>
 <div class="brd-figs">{fig('16_receipt.png', 'Payment receipt', 'sm')}</div>
 {fig('17_lms_await.png', 'LMS – waiting for the customer’s payment, de-pledge disabled')}
 {fig('18_lms_received.png', 'LMS – payment received, waiting for Treasury confirmation')}
@@ -1428,6 +1430,9 @@ receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or
 SOA.</li>
 <li>De-pledge is allowed only after Treasury confirms the payment and no amount is payable. OPS maker initiates it and OPS checker approves it.</li>
 </ul>
+<p>See the screens: <a href="charges-payment.html" target="_blank" rel="noopener">LOS payment journey</a> (payment link, OTP, Pay Charges,
+payment result) · <a href="charges-receipt.html" target="_blank" rel="noopener">payment receipt</a> · the screenshots are in section 3 of the
+<a href="brd-waive-off.html">main Waiver BRD</a>.</p>
 
 <h2>3. Scenarios</h2>
 {head(1, "DRAFT", "before pledging the mutual funds", "None.", "No action.", "INACTIVE (on day 31)",

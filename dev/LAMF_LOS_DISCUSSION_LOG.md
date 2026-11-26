@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 23:10 IST
+**Last Updated:** 26-11-2026 23:13 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -481,6 +481,7 @@
 | DISC-446 | 26-11-2026 | brd-waive-off-scenarios.html | Internal mail named in every step | Owner: S 2.1 point 1 does not mention the mail like point 2 – write each step uniformly, e.g. “LMS event automation mail triggered to {{OPS}} cc {{Treasury}}” | Scenario-wise BRD: every step that sends an internal mail now says “LMS event mail triggered to {{To}}, Cc {{Cc}}” (+ “to approve or reject quickly” for approval requests): maker request → {{OPS Checker}} Cc {{Treasury}}; checker approval → {{Treasury}} Cc {{OPS}}; Treasury approval → {{OPS}} Cc {{Treasury}}; payment received → {{Treasury}} Cc {{OPS}}; Treasury confirms → {{OPS}} Cc {{Treasury}}; day 31, decline, S 5.1 / 6.1 and S 7 steps the same. Word file regenerated. | Implemented |
 | DISC-447 | 26-11-2026 | brd-waive-off-scenarios.html | Mail steps without {{ }} | Owner: the {{ }} was only for reference – do not show it | Mail steps now read “LMS event mail triggered to OPS Checker, Cc Treasury …” (no braces). Word file regenerated. | Implemented |
 | DISC-448 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Irreversible pop-up stated once | Owner: the “This action is irreversible…” pop-up comes for every approval and rejection, so do not repeat it in the steps | Removed from the Treasury steps (main 2.1.1.4, 2.2.4; scenario-wise steps); stated once as a rule – main BRD section 2 points and scenario-wise 2.1. Word files regenerated. | Implemented |
+| DISC-449 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Links to the LOS journey and the receipt | Owner: where are the LOS journey and the receipt in the BRD | They are in main BRD section 3 (3.1 LOS journey with the prototype link and screenshots 11 – 15; 3.2 receipt and LMS screenshots 16 – 21). Added: “Open the payment receipt” link in 3.2; in the scenario-wise BRD 2.3 links to the LOS payment journey, the receipt and the main BRD screenshots. Word files regenerated. | Implemented |
 
 ---
 
