@@ -113,15 +113,15 @@ def _waiver_body():
            "SD": ("SJV", "P&amp;L_Income", "800111", "STAMP DUTY CHARGES LAS/LAMF Loan-1"),
            "GST": ("SJV", "BS_Liability", "715110", "IGST At Loan-1")}
 
-    def uno(title, lines):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
+    def uno(title, lines, sub="Loan Account Number"):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
         if not lines:
             return f"<p><b>{title}</b> – no accounting entry (nothing is received).</p>"
         tot = round(sum(a for _, a in lines), 2)
         f = lambda v: f"{v:,.2f}".rstrip("0").rstrip(".") if v % 1 else f"{int(v):,}"
         rows = [f"<tr><td>{BANK[0]}</td><td>{BANK[1]}</td><td>{BANK[2]}</td><td>{BANK[3]}</td><td>05-Nov-2026</td><td>{f(tot)}</td><td></td>"
-                f"<td>{BANK[4]}</td><td>Loan Account Number</td></tr>"]
+                f"<td>{BANK[4]}</td><td>{sub}</td></tr>"]
         rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td>05-Nov-2026</td><td></td>"
-                 f"<td>{f(a)}</td><td>HLTFC</td><td>Loan Account Number</td></tr>" for k, a in lines]
+                 f"<td>{f(a)}</td><td>HLTFC</td><td>{sub}</td></tr>" for k, a in lines]
         return (f"<p><b>{title}</b></p><table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th>"
                 "<th>Description</th><th>Doc. Dt</th><th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead>"
                 f"<tbody>{''.join(rows)}</tbody></table>")
@@ -135,10 +135,11 @@ def _waiver_body():
             fw, pw = [], [("PF", 325.27), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 193.55)]
             pnote = "example – ₹500 of the Processing Fee waived, ₹1,268.82 paid"
         k = 4 if n in (5, 6) else 1
+        sub = "LAN" if n in (2, 3, 4) else "Loan Account Number"   # DISC-438: a DRAFT loan has no loan account yet
         return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays; sample amounts</p>"
-                + uno(f"S {n}.{k} – Reject Without Waive-off", nw)
-                + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw)
-                + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw)
+                + uno(f"S {n}.{k} – Reject Without Waive-off", nw, sub)
+                + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw, sub)
+                + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw, sub)
                 + ("<p>Approve ({1}): no entry at this stage – the charges are deducted from the first disbursement and posted in UNO then; a waived "
                    "amount is never posted.</p>".format(n, f"S {n}.1 – S {n}.3") if n in (5, 6) else ""))
 
@@ -424,11 +425,12 @@ selected charges (amount, amount to be waived off and payable).</li>
 <li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
 <li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note. On approval, LMS should show “This action
 is irreversible. Are you sure you want to proceed?”.</li>
-<li>After Treasury approves, the waiver is posted in UNO and the Statement of Account (SOA) is updated at the same time.</li>
+<li>After Treasury approves, LMS updates the Statement of Account (SOA) with the waiver. Nothing is posted in UNO for the waiver.</li>
 <li>The Waive-off page then shows the waived amount in the Waived off Charges column and the balance in the Payable Charges column. The LAN
 stays ACTIVE.</li>
 <li>In the SOA, each charge is a debit, and the approved waive-off is a credit with a waiver narration, so the balance goes down by the waived
-amount (sample below, from the owner's SOA format).</li>
+amount (sample below, from the owner's SOA format). The waived amount includes GST, so a ₹500 waiver is ₹423.73 charge plus ₹76.27
+IGST.</li>
 </ul>
 <p><b>SOA example – Part A, application charges (₹500 of the Processing Fee waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Processing Fee Charges</td><td>883.82</td><td></td><td>883.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Marking Charges</td><td>531.00</td><td></td><td>1,414.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Removal Charges</td><td>118.00</td><td></td><td>1,532.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Stamp Duty Charges</td><td>236.00</td><td></td><td>1,768.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>1,268.82</td><td>DR</td></tr></tbody></table><p><b>SOA example – Part B, loan charges (₹500 waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Bounce Charge</td><td>118.00</td><td></td><td>118.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Penal Charges</td><td>50.00</td><td></td><td>168.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Loan Renewal Charge</td><td>1,178.82</td><td></td><td>1,346.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Annual Maintenance Charge (AMC)</td><td>1,178.82</td><td></td><td>2,525.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Bank Swap Charge</td><td>295.00</td><td></td><td>2,820.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>2,320.64</td><td>DR</td></tr></tbody></table>
 <ul>
@@ -1285,7 +1287,8 @@ def _waiver_scen_body():
         rows = [f"<tr><td>{BANK[0]}</td><td>{BANK[1]}</td><td>{BANK[2]}</td><td>{BANK[3]}</td><td>{f(tot)}</td><td></td><td>{BANK[4]}</td></tr>"]
         rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td></td><td>{f(a)}</td><td>HLTFC</td></tr>"
                  for k, a in lines]
-        return ("<p><b>Accounting entry (UNO)</b> – posted when the customer pays; Subaccd = Loan Account Number; sample amounts</p>"
+        return ("<p><b>Accounting entry (UNO)</b> – posted when the customer pays; Subaccd = the LAN for a DRAFT loan (S 2 – S 4), else the Loan "
+                "Account Number; sample amounts</p>"
                 "<table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th>"
                 f"<th>Debit</th><th>Credit</th><th>Subdoctype</th></tr></thead><tbody>{''.join(rows)}</tbody></table>")
 
