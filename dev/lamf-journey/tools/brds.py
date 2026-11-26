@@ -1307,8 +1307,8 @@ def _waiver_scen_body():
                 "<table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th>"
                 f"<th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>{''.join(rows)}</tbody></table>")
 
-    MAIL = lambda to, cc: f"LMS event mail triggered to <b>{{{{{to}}}}}</b>, Cc <b>{{{{{cc}}}}}</b>, to approve or reject quickly."   # DISC-446
-    INFO = lambda to, cc: f"LMS event mail triggered to <b>{{{{{to}}}}}</b>, Cc <b>{{{{{cc}}}}}</b>."
+    MAIL = lambda to, cc: f"LMS event mail triggered to <b>{to}</b>, Cc <b>{cc}</b>, to approve or reject quickly."   # DISC-446 / 447
+    INFO = lambda to, cc: f"LMS event mail triggered to <b>{to}</b>, Cc <b>{cc}</b>."
     ol = lambda items: "<ol class='brd-steps'>" + "".join(f"<li>{i}</li>" for i in items) + "</ol>"
     flow = lambda steps: ("<div class='brd-flow'><div class='fl'>" + "<i>→</i>".join(f"<span class='fs'>{x}</span>" for x in steps) + "</div></div>")
 
