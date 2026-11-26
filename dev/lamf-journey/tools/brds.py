@@ -466,6 +466,9 @@ application from the Curated Offers page.</li>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts as 4 digits}}}}, for example RCPT/LAMF/2026/11/0149.</li>
 <li>The paid amount should be posted in UNO immediately, and the SOA is updated at the same time. Only the amount actually paid is posted.</li>
+<li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
+800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
+Processing Fee* on the payment page and the receipt.</li>
 <li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. {T(IC(14))}</li>
 <li>Treasury needs a <b>Confirm Payment</b> option in the Approvals tab. The payment is not final in LMS until Treasury confirms it.</li>
 <li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer

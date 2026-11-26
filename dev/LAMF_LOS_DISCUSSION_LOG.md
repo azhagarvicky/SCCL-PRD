@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 08:42 IST
+**Last Updated:** 26-11-2026 11:19 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -467,6 +467,7 @@
 | DISC-432 | 26-11-2026 | brd-waive-off.html | UNO and SOA updated together; de-pledge only when confirmed and nothing payable | Owner: the 2.2.4 point is complicated – make it simple; when the UNO entry is done the SOA is updated at the same time; the de-pledge can be initiated only after Treasury confirms and there is no payable amount | 2.2.4 split into two simple points: after Treasury approves, the waiver is posted in UNO and the SOA is updated at the same time; the Waive-off page shows the waived amount and the balance, the LAN stays ACTIVE. 3.2: the paid amount is posted in UNO and the SOA updated at the same time. Section 4: de-pledge only after Treasury confirms and no amount is payable. Word file regenerated. | Implemented |
 | DISC-433 | 26-11-2026 | brd-waive-off.html | 2.1.2.5 customer communication as a condition | Owner: the Loan Account Opening / Loan Lodgement Rejection communication is already parked – write it as the condition (the customer will receive …), not as today / new | 2.1.2.5 point now: the customer will receive the Loan Account Opening / Loan Lodgement Rejection SMS and mail – with the payment link for the payable amount (no or partial waive-off) or without it (full waive-off); sample links kept. Word file regenerated. | Implemented |
 | DISC-434 | 26-11-2026 | exports/BRD_Waiver_Rejection_Repayment_UNO_Entries_REVIEW.docx | Review of the owner's BRD | Owner shared BRD_Waier_Rejection_Repayment_UNO_Entries.docx – highlight the mistakes to correct | Review copy: 18 points highlighted in yellow with a red note (2.1.1.4 heading / irreversible pop-up; 2.1.1.5 Reject wording, day 31 grammar, de-pledge section number; 2.1.2.1 waive-off with Approve; 2.1.2.3 wrong reference; 2.1.2.4 “or repayment”; 2.1.2.5 “Today” wording; 2.2 intro; 3 heading; 3.2 SOA with UNO and ACTIVE waiver posting; 4 missing word / full waive-off; 5 Status column; 6 charges formatting, missing column and UNO entries; Audit note wording) plus a top note (file-name typo, missing 6.2 / 7). The owner's file itself not changed; the web BRD not changed. | Implemented |
+| DISC-435 | 26-11-2026 | brd-waive-off.html | UNO – each charge posted separately | Owner: in UNO the processing fee must not be posted combined with the charges – post them separately | The entries already post Processing Fee 800102, Lien Marking 800110, Lien Removal 800098 and Stamp Duty 800111 separately (IGST 715110 one line); a 3.2 point now states this as a requirement (the customer still sees one Processing Fee*). Word file regenerated. | Implemented |
 
 ---
 

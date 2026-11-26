@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=1b2c1f8">
+<link rel="stylesheet" href="assets/lamf.css?v=c4a43e3">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <h2>1. Purpose</h2>
@@ -254,6 +254,9 @@ application from the Curated Offers page.</li>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts as 4 digits}}, for example RCPT/LAMF/2026/11/0149.</li>
 <li>The paid amount should be posted in UNO immediately, and the SOA is updated at the same time. Only the amount actually paid is posted.</li>
+<li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
+800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
+Processing Fee* on the payment page and the receipt.</li>
 <li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. <a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>Treasury needs a <b>Confirm Payment</b> option in the Approvals tab. The payment is not final in LMS until Treasury confirms it.</li>
 <li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer
@@ -347,7 +350,7 @@ confirmed the payment, or nothing was payable because of a full waive-off.</li>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=1b2c1f8"></script>
-<script src="assets/colresize.js?v=1b2c1f8"></script>
+<script src="assets/review.js?v=c4a43e3"></script>
+<script src="assets/colresize.js?v=c4a43e3"></script>
 </body>
 </html>
