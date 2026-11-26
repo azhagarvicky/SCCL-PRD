@@ -247,6 +247,8 @@ part of the amount.</li>
 Stamp Duty (₹236) from the Processing Fee* and shows the balance in the Processing Fee row. For example, if the Processing Fee* is ₹1,768.82
 (₹1,499 with GST), the Processing Fee row shows ₹883.82.</li>
 <li>The waive-off can occur at two stages, before the LAN status becomes Active and after the LAN status becomes Active.</li>
+<li>Every approve or reject (by the maker, checker or Treasury) asks for confirmation in a pop-up – “This action is irreversible. Are you sure
+you want to proceed?”.</li>
 </ul>
 <p><b>Who approves</b></p>
 <table class="brd-table"><thead><tr><th>Maker (raises the request)</th><th>Checker (reviews)</th><th>Final approval</th></tr></thead><tbody>
@@ -322,7 +324,7 @@ not waive anything or change the LAN status at this step, and should send a mail
 <li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and
 approves or declines the request. On approval, LMS should send a mail to Treasury. The LAN status still does not change. {T(IC(12))}</li>
 <li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline the request, without changing the waive-off. On approval,
-LMS should show “This action is irreversible. Are you sure you want to proceed?”. On Yes, LMS should apply the waive-off, change the LAN status
+LMS should apply the waive-off, change the LAN status
 from DRAFT to REJECTED and send a mail to OPS and Treasury. {T(IC(13))}</li>
 <li>If the checker or Treasury declines the request, LMS should cancel it, so nothing is waived and the LAN stays in DRAFT, and send a mail to
 the maker, who can raise a new request. {T(IC(17))}</li>
@@ -429,8 +431,7 @@ the request.</li>
 <li>The waive-off request is shown in the Approvals tab of the LAN with the maker, the maker's note and file, the waive-off type and the
 selected charges (amount, amount to be waived off and payable).</li>
 <li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
-<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note. On approval, LMS should show “This action
-is irreversible. Are you sure you want to proceed?”.</li>
+<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note.</li>
 <li>After Treasury approves, LMS updates the Statement of Account (SOA) with the waiver. Nothing is posted in UNO for the waiver.</li>
 <li>The Waive-off page then shows the waived amount in the Waived off Charges column and the balance in the Payable Charges column. The LAN
 stays ACTIVE.</li>
@@ -1318,8 +1319,8 @@ def _waiver_scen_body():
                 "is waived and the LAN status does not change yet. " + MAIL("OPS Checker", "Treasury") + S(IC(16)),
                 "OPS checker (OPS L2 or L3) checks the request, can change the waive-off, adds the note (and a file if the waive-off is changed) "
                 "and approves. " + MAIL("Treasury", "OPS") + S(IC(12)),
-                "Treasury (L1, L2 or L3) adds the note and gives the final approval (“This action is irreversible. Are you sure you want to "
-                f"proceed?”). The waive-off is applied and the LAN status changes to <b>{to}</b>. " + INFO("OPS", "Treasury") + S(treasury_alert)]
+                "Treasury (L1, L2 or L3) adds the note and gives the final approval. "
+                f"The waive-off is applied and the LAN status changes to <b>{to}</b>. " + INFO("OPS", "Treasury") + S(treasury_alert)]
 
     PAY = lambda amt, mail: [
         f"The customer gets an SMS and mail with the payment link for <b>₹{amt}</b>." + S(*mail),
@@ -1405,6 +1406,7 @@ confirmed.</li>
 <li>The note is mandatory for all three. The file is mandatory for the maker, and for the checker only if the checker changes the waive-off.
 Treasury can only approve or decline. Every step is saved in the Audit tab.</li>
 <li>If the maker submits without the note or the file, LMS shows “Please add the note and upload a file.”</li>
+<li>Every approve or reject asks for confirmation in a pop-up – “This action is irreversible. Are you sure you want to proceed?”.</li>
 </ul>
 <h3>2.2 Charges and Waive-off</h3>
 <ul>
