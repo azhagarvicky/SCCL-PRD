@@ -1558,3 +1558,14 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .page-brd .brd-body h5 { font-size: 14px; font-weight: 700; margin: 14px 0 6px; color: #1f3864; }
 /* Waiver BRD – sample template status (DISC-405) */
 .brd-tbc{display:inline-block;padding:0 6px;border:1px solid #f59e0b;border-radius:4px;background:#fffbeb;color:#b45309;font-size:12px;font-weight:600;white-space:nowrap}
+/* Waiver BRD – CTA to the scenario-wise BRD (DISC-441) */
+.brd-cta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 18px;padding:12px 14px;background:#fff8e1;border:1px solid #f5c344;border-radius:8px}
+.brd-cta-btn{display:inline-block;background:#1a1a1a;color:#FFC20E!important;font-weight:700;text-decoration:none!important;padding:9px 16px;border-radius:6px}
+.brd-cta-btn:hover{background:#333}
+.brd-cta span{font-size:13px;color:#555}
+.brd-smp{font-size:12px;color:#555}
+/* BRD numbered steps – not the two-column screen list of .page-screens (DISC-441) */
+.page-brd .brd-body ol { list-style: decimal; columns: 1; padding-left: 24px; }
+.page-brd .brd-body ol li { break-inside: auto; border: 0; border-radius: 0; margin: 5px 0; }
+.page-brd .brd-body ol li a { display: inline; padding: 0; font-weight: inherit; }
+.page-brd .brd-body ol li a:hover { background: none; text-decoration: underline; }

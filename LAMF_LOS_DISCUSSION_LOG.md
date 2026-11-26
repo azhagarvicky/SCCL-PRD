@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 15:08 IST
+**Last Updated:** 26-11-2026 15:12 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -473,6 +473,7 @@
 | DISC-438 | 26-11-2026 | brd-waive-off.html, exports/Waiver_BRD_Accounting_Entries.xlsx | Accounting answers from the owner | Owner: S 7 SOA waive-off in the Credit column; S 7 waiver – no UNO entry; the waived amount includes GST; S 2 – S 4 UNO Subaccd = LAN | 2.2.4: LMS updates the SOA with the waiver, nothing is posted in UNO (replaces DISC-432 for ACTIVE); ₹500 waiver = ₹423.73 charge + ₹76.27 IGST. UNO entries for S 2 – S 4 use Subaccd LAN, S 5 / S 6 the Loan Account Number (main and scenario-wise BRD, Excel). Word files and Excel regenerated. | Implemented |
 | DISC-439 | 26-11-2026 | brd-waive-off.html, exports/Waiver_BRD_Accounting_Entries.xlsx | Subaccd = LAN everywhere; penal charges no GST | Owner: penal charges have no GST; the LAN is generated when the journey starts and stays the same while the status changes (DRAFT → SUBMITTED …) | UNO Subaccd = LAN in every scenario (S 2 – S 6) and in the reference format (was Loan Account Number); penal charges marked “no GST” in the charges table and 2.2.4. Both Word files and the Excel regenerated. | Implemented |
 | DISC-440 | 26-11-2026 | brd-waive-off.html | Accounting open points closed | Owner: one IGST line; at SUBMITTED / ACCOUNT OPENED LMS only shows the charges (not posted in UNO) – an approval with waive-off reduces the charges shown, and the charges shown are posted in UNO at each withdrawal or repayment; refunds of excess payments use the existing refund option | One IGST line kept. 2.1.2.4: LMS only shows the charges at these stages; approval with waive-off shows the reduced charges; the charges shown are posted in UNO (each charge separately) at the first withdrawal or repayment – replaces “deducted from the first disbursement” everywhere (outcome tables, flows, scenario-wise steps, Excel note). 3.2: duplicate / excess payments refunded through the existing refund option in LMS. Word files and Excel regenerated. | Implemented |
+| DISC-441 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Scenario-wise BRD as one flow, CTA on the Waiver BRD | Owner: add a “Scenarios wise BRD” CTA on the Waiver BRD page, and write that BRD scenario-wise with no flow break so it is easy to understand | Main Waiver BRD: CTA “Scenario-wise BRD →” at the top. Scenario-wise BRD rewritten with all current rules: 1 Purpose; 2 Rules for every scenario (who approves, charges and waive-off, payment / receipt / UNO / SOA / de-pledge); 3 S 1 – S 7, each with charges, what OPS can do, LAN status, a flow line and numbered steps with the sample mails (To be confirmed) and the UNO entry (Subaccd LAN, totals). S 5 / S 6 rejections use mails 28 / 29 and alerts 22 / 23; S 5.1 / 6.1 OPS only; S 7 note + file on the Waive-off page, approval in the Approvals tab, SOA only. CSS: BRD numbered lists no longer in two columns. Word files regenerated. | Implemented |
 
 ---
 

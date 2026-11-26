@@ -171,7 +171,7 @@ COL = {'m': RGBColor(0x37, 0x30, 0xA3), 'c': RGBColor(0x06, 0x5F, 0x46), 'brd-ph
 
 def flow(f):
     """process flow (DISC-393): bold sub-scenario title, then the steps joined by arrows; mails in colour."""
-    p = d.add_paragraph(); add_run(p, norm(f.find('b').get_text()).strip(), bold=True, size=10)
+    p = d.add_paragraph(); add_run(p, norm(f.find('b').get_text()).strip() if f.find('b') else 'Flow', bold=True, size=10)
     p.paragraph_format.space_after = Pt(0); p.paragraph_format.keep_with_next = True
     q = d.add_paragraph()
     for i, sp in enumerate(f.select('.fl > span')):
