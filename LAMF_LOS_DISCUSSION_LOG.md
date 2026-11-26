@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 23:00 IST
+**Last Updated:** 26-11-2026 23:10 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -480,6 +480,7 @@
 | DISC-445 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | S 1 – INACTIVE on day 31 | Owner: S 1 flow shows “Day 30 – INACTIVE” – the LAN becomes INACTIVE automatically on the 31st day, not the 30th | Scenario-wise S 1: flow “Day 31 – INACTIVE”, LAN status can change to “INACTIVE (on day 31)”, step “On day 31 from the LAN creation date…”. Main Waiver BRD summary table, S 1 details and data the same. Word files regenerated. | Implemented |
 | DISC-446 | 26-11-2026 | brd-waive-off-scenarios.html | Internal mail named in every step | Owner: S 2.1 point 1 does not mention the mail like point 2 – write each step uniformly, e.g. “LMS event automation mail triggered to {{OPS}} cc {{Treasury}}” | Scenario-wise BRD: every step that sends an internal mail now says “LMS event mail triggered to {{To}}, Cc {{Cc}}” (+ “to approve or reject quickly” for approval requests): maker request → {{OPS Checker}} Cc {{Treasury}}; checker approval → {{Treasury}} Cc {{OPS}}; Treasury approval → {{OPS}} Cc {{Treasury}}; payment received → {{Treasury}} Cc {{OPS}}; Treasury confirms → {{OPS}} Cc {{Treasury}}; day 31, decline, S 5.1 / 6.1 and S 7 steps the same. Word file regenerated. | Implemented |
 | DISC-447 | 26-11-2026 | brd-waive-off-scenarios.html | Mail steps without {{ }} | Owner: the {{ }} was only for reference – do not show it | Mail steps now read “LMS event mail triggered to OPS Checker, Cc Treasury …” (no braces). Word file regenerated. | Implemented |
+| DISC-448 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Irreversible pop-up stated once | Owner: the “This action is irreversible…” pop-up comes for every approval and rejection, so do not repeat it in the steps | Removed from the Treasury steps (main 2.1.1.4, 2.2.4; scenario-wise steps); stated once as a rule – main BRD section 2 points and scenario-wise 2.1. Word files regenerated. | Implemented |
 
 ---
 
