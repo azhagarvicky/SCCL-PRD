@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 21:59 IST
+**Last Updated:** 26-11-2026 22:34 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -477,6 +477,7 @@
 | DISC-442 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | LMS shows charges with GST included | Owner: LMS shows the charges with GST only, not a separate GST amount – change the Processing Fee split line | Scenario-wise 2.2 and main BRD section 2: LMS shows every charge with GST included; split given in GST-inclusive amounts (Processing Fee* ₹1,768.82 → Processing Fee ₹883.82, Lien Marking ₹531, Lien Removal ₹118, Stamp Duty ₹236), no “₹749 plus GST”. Word files regenerated. | Implemented |
 | DISC-443 | 26-11-2026 | brd-waive-off-scenarios.html | Waive-off type names written in full | Owner: write “a No waive-off, Partial waive-off or Full waive-off” – “a no, partial or full” reads oddly | Scenario-wise 2.2 point changed as given. Word file regenerated. | Implemented |
 | DISC-444 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | SOA updated only for an ACTIVE LAN | Owner: the SOA is updated only once the LAN is ACTIVE; at DRAFT, SUBMITTED and ACCOUNT OPENED a payment updates UNO but not the SOA | Main BRD 3.2 and scenario-wise 2.3 / payment steps: the payment is posted in UNO only; new point – the SOA is updated only when the LAN is ACTIVE (replaces “UNO and SOA updated at the same time” of DISC-432 for these payments). The ACTIVE waiver (2.2.4 / S 7) still updates the SOA. Word files regenerated. | Implemented |
+| DISC-445 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | S 1 – INACTIVE on day 31 | Owner: S 1 flow shows “Day 30 – INACTIVE” – the LAN becomes INACTIVE automatically on the 31st day, not the 30th | Scenario-wise S 1: flow “Day 31 – INACTIVE”, LAN status can change to “INACTIVE (on day 31)”, step “On day 31 from the LAN creation date…”. Main Waiver BRD summary table, S 1 details and data the same. Word files regenerated. | Implemented |
 
 ---
 
