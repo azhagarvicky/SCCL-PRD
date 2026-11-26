@@ -243,8 +243,9 @@ part of the amount.</li>
 <li>The Processing Fee and all the other charges can be waived in full or in part, so OPS can enter any amount up to the charge.</li>
 <li>The customer sees one Processing Fee* (*inclusive of Lien Marking, Lien Removal and Stamp Duty), but LMS should show it in four rows
 (Processing Fee, Lien Marking, Lien Removal and Stamp Duty) so that OPS can waive each one.</li>
-<li>LMS first deducts Lien Marking (₹450), Lien Removal (₹100) and Stamp Duty (₹200) from the Processing Fee* and shows the balance plus GST
-in the Processing Fee row. For example, if the Processing Fee* is ₹1,499, the Processing Fee row shows ₹749 plus GST, which is ₹883.82.</li>
+<li>LMS shows every charge with GST included, not as a separate GST amount. LMS first deducts Lien Marking (₹531), Lien Removal (₹118) and
+Stamp Duty (₹236) from the Processing Fee* and shows the balance in the Processing Fee row. For example, if the Processing Fee* is ₹1,768.82
+(₹1,499 with GST), the Processing Fee row shows ₹883.82.</li>
 <li>The waive-off can occur at two stages, before the LAN status becomes Active and after the LAN status becomes Active.</li>
 </ul>
 <p><b>Who approves</b></p>
@@ -1403,8 +1404,8 @@ Treasury can only approve or decline. Every step is saved in the Audit tab.</li>
 </ul>
 <h3>2.2 Charges and Waive-off</h3>
 <ul>
-<li>S 2 has Lien Marking and Lien Removal. From S 3, LMS shows the customer's Processing Fee* in four rows – Processing Fee, Lien Marking,
-Lien Removal and Stamp Duty – after deducting ₹450, ₹100 and ₹200 from the Processing Fee* (₹1,499 → Processing Fee ₹749 plus GST).</li>
+<li>S 2 has Lien Marking ₹531 and Lien Removal ₹118. From S 3, LMS shows the customer's Processing Fee* (₹1,768.82) in four rows – Processing
+Fee ₹883.82, Lien Marking ₹531, Lien Removal ₹118 and Stamp Duty ₹236. LMS shows every charge with GST included, not as a separate GST amount.</li>
 <li>Lien Marking, Lien Removal and Stamp Duty can only be waived in full. The Processing Fee and the other charges can be waived by any amount.</li>
 <li>The waived amount includes GST. Penal charges carry no GST.</li>
 <li>Each request is a no, partial or full waive-off, set by LMS from the amount left to pay.</li>
