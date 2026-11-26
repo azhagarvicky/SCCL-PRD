@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 08:24 IST
+**Last Updated:** 26-11-2026 08:37 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -465,6 +465,7 @@
 | DISC-430 | 26-11-2026 | brd-waive-off.html | Section 5 column renamed | Owner: change the heading Internal / Customer | Column heading “Internal / Customer” → “Recipient” (values Internal / Customer kept). Word file regenerated. | Implemented |
 | DISC-431 | 26-11-2026 | brd-waive-off.html, lms.html | ACTIVE Waive-off page – Add a note and Upload a file back | Owner: the separate ACTIVE Waive-off page needs Add a note and Upload a file (said wrongly before) – change it everywhere | Corrects DISC-422: the Waive-off page = table + Add a note + Upload a file (both mandatory for the maker, “Please add the note and upload a file.”) + Waive-off button; the request goes to the Approvals tab with the maker's note and file; the checker and Treasury add their note there (no file). BRD 2.2.1 – 2.2.4, screenshots 23 / 24 / 25, alerts 18 / 19 (Reason line back), scenario-wise S 7.2 updated. Prototype tested (blocked without note / file; note and file shown in the Approvals tab; reset after approval). Word files regenerated. | Implemented |
 | DISC-432 | 26-11-2026 | brd-waive-off.html | UNO and SOA updated together; de-pledge only when confirmed and nothing payable | Owner: the 2.2.4 point is complicated – make it simple; when the UNO entry is done the SOA is updated at the same time; the de-pledge can be initiated only after Treasury confirms and there is no payable amount | 2.2.4 split into two simple points: after Treasury approves, the waiver is posted in UNO and the SOA is updated at the same time; the Waive-off page shows the waived amount and the balance, the LAN stays ACTIVE. 3.2: the paid amount is posted in UNO and the SOA updated at the same time. Section 4: de-pledge only after Treasury confirms and no amount is payable. Word file regenerated. | Implemented |
+| DISC-433 | 26-11-2026 | brd-waive-off.html | 2.1.2.5 customer communication as a condition | Owner: the Loan Account Opening / Loan Lodgement Rejection communication is already parked – write it as the condition (the customer will receive …), not as today / new | 2.1.2.5 point now: the customer will receive the Loan Account Opening / Loan Lodgement Rejection SMS and mail – with the payment link for the payable amount (no or partial waive-off) or without it (full waive-off); sample links kept. Word file regenerated. | Implemented |
 
 ---
 
