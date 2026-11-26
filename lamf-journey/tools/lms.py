@@ -177,9 +177,13 @@ def draft_approvals(r, tid):
             # DISC-351: after the rejection – customer payment (from the LOS), Treasury confirmation, then de-pledge
             '<div class="wv-pay-box" hidden><h3>Charges payment</h3><p class="wv-pay-st"></p>'
             '<div class="wv-pay-ctas"><button type="button" class="wv-sim">Simulate customer payment (prototype)</button>'
-            '<button type="button" class="wv-confirm" hidden>Confirm Payment</button>'
             '<button type="button" class="wv-depledge" disabled>Initiate De-pledge</button></div>'
-            '<p class="wv-hint wv-dp-hint">De-pledge is enabled only after Treasury confirms the payment.</p></div>'
+            # DISC-452: Treasury confirms the payment – Approve (received) or Reject (not received); Enable de-pledge only if nothing is payable
+            '<div class="wv-tc" hidden><h4>Treasury – payment confirmation</h4>'
+            '<label class="wv-chkl"><input type="checkbox" class="wv-endp"> Enable de-pledge <span>(tick only if no amount is payable)</span></label>'
+            '<div class="wv-appr-ctas"><button type="button" class="wv-tc-rej">Reject – payment not received</button>'
+            '<button type="button" class="wv-confirm">Approve – payment received</button></div></div>'
+            '<p class="wv-hint wv-dp-hint">De-pledge is enabled only when Treasury approves the payment with “Enable de-pledge” ticked.</p></div>'
             + pop('wv-pr', '<h3>Are you sure you want to reject the application with the selected waive-off?</h3>' '<p class="wv-ptype"></p>'
                   f'<p class="wv-ps-txt">The request will be sent to {ck} (Checker) for approval.</p>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes, submit</button></div>')
@@ -190,6 +194,8 @@ def draft_approvals(r, tid):
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-a">Yes</button></div>')
             + pop('wv-pd', '<h3>Are you sure you want to decline? The waive-off and rejection request will be cancelled.</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-d">Yes, decline</button></div>')
+            + pop('wv-pn', '<h3>Are you sure the payment is not received? The payment will be rejected.</h3>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-n">Yes, reject</button></div>')
             + pop('wv-pc', '<h3>Are you sure you want to confirm the payment received from the customer?</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-c">Yes, confirm</button></div>')
             + '</div>')
@@ -392,8 +398,9 @@ WAIVER_JS = """<script>
     if (c.contains('wv-sim')) {          /* the customer pays in the LOS – LMS gets the payment, receipt and UNO entries */
       var pb2 = w.querySelector('.wv-pay-box'), amt = f2(+w.dataset.due), ts = stamp();
       pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
-        'Receipt RCPT/LAMF/2026/11/0149 (Documents tab) · UNO entries posted. <b>Pending Treasury confirmation.</b>';
-      e.target.hidden = true; pb2.querySelector('.wv-confirm').hidden = false;
+        'Receipt RCPT/LAMF/2026/11/0149 (Documents tab) · UNO entries posted.<br>Mail sent to Treasury, Cc OPS: <i>Charges Payment Received</i> – ' +
+        'please confirm the payment. <b>Pending Treasury confirmation.</b>';
+      e.target.hidden = true; pb2.querySelector('.wv-tc').hidden = false; pb2.querySelector('.wv-endp').checked = false; pb2.querySelector('.wv-endp').disabled = false;
       audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/0149 generated', '-', 'System', '-');
       var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
       if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
@@ -403,12 +410,23 @@ WAIVER_JS = """<script>
         tr.children[2].textContent = ts; docs.prepend(tr); }
     }
     if (c.contains('wv-confirm')) show(w, '.wv-pc', true);
-    if (c.contains('wv-yes-c')) {
-      show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box');
-      pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment confirmed by Treasury</b> on ' + stamp() + '. Mail sent to OPS to initiate the de-pledge (Charges Received – Initiate De-pledge).');
+    if (c.contains('wv-yes-c')) {          /* Treasury approves – payment received; de-pledge only if “Enable de-pledge” is ticked (DISC-452) */
+      show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box'), en = pb3.querySelector('.wv-endp').checked;
       pb3.querySelector('.wv-pay-st').innerHTML = pb3.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
-      pb3.querySelector('.wv-confirm').hidden = true; pb3.querySelector('.wv-depledge').disabled = false; pb3.querySelector('.wv-dp-hint').hidden = true;
-      audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' confirmed by Treasury', '-', 'Treasury user', 'Treasury user');
+      pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment approved by Treasury</b> (received) on ' + stamp() + '. ' +
+        (en ? 'De-pledge enabled. Mail sent to OPS, Cc Treasury: <i>Charges Received – Initiate De-pledge</i>.'
+            : 'De-pledge not enabled – an amount is still payable.'));
+      pb3.querySelector('.wv-tc').hidden = true; pb3.querySelector('.wv-depledge').disabled = !en; pb3.querySelector('.wv-dp-hint').hidden = en;
+      audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' approved by Treasury (received)' + (en ? '; de-pledge enabled' : '; de-pledge not enabled'), '-', 'Treasury user', 'Treasury user');
+    }
+    if (c.contains('wv-tc-rej')) show(w, '.wv-pn', true);
+    if (c.contains('wv-yes-n')) {          /* Treasury rejects – payment not received; the customer can pay again (DISC-452) */
+      show(w, '.wv-pn', false); var pb5 = w.querySelector('.wv-pay-box');
+      pb5.querySelector('.wv-pay-st').innerHTML = pb5.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
+      pb5.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment rejected by Treasury</b> (not received) on ' + stamp() +
+        '. De-pledge stays disabled; the amount is still payable. Mail sent to OPS, Cc Treasury.');
+      pb5.querySelector('.wv-tc').hidden = true; pb5.querySelector('.wv-depledge').disabled = true; pb5.querySelector('.wv-sim').hidden = false;
+      audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' rejected by Treasury (not received)', '-', 'Treasury user', 'Treasury user');
     }
     if (c.contains('wv-depledge')) {
       var pb4 = w.querySelector('.wv-pay-box'); e.target.disabled = true; e.target.textContent = 'De-pledge initiated';

@@ -1569,3 +1569,9 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .page-brd .brd-body ol li { break-inside: auto; border: 0; border-radius: 0; margin: 5px 0; }
 .page-brd .brd-body ol li a { display: inline; padding: 0; font-weight: inherit; }
 .page-brd .brd-body ol li a:hover { background: none; text-decoration: underline; }
+/* Treasury payment confirmation with “Enable de-pledge” (DISC-452) */
+.wv-tc{margin:12px 0 0;padding:12px 14px;border:1px solid #c7d7fe;border-radius:8px;background:#f5f8ff}
+.wv-tc h4{margin:0 0 8px;font-size:14px}
+.wv-chkl{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px}
+.wv-chkl span{color:#666;font-size:12px}
+.wv-tc-rej{background:#fff;color:#b42318;border:1px solid #f1a9a0;border-radius:6px;padding:8px 14px;font-weight:600;cursor:pointer}

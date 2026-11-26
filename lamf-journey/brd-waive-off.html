@@ -279,19 +279,27 @@ ACCOUNT OPENED stages, only UNO is updated.</li>
 <li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
 800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
 Processing Fee* on the payment page and the receipt.</li>
-<li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. <a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>After the payment, LMS sends an event mail to Treasury, Cc OPS – “Charges Payment Received” – to confirm that the payment is really
+received. <a href="internal/IC-14.html" target="_blank" rel="noopener">Sample – alert 14</a> <span class="brd-tbc">To be confirmed</span></li>
 <li>A duplicate or excess payment is refunded through the existing refund option in LMS.</li>
-<li>Treasury needs a <b>Confirm Payment</b> option in the Approvals tab. The payment is not final in LMS until Treasury confirms it.</li>
-<li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer
-an SMS and mail with the payment receipt attached. <a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> · <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>Treasury needs an option in the Approvals tab to <b>Approve</b> the payment if it is received, or <b>Reject</b> it if it is not
+received. The payment is not final in LMS until Treasury approves it.</li>
+<li>While approving, Treasury needs an <b>Enable de-pledge</b> checkbox. Treasury ticks it only when no amount is payable, and then the
+de-pledge is enabled. If an amount is still payable, Treasury approves without ticking it, so only the payment is confirmed and the
+de-pledge stays disabled.</li>
+<li>If Treasury rejects the payment (not received), the de-pledge stays disabled, the amount stays payable and the customer can pay again.
+LMS sends a mail to OPS, Cc Treasury.</li>
+<li>After Treasury approves, LMS sends OPS a mail, Cc Treasury – “Charges Received – Initiate De-pledge” (when the de-pledge is enabled) – and
+the customer gets an SMS and mail with the payment receipt attached. <a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a> · <a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>This applies to every payment in every scenario.</li>
 </ul>
 <p><a href="charges-receipt.html" target="_blank" rel="noopener">Open the payment receipt</a> (the receipt sent to the customer, with the
 disclaimer; Download / Print).</p>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/16_receipt.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/16_receipt.png' alt='Payment receipt' loading='lazy'></a><figcaption>Payment receipt</figcaption></figure></div>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/17_lms_await.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/17_lms_await.png' alt='LMS – waiting for the customer’s payment, de-pledge disabled' loading='lazy'></a><figcaption>LMS – waiting for the customer’s payment, de-pledge disabled</figcaption></figure>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/18_lms_received.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/18_lms_received.png' alt='LMS – payment received, waiting for Treasury confirmation' loading='lazy'></a><figcaption>LMS – payment received, waiting for Treasury confirmation</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/18_lms_received.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/18_lms_received.png' alt='LMS – payment received: Treasury approves or rejects, with the Enable de-pledge checkbox' loading='lazy'></a><figcaption>LMS – payment received: Treasury approves or rejects, with the Enable de-pledge checkbox</figcaption></figure>
 <div class="brd-figs"><figure class='brd-fig sm'><a href='assets/img/brd/waiver/19_lms_confirm_pop.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/19_lms_confirm_pop.png' alt='Treasury confirmation pop-up' loading='lazy'></a><figcaption>Treasury confirmation pop-up</figcaption></figure></div>
-<figure class='brd-fig '><a href='assets/img/brd/waiver/20_lms_confirmed.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/20_lms_confirmed.png' alt='LMS – payment confirmed by Treasury, de-pledge enabled' loading='lazy'></a><figcaption>LMS – payment confirmed by Treasury, de-pledge enabled</figcaption></figure>
+<figure class='brd-fig '><a href='assets/img/brd/waiver/20_lms_confirmed.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/20_lms_confirmed.png' alt='LMS – payment approved with Enable de-pledge ticked, de-pledge enabled' loading='lazy'></a><figcaption>LMS – payment approved with Enable de-pledge ticked, de-pledge enabled</figcaption></figure>
 <figure class='brd-fig '><a href='assets/img/brd/waiver/21_lms_documents.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/21_lms_documents.png' alt='LMS Documents tab – the receipt' loading='lazy'></a><figcaption>LMS Documents tab – the receipt</figcaption></figure>
 <p><b>Reference format</b> – how the charges with IGST post in UNO against the LAN</p>
 <table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
@@ -322,8 +330,8 @@ disclaimer; Download / Print).</p>
 
 <h2>4. De-pledge</h2>
 <ul>
-<li>LMS should allow the de-pledge only after Treasury confirms and no amount is payable. For a rejected loan, this means Treasury has
-confirmed the payment, or nothing was payable because of a full waive-off.</li>
+<li>LMS should allow the de-pledge only when no amount is payable. After a payment, this means Treasury has approved the payment with
+<b>Enable de-pledge</b> ticked. With a full waive-off, nothing is payable, so the de-pledge is allowed straight away.</li>
 <li>The Initiate De-pledge button should stay disabled until then.</li>
 <li>OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge.</li>
 </ul>

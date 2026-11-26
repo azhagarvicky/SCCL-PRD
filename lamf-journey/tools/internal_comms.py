@@ -409,8 +409,8 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   'Transaction ID: {{Transaction ID}}. Paid on: {{Payment Date & Time}}. Receipt No.: {{Receipt No}} (saved in the Documents tab of the LAN). '
   'The accounting entries have been posted in UNO.\n'
-  'Please verify the payment and confirm it in LMS (Approvals tab of the LAN). The de-pledge of the units can be initiated only after '
-  'your confirmation.',
+  'Please check that the payment is really received and Approve it in LMS (Approvals tab of the LAN), or Reject it if it is not received. '
+  'While approving, tick Enable de-pledge only if no amount is payable – the de-pledge is enabled only then.',
   [('Any Sanction amount',
     ['k.natarajan@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
