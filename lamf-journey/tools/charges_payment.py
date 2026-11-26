@@ -15,6 +15,28 @@ TOTAL = sum(a for _, a, _ in CHARGES)
 WAIVED = sum(w for _, _, w in CHARGES)
 PAYABLE = round(TOTAL - WAIVED, 2)
 TXN, RCPT, PAID_ON = "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/11/0149", "23-11-2026 11:42 AM"
+SUF, CASE_TITLE = "", "S 3.3 – Processing Fee*, ₹500 waived"
+
+# DISC-450: one payment journey and one receipt for each payable case – the amount changes from scenario to scenario.
+# S 4, S 5.4 / 5.6 and S 6.4 / 6.6 have the same amounts as S 3.1 / S 3.3. Full waive-off has no payment.
+CASES = {
+    "s2-1": ("S 2.1 – Lien Marking and Lien Removal, no waive-off", [("Lien Marking Charges", 531, 0), ("Lien Removal Charges", 118, 0)], "",
+             "pay_SCCL2A7Q1M5N8K", "RCPT/LAMF/2026/11/0150"),
+    "s2-3": ("S 2.3 – Lien Marking waived in full, Lien Removal payable", [("Lien Marking Charges", 531, 531), ("Lien Removal Charges", 118, 0)], "",
+             "pay_SCCL2C4R6T9W3P", "RCPT/LAMF/2026/11/0151"),
+    "s3-1": ("S 3.1 (also S 4.1, S 5.4, S 6.4) – Processing Fee*, no waive-off", [("Processing Fee*", 1768.82, 0)],
+             "*Inclusive of Lien Marking, Lien Removal and Stamp Duty", "pay_SCCL3B8D2F6H1J", "RCPT/LAMF/2026/11/0152"),
+    "s3-3": ("S 3.3 (also S 4.3, S 5.6, S 6.6) – Processing Fee*, ₹500 waived", [("Processing Fee*", 1768.82, 500)],
+             "*Inclusive of Lien Marking, Lien Removal and Stamp Duty", "pay_SCCL7Q2X9K4M1B", "RCPT/LAMF/2026/11/0149"),
+}
+
+
+def use(key):
+    """Switch the sample data to one case; the pages are written as charges-payment-<key>.html / charges-receipt-<key>.html."""
+    global CHARGES, INCL, TOTAL, WAIVED, PAYABLE, TXN, RCPT, SUF, CASE_TITLE
+    CASE_TITLE, CHARGES, INCL, TXN, RCPT = CASES[key]
+    TOTAL = sum(a for _, a, _ in CHARGES); WAIVED = sum(w for _, _, w in CHARGES); PAYABLE = round(TOTAL - WAIVED, 2)
+    SUF = "-" + key
 
 
 def rs(v):
@@ -25,7 +47,7 @@ def rs(v):
 def _table(cls="cp-tbl"):   # customer view (DISC-352): only what the customer pays for each charge – no waived off / payable columns
     rows = "".join(f"<tr><td>{n}</td><td>{rs(a - w)}</td></tr>" for n, a, w in CHARGES if round(a - w, 2) > 0)
     return (f'<table class="{cls}"><thead><tr><th>Charges</th><th>Amount</th></tr></thead>'
-            f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(PAYABLE)}</td></tr></tfoot></table><p class="cp-incl">{INCL}</p>')
+            f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>' + (f'<p class="cp-incl">{INCL}</p>' if INCL else ''))
 
 
 HDR = ('<header class="hdr cp-hdr"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a>'
@@ -63,11 +85,11 @@ def body():
           f'<p class="cp-sub">We have received your payment of <b>{rs(PAYABLE)}</b>. Your lien removal will be initiated soon.</p>'
           f'<div class="cp-kv"><span>Loan Application ID</span><b>{LAN}</b><span>Amount Paid</span><b>{rs(PAYABLE)}</b>'
           f'<span>Transaction ID</span><b>{TXN}</b><span>Paid on</span><b>{PAID_ON}</b><span>Receipt No.</span><b>{RCPT}</b></div>'
-          '<a class="btn btn-outline btn-block" href="charges-receipt.html" target="_blank" rel="noopener">Download Receipt</a>'
+          f'<a class="btn btn-outline btn-block" href="charges-receipt{SUF}.html" target="_blank" rel="noopener">Download Receipt</a>'
           '<p class="cp-sec">The receipt is also sent to your registered email ID. You will be informed once the lien on your Mutual '
           'Fund units is removed.</p></div></main></section>')
     return ('<div class="cp"><div class="cp-top"><a href="index.html">← Home</a><b>LOS – Charges payment (after rejection)</b>'
-            '<span class="lms-new">New – as per the Waiver BRD (section 9). Not in the live LOS yet.</span></div>'
+            f'<span class="lms-new">{CASE_TITLE} · New – as per the Waiver BRD. Not in the live LOS yet.</span></div>'
             f'<nav class="cp-bar">{bar}</nav>{s0}{s1}{s2}{s3}{s4}</div>' + JS)
 
 
@@ -119,8 +141,11 @@ def in_words(v):
 def receipt():
     """Payment receipt sent to the customer (DISC-425): company details, receipt and payment details, the amount paid with the GST
     breakup (customer view – no waived amount, DISC-352), amount in words and the disclaimer. Printable / Save as PDF."""
-    taxable = round(PAYABLE / 1.18, 2)
-    gst = round(PAYABLE - taxable, 2)
+    paid = [(n, round(a - w, 2)) for n, a, w in CHARGES if round(a - w, 2) > 0]
+    lines = [(n, round(v / 1.18, 2), round(v - round(v / 1.18, 2), 2), v) for n, v in paid]
+    taxable = round(sum(x[1] for x in lines), 2)
+    gst = round(sum(x[2] for x in lines), 2)
+    body_rows = "".join(f"<tr><td>{n}</td><td>{rs(t)}</td><td>{rs(g)}</td><td>{rs(v)}</td></tr>" for n, t, g, v in lines)
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Payment Receipt – {RCPT}</title>
@@ -170,9 +195,9 @@ CIN: U65993TN1980PLC008215 · RBI Registration No.: B-07.00709<br>GSTIN: {{{{SCC
 <div style="grid-column:1/-1"><span>Purpose of Payment</span>Charges payable on the rejection of the Loan Against Mutual Funds application</div>
 </div>
 <table><thead><tr><th>Charges</th><th>Taxable Value</th><th>IGST @ 18%</th><th>Amount Paid</th></tr></thead>
-<tbody><tr><td>Processing Fee*</td><td>{rs(taxable)}</td><td>{rs(gst)}</td><td>{rs(PAYABLE)}</td></tr></tbody>
+<tbody>{body_rows}</tbody>
 <tfoot><tr><td>Total</td><td>{rs(taxable)}</td><td>{rs(gst)}</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>
-<p class="incl">{INCL}</p>
+{f'<p class="incl">{INCL}</p>' if INCL else ''}
 <p class="w">Amount received in words: <b>{in_words(PAYABLE)}</b></p>
 <p class="msg">Thank you. We have received your payment. The removal of the lien on your Mutual Fund units will be initiated after the
 payment is confirmed, and you will receive a separate confirmation from CAMS / KFintech once the units are released.</p>
@@ -180,7 +205,7 @@ payment is confirmed, and you will receive a separate confirmation from CAMS / K
 <div class="d"><h3>Disclaimer</h3><ol>
 <li>This is a computer-generated receipt and does not require a signature.</li>
 <li>This receipt is issued towards the charges for the above loan application only. It is not a payment towards any loan account.</li>
-<li>The charges include GST at the applicable rate. The Processing Fee* is inclusive of the Lien Marking, Lien Removal and Stamp Duty charges.</li>
+<li>The charges include GST at the applicable rate.{' The Processing Fee* is inclusive of the Lien Marking, Lien Removal and Stamp Duty charges.' if INCL else ''}</li>
 <li>The amount paid is not refundable, except in case of a duplicate or excess payment, which will be refunded to the source account after
 verification.</li>
 <li>This receipt is subject to the realisation of the payment. If the transaction is reversed by the bank or the payment gateway, this receipt

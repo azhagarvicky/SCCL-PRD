@@ -252,7 +252,14 @@ application from the Curated Offers page.</li>
 <li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 3.2).</li>
 <li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. <a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></li>
 </ul>
-<p><a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
+<p><b>Payment journey and receipt for each scenario</b> – the amount changes from scenario to scenario</p>
+<table class="brd-table"><thead><tr><th>Scenario</th><th>Customer pays</th><th>LOS payment journey</th><th>Receipt</th></tr></thead><tbody>
+<tr><td>S 2.1 – Reject Without Waive-off</td><td>₹649 (Lien Marking ₹531 + Lien Removal ₹118)</td><td><a href="charges-payment-s2-1.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s2-1.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>S 2.3 – Reject With Partial Waive-off</td><td>₹118 (Lien Removal; Lien Marking waived)</td><td><a href="charges-payment-s2-3.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s2-3.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>S 3.1 – Reject Without Waive-off<br><small>Same for S 4.1, S 5.4 and S 6.4</small></td><td>₹1,768.82 (Processing Fee*)</td><td><a href="charges-payment-s3-1.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s3-1.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>S 3.3 – Reject With Partial Waive-off<br><small>Same for S 4.3, S 5.6 and S 6.6</small></td><td>₹1,268.82 (Processing Fee*, ₹500 waived)</td><td><a href="charges-payment-s3-3.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s3-3.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>Reject With Full Waive-off (S 2.2, S 3.2, S 4.2, S 5.5, S 6.5)</td><td>Nothing</td><td colspan="2">No payment and no receipt</td></tr>
+</tbody></table>
 <div class="brd-figs">
 <figure class='brd-fig sm'><a href='assets/img/brd/waiver/11_los_link.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/11_los_link.png' alt='Payment link in the SMS' loading='lazy'></a><figcaption>Payment link in the SMS</figcaption></figure>
 <figure class='brd-fig sm'><a href='assets/img/brd/waiver/12_los_otp.png' target='_blank' rel='noopener'><img src='assets/img/brd/waiver/12_los_otp.png' alt='LOS – OTP verification' loading='lazy'></a><figcaption>LOS – OTP verification</figcaption></figure>
