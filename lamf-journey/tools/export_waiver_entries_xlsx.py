@@ -100,6 +100,20 @@ for name, t in (('Reference format', tables[0]), ('Account codes', tables[1])):
     else:
         widths(w, [12, 42, 26])
 
+# ---- Sheet 4: SOA example for an ACTIVE loan waiver (DISC-437) – from the BRD 2.2.4 tables
+w = wb.create_sheet('SOA (ACTIVE)'); rr = 1
+for t in body.find_all('table', class_='brd-soa'):
+    w.cell(rr, 1, txt(t.find_previous('p'))).font = BOLD; rr += 1
+    cols = [txt(th) for th in t.find_all('th')]; header(w, rr, cols); rr += 1
+    for tr in t.find('tbody').find_all('tr'):
+        for c, td in enumerate(tr.find_all('td'), 1):
+            v = txt(td); n = num(v) if cols[c - 1] in ('Debit', 'Credit', 'Balance') else None
+            x = w.cell(rr, c, n if n is not None else (v or None)); x.border = BOX
+            if n is not None: x.number_format = '#,##0.00'
+        rr += 1
+    rr += 1
+widths(w, [12, 46, 12, 12, 12, 8])
+
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 wb.save(OUT)
 print('saved', os.path.normpath(OUT))
