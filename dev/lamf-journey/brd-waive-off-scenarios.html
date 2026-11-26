@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off – Scenario-wise</title>
-<link rel="stylesheet" href="assets/lamf.css?v=bce3b97">
+<link rel="stylesheet" href="assets/lamf.css?v=d46f76e">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off – Scenario-wise</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 26-11-2026 · The Charges Waiver BRD as one flow, scenario by scenario (S 1 – S 7): approvals, mails, payment, de-pledge and UNO entries.</p><div class="brd-body">
 <p class="brd-note">Scenario-wise version of the <a href="brd-waive-off.html">Charges Waiver BRD</a>, for an easy read from start to end.
@@ -52,8 +52,8 @@ SOA.</li>
 </ul>
 
 <h2>3. Scenarios</h2>
-<h3>3.1 S 1 – DRAFT: customer dropped off before pledging the mutual funds</h3><p><b>Charges</b> None.<br><b>What OPS can do</b> No action.<br><b>LAN status can change to</b> INACTIVE (after 30 days)</p><div class='brd-flow'><div class='fl'><span class='fs'>Customer starts the journey</span><i>→</i><span class='fs'>LAN created – DRAFT</span><i>→</i><span class='fs'>Units not pledged</span><i>→</i><span class='fs'>Day 30 – INACTIVE</span></div></div>
-<ol class='brd-steps'><li>The LAN is created in DRAFT, but the mutual fund units are not pledged.</li><li>After 30 days from the LAN creation date, the LAN status changes to INACTIVE automatically.</li><li>No charges, no waive-off, no de-pledge and no accounting entry.</li></ol>
+<h3>3.1 S 1 – DRAFT: customer dropped off before pledging the mutual funds</h3><p><b>Charges</b> None.<br><b>What OPS can do</b> No action.<br><b>LAN status can change to</b> INACTIVE (on day 31)</p><div class='brd-flow'><div class='fl'><span class='fs'>Customer starts the journey</span><i>→</i><span class='fs'>LAN created – DRAFT</span><i>→</i><span class='fs'>Units not pledged</span><i>→</i><span class='fs'>Day 31 – INACTIVE</span></div></div>
+<ol class='brd-steps'><li>The LAN is created in DRAFT, but the mutual fund units are not pledged.</li><li>On day 31 from the LAN creation date, the LAN status changes to INACTIVE automatically.</li><li>No charges, no waive-off, no de-pledge and no accounting entry.</li></ol>
 
 <h3>3.2 S 2 – DRAFT: customer dropped off after pledging the mutual funds</h3><p><b>Charges</b> Lien Marking ₹531 and Lien Removal ₹118 (full waive-off only).<br><b>What OPS can do</b> Reject, with no, full or partial waive-off.<br><b>LAN status can change to</b> REJECTED</p><div class='brd-flow'><div class='fl'><span class='fs'>Customer starts the journey</span><i>→</i><span class='fs'>LAN created – DRAFT</span><i>→</i><span class='fs'>Units pledged</span><i>→</i><span class='fs'>Customer asks to remove the lien</span><i>→</i><span class='fs'>Rejection request</span><i>→</i><span class='fs'>Checker</span><i>→</i><span class='fs'>Treasury</span><i>→</i><span class='fs'>REJECTED</span><i>→</i><span class='fs'>Payment (if any)</span><i>→</i><span class='fs'>De-pledge</span></div></div>
 <p><b>Before the rejection</b> (pledged DRAFT, journey not completed)</p><ol class='brd-steps'><li>On day 30 from the LAN creation date, the customer gets an SMS and mail that the application is not complete and the units are pledged, so please complete the journey. The application is not rejected because of this. <span class="brd-smp">(<a href="new-mails/10_Application_Pending_Lien_Marked.html" target="_blank" rel="noopener">sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS row 40</a>) <span class="brd-tbc">To be confirmed</span></span></li><li>On day 31, OPS gets a mail to check with the customer to complete the journey, or to ask the customer to send a mail to de-pledge the units. Until then, the lien stays marked with SCCL. <span class="brd-smp">(<a href="internal/IC-21.html" target="_blank" rel="noopener">alert 21</a>) <span class="brd-tbc">To be confirmed</span></span></li><li>OPS maker rejects a pledged DRAFT loan only when the customer asks by mail to remove the lien.</li></ol>
@@ -85,7 +85,7 @@ SOA.</li>
 <p class='brd-note'>In every case, if the OPS checker or Treasury declines the request, it is cancelled – nothing is waived, the LAN status does not change, and the maker gets a mail and can raise a new request. <span class="brd-smp">(<a href="internal/IC-17.html" target="_blank" rel="noopener">alert 17</a>) <span class="brd-tbc">To be confirmed</span></span></p>
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=bce3b97"></script>
-<script src="assets/colresize.js?v=bce3b97"></script>
+<script src="assets/review.js?v=d46f76e"></script>
+<script src="assets/colresize.js?v=d46f76e"></script>
 </body>
 </html>

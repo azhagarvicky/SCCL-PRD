@@ -54,7 +54,7 @@ def _approve_only(to):   # S 5.1 – Approve only, no waive-off with the approva
     return [("Approved", f"Loan approved (Loan Account Opening), no waive-off. LAN → {to}. LMS shows the full charges; posted in UNO at the first withdrawal or repayment.",
              "No communication.", "Not applicable – loan continues.", "Charges posted in UNO at the first withdrawal or repayment.")]
 WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OPS can do, outcomes)
-    (1, "DRAFT", "Before pledging the mutual funds", [], "No action. The LAN moves to INACTIVE after 30 days.", []),
+    (1, "DRAFT", "Before pledging the mutual funds", [], "No action. The LAN moves to INACTIVE automatically on day 31.", []),
     (2, "DRAFT", "After pledging the mutual funds", [LM, LR], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
     (3, "DRAFT", "After the Sanction Letter is generated (units pledged)", [PF, LM, LR, SD], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
     (4, "DRAFT", "After the Loan Agreement e-Sign (units pledged, Sanction Letter generated and submitted)", [PF, LM, LR, SD], "Reject the loan, with or without waive-off.", REJ_OUTCOMES),
@@ -80,7 +80,7 @@ def _waiver_body():
         sub = lambda code, txt, to: f"<td class='wo'>S {n}.{code} – {txt}</td><td class='to'>{to}</td>"
         W = ("Without Waive-off", "With Full Waive-off", "With Partial Waive-off")
         if not ch:
-            return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td class='to'>INACTIVE (after 30 days)</td>{op and f'<td>{op}</td>'}</tr>"
+            return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td class='to'>INACTIVE (on day 31)</td>{op and f'<td>{op}</td>'}</tr>"
         if n in (2, 3, 4):
             r = [sub(i + 1, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
             return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{opc(3)}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
@@ -192,7 +192,7 @@ def _waiver_body():
         h = f"<h4>S {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h4>"
         if not ch:
             return h + ("<ul><li>No charges.</li><li>No action by OPS.</li>"
-                        "<li>LAN moves to INACTIVE after 30 days from the LAN generated date.</li>"
+                        "<li>LAN moves to INACTIVE automatically on day 31 from the LAN generated date.</li>"
                         "<li>No communication. No accounting entry.</li></ul>")
         chs = ("<table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th>"
                "<th>Payable Charges</th></tr></thead><tbody>"
@@ -1426,10 +1426,10 @@ SOA.</li>
 </ul>
 
 <h2>3. Scenarios</h2>
-{head(1, "DRAFT", "before pledging the mutual funds", "None.", "No action.", "INACTIVE (after 30 days)",
-      ["Customer starts the journey", "LAN created – DRAFT", "Units not pledged", "Day 30 – INACTIVE"])}
+{head(1, "DRAFT", "before pledging the mutual funds", "None.", "No action.", "INACTIVE (on day 31)",
+      ["Customer starts the journey", "LAN created – DRAFT", "Units not pledged", "Day 31 – INACTIVE"])}
 {ol(["The LAN is created in DRAFT, but the mutual fund units are not pledged.",
-     "After 30 days from the LAN creation date, the LAN status changes to INACTIVE automatically.",
+     "On day 31 from the LAN creation date, the LAN status changes to INACTIVE automatically.",
      "No charges, no waive-off, no de-pledge and no accounting entry."])}
 
 {head(2, "DRAFT", "after pledging the mutual funds", "Lien Marking ₹531 and Lien Removal ₹118 (full waive-off only).",
