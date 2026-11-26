@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 22:59 IST
+**Last Updated:** 26-11-2026 23:00 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -479,6 +479,7 @@
 | DISC-444 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | SOA updated only for an ACTIVE LAN | Owner: the SOA is updated only once the LAN is ACTIVE; at DRAFT, SUBMITTED and ACCOUNT OPENED a payment updates UNO but not the SOA | Main BRD 3.2 and scenario-wise 2.3 / payment steps: the payment is posted in UNO only; new point – the SOA is updated only when the LAN is ACTIVE (replaces “UNO and SOA updated at the same time” of DISC-432 for these payments). The ACTIVE waiver (2.2.4 / S 7) still updates the SOA. Word files regenerated. | Implemented |
 | DISC-445 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | S 1 – INACTIVE on day 31 | Owner: S 1 flow shows “Day 30 – INACTIVE” – the LAN becomes INACTIVE automatically on the 31st day, not the 30th | Scenario-wise S 1: flow “Day 31 – INACTIVE”, LAN status can change to “INACTIVE (on day 31)”, step “On day 31 from the LAN creation date…”. Main Waiver BRD summary table, S 1 details and data the same. Word files regenerated. | Implemented |
 | DISC-446 | 26-11-2026 | brd-waive-off-scenarios.html | Internal mail named in every step | Owner: S 2.1 point 1 does not mention the mail like point 2 – write each step uniformly, e.g. “LMS event automation mail triggered to {{OPS}} cc {{Treasury}}” | Scenario-wise BRD: every step that sends an internal mail now says “LMS event mail triggered to {{To}}, Cc {{Cc}}” (+ “to approve or reject quickly” for approval requests): maker request → {{OPS Checker}} Cc {{Treasury}}; checker approval → {{Treasury}} Cc {{OPS}}; Treasury approval → {{OPS}} Cc {{Treasury}}; payment received → {{Treasury}} Cc {{OPS}}; Treasury confirms → {{OPS}} Cc {{Treasury}}; day 31, decline, S 5.1 / 6.1 and S 7 steps the same. Word file regenerated. | Implemented |
+| DISC-447 | 26-11-2026 | brd-waive-off-scenarios.html | Mail steps without {{ }} | Owner: the {{ }} was only for reference – do not show it | Mail steps now read “LMS event mail triggered to OPS Checker, Cc Treasury …” (no braces). Word file regenerated. | Implemented |
 
 ---
 
