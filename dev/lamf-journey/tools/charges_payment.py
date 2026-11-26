@@ -140,8 +140,8 @@ table{{width:100%;border-collapse:collapse;font-size:14px}} th,td{{border:1px so
 th:first-child,td:first-child{{text-align:left}} th{{background:#FAFAF8}} tfoot td{{font-weight:bold;background:#FFF8E1}}
 .w{{margin:12px 0 0;font-size:14px}} .incl{{margin:6px 0 0;font-size:12px;color:#666}}
 .msg{{margin:18px 0 0;padding:12px 14px;background:#F1F8F2;border-left:4px solid #1e7d32;font-size:13px;line-height:19px}}
-.d{{margin:22px 0 0;padding:14px 16px;border:1px solid #e2e2e2;border-radius:6px;background:#FAFAF8}}
-.d h3{{margin-bottom:8px}} .d ol{{margin:0;padding-left:18px;font-size:12px;line-height:18px;color:#444}} .d li{{margin:3px 0}}
+.d{{background:#F5C344;padding:18px 32px 20px}}
+.d h3{{margin-bottom:8px;color:#1a1a1a}} .d ol{{margin:0;padding-left:18px;font-size:12px;line-height:18px;color:#1a1a1a}} .d li{{margin:3px 0}}
 .f{{background:#F5C344;padding:14px 32px;font-size:12px;line-height:18px;text-align:center}}
 .c{{background:#1a1a1a;color:#e6e6e6;text-align:center;padding:16px 32px;font-size:14px}}
 .note{{width:760px;max-width:calc(100% - 24px);margin:0 auto 24px;font-size:12px;color:#666}}
@@ -176,6 +176,7 @@ CIN: U65993TN1980PLC008215 · RBI Registration No.: B-07.00709<br>GSTIN: {{{{SCC
 <p class="w">Amount received in words: <b>{in_words(PAYABLE)}</b></p>
 <p class="msg">Thank you. We have received your payment. The removal of the lien on your Mutual Fund units will be initiated after the
 payment is confirmed, and you will receive a separate confirmation from CAMS / KFintech once the units are released.</p>
+</div>
 <div class="d"><h3>Disclaimer</h3><ol>
 <li>This is a computer-generated receipt and does not require a signature.</li>
 <li>This receipt is issued towards the charges for the above loan application only. It is not a payment towards any loan account.</li>
@@ -188,8 +189,6 @@ stands cancelled.</li>
 date, quoting the Receipt No. and the LAN.</li>
 <li>For grievances, write to grievanceredressal@shriramcredit.in. Please keep this receipt for your records.</li>
 </ol></div>
-</div>
-<div class="f">Shriram Credit Company Limited · Shriram House, No. 4, Burkit Road, T. Nagar, Chennai 600017 · lassupport@shriramcredit.in</div>
 <div class="c">&copy; 2026 Shriram Credit Company Limited. All rights reserved.</div>
 </div>
 <p class="note">Prototype (Waiver BRD) – the receipt is generated on payment, saved in the LMS Documents tab and sent to the customer with the
