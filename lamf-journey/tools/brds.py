@@ -513,24 +513,29 @@ waive-off).</li>
 </ul>
 
 <h2>5. Communication – Internal and Customer</h2>
-<table class="brd-table"><thead><tr><th>When</th><th>To</th><th>Type</th><th>Sample template and status</th></tr></thead><tbody>
-<tr><td>Maker submits a request</td><td>OPS checker (team users in Cc)</td><td>Internal mail</td><td>{T(IC(16))}</td></tr>
-<tr><td>Checker approves</td><td>Treasury</td><td>Internal mail</td><td>{T(IC(12))}</td></tr>
-<tr><td>Treasury approves</td><td>OPS and Treasury</td><td>Internal mail</td><td>{T(IC(13))}</td></tr>
-<tr><td>Checker or Treasury rejects the request</td><td>OPS maker</td><td>Internal mail</td><td>{T(IC(17))}</td></tr>
-<tr><td>Day 30 – pledged DRAFT LAN not submitted</td><td>Customer</td><td>SMS and mail – reminder to complete the journey</td><td>{T(NM('10_Application_Pending_Lien_Marked', 40))}</td></tr>
-<tr><td>Day 31 – pledged DRAFT LAN not submitted</td><td>OPS</td><td>Internal mail – check with the customer</td><td>{T(IC(21))}</td></tr>
-<tr><td>Rejected – no or partial waive-off</td><td>Customer</td><td>SMS and mail with the payment link</td><td>{T(NM('06_Draft_Application_Rejected_Pay_Charges', 36))}</td></tr>
-<tr><td>SUBMITTED / ACCOUNT OPENED loan rejected</td><td>OPS (as alerts 3 and 5 today)</td><td>Internal mail with the waive-off type and charges</td><td>{T(IC(22), IC(23))}</td></tr>
-<tr><td>SUBMITTED / ACCOUNT OPENED loan rejected</td><td>Customer</td><td>SMS and mail – with or without the payment link</td><td>{T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail – with link'), lk('mails/29_Application_Rejected.html', 'Sample mail – without link'))}</td></tr>
-<tr><td>Rejected – full waive-off</td><td>Customer</td><td>SMS and mail, no payment link</td><td>{T(NM('07_Draft_Application_Rejected', 37))}</td></tr>
-<tr><td>Customer pays</td><td>Treasury and OPS</td><td>Internal mail</td><td>{T(IC(14))}</td></tr>
-<tr><td>Treasury confirms the payment</td><td>OPS</td><td>Internal mail – initiate de-pledge</td><td>{T(IC(15))}</td></tr>
-<tr><td>Treasury confirms the payment</td><td>Customer</td><td>SMS and mail with the receipt</td><td>{T(NM('08_Charges_Payment_Received', 38))}</td></tr>
-<tr><td>Not paid – every month</td><td>Customer</td><td>SMS and mail – reminder</td><td>{T(NM('09_Charges_Payment_Reminder', 39))}</td></tr>
-<tr><td>ACCOUNT OPENED loan approved (Loan Lodgement)</td><td>Customer</td><td>SMS and mail – loan lodgement approved</td><td>{lk('communications.html', 'Loan Lodgement Approval')} <span class="brd-tbc">Already in use</span></td></tr>
-<tr><td>SUBMITTED loan approved (Loan Account Opening)</td><td>Customer</td><td>No communication</td><td>–</td></tr>
-<tr><td>ACTIVE loan – waive-off request, checker and Treasury approval</td><td>OPS checker, Treasury, OPS</td><td>Internal mail only – no customer communication</td><td>{T(IC(18), IC(19), IC(20))}</td></tr>
+<table class="brd-table"><thead><tr><th>Scenario</th><th>Internal / External</th><th>Email / SMS</th><th>Sample template</th><th>Status</th></tr></thead><tbody>
+<tr><td>Maker raises a rejection request with the waive-off (DRAFT, SUBMITTED, ACCOUNT OPENED) – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(16)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Checker approves the rejection request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(12)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury approves the rejection of a DRAFT loan – to OPS and Treasury</td><td>Internal</td><td>Email</td><td>{IC(13)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury approves the rejection of a SUBMITTED or ACCOUNT OPENED loan – to OPS (revised alerts 3 and 5)</td><td>Internal</td><td>Email</td><td>{IC(22)} · {IC(23)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Checker or Treasury declines the request – to the OPS maker</td><td>Internal</td><td>Email</td><td>{IC(17)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 30 – pledged DRAFT LAN not submitted, reminder to complete the journey – to the customer</td><td>External</td><td>Email and SMS</td><td>{NM('10_Application_Pending_Lien_Marked', 40)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 31 – pledged DRAFT LAN not submitted, check with the customer – to OPS</td><td>Internal</td><td>Email</td><td>{IC(21)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>DRAFT loan rejected with no or partial waive-off, with the payment link – to the customer</td><td>External</td><td>Email and SMS</td><td>{NM('06_Draft_Application_Rejected_Pay_Charges', 36)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>DRAFT loan rejected with full waive-off, without the payment link – to the customer</td><td>External</td><td>Email and SMS</td><td>{NM('07_Draft_Application_Rejected', 37)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>SUBMITTED or ACCOUNT OPENED loan rejected with no or partial waive-off, with the payment link – to the customer</td><td>External</td><td>Email and SMS</td><td>{lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail')} · {lk('communications.html', 'SMS')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>SUBMITTED or ACCOUNT OPENED loan rejected with full waive-off, without the payment link – to the customer</td><td>External</td><td>Email and SMS</td><td>{lk('mails/29_Application_Rejected.html', 'Sample mail')} · {lk('communications.html', 'SMS')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Customer pays the charges – to Treasury and OPS</td><td>Internal</td><td>Email</td><td>{IC(14)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury confirms the payment, initiate the de-pledge – to OPS</td><td>Internal</td><td>Email</td><td>{IC(15)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury confirms the payment, with the payment receipt – to the customer</td><td>External</td><td>Email and SMS</td><td>{NM('08_Charges_Payment_Received', 38)} · {lk('charges-receipt.html', 'Receipt')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Charges not paid, reminder every month – to the customer</td><td>External</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACCOUNT OPENED loan approved (Loan Lodgement) – to the customer</td><td>External</td><td>Email and SMS</td><td>{lk('communications.html', 'Loan Lodgement Approval')}</td><td><span class="brd-tbc">Already in use</span></td></tr>
+<tr><td>SUBMITTED loan approved (Loan Account Opening) – to the customer</td><td>External</td><td>–</td><td>–</td><td>No communication</td></tr>
+<tr><td>ACTIVE loan – maker raises a waive-off request – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(18)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – checker approves the waive-off request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(19)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – Treasury approves the waive-off request – to OPS</td><td>Internal</td><td>Email</td><td>{IC(20)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – checker or Treasury declines the waive-off request – to the OPS maker</td><td>Internal</td><td>Email</td><td>{IC(17)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – waive-off approved – to the customer</td><td>External</td><td>–</td><td>–</td><td>No communication</td></tr>
 </tbody></table>
 <ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
 
