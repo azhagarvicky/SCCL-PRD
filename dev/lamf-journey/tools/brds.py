@@ -465,7 +465,14 @@ application from the Curated Offers page.</li>
 <li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 3.2).</li>
 <li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. {T(NM('09_Charges_Payment_Reminder', 39))}</li>
 </ul>
-<p><a href="charges-payment.html" target="_blank" rel="noopener">Open the LOS payment screens</a> (prototype).</p>
+<p><b>Payment journey and receipt for each scenario</b> – the amount changes from scenario to scenario</p>
+<table class="brd-table"><thead><tr><th>Scenario</th><th>Customer pays</th><th>LOS payment journey</th><th>Receipt</th></tr></thead><tbody>
+<tr><td>S 2.1 – Reject Without Waive-off</td><td>₹649 (Lien Marking ₹531 + Lien Removal ₹118)</td><td><a href="charges-payment-s2-1.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s2-1.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>S 2.3 – Reject With Partial Waive-off</td><td>₹118 (Lien Removal; Lien Marking waived)</td><td><a href="charges-payment-s2-3.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s2-3.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>S 3.1 – Reject Without Waive-off<br><small>Same for S 4.1, S 5.4 and S 6.4</small></td><td>₹1,768.82 (Processing Fee*)</td><td><a href="charges-payment-s3-1.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s3-1.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>S 3.3 – Reject With Partial Waive-off<br><small>Same for S 4.3, S 5.6 and S 6.6</small></td><td>₹1,268.82 (Processing Fee*, ₹500 waived)</td><td><a href="charges-payment-s3-3.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s3-3.html" target="_blank" rel="noopener">Open</a></td></tr>
+<tr><td>Reject With Full Waive-off (S 2.2, S 3.2, S 4.2, S 5.5, S 6.5)</td><td>Nothing</td><td colspan="2">No payment and no receipt</td></tr>
+</tbody></table>
 <div class="brd-figs">
 {fig('11_los_link.png', 'Payment link in the SMS', 'sm')}
 {fig('12_los_otp.png', 'LOS – OTP verification', 'sm')}
@@ -1324,11 +1331,12 @@ def _waiver_scen_body():
                 "Treasury (L1, L2 or L3) adds the note and gives the final approval. "
                 f"The waive-off is applied and the LAN status changes to <b>{to}</b>. " + INFO("OPS", "Treasury") + S(treasury_alert)]
 
-    PAY = lambda amt, mail: [
+    PAY = lambda amt, mail, key: [
         f"The customer gets an SMS and mail with the payment link for <b>₹{amt}</b>." + S(*mail),
-        "The customer opens the link, verifies the mobile number with an OTP in the LOS and pays the full amount in one payment.",
+        "The customer opens the link, verifies the mobile number with an OTP in the LOS and pays the full amount in one payment. "
+        f"({lk(f'charges-payment-{key}.html', 'LOS payment journey')} · {lk(f'charges-receipt-{key}.html', 'receipt')})",
         "The paid amount is posted in UNO (each charge separately, entry below). The SOA is not updated, as the LAN is not ACTIVE. The receipt is saved "
-        "in the LMS Documents tab. " + INFO("Treasury", "OPS") + S(IC(14), lk("charges-receipt.html", "receipt")),
+        "in the LMS Documents tab. " + INFO("Treasury", "OPS") + S(IC(14)),
         "Treasury confirms the payment in LMS. " + INFO("OPS", "Treasury") + " OPS initiates the de-pledge, and the customer gets an SMS and "
         "mail with the receipt." + S(IC(15), NM("08_Charges_Payment_Received", 38)),
         "OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge."]
@@ -1348,10 +1356,11 @@ def _waiver_scen_body():
             e_no = [("PF", 749), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 269.82)]
             e_part = [("PF", 325.27), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 193.55)]
         to, k = "REJECTED", first
-        return (f"<h4>S {n}.{k} – Reject Without Waive-off</h4>" + ol(chain("reject", to, t_alert) + PAY(full, m_link)) + uno(e_no)
+        kn, kp = ("s2-1", "s2-3") if lm_lr else ("s3-1", "s3-3")   # DISC-450: payment journey and receipt for this case
+        return (f"<h4>S {n}.{k} – Reject Without Waive-off</h4>" + ol(chain("reject", to, t_alert) + PAY(full, m_link, kn)) + uno(e_no)
                 + f"<h4>S {n}.{k + 1} – Reject With Full Waive-off</h4>" + ol(chain("reject", to, t_alert) + NOPAY(m_none)) + uno([])
                 + f"<h4>S {n}.{k + 2} – Reject With Partial Waive-off</h4><p>Example: {ptxt}.</p>"
-                + ol(chain("reject", to, t_alert) + PAY(part, m_link)) + uno(e_part))
+                + ol(chain("reject", to, t_alert) + PAY(part, m_link, kp)) + uno(e_part))
 
     def approve_subs(n):
         to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
@@ -1430,9 +1439,8 @@ receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or
 SOA.</li>
 <li>De-pledge is allowed only after Treasury confirms the payment and no amount is payable. OPS maker initiates it and OPS checker approves it.</li>
 </ul>
-<p>See the screens: <a href="charges-payment.html" target="_blank" rel="noopener">LOS payment journey</a> (payment link, OTP, Pay Charges,
-payment result) · <a href="charges-receipt.html" target="_blank" rel="noopener">payment receipt</a> · the screenshots are in section 3 of the
-<a href="brd-waive-off.html">main Waiver BRD</a>.</p>
+<p>Each payable case links its own LOS payment journey and receipt (the amounts differ). S 4, S 5 and S 6 have the same amounts as S 3, so
+they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-waive-off.html">main Waiver BRD</a>.</p>
 
 <h2>3. Scenarios</h2>
 {head(1, "DRAFT", "before pledging the mutual funds", "None.", "No action.", "INACTIVE (on day 31)",

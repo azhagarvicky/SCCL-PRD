@@ -1102,6 +1102,12 @@ with open(os.path.join(ROOT, "charges-payment.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – LOS Charges Payment", cls="page-cp", body=_cp.body()))
 with open(os.path.join(ROOT, "charges-receipt.html"), "w") as f:
     f.write(_cp.receipt())
+for _k in _cp.CASES:   # one payment journey and one receipt per payable case (DISC-450)
+    _cp.use(_k)
+    with open(os.path.join(ROOT, f"charges-payment-{_k}.html"), "w") as f:
+        f.write(PAGE.format(title="LAMF – LOS Charges Payment", cls="page-cp", body=_cp.body()))
+    with open(os.path.join(ROOT, f"charges-receipt-{_k}.html"), "w") as f:
+        f.write(_cp.receipt())
 # New customer mails from the additional scenarios sheet – separate list page + one HTML per mail (DISC-304)
 from new_mails import NEW_MAILS, mail_html, list_body as new_mails_body
 os.makedirs(os.path.join(ROOT, "new-mails"), exist_ok=True)
