@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 15:37 IST
+**Last Updated:** 26-11-2026 21:59 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -476,6 +476,7 @@
 | DISC-441 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Scenario-wise BRD as one flow, CTA on the Waiver BRD | Owner: add a “Scenarios wise BRD” CTA on the Waiver BRD page, and write that BRD scenario-wise with no flow break so it is easy to understand | Main Waiver BRD: CTA “Scenario-wise BRD →” at the top. Scenario-wise BRD rewritten with all current rules: 1 Purpose; 2 Rules for every scenario (who approves, charges and waive-off, payment / receipt / UNO / SOA / de-pledge); 3 S 1 – S 7, each with charges, what OPS can do, LAN status, a flow line and numbered steps with the sample mails (To be confirmed) and the UNO entry (Subaccd LAN, totals). S 5 / S 6 rejections use mails 28 / 29 and alerts 22 / 23; S 5.1 / 6.1 OPS only; S 7 note + file on the Waive-off page, approval in the Approvals tab, SOA only. CSS: BRD numbered lists no longer in two columns. Word files regenerated. | Implemented |
 | DISC-442 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | LMS shows charges with GST included | Owner: LMS shows the charges with GST only, not a separate GST amount – change the Processing Fee split line | Scenario-wise 2.2 and main BRD section 2: LMS shows every charge with GST included; split given in GST-inclusive amounts (Processing Fee* ₹1,768.82 → Processing Fee ₹883.82, Lien Marking ₹531, Lien Removal ₹118, Stamp Duty ₹236), no “₹749 plus GST”. Word files regenerated. | Implemented |
 | DISC-443 | 26-11-2026 | brd-waive-off-scenarios.html | Waive-off type names written in full | Owner: write “a No waive-off, Partial waive-off or Full waive-off” – “a no, partial or full” reads oddly | Scenario-wise 2.2 point changed as given. Word file regenerated. | Implemented |
+| DISC-444 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | SOA updated only for an ACTIVE LAN | Owner: the SOA is updated only once the LAN is ACTIVE; at DRAFT, SUBMITTED and ACCOUNT OPENED a payment updates UNO but not the SOA | Main BRD 3.2 and scenario-wise 2.3 / payment steps: the payment is posted in UNO only; new point – the SOA is updated only when the LAN is ACTIVE (replaces “UNO and SOA updated at the same time” of DISC-432 for these payments). The ACTIVE waiver (2.2.4 / S 7) still updates the SOA. Word files regenerated. | Implemented |
 
 ---
 

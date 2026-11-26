@@ -265,7 +265,9 @@ application from the Curated Offers page.</li>
 <h3>3.2 Payment Receipt &amp; Accounting Entry (UNO)</h3>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{Payment Year}}/{{Payment Month}}/{{Number of receipts as 4 digits}}, for example RCPT/LAMF/2026/11/0149.</li>
-<li>The paid amount should be posted in UNO immediately, and the SOA is updated at the same time. Only the amount actually paid is posted.</li>
+<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted.</li>
+<li>The SOA is not updated for these payments, because the SOA is updated only when the LAN status is ACTIVE. At the DRAFT, SUBMITTED and
+ACCOUNT OPENED stages, only UNO is updated.</li>
 <li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
 800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
 Processing Fee* on the payment page and the receipt.</li>
