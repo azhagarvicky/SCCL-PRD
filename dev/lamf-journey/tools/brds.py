@@ -379,9 +379,8 @@ LAN status does not change.</li>
 <li>Today, when the loan is rejected, LMS sends the internal mail Loan Account Opening Rejected or Loan Lodgement Rejected ({lk('internal/IC-03.html', 'alert 3')},
 {lk('internal/IC-05.html', 'alert 5')}). This mail should also show the waive-off type and the charges (amount, waived off and payable).
 {T(IC(22), IC(23))}</li>
-<li>Today the customer gets no communication when the loan is rejected at this stage. The new Loan Account Opening / Loan Lodgement Rejection
-SMS and mail on the Customer Communications page should be used, with the payment link for no or partial waive-off and without it for
-full waive-off. {T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail – with payment link'), lk('mails/29_Application_Rejected.html', 'Sample mail – without payment link'), lk('communications.html', 'SMS'))}</li>
+<li>The customer will receive the Loan Account Opening / Loan Lodgement Rejection SMS and mail. With no or partial waive-off, it has the
+payment link for the payable amount. With a full waive-off, it is sent without the payment link. {T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail – with payment link'), lk('mails/29_Application_Rejected.html', 'Sample mail – without payment link'), lk('communications.html', 'SMS'))}</li>
 <li>The day 30 and day 31 mails do not apply, because the customer has already completed the journey.</li>
 </ul>
 
