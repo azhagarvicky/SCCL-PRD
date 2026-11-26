@@ -21,7 +21,7 @@ CHARGES = [   # (charge, amount, when it is incurred) – amounts confirmed by t
     ("Processing Fee Charge", "Processing Fee* from the fee structure less ₹750 (Lien Marking ₹450 + Lien Removal ₹100 + Stamp Duty ₹200), + GST "
      "(sample ₹1,499 − ₹750 = ₹749 + GST = ₹883.82)", "From the Sanction Letter (S 3 onwards). Any amount can be waived."),
     ("Bounce Charge", "₹100 + GST (₹118) per instance", "Active loan, when an EMI bounces"),
-    ("Penal Charge", "36% a year on the unpaid interest / EMI", "Active loan, on a delay or default"),
+    ("Penal Charge", "36% a year on the unpaid interest / EMI – no GST", "Active loan, on a delay or default"),
     ("Loan Renewal Charge", "₹999 + GST (₹1,178.82)", "Active loan, on renewal"),
     ("Annual Maintenance Charge (AMC)", "₹999 + GST (₹1,178.82)", "Active loan, every year"),
     ("Bank Swap Charge", "₹250 + GST (₹295)", "Active loan, when the repayment bank account is changed"),
@@ -113,7 +113,7 @@ def _waiver_body():
            "SD": ("SJV", "P&amp;L_Income", "800111", "STAMP DUTY CHARGES LAS/LAMF Loan-1"),
            "GST": ("SJV", "BS_Liability", "715110", "IGST At Loan-1")}
 
-    def uno(title, lines, sub="Loan Account Number"):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
+    def uno(title, lines, sub="LAN"):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
         if not lines:
             return f"<p><b>{title}</b> – no accounting entry (nothing is received).</p>"
         tot = round(sum(a for _, a in lines), 2)
@@ -135,7 +135,7 @@ def _waiver_body():
             fw, pw = [], [("PF", 325.27), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 193.55)]
             pnote = "example – ₹500 of the Processing Fee waived, ₹1,268.82 paid"
         k = 4 if n in (5, 6) else 1
-        sub = "LAN" if n in (2, 3, 4) else "Loan Account Number"   # DISC-438: a DRAFT loan has no loan account yet
+        sub = "LAN"   # DISC-439: the LAN is created when the journey starts and stays the same in every status
         return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays; sample amounts</p>"
                 + uno(f"S {n}.{k} – Reject Without Waive-off", nw, sub)
                 + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw, sub)
@@ -430,7 +430,7 @@ is irreversible. Are you sure you want to proceed?”.</li>
 stays ACTIVE.</li>
 <li>In the SOA, each charge is a debit, and the approved waive-off is a credit with a waiver narration, so the balance goes down by the waived
 amount (sample below, from the owner's SOA format). The waived amount includes GST, so a ₹500 waiver is ₹423.73 charge plus ₹76.27
-IGST.</li>
+IGST. Penal charges carry no GST.</li>
 </ul>
 <p><b>SOA example – Part A, application charges (₹500 of the Processing Fee waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Processing Fee Charges</td><td>883.82</td><td></td><td>883.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Marking Charges</td><td>531.00</td><td></td><td>1,414.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Removal Charges</td><td>118.00</td><td></td><td>1,532.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Stamp Duty Charges</td><td>236.00</td><td></td><td>1,768.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>1,268.82</td><td>DR</td></tr></tbody></table><p><b>SOA example – Part B, loan charges (₹500 waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Bounce Charge</td><td>118.00</td><td></td><td>118.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Penal Charges</td><td>50.00</td><td></td><td>168.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Loan Renewal Charge</td><td>1,178.82</td><td></td><td>1,346.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Annual Maintenance Charge (AMC)</td><td>1,178.82</td><td></td><td>2,525.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Bank Swap Charge</td><td>295.00</td><td></td><td>2,820.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>2,320.64</td><td>DR</td></tr></tbody></table>
 <ul>
@@ -487,14 +487,14 @@ an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Pay
 <div class="brd-figs">{fig('19_lms_confirm_pop.png', 'Treasury confirmation pop-up', 'sm')}</div>
 {fig('20_lms_confirmed.png', 'LMS – payment confirmed by Treasury, de-pledge enabled')}
 {fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
-<p><b>Reference format</b> – how the charges with IGST post in UNO against the Loan Account Number</p>
+<p><b>Reference format</b> – how the charges with IGST post in UNO against the LAN</p>
 <table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
 <th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>
-<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>885</td><td></td><td>HLFCH</td><td>Loan Account Number</td></tr>
-<tr><td>SJV</td><td>P&amp;L_Income</td><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>450</td><td>HLTFC</td><td>Loan Account Number</td></tr>
-<tr><td>SJV</td><td>P&amp;L_Income</td><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>05-Nov-2026</td><td></td><td>100</td><td>HLTFC</td><td>Loan Account Number</td></tr>
-<tr><td>SJV</td><td>P&amp;L_Income</td><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>200</td><td>HLTFC</td><td>Loan Account Number</td></tr>
-<tr><td>SJV</td><td>BS_Liability</td><td>715110</td><td>IGST At Loan-1</td><td>05-Nov-2026</td><td></td><td>135</td><td>HLTFC</td><td>Loan Account Number</td></tr>
+<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>885</td><td></td><td>HLFCH</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>450</td><td>HLTFC</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>05-Nov-2026</td><td></td><td>100</td><td>HLTFC</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>200</td><td>HLTFC</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>BS_Liability</td><td>715110</td><td>IGST At Loan-1</td><td>05-Nov-2026</td><td></td><td>135</td><td>HLTFC</td><td>LAN</td></tr>
 </tbody></table>
 <ul>
 <li>SBR is the bank receipt, where the amount received is debited to the bank account. SJV is the journal, where the charges are credited to income and the GST to the IGST liability account.</li>
@@ -1287,8 +1287,7 @@ def _waiver_scen_body():
         rows = [f"<tr><td>{BANK[0]}</td><td>{BANK[1]}</td><td>{BANK[2]}</td><td>{BANK[3]}</td><td>{f(tot)}</td><td></td><td>{BANK[4]}</td></tr>"]
         rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td></td><td>{f(a)}</td><td>HLTFC</td></tr>"
                  for k, a in lines]
-        return ("<p><b>Accounting entry (UNO)</b> – posted when the customer pays; Subaccd = the LAN for a DRAFT loan (S 2 – S 4), else the Loan "
-                "Account Number; sample amounts</p>"
+        return ("<p><b>Accounting entry (UNO)</b> – posted when the customer pays; Subaccd = LAN; sample amounts</p>"
                 "<table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th>"
                 f"<th>Debit</th><th>Credit</th><th>Subdoctype</th></tr></thead><tbody>{''.join(rows)}</tbody></table>")
 

@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 14:40 IST
+**Last Updated:** 26-11-2026 14:57 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -471,6 +471,7 @@
 | DISC-436 | 26-11-2026 | brd-waive-off-scenarios.html, exports/BRD_Charges_Waiver_Scenario-wise.docx | Scenario-wise BRD brought in line | Owner: give the document scenario-wise | Scenario-wise BRD: S 5.1 and S 6.1 (approve without waive-off) now OPS maker → OPS checker only, no Treasury; payment steps say UNO (each charge separately) and the SOA are updated at the same time. Word file regenerated and sent. | Implemented |
 | DISC-437 | 26-11-2026 | brd-waive-off.html, exports/Waiver_BRD_Accounting_Entries.xlsx | SOA for the ACTIVE loan waiver | Owner attached Waiver_BRD_Accounting_Entries_1.xlsx – JV sheet (the same entries, side by side, IGST by formula) and a new SOA sheet for S 7 (Part A: Processing Fee, Lien Marking, Lien Removal, Stamp Duty; Part B: Bounce, Penal, Loan Renewal, AMC, Bank Swap; waive-off ₹500 each) | BRD 2.2.4: new point (each charge a debit, the approved waive-off a credit with the waiver narration) and the two SOA tables (Part A 1,768.82 → 1,268.82; Part B 2,820.64 → 2,320.64). The waive-off is shown in the Credit column (the owner's sheet had it in Debit). Excel: new sheet “SOA (ACTIVE)”. JV entries unchanged (they match). Word file regenerated. | Implemented |
 | DISC-438 | 26-11-2026 | brd-waive-off.html, exports/Waiver_BRD_Accounting_Entries.xlsx | Accounting answers from the owner | Owner: S 7 SOA waive-off in the Credit column; S 7 waiver – no UNO entry; the waived amount includes GST; S 2 – S 4 UNO Subaccd = LAN | 2.2.4: LMS updates the SOA with the waiver, nothing is posted in UNO (replaces DISC-432 for ACTIVE); ₹500 waiver = ₹423.73 charge + ₹76.27 IGST. UNO entries for S 2 – S 4 use Subaccd LAN, S 5 / S 6 the Loan Account Number (main and scenario-wise BRD, Excel). Word files and Excel regenerated. | Implemented |
+| DISC-439 | 26-11-2026 | brd-waive-off.html, exports/Waiver_BRD_Accounting_Entries.xlsx | Subaccd = LAN everywhere; penal charges no GST | Owner: penal charges have no GST; the LAN is generated when the journey starts and stays the same while the status changes (DRAFT → SUBMITTED …) | UNO Subaccd = LAN in every scenario (S 2 – S 6) and in the reference format (was Loan Account Number); penal charges marked “no GST” in the charges table and 2.2.4. Both Word files and the Excel regenerated. | Implemented |
 
 ---
 
