@@ -1300,7 +1300,7 @@ def _waiver_scen_body():
     PAY = lambda amt: [
         f"The system sends the customer an SMS and mail with the payment link for <b>₹{amt}</b>. {PH}",
         "The customer opens the link, verifies the mobile number with an OTP in the LOS and pays the full amount in one payment.",
-        "On success, the paid amount is posted in UNO (entry below), the receipt (RCPT/LAMF/2026/11/0149) is saved in the LMS Documents "
+        "On success, the paid amount is posted in UNO (entry below, each charge separately) and the SOA is updated at the same time, the receipt (RCPT/LAMF/2026/11/0149) is saved in the LMS Documents "
         f"tab, and the system sends a mail to Treasury and OPS. {PH}",
         f"Treasury confirms the payment in LMS. LMS sends a mail to OPS to initiate the de-pledge. {PH}",
         f"The system sends the customer an SMS and mail with the payment receipt attached. {PH}",
@@ -1331,7 +1331,10 @@ def _waiver_scen_body():
         tail = lambda ded: [first, ded,
                             "There is no de-pledge and no payment link – the loan continues."]
         return (f"<h4>S {n}.1 – Approve Without Waive-off</h4>"
-                + ol(approvals("approve", to) + tail("LMS deducts the full charges (₹1,768.82) from the first disbursement and posts them in UNO then.")) 
+                + ol(["OPS maker adds the note, uploads the file and clicks <b>Approve</b> without any waive-off. The LAN status does not change yet.",
+                      f"LMS sends a mail to the OPS checker to log in and approve or reject the request. {PH}",
+                      f"OPS checker verifies the request, adds the note and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."]
+                     + tail("LMS deducts the full charges (₹1,768.82) from the first disbursement and posts them in UNO then."))   # DISC-436
                 + f"<h4>S {n}.2 – Approve With Full Waive-off</h4>"
                 + ol(approvals("approve", to) + tail("LMS does not deduct any charges from the first disbursement. No accounting entry."))
                 + f"<h4>S {n}.3 – Approve With Partial Waive-off</h4><p>Example: ₹500 of the Processing Fee* waived.</p>"

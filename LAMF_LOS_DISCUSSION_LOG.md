@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 11:19 IST
+**Last Updated:** 26-11-2026 13:21 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -468,6 +468,7 @@
 | DISC-433 | 26-11-2026 | brd-waive-off.html | 2.1.2.5 customer communication as a condition | Owner: the Loan Account Opening / Loan Lodgement Rejection communication is already parked – write it as the condition (the customer will receive …), not as today / new | 2.1.2.5 point now: the customer will receive the Loan Account Opening / Loan Lodgement Rejection SMS and mail – with the payment link for the payable amount (no or partial waive-off) or without it (full waive-off); sample links kept. Word file regenerated. | Implemented |
 | DISC-434 | 26-11-2026 | exports/BRD_Waiver_Rejection_Repayment_UNO_Entries_REVIEW.docx | Review of the owner's BRD | Owner shared BRD_Waier_Rejection_Repayment_UNO_Entries.docx – highlight the mistakes to correct | Review copy: 18 points highlighted in yellow with a red note (2.1.1.4 heading / irreversible pop-up; 2.1.1.5 Reject wording, day 31 grammar, de-pledge section number; 2.1.2.1 waive-off with Approve; 2.1.2.3 wrong reference; 2.1.2.4 “or repayment”; 2.1.2.5 “Today” wording; 2.2 intro; 3 heading; 3.2 SOA with UNO and ACTIVE waiver posting; 4 missing word / full waive-off; 5 Status column; 6 charges formatting, missing column and UNO entries; Audit note wording) plus a top note (file-name typo, missing 6.2 / 7). The owner's file itself not changed; the web BRD not changed. | Implemented |
 | DISC-435 | 26-11-2026 | brd-waive-off.html | UNO – each charge posted separately | Owner: in UNO the processing fee must not be posted combined with the charges – post them separately | The entries already post Processing Fee 800102, Lien Marking 800110, Lien Removal 800098 and Stamp Duty 800111 separately (IGST 715110 one line); a 3.2 point now states this as a requirement (the customer still sees one Processing Fee*). Word file regenerated. | Implemented |
+| DISC-436 | 26-11-2026 | brd-waive-off-scenarios.html, exports/BRD_Charges_Waiver_Scenario-wise.docx | Scenario-wise BRD brought in line | Owner: give the document scenario-wise | Scenario-wise BRD: S 5.1 and S 6.1 (approve without waive-off) now OPS maker → OPS checker only, no Treasury; payment steps say UNO (each charge separately) and the SOA are updated at the same time. Word file regenerated and sent. | Implemented |
 
 ---
 
