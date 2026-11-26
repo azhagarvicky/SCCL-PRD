@@ -425,9 +425,9 @@ selected charges (amount, amount to be waived off and payable).</li>
 <li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
 <li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note. On approval, LMS should show “This action
 is irreversible. Are you sure you want to proceed?”.</li>
-<li>After Treasury approves, LMS should post the waived amount in the Statement of Account with a waiver narration. On the Waive-off page,
-the waived amount moves to the Waived off Charges column and the Payable Charges column shows the balance. The LAN stays ACTIVE, and the
-waived amount is never posted in UNO.</li>
+<li>After Treasury approves, the waiver is posted in UNO and the Statement of Account (SOA) is updated at the same time.</li>
+<li>The Waive-off page then shows the waived amount in the Waived off Charges column and the balance in the Payable Charges column. The LAN
+stays ACTIVE.</li>
 <li>LMS sends an internal mail at each step. The customer gets no communication. {T(IC(18), IC(19), IC(20))}</li>
 </ul>
 {fig('25_active_approvals.png', 'Active loan – Approvals tab with the waive-off request for the checker and Treasury')}
@@ -466,8 +466,7 @@ application from the Curated Offers page.</li>
 <h3>3.2 Payment Receipt &amp; Accounting Entry (UNO)</h3>
 <ul>
 <li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts as 4 digits}}}}, for example RCPT/LAMF/2026/11/0149.</li>
-<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted; the waived amount and its GST are never
-posted.</li>
+<li>The paid amount should be posted in UNO immediately, and the SOA is updated at the same time. Only the amount actually paid is posted.</li>
 <li>The system should send a mail to Treasury and OPS – “Charges Payment Received”. {T(IC(14))}</li>
 <li>Treasury needs a <b>Confirm Payment</b> option in the Approvals tab. The payment is not final in LMS until Treasury confirms it.</li>
 <li>After Treasury confirms, LMS should send OPS a mail – “Charges Received – Initiate De-pledge” – and the system should send the customer
@@ -508,8 +507,8 @@ an SMS and mail with the payment receipt attached. {T(IC(15), NM('08_Charges_Pay
 
 <h2>4. De-pledge</h2>
 <ul>
-<li>LMS should allow the de-pledge only when the LAN is REJECTED and either Treasury has confirmed the payment or nothing is payable (full
-waive-off).</li>
+<li>LMS should allow the de-pledge only after Treasury confirms and no amount is payable. For a rejected loan, this means Treasury has
+confirmed the payment, or nothing was payable because of a full waive-off.</li>
 <li>The Initiate De-pledge button should stay disabled until then.</li>
 <li>OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge.</li>
 </ul>
