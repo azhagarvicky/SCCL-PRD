@@ -456,7 +456,7 @@ maker, who can raise a new request from the Waive-off page. {T(IC(17))}</li>
 <li>This applies only when some amount is payable after the rejection (no or partial waive-off).</li>
 <li>The customer needs an option to pay through the payment link in the SMS or mail. The link should open the LOS and verify the mobile
 number with an OTP.</li>
-<li>The LOS should show a <b>Pay Charges</b> page with the charges and the total – one Processing Fee* (inclusive of Lien Marking, Lien
+<li>The LOS should show a <b>Pay Charges</b> page with the charges and the total, each amount including GST (shown as “incl. GST”) – one Processing Fee* (inclusive of Lien Marking, Lien
 Removal and Stamp Duty). The waived amounts should not be shown.</li>
 <li>Only the full amount in one payment; partial payment is not allowed.</li>
 <li>After the rejection, paying the charges should be the only action for this application in the LOS. The customer can start a new
@@ -1431,7 +1431,7 @@ separate request from the ≡ menu → Waive-off page, approved in the Approvals
 </ul>
 <h3>2.3 Customer Payment, Receipt and UNO</h3>
 <ul>
-<li>The customer pays the full payable amount through the payment link (LOS, OTP, Pay Charges page). A failed payment changes nothing, and
+<li>The customer pays the full payable amount, including GST, through the payment link (LOS, OTP, Pay Charges page). A failed payment changes nothing, and
 the customer can pay again. If the customer does not pay, a reminder SMS and mail is sent every month.{S(NM("09_Charges_Payment_Reminder", 39))}</li>
 <li>On a successful payment, the amount is posted in UNO (each charge separately, one IGST line, Subaccd = LAN), and a
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>

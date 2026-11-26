@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 26-11-2026 23:18 IST
+**Last Updated:** 26-11-2026 23:22 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -483,6 +483,7 @@
 | DISC-448 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Irreversible pop-up stated once | Owner: the “This action is irreversible…” pop-up comes for every approval and rejection, so do not repeat it in the steps | Removed from the Treasury steps (main 2.1.1.4, 2.2.4; scenario-wise steps); stated once as a rule – main BRD section 2 points and scenario-wise 2.1. Word files regenerated. | Implemented |
 | DISC-449 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Links to the LOS journey and the receipt | Owner: where are the LOS journey and the receipt in the BRD | They are in main BRD section 3 (3.1 LOS journey with the prototype link and screenshots 11 – 15; 3.2 receipt and LMS screenshots 16 – 21). Added: “Open the payment receipt” link in 3.2; in the scenario-wise BRD 2.3 links to the LOS payment journey, the receipt and the main BRD screenshots. Word files regenerated. | Implemented |
 | DISC-450 | 26-11-2026 | charges-payment-*.html, charges-receipt-*.html, brd-waive-off.html, brd-waive-off-scenarios.html | Payment journey and receipt for each scenario | Owner: the receipt and payment have to be created for each scenario because the amount changes; where it is the same, say so | charges_payment.py: CASES s2-1 (₹649, Lien Marking + Lien Removal), s2-3 (₹118, Lien Removal), s3-1 (₹1,768.82), s3-3 (₹1,268.82); each writes its own LOS payment journey and receipt (receipt rows per paid charge with taxable value + IGST, amount in words, own receipt / transaction numbers; Processing Fee* note only when applicable). S 4, S 5 and S 6 use the S 3 pages (same amounts) – stated in the BRDs; full waive-off has no payment or receipt. Main BRD 3.1: table of the payment journey and receipt per scenario. Scenario-wise: each payment step links its own journey and receipt. charges-payment.html / charges-receipt.html kept (S 3.3). Word files regenerated. | Implemented |
+| DISC-451 | 26-11-2026 | charges-payment*.html, new-mails/06 – 09, brd-waive-off*.html | “Including GST” shown on the charges payment | Owner: the charges repayment should say the amounts include GST – it is not mentioned | LOS Pay Charges page (all cases): column “Amount (incl. GST)” and “Total Payable (incl. GST)”. Customer mails with the charges table: “All amounts include GST.” under the table. BRD 3.1 and scenario-wise 2.3: the payable amount includes GST. Communications Excel, Word files regenerated. | Implemented |
 
 ---
 

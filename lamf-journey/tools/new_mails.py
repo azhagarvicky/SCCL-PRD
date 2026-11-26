@@ -62,7 +62,7 @@ def charges_table(title):   # DRAFT rejection mails (DISC-350): one row per char
             + "<!-- one row per charge incurred -->"
             + row(["{{CHARGE_NAME}}", "&#8377;{{CHARGE_AMOUNT}}", "&#8377;{{WAIVED_AMOUNT}}", "&#8377;{{PAYABLE_AMOUNT}}"])
             + row(["Total", "&#8377;{{TOTAL_CHARGES}}", "&#8377;{{TOTAL_WAIVED}}", "&#8377;{{TOTAL_PAYABLE}}"], True)
-            + "</table></td></tr>")
+            + f'</table><p style="margin:6px 0 0 0;{FONT}font-size:12px;line-height:16px;color:#666666;">All amounts include GST.</p></td></tr>')   # DISC-451
 
 def attachment(name, text):   # attachment notice – same box as the Sanction Letter mail (mails/03_Loan_Sanction_Letter.html), DISC-358
     return (f'<tr><td class="px" style="padding:20px 48px 0 48px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" '

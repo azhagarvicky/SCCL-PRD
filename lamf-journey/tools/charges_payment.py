@@ -46,7 +46,7 @@ def rs(v):
 
 def _table(cls="cp-tbl"):   # customer view (DISC-352): only what the customer pays for each charge – no waived off / payable columns
     rows = "".join(f"<tr><td>{n}</td><td>{rs(a - w)}</td></tr>" for n, a, w in CHARGES if round(a - w, 2) > 0)
-    return (f'<table class="{cls}"><thead><tr><th>Charges</th><th>Amount</th></tr></thead>'
+    return (f'<table class="{cls}"><thead><tr><th>Charges</th><th>Amount (incl. GST)</th></tr></thead>'
             f'<tbody>{rows}</tbody><tfoot><tr><td>Total</td><td>{rs(PAYABLE)}</td></tr></tfoot></table>' + (f'<p class="cp-incl">{INCL}</p>' if INCL else ''))
 
 
@@ -71,7 +71,7 @@ def body():
           '<div class="card cp-card cp-pay"><h3>Pay Charges</h3>'
           f'<div class="cp-banner">Your Loan Against Mutual Fund application (<b>{LAN}</b>) has been rejected. Please pay the charges '
           'below to unpledge your Mutual Fund units.</div>'
-          f'{_table()}<div class="cp-total"><span>Total Payable</span><b>{rs(PAYABLE)}</b></div>'
+          f'{_table()}<div class="cp-total"><span>Total Payable (incl. GST)</span><b>{rs(PAYABLE)}</b></div>'
           '<p class="cp-note">The full amount has to be paid in one payment – partial payment is not available.</p>'
           f'<button type="button" class="btn btn-primary bold btn-block cp-paybtn" data-go="3">Pay {rs(PAYABLE)}</button>'
           '<p class="cp-sec">Payments are processed securely through the payment gateway.</p></div></main></section>')
