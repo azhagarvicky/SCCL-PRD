@@ -41,7 +41,7 @@ wb = Workbook()
 ws = wb.active; ws.title = 'Scenario entries'
 ws['A1'] = 'Charges Waiver & Post-Pledge Drop-off – Accounting entries in UNO (sample amounts)'; ws['A1'].font = Font(bold=True, size=13)
 ws['A2'] = ('Posted when the customer pays the charges. Only the amount actually paid is posted; a waived amount is never posted. '
-            'Approve (S 5.1 – S 5.3, S 6.1 – S 6.3): no entry at approval – the charges are deducted from the first disbursement and posted then.')
+            'Approve (S 5.1 – S 5.3, S 6.1 – S 6.3): no entry at approval – LMS shows the charges (reduced by any waive-off); they are posted in UNO at the first withdrawal or repayment.')
 ws['A2'].alignment = Alignment(wrap_text=True); ws.merge_cells('A2:I2'); ws.row_dimensions[2].height = 32
 r = 4; scen = None
 sec = body.find('h3', string=re.compile(r'Scenario details'))
