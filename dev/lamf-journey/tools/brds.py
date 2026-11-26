@@ -513,7 +513,7 @@ waive-off).</li>
 </ul>
 
 <h2>5. Communication – Internal and Customer</h2>
-<table class="brd-table"><thead><tr><th>Scenario</th><th>Internal / Customer</th><th>Communication Type</th><th>Sample template</th><th>Status</th></tr></thead><tbody>
+<table class="brd-table"><thead><tr><th>Scenario</th><th>Recipient</th><th>Communication Type</th><th>Sample template</th><th>Status</th></tr></thead><tbody>
 <tr><td>Maker raises a rejection request with the waive-off (DRAFT, SUBMITTED, ACCOUNT OPENED) – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(16)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Checker approves the rejection request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(12)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Treasury approves the rejection of a DRAFT loan – to OPS and Treasury</td><td>Internal</td><td>Email</td><td>{IC(13)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
