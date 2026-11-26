@@ -479,9 +479,9 @@ def active_menu(r):
 
 
 def active_waive(r):
-    """Active LAN Waive-off page (DISC-366 / DISC-421 / DISC-422): opened from the ≡ menu; only the waive-off table (same as the Approvals
-    tab) and the Waive-off button – no note or file on this page. Full or partial waive-off only; nothing selected = no waive-off (no
-    request). On “Yes, Waive Off” the standalone request goes to the Approvals tab of the LAN, where the checker and Treasury approve or decline."""
+    """Active LAN Waive-off page (DISC-366 / DISC-421 / DISC-422 / DISC-431): opened from the ≡ menu; the waive-off table (same as the
+    Approvals tab), Add a note and Upload a file (both mandatory for the maker) and the Waive-off button. Full or partial waive-off only;
+    nothing selected = no waive-off (no request). On “Yes, Waive Off” the standalone request goes to the Approvals tab of the LAN, where the checker and Treasury approve or decline."""
     mk, ck, tr = "OPS L1", "OPS L2 / OPS L3", "Treasury L1 / L2 / L3"
     rows = _SPLIT + [("Bounce Charges", 118), ("Annual Maintenance Charges (AMC)", 1178.82)]
     body = "".join(f'<tr data-name="{n}" data-chg="{a}" data-done="0"{FX if n in FIXED else ""}><td><input type="checkbox" class="wa-chk" aria-label="Select {n}"></td><td>{n}</td>'
@@ -499,6 +499,11 @@ def active_waive(r):
             f'<tbody>{body}</tbody><tfoot><tr><td></td><td><b>Total</b></td><td class="num"><b>₹{_amt(tot)}</b></td><td class="num"><b class="wa-dtot">₹0</b></td>'
             f'<td><b class="wa-wtot">₹0</b></td><td class="num"><b class="wa-ptot">₹{_amt(tot)}</b></td></tr></tfoot></table>'
             f'<p class="wv-hint">{FOOT} Only full or partial waive-off – if nothing is selected, there is no waive-off and no request.</p>'
+            '<label class="wv-lbl">Add a note <span>(required – reason for the waive-off)</span></label>'
+            '<textarea class="wv-note wa-note" rows="2" placeholder="Add a note"></textarea>'
+            '<label class="wv-lbl">Upload a file <span>(required)</span></label>'
+            '<label class="wv-drop">Drop files here or <u>click</u><input type="file" class="wa-file" hidden></label><p class="wv-fname"></p>'
+            '<p class="wv-hint">PDF, PNG or JPG. Max 5MB</p><p class="wv-err wa-err"></p>'
             '<p class="wa-msg" hidden></p>'
             + pop('wa-pw', '<h3>Are you sure you want to waive off the selected charges?</h3><p class="wv-ptype"></p>'
                   f'<p class="wv-ps-txt">The request will go to the Approvals tab for {ck} (Checker) and {tr} approval.</p>'
@@ -532,7 +537,7 @@ def active_approvals(r):
 
 
 WAIVE_ACTIVE_JS = """<script>
-/* ACTIVE loan waive-off (DISC-422): Waive-off page = table + Waive-off button only; the standalone request goes to the Approvals tab
+/* ACTIVE loan waive-off (DISC-422 / DISC-431): Waive-off page = table + maker note and file (mandatory) + Waive-off button; the request goes to the Approvals tab
    of the LAN, where the checker (note) and Treasury (note, irreversible pop-up) approve or decline it. Full or partial only. */
 (function () {
   var r2 = function (v) { return Math.round(v * 100) / 100; };
@@ -552,32 +557,43 @@ WAIVE_ACTIVE_JS = """<script>
   function finish(w, ap, msg, cls) {
     w.querySelectorAll('tbody tr').forEach(function (tr) { tr.querySelector('.wa-chk').checked = false; tr.querySelector('.wa-amt').value = 0; tr.querySelector('.wa-amt').disabled = true; });
     Q(w, '.wa-all').checked = false; w.dataset.stage = ''; lock(w, false); calc(w);
+    var nt = Q(w, '.wa-note'), fl = Q(w, '.wa-file'); nt.disabled = false; nt.value = ''; fl.disabled = false; fl.value = '';
+    w.querySelectorAll('.wv-fname').forEach(function (x) { x.textContent = ''; });
     Q(ap, '.wa-ck').hidden = true; Q(ap, '.wa-tr').hidden = true; Q(ap, '.wa-req').hidden = true; Q(ap, '.wa-none').hidden = false;
     ap.querySelectorAll('textarea').forEach(function (x) { x.value = ''; });
     var d = Q(ap, '.wa-done'); d.hidden = false; d.className = 'wv-done wa-done' + (cls ? ' ' + cls : ''); d.innerHTML = msg;
     var m = Q(w, '.wa-msg'); m.hidden = false; m.innerHTML = msg; }
   document.addEventListener('change', function (e) { var w = e.target.closest('.wa'); if (!w) return;
+    if (e.target.classList.contains('wa-file')) { e.target.closest('.wv-drop').nextElementSibling.textContent = e.target.files.length ? '📎 ' + e.target.files[0].name : '';
+      Q(w, '.wa-err').textContent = ''; return; }
     var fx = function (c) { var tr = c.closest('tr'), a = tr.querySelector('.wa-amt'); a.disabled = !c.checked; if (!c.checked) a.value = 0;
       if (tr.dataset.fixed) { a.disabled = true; a.value = c.checked ? a.dataset.max : 0; } };
     if (e.target.classList.contains('wa-all')) w.querySelectorAll('tbody .wa-chk:not(:disabled)').forEach(function (c) { c.checked = e.target.checked; fx(c); });
     if (e.target.classList.contains('wa-chk')) fx(e.target);
     calc(w); });
   document.addEventListener('input', function (e) { var w = e.target.closest('.wa'); if (w && e.target.classList.contains('wa-amt')) calc(w);
+    if (w && e.target.classList.contains('wa-note')) Q(w, '.wa-err').textContent = '';
     var ap = e.target.closest('.wa-ap'); if (ap) { if (e.target.classList.contains('wa-cnote')) Q(ap, '.wa-cerr').textContent = '';
       if (e.target.classList.contains('wa-tnote')) Q(ap, '.wa-terr').textContent = ''; } });
   document.addEventListener('click', function (e) { var c = e.target.classList, w = e.target.closest('.wa'), ap = e.target.closest('.wa-ap');
     if ((w || ap) && (c.contains('wv-x') || c.contains('wv-no'))) { e.target.closest('.wv-pop').hidden = true; return; }
-    if (w && c.contains('wa-btn')) { var q = calc(w), p = Q(w, '.wa-pw');
+    if (w && c.contains('wa-btn')) { var m0 = [];               /* DISC-431: the maker's note and file are mandatory */
+      if (!Q(w, '.wa-note').value.trim()) m0.push('add the note'); if (!Q(w, '.wa-file').files.length) m0.push('upload a file');
+      if (m0.length) { Q(w, '.wa-err').textContent = 'Please ' + m0.join(' and ') + '.'; return; }
+      Q(w, '.wa-err').textContent = ''; var q = calc(w), p = Q(w, '.wa-pw');
       p.querySelector('.wv-ptype').innerHTML = 'Type of waive-off: <b>' + q.type + '</b><br>' + q.n + ' charge(s) – amount to be waived off: <b>' + f(q.tw) + '</b>';
       p.hidden = false; }
     if (w && c.contains('wa-yes')) { Q(w, '.wa-pw').hidden = true; var q1 = calc(w), a1 = A(w.dataset.lan);
       w.dataset.stage = 'pending'; lock(w, true); Q(w, '.wa-btn').disabled = true;
+      Q(w, '.wa-note').disabled = true; Q(w, '.wa-file').disabled = true;
       var rows = ''; w.querySelectorAll('tbody tr').forEach(function (tr) { var a = tr.querySelector('.wa-amt'), v = +a.value || 0;
         if (tr.querySelector('.wa-chk').checked && v > 0) rows += '<tr><td>' + tr.dataset.name + '</td><td class="num">' + f(+a.dataset.max) +
           '</td><td class="num">' + f(v) + '</td><td class="num">' + f(+a.dataset.max - v) + '</td></tr>'; });
       Q(a1, '.wa-req-t tbody').innerHTML = rows; Q(a1, '.wa-none').hidden = true; Q(a1, '.wa-done').hidden = true; Q(a1, '.wa-req').hidden = false;
       Q(a1, '.wa-req-st').innerHTML = 'Raised by <b>' + w.dataset.mk + ' (Maker)</b> from the Waive-off page. Type of waive-off: <b>' + q1.type +
-        '</b>. Amount to be waived off: <b>' + f(q1.tw) + '</b>.<br>Mail sent to ' + w.dataset.ck + ': <i>Checker Approval Required – Waive-off</i>.';
+        '</b>. Amount to be waived off: <b>' + f(q1.tw) + '</b>.<br>Maker note: <span class="wa-mn"></span><br>File: <span class="wa-mf"></span>' +
+        '<br>Mail sent to ' + w.dataset.ck + ': <i>Checker Approval Required – Waive-off</i>.';
+      Q(a1, '.wa-mn').textContent = Q(w, '.wa-note').value.trim(); Q(a1, '.wa-mf').textContent = Q(w, '.wa-file').files[0].name;
       Q(a1, '.wa-ck').hidden = false;
       var m = Q(w, '.wa-msg'); m.hidden = false; m.innerHTML = 'Waive-off request raised – pending approval in the <a href="#lan-active-' + w.dataset.lan + '">Approvals tab</a>.'; }
     if (!ap) return; var w2 = W(ap.dataset.lan);
