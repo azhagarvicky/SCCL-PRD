@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off – Scenario-wise</title>
-<link rel="stylesheet" href="assets/lamf.css?v=7142e10">
+<link rel="stylesheet" href="assets/lamf.css?v=ea645fc">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off – Scenario-wise</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 26-11-2026 · The Charges Waiver BRD as one flow, scenario by scenario (S 1 – S 7): approvals, mails, payment, de-pledge and UNO entries.</p><div class="brd-body">
 <p class="brd-note">Scenario-wise version of the <a href="brd-waive-off.html">Charges Waiver BRD</a>, for an easy read from start to end.
@@ -52,9 +52,12 @@ SOA.</li>
 <li>After every payment (the UNO entry is posted first, automatically), Treasury cross-checks that it is received and approves or rejects it. LMS
 enables the Initiate De-pledge CTA only when the balance payable is ₹0 (after Treasury approves, or straight away after a full waive-off).
 OPS maker initiates the de-pledge and OPS checker approves it.</li>
-<li>If more charges were added after the payment link was sent, the balance is not ₹0 after the approval: the de-pledge stays disabled,
-OPS gets a mail and the customer gets a new payment link for the balance. If Treasury rejects the payment, the UNO entry is reversed, the
-receipt is cancelled and the customer can pay again. <span class="brd-tbc">To be confirmed</span></li>
+<li>If more charges were added after the payment link was sent, the balance is not ₹0 after the approval. The de-pledge stays disabled,
+OPS gets a mail, and the customer automatically gets a new payment link for the balance (the old link stops working). The call centre
+team informs the customer.</li>
+<li>If Treasury rejects the payment, the balance and the de-pledge do not change. OPS gets an internal mail that the payment is not
+received as per the entries, and the customer is told that the payment is not received and that any debited amount will be returned by the
+payment gateway. If the payment was actually received, Treasury handles it in the backend.</li>
 </ul>
 <p>Each payable case links its own LOS payment journey and receipt (the amounts differ). S 4, S 5 and S 6 have the same amounts as S 3, so
 they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-waive-off.html">main Waiver BRD</a>.</p>
@@ -93,7 +96,7 @@ they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-w
 <p class='brd-note'>In every case, if the OPS checker or Treasury declines the request, it is cancelled – nothing is waived, the LAN status does not change, and the maker can raise a new request. LMS event mail triggered to <b>OPS Maker</b>, Cc <b>Treasury</b>. <span class="brd-smp">(<a href="internal/IC-17.html" target="_blank" rel="noopener">alert 17</a>) <span class="brd-tbc">To be confirmed</span></span></p>
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=7142e10"></script>
-<script src="assets/colresize.js?v=7142e10"></script>
+<script src="assets/review.js?v=ea645fc"></script>
+<script src="assets/colresize.js?v=ea645fc"></script>
 </body>
 </html>
