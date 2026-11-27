@@ -71,540 +71,6 @@ WAIVER_SCENARIOS = [   # (No, LAN status, customer dropped off, charges, what OP
 ]
 
 
-def _waiver_body():
-    amt = dict((c, a) for c, a, _ in CHARGES)
-    def srow(n, st, sc, ch, op):   # S codes (DISC-370); “LAN status can change to” for each Approvals / Waive-off row (DISC-375)
-        lead = f"<td class='c'>S {n}</td><td>{st}</td><td>{sc}</td><td>{'<br>'.join(ch) or 'None'}</td>"
-        rs = lambda k, h: h.replace("<td", f"<td rowspan='{k}'")
-        opc = lambda k: rs(k, f"<td>{op}</td>")
-        sub = lambda code, txt, to: f"<td class='wo'>S {n}.{code} – {txt}</td><td class='to'>{to}</td>"
-        W = ("Without Waive-off", "With Full Waive-off", "With Partial Waive-off")
-        if not ch:
-            return f"<tr>{lead}<td colspan='2' class='wo'>Not applicable</td><td class='to'>INACTIVE (on day 31)</td>{op and f'<td>{op}</td>'}</tr>"
-        if n in (2, 3, 4):
-            r = [sub(i + 1, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
-            return (f"<tr>{rs(3, lead)}<td rowspan='3' class='wo'>Reject</td>{r[0]}{opc(3)}</tr><tr>{r[1]}</tr><tr>{r[2]}</tr>")
-        if n in (5, 6):   # three Approve and three Reject options (DISC-377 / DISC-412)
-            a6 = [sub(i + 1, "Approve " + w, "ACCOUNT OPENED" if n == 5 else "ACTIVE") for i, w in enumerate(W)]
-            r6 = [sub(i + 4, "Reject " + w, "REJECTED") for i, w in enumerate(W)]
-            return (f"<tr>{rs(6, lead)}<td rowspan='3' class='wo'>Approve</td>{a6[0]}{opc(6)}</tr><tr>{a6[1]}</tr><tr>{a6[2]}</tr>"
-                    f"<tr><td rowspan='3' class='wo'>Reject</td>{r6[0]}</tr><tr>{r6[1]}</tr><tr>{r6[2]}</tr>")
-        r7 = [f"<td colspan='2' class='wo'>S 7.{i + 1} – {w}</td><td class='to'>No change (stays ACTIVE)</td>" for i, w in enumerate(W)]
-        return f"<tr>{rs(3, lead)}{r7[0]}{opc(3)}</tr><tr>{r7[1]}</tr><tr>{r7[2]}</tr>"
-
-    summary = ("<table class='brd-table brd-sum'><thead><tr><th>S</th><th>LAN status</th>"
-               "<th>Customer dropped off</th><th>Charges applicable</th><th colspan='2'>Approvals / Waive-off</th><th>LAN status can change to</th>"
-               "<th class='ops'>What OPS can do</th></tr></thead><tbody>"
-               + "".join(srow(n, st, sc, ch, op) for n, st, sc, ch, op, _ in WAIVER_SCENARIOS) + "</tbody></table>")
-    charges = ("<table class='brd-table'><thead><tr><th>Charge</th><th>Amount</th><th>When it is incurred</th></tr></thead><tbody>"
-               + "".join(f"<tr><td>{c}</td><td>{a}</td><td>{w}</td></tr>" for c, a, w in CHARGES) + "</tbody></table>")
-
-    def code(n, o):   # outcome → S code (DISC-370)
-        k = "no" if "no waive-off" in o.lower() or o.startswith("Without") else "full" if "full" in o.lower() else "partial" if "partial" in o.lower() else "approve"
-        if n in (2, 3, 4): idx = {"no": 1, "full": 2, "partial": 3}[k]
-        elif n in (5, 6): idx = {"no": 1, "full": 2, "partial": 3}[k] + (3 if o.startswith("Rejected") else 0)
-        else: idx = {"no": 1, "full": 2, "partial": 3}[k]
-        return f"S {n}.{idx} – "
-
-    BANK = ("SBR", "BS_Asset", "165042", "AXIS BANK - A/C 025010200017480", "HLFCH")
-    INC = {"LM": ("SJV", "P&amp;L_Income", "800110", "LIEN MARKING CHARGES LAS/LAMF Loan-1"),
-           "LR": ("SJV", "P&amp;L_Income", "800098", "LIEN REMOVAL CHARGES-1"),
-           "PF": ("SJV", "P&amp;L_Income", "800102", "LOAN PROCESSING FEES A/C-1"),
-           "SD": ("SJV", "P&amp;L_Income", "800111", "STAMP DUTY CHARGES LAS/LAMF Loan-1"),
-           "GST": ("SJV", "BS_Liability", "715110", "IGST At Loan-1")}
-
-    def uno(title, lines, sub="LAN"):   # UNO entries in the owner's format (DISC-386 / DISC-387); lines = [(key, credit)]
-        if not lines:
-            return f"<p><b>{title}</b> – no accounting entry (nothing is received).</p>"
-        tot = round(sum(a for _, a in lines), 2)
-        f = lambda v: f"{v:,.2f}".rstrip("0").rstrip(".") if v % 1 else f"{int(v):,}"
-        rows = [f"<tr><td>{BANK[0]}</td><td>{BANK[1]}</td><td>{BANK[2]}</td><td>{BANK[3]}</td><td>05-Nov-2026</td><td>{f(tot)}</td><td></td>"
-                f"<td>{BANK[4]}</td><td>{sub}</td></tr>"]
-        rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td>05-Nov-2026</td><td></td>"
-                 f"<td>{f(a)}</td><td>HLTFC</td><td>{sub}</td></tr>" for k, a in lines]
-        return (f"<p><b>{title}</b></p><table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th>"
-                "<th>Description</th><th>Doc. Dt</th><th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead>"
-                f"<tbody>{''.join(rows)}</tbody></table>")
-
-    def entries(n):   # UNO entries for each reject sub-scenario (S 2 – S 6); fixed charges, Processing Fee for a ₹1,00,000 sanction
-        if n == 2:
-            nw, fw, pw = [("LM", 450), ("LR", 100), ("GST", 99)], [], [("LR", 100), ("GST", 18)]
-            pnote = "example – Lien Marking ₹531 waived in full, Lien Removal ₹118 paid"
-        else:
-            nw = [("PF", 749), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 269.82)]   # DISC-400: Processing Fee shown split
-            fw, pw = [], [("PF", 325.27), ("LM", 450), ("LR", 100), ("SD", 200), ("GST", 193.55)]
-            pnote = "example – ₹500 of the Processing Fee waived, ₹1,268.82 paid"
-        k = 4 if n in (5, 6) else 1
-        sub = "LAN"   # DISC-439: the LAN is created when the journey starts and stays the same in every status
-        return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays" + ("" if n == 2 else " (example for a sanction amount of ₹1,00,000 – Processing Fee* ₹1,499 + GST; the other charges are fixed)") + "</p>"
-                + uno(f"S {n}.{k} – Reject Without Waive-off", nw, sub)
-                + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw, sub)
-                + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw, sub)
-                + ("<p>Approve ({1}): no entry at approval – LMS shows the charges (reduced by any waive-off), and they are posted in UNO at the first withdrawal or repayment; a waived "
-                   "amount is never posted.</p>".format(n, f"S {n}.1 – S {n}.3") if n in (5, 6) else ""))
-
-    # Process flow for each sub-scenario (DISC-393) – owner's format: step → step → step
-    START = {2: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged"],
-             3: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated"],
-             4: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated", "Loan Agreement e-Signed"],
-             5: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated", "Loan Agreement e-Signed",
-                 "E-Mandate completed", "LAN status SUBMITTED"],
-             6: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "Sanction Letter generated", "Loan Agreement e-Signed",
-                 "E-Mandate completed", "LAN status SUBMITTED", "Loan Account Opening", "LAN status ACCOUNT OPENED"],
-             7: ["Customer starts the journey", "LAN status DRAFT", "MF units pledged", "LAN status SUBMITTED", "LAN status ACCOUNT OPENED",
-                 "Loan Lodgement", "LAN status ACTIVE"]}
-    M = lambda t: ("m", t)          # internal mail
-    C = lambda t: ("c", t)          # customer SMS / mail
-    def chain(first):
-        return [first, M("Internal mail to OPS checker"), "OPS checker verifies and approves", M("Internal mail to Treasury"),
-                "Treasury approves", M("Internal mail to OPS and Treasury")]
-    DEPLEDGE = ["Balance payable ₹0 – De-pledge enabled", "De-pledge initiated by OPS maker", "De-pledge approved by OPS checker"]
-    PAY = [C("Customer SMS and mail with the payment link"), "Customer pays the charges in LOS", "Payment receipt generated",
-           "Accounting entries posted in UNO", M("Internal mail to Treasury and OPS – payment received"),
-           "Treasury confirms the payment in LMS", M("Internal mail to OPS – initiate de-pledge"),
-           C("Customer SMS and mail with the payment receipt")] + DEPLEDGE
-    def flow(n, o):
-        k = "no" if ("no waive-off" in o.lower() or o.startswith("Without") or o == "Approved") else "full" if "full" in o.lower() else "partial"
-        wt = {"no": "No", "full": "Full", "partial": "Partial"}[k]
-        if n == 7:
-            if k == "no":
-                steps = START[7] + ["No waive-off – charges stay in the SOA", "Charges collected before loan closure"]
-            else:
-                steps = START[7] + chain(f"OPS maker initiates {wt} Waive-off (≡ menu)") + [
-                    "Waived amount posted in the SOA with a waiver narration", "LAN stays ACTIVE"] + (
-                    ["Balance collected before loan closure"] if k == "partial" else [])
-        elif o.startswith("Approved"):
-            to = "ACCOUNT OPENED" if n == 5 else "ACTIVE"
-            steps = START[n] + (["OPS maker initiates Approval (no waive-off)", M("Internal mail to OPS checker"), "OPS checker verifies and approves"]
-                                if k == "no" else chain(f"OPS maker initiates Approval with {wt} Waive-off")) + [f"LAN status {to}"] + ([] if n == 5 else [C("Customer SMS and mail – loan lodgement approved")]) + (
-                ["LMS shows the full charges", "Charges posted in UNO at the first withdrawal or repayment"] if k == "no" else
-                ["LMS shows the reduced charges", "Balance charges posted in UNO at the first withdrawal or repayment"] if k == "partial" else ["Nothing payable – no UNO entry"])
-        else:
-            steps = START[n] + chain(f"OPS maker initiates Rejection with {wt} Waive-off") + ["LAN status REJECTED"] + (
-                [C("Customer SMS and mail – application rejected, no payment link")] + DEPLEDGE if k == "full" else PAY)
-        def box(x):
-            cls, t = x if isinstance(x, tuple) else ("", x)
-            return f"<span class='fs {cls}'>{t}</span>"
-        return (f"<div class='brd-flow'><b>{code(n, o)}{o}</b><div class='fl'>"
-                + "<i>→</i>".join(box(x) for x in steps) + "</div></div>")
-
-    def scenario(n, st, sc, ch, op, outs):
-        h = f"<h4>S {n} – {st}: customer dropped off {sc[0].lower() + sc[1:]}</h4>"
-        if not ch:
-            return h + ("<ul><li>No charges.</li><li>No action by OPS.</li>"
-                        "<li>LAN moves to INACTIVE automatically on day 31 from the LAN generated date.</li>"
-                        "<li>No communication. No accounting entry.</li></ul>")
-        chs = ("<table class='brd-table'><thead><tr><th>Charges Name</th><th>Amount of Charges</th><th>Waived off Charges</th><th>Amount to be waived off</th>"
-               "<th>Payable Charges</th></tr></thead><tbody>"
-               + "".join(f"<tr><td>{c}</td><td>{amt[c]}</td><td>Waived earlier (₹0 at start)</td><td>Entered by OPS (₹0 by default)</td><td>Charges – Waived – To be waived</td></tr>" for c in ch)
-               + "</tbody></table>")
-        out = ("<table class='brd-table'><thead><tr><th>Outcome</th><th>What happens</th><th>Customer communication</th>"
-               "<th>De-pledge</th><th>Accounting entry (UNO)</th></tr></thead><tbody>"
-               + "".join(f"<tr><td><b>{code(n, o)}{o}</b></td><td>{w}</td><td>{c}</td><td>{d}</td><td>{u}</td></tr>"
-                         for o, w, c, d, u in sorted(outs, key=lambda x: float(code(n, x[0])[2:-3])))
-               + "</tbody></table>")
-        fl = ("<p><b>Process flow</b> – <span class='fs m'>internal mail</span> <span class='fs c'>customer SMS / mail</span></p>"
-              + "".join(flow(n, o) for o, *_ in sorted(outs, key=lambda x: float(code(n, x[0])[2:-3]))))
-        return h + f"<p><b>What OPS can do:</b> {op}</p>" + chs + out + fl + (entries(n) if 2 <= n <= 6 else "")
-
-    scen = "\n".join(scenario(*x) for x in WAIVER_SCENARIOS)
-    def fig(f, cap, cls=""):   # screenshots of the LMS prototype (lms.html, DRAFT LAN) – DISC-342
-        return (f"<figure class='brd-fig {cls}'><a href='assets/img/brd/waiver/{f}' target='_blank' rel='noopener'>"
-                f"<img src='assets/img/brd/waiver/{f}' alt='{cap}' loading='lazy'></a><figcaption>{cap}</figcaption></figure>")
-    PH = '<span class="brd-ph">[Template – to be added]</span>'
-    # DISC-405: sample templates (internal alerts IC-12 – 21, customer mails 06 – 10) – status To be confirmed
-    TBC = '<span class="brd-tbc">To be confirmed</span>'
-    lk = lambda href, t: f'<a href="{href}" target="_blank" rel="noopener">{t}</a>'
-    IC = lambda n: lk(f"internal/IC-{n}.html", f"Sample – alert {n}")
-    NM = lambda f, row: lk(f"new-mails/{f}.html", "Sample mail") + " · " + lk("communications.html", f"SMS – row {row}")
-    T = lambda *x: " · ".join(x) + " " + TBC
-    SAME = lambda sec: f"<p>Same as section {sec}.</p>"
-    return f"""
-<p class="brd-cta"><a class="brd-cta-btn" href="brd-waive-off-scenarios.html">Scenario-wise BRD →</a>
-<span>The same BRD as one flow, scenario by scenario (S 1 – S 7), for an easy read.</span></p>
-<h2>1. Purpose</h2>
-<ul>
-<li>When a customer pledges the mutual fund units and then drops off the journey, charges are already incurred (lien marking, lien removal,
-stamp duty or processing fee). Today SCCL bears these charges, and the customer has no option to pay them.</li>
-<li>OPS needs an option in LMS to reject or approve such a loan and, in the same request, waive these charges fully, partly or not at all.</li>
-<li>The customer needs an option to pay the balance charges online, and OPS needs an option to de-pledge the units after the payment is
-confirmed.</li>
-<li>This BRD also covers the internal and customer communication for each event, the customer payment with the receipt, and the accounting
-entries in UNO for each payment.</li>
-<li>For an ACTIVE loan, it covers the Statement of Account (SOA) update when a charge is waived.</li>
-</ul>
-
-<h2>2. Waive-off</h2>
-<ul>
-<li>Every waive-off is raised by the maker OPS L1, reviewed by the checker OPS L2 or OPS L3, and finally approved by Treasury L1, L2 or L3,
-for any sanctioned amount.</li>
-<li>Lien Marking, Lien Removal and Stamp Duty can only be waived in full, so OPS can only select or unselect these charges and cannot waive a
-part of the amount.</li>
-<li>The Processing Fee and all the other charges can be waived in full or in part, so OPS can enter any amount up to the charge.</li>
-<li>The customer sees one Processing Fee* (*inclusive of Lien Marking, Lien Removal and Stamp Duty), but LMS should show it in four rows
-(Processing Fee, Lien Marking, Lien Removal and Stamp Duty) so that OPS can waive each one.</li>
-<li>LMS shows every charge with GST included, not as a separate GST amount. LMS first deducts Lien Marking (₹531), Lien Removal (₹118) and
-Stamp Duty (₹236) from the Processing Fee* and shows the balance in the Processing Fee row. For example, if the Processing Fee* is ₹1,768.82
-(₹1,499 with GST), the Processing Fee row shows ₹883.82.</li>
-<li>The waive-off can occur at two stages, before the LAN status becomes Active and after the LAN status becomes Active.</li>
-<li>Every approve or reject (by the maker, checker or Treasury) asks for confirmation in a pop-up – “This action is irreversible. Are you sure
-you want to proceed?”.</li>
-</ul>
-<p><b>Who approves</b></p>
-<table class="brd-table"><thead><tr><th>Maker (raises the request)</th><th>Checker (reviews)</th><th>Final approval</th></tr></thead><tbody>
-<tr><td>OPS L1</td><td>OPS L2 or OPS L3</td><td>Treasury L1, L2 or L3</td></tr>
-</tbody></table>
-<p><b>Charges and how they can be waived</b></p>
-<table class="brd-table"><thead><tr><th>Charge</th><th>Amount (sample)</th><th>Shown from</th><th>Waive-off</th></tr></thead><tbody>
-<tr><td>Lien Marking</td><td>₹450 + GST = ₹531</td><td>S 2 (units pledged)</td><td>Full only – select or unselect</td></tr>
-<tr><td>Lien Removal</td><td>₹100 + GST = ₹118</td><td>S 2 (units pledged)</td><td>Full only – select or unselect</td></tr>
-<tr><td>Stamp Duty</td><td>₹200 + GST = ₹236</td><td>S 3 (Sanction Letter generated)</td><td>Full only – select or unselect</td></tr>
-<tr><td>Processing Fee</td><td>₹749 + GST = ₹883.82</td><td>S 3 (Sanction Letter generated)</td><td>Full or part – any amount</td></tr>
-<tr><td>Bounce, Penal, Loan Renewal, AMC, Bank Swap</td><td>As charged</td><td>S 7 (ACTIVE)</td><td>Full or part – any amount</td></tr>
-</tbody></table>
-<p><b>Processing Fee* structure and the split in LMS</b></p>
-<table class="brd-table"><thead><tr><th>Sanctioned amount</th><th>Processing Fee* (exclusive of GST)</th><th>Sample split in LMS (+ 18% GST)</th></tr></thead><tbody>
-<tr><td>Below ₹1,50,000</td><td>₹1,499</td><td>Processing Fee ₹749 · Lien Marking ₹450 · Lien Removal ₹100 · Stamp Duty ₹200</td></tr>
-<tr><td>₹1,50,000 to ₹10,00,000</td><td>1%</td><td>₹5,00,000 → ₹5,000: Processing Fee ₹4,250 + the three charges ₹750</td></tr>
-<tr><td>Above ₹10,00,000 to ₹50,00,000</td><td>0.8%</td><td>₹20,00,000 → ₹16,000: Processing Fee ₹15,250 + ₹750</td></tr>
-<tr><td>Above ₹50,00,000</td><td>0.5%</td><td>₹1,00,00,000 → ₹50,000: Processing Fee ₹49,250 + ₹750</td></tr>
-</tbody></table>
-
-<h3>2.1 Before LAN Active (DRAFT, SUBMITTED, ACCOUNT OPENED)</h3>
-<ul>
-<li>Before the LAN is Active the waive-off should not be a separate action. The waive-off and the loan rejection (or approval) should go as
-one request.</li>
-<li>LMS should show the waive-off in the Approvals tab. Today the Approvals tab is available only for SUBMITTED, ACCOUNT OPENED and ACTIVE
-loans; LMS needs it for DRAFT loans also.</li>
-</ul>
-<p><a href="lms.html#lan-draft-SCCLMF20261100073" target="_blank" rel="noopener">Open the LMS prototype</a> (DRAFT loan, Approvals tab).</p>
-{fig('01_tabs.png', 'DRAFT loan – Approvals tab')}
-
-<h4>2.1.1 Before Submitted (DRAFT, units pledged)</h4>
-<p>Before the Submitted stage, the loan application remains in Draft status, but the mutual fund pledge has already been completed.</p>
-<h5>2.1.1.1 Waive-off Charges</h5>
-<ul>
-<li>OPS maker needs an option to select single or multiple charges using the checkbox.</li>
-<li>The charges of Lien Marking, Lien Removal and Stamp Duty select or unselect only. When selected, the full charge is waived (for example,
-the whole ₹531 of Lien Marking); the amount cannot be edited.</li>
-<li>OPS maker and checker need an option to enter the amount to be waived off (for example ₹30 or ₹45 of ₹100) for the Processing Fee and the
-other charges. LMS should not allow an amount more than the charge.</li>
-</ul>
-<table class="brd-table"><thead><tr><th>Column</th><th>What it shows</th></tr></thead><tbody>
-<tr><td>Checkbox</td><td>Selects a charge. The checkbox in the header selects all charges.</td></tr>
-<tr><td>Charges Name</td><td>S 2: Lien Marking and Lien Removal. S 3 onwards: Processing Fee, Lien Marking, Lien Removal and Stamp Duty.</td></tr>
-<tr><td>Amount of Charges</td><td>The charge including GST. It does not change after a waive-off.</td></tr>
-<tr><td>Waived off Charges</td><td>The amount already waived off. Keep ₹0 until a request is approved by the treasury team.</td></tr>
-<tr><td>Amount to be waived off</td><td>Full charge (fixed) for Lien Marking, Lien Removal and Stamp Duty; the amount entered for rest of all other charges.</td></tr>
-<tr><td>Payable Charges</td><td>Amount of Charges – Waived off Charges – Amount to be waived off.</td></tr>
-</tbody></table>
-{fig('02_table_default.png', 'Waive-off charges (S 3) – nothing selected')}
-{fig('03_table_selected.png', 'Processing Fee selected with ₹500 to waive – Payable ₹1,268.82, Partial waive-off')}
-
-<h5>2.1.1.2 Add a Note</h5>
-<ul>
-<li>The note should be mandatory for the OPS maker, the OPS checker and Treasury – to submit, approve or reject.</li>
-<li>LMS should save every note in the Audit tab of the LAN with an existing format.</li>
-</ul>
-
-<h5>2.1.1.3 Upload a File</h5>
-<ul>
-<li>OPS maker and OPS checker need an option to upload a supporting file (PDF, PNG or JPG, up to 5 MB).</li>
-<li>The file is mandatory for the maker, and for the checker only if the checker changes the waive-off. Treasury does not upload a file.</li>
-<li>If the maker submits without the note or the file, LMS should show “Please add the note and upload a file.”</li>
-</ul>
-{fig('07_reject_block.png', 'Maker – Add a note and Upload a file are mandatory')}
-
-<h5>2.1.1.4 Approval of the Rejection Request</h5>
-<ul>
-<li>A DRAFT loan has no Approve option, because the loan itself cannot be approved. The approval in this section is only for the rejection
-request that the maker raises with the waive-off (no, partial or full waive-off), not for the loan.</li>
-<li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. This only raises the rejection request. LMS should
-not waive anything or change the LAN status at this step, and should send a mail to the checker. {T(IC(16))}</li>
-<li>Once the rejection request is raised, the customer cannot continue the LOS journey, and after the LAN is REJECTED the customer cannot
-move to any next step (LOS shows an error). So no charge can be added after the request is raised – the customer can only pay the charges
-through the payment link. If the checker or Treasury declines the request, the customer can continue the journey.</li>
-<li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and
-approves or declines the request. On approval, LMS should send a mail to Treasury. The LAN status still does not change. {T(IC(12))}</li>
-<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline the request, without changing the waive-off. On approval,
-LMS should apply the waive-off, change the LAN status
-from DRAFT to REJECTED and send a mail to OPS and Treasury. {T(IC(13))}</li>
-<li>If the checker or Treasury declines the request, LMS should cancel it, so nothing is waived and the LAN stays in DRAFT, and send a mail to
-the maker, who can raise a new request. {T(IC(17))}</li>
-<li>LMS should record every step in the Audit tab.</li>
-</ul>
-{fig('05_checker.png', 'Checker – can change the waive-off, then approve or decline the rejection request')}
-{fig('05_pending.png', 'Treasury – approve or decline the rejection request only')}
-<div class="brd-figs">{fig('08_pop_approve.png', 'Treasury approval pop-up', 'sm')}</div>
-{fig('06_declined.png', 'Rejection request declined by Treasury – cancelled, LAN stays DRAFT')}
-{fig('10_audit.png', 'Audit tab')}
-
-<h5>2.1.1.5 Loan Rejection</h5>
-<ul>
-<li>Today a DRAFT loan cannot be rejected. OPS maker needs a <b>Reject</b> option for a pledged DRAFT loan, because the units can be
-de-pledged only after the LAN is REJECTED. A DRAFT loan has no Approve option.</li>
-<li>OPS maker should reject a pledged DRAFT loan only when the customer asks to remove the lien.</li>
-<li>On day 30 from the LAN creation date, if the LAN is not submitted, the system should send the customer an SMS and mail saying that the application is not complete and the mutual fund units are pledged, so please complete the journey. The application is not rejected because of this. {T(NM('10_Application_Pending_Lien_Marked', 40))}</li>
-<li>On day 31, LMS should send OPS a mail saying that 30 days are completed but the journey is not completed and the lien is marked, so
-please check with the customer to complete the journey, or the customer needs to send a mail to de-pledge the units. Until then, the lien
-stays marked with SCCL. {T(IC(21))}</li>
-<li>On Reject, LMS should show “Are you sure you want to reject the application with the selected waive-off?” with the waive-off type, the
-amount to be waived off and the payable amount (buttons No, Yes, submit and ×).</li>
-<li>After Treasury approves, the customer communication depends on the waive-off type.<ul><li>With no waive-off, the customer gets an SMS and mail with the payment link for the full charges (section 3).</li>
-  <li>With a partial waive-off, the customer gets an SMS and mail with the payment link for the balance (section 3).</li>
-  <li>With a full waive-off, the customer gets an SMS and mail that the application is rejected, without a payment link, and OPS can de-pledge straight away (section 4).</li></ul></li>
-</ul>
-<div class="brd-figs">{fig('04_pop_submit.png', 'Reject pop-up showing the waive-off type and amounts', 'sm')}</div>
-{fig('09_rejected.png', 'Approved by the checker and Treasury – waive-off applied, LAN rejected')}
-
-<h4>2.1.2 After Submitted (SUBMITTED, ACCOUNT OPENED)</h4>
-<h5>2.1.2.1 Waive-off Charges</h5>
-<p>Same as section 2.1.1.1 (Processing Fee, Lien Marking, Lien Removal and Stamp Duty). The waive-off can be selected with Reject and with
-Approve.</p>
-<h5>2.1.2.2 Add a Note</h5>
-{SAME('2.1.1.2')}
-<h5>2.1.2.3 Upload a File</h5>
-{SAME('2.1.1.3')}
-<h5>2.1.2.4 Loan Approval</h5>
-<ul>
-<li>For a SUBMITTED loan (S 5.1 – 5.3), Approve means the Loan Account Opening and the LAN status changes to ACCOUNT OPENED. For an ACCOUNT
-OPENED loan (S 6.1 – 6.3), Approve means the Loan Lodgement and the LAN status changes to ACTIVE.</li>
-<li>OPS maker needs an option to select the waive-off with the approval. With a waive-off (S 5.2, 5.3, 6.2, 6.3), the request follows
-section 2.1.1.4 (maker, checker and Treasury). Without a waive-off (S 5.1, 6.1), only the OPS maker and the OPS checker approve, without
-Treasury.</li>
-<li>At the SUBMITTED and ACCOUNT OPENED stages, LMS only shows the charges; nothing is posted in UNO. When the loan is approved with a waive-off,
-LMS shows the reduced charges.<ul><li>With no waive-off, LMS shows the full charges.</li>
-  <li>With a partial waive-off, LMS shows only the balance charges.</li>
-  <li>With a full waive-off, LMS shows no charges.</li></ul></li>
-<li>The charges shown in LMS are posted in UNO, each charge separately, at the first withdrawal or repayment.</li>
-<li>After the approval the loan continues, so there is no de-pledge and no payment link.</li>
-<li>The customer gets an SMS and mail only when an ACCOUNT OPENED loan is approved (Loan Lodgement) and the LAN status changes to ACTIVE. The
-system should send the Loan Lodgement Approval SMS and mail, which are already in use today. {lk('communications.html', 'View the Loan Lodgement Approval SMS and mail')}</li>
-<li>When a SUBMITTED loan is approved (Loan Account Opening) and the LAN status changes to ACCOUNT OPENED, the customer gets no SMS or mail.</li>
-</ul>
-<h5>2.1.2.5 Loan Rejection</h5>
-<ul>
-<li>The rejection works the same way as section 2.1.1.5. OPS maker raises the rejection request with no, partial or full waive-off, and the
-checker and Treasury approve it as in section 2.1.1.4.</li>
-<li>After Treasury approves, the LAN status changes from SUBMITTED or ACCOUNT OPENED to REJECTED. If the checker or Treasury declines, the
-LAN status does not change.</li>
-<li>Today, when the loan is rejected, LMS sends the internal mail Loan Account Opening Rejected or Loan Lodgement Rejected ({lk('internal/IC-03.html', 'alert 3')},
-{lk('internal/IC-05.html', 'alert 5')}). This mail should also show the waive-off type and the charges (amount, waived off and payable).
-{T(IC(22), IC(23))}</li>
-<li>The customer will receive the Loan Account Opening / Loan Lodgement Rejection SMS and mail. With no or partial waive-off, it has the
-payment link for the payable amount. With a full waive-off, it is sent without the payment link. {T(lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail – with payment link'), lk('mails/29_Application_Rejected.html', 'Sample mail – without payment link'), lk('communications.html', 'SMS'))}</li>
-<li>The day 30 and day 31 mails do not apply, because the customer has already completed the journey.</li>
-</ul>
-
-<h3>2.2 After LAN Active (ACTIVE)</h3>
-<h4>2.2.1 Waive-off Charges (≡ menu → Waive-off page)</h4>
-<ul>
-<li>Once the LAN is ACTIVE, the waive-off is a standalone request, and the loan cannot be rejected at this stage.</li>
-<li>OPS maker needs a Waive-off option in the ≡ menu at the top right of the LAN page. It should open a separate Waive-off page.</li>
-<li>The Waive-off page should have the waive-off table, Add a note, Upload a file and the Waive-off button at the top right.</li>
-<li>The table is the same as in the Approvals tab (section 2.1.1.1), with the columns Checkbox, Charges Name, Amount of Charges, Waived off
-Charges, Amount to be waived off and Payable Charges, and the total of each column. It lists all the charges of the loan, for example
-Processing Fee, Lien Marking, Lien Removal, Stamp Duty, Bounce, Penal, Loan Renewal, AMC and Bank Swap charges.</li>
-<li>The same rule applies here, so Lien Marking, Lien Removal and Stamp Duty are waived in full and the other charges by any amount.</li>
-<li>Only a full or partial waive-off can be raised here. If nothing is selected, it is treated as no waive-off, so the Waive-off button stays
-disabled and no request is raised.</li>
-<li>On Waive-off, LMS should show “Are you sure you want to waive off the selected charges?” (buttons No, Don’t Waive Off, Yes, Waive Off
-and ×). On Yes, the waive-off request goes to the Approvals tab of the LAN for approval, with the maker's note and file.</li>
-</ul>
-<p><a href="lms.html#lan-active-SCCLMF20261100099" target="_blank" rel="noopener">Open the LMS prototype</a> (Active loan → ≡ → Waive-off,
-then the Approvals tab).</p>
-{fig('22_active_menu.png', 'Active loan – ≡ menu with Waive-off')}
-{fig('23_active_waive.png', 'Active loan – Waive-off page with the waive-off table, Add a note, Upload a file and the Waive-off button')}
-<div class="brd-figs">{fig('24_active_pop.png', 'Active loan – waive-off pop-up', 'sm')}</div>
-<h4>2.2.2 Add a Note</h4>
-<ul>
-<li>The note is mandatory for the maker, the checker and Treasury, as in section 2.1.1.2.</li>
-<li>The maker adds the note on the Waive-off page. The checker and Treasury add their note in the Approvals tab when they approve or decline
-the request.</li>
-<li>LMS should save every note in the Audit tab of the LAN.</li>
-</ul>
-<h4>2.2.3 Upload a File</h4>
-<ul>
-<li>The maker needs an option to upload a supporting file (PDF, PNG or JPG, up to 5 MB) on the Waive-off page, and the file is mandatory.</li>
-<li>If the maker clicks Waive-off without the note or the file, LMS should show “Please add the note and upload a file.”</li>
-<li>The checker and Treasury only approve or decline the request in the Approvals tab, so they do not upload a file.</li>
-</ul>
-<h4>2.2.4 Approval</h4>
-<ul>
-<li>The waive-off request is shown in the Approvals tab of the LAN with the maker, the maker's note and file, the waive-off type and the
-selected charges (amount, amount to be waived off and payable).</li>
-<li>The checker (OPS L2 or L3) approves or declines the request with a note. On approval, it goes to Treasury.</li>
-<li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline, with a note.</li>
-<li>After Treasury approves, LMS updates the Statement of Account (SOA) with the waiver. Nothing is posted in UNO for the waiver.</li>
-<li>The Waive-off page then shows the waived amount in the Waived off Charges column and the balance in the Payable Charges column. The LAN
-stays ACTIVE.</li>
-<li>In the SOA, each charge is a debit, and the approved waive-off is a credit with a waiver narration, so the balance goes down by the waived
-amount (sample below, from the owner's SOA format). The waived amount includes GST, so a ₹500 waiver is ₹423.73 charge plus ₹76.27
-IGST. Penal charges carry no GST.</li>
-</ul>
-<p><b>SOA example – Part A, application charges (₹500 of the Processing Fee waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Processing Fee Charges</td><td>883.82</td><td></td><td>883.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Marking Charges</td><td>531.00</td><td></td><td>1,414.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Removal Charges</td><td>118.00</td><td></td><td>1,532.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Stamp Duty Charges</td><td>236.00</td><td></td><td>1,768.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>1,268.82</td><td>DR</td></tr></tbody></table><p><b>SOA example – Part B, loan charges (₹500 waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Bounce Charge</td><td>118.00</td><td></td><td>118.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Penal Charges</td><td>50.00</td><td></td><td>168.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Loan Renewal Charge</td><td>1,178.82</td><td></td><td>1,346.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Annual Maintenance Charge (AMC)</td><td>1,178.82</td><td></td><td>2,525.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Bank Swap Charge</td><td>295.00</td><td></td><td>2,820.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>2,320.64</td><td>DR</td></tr></tbody></table>
-<ul>
-<li>LMS sends an internal mail at each step. The customer gets no communication. {T(IC(18), IC(19), IC(20))}</li>
-</ul>
-{fig('25_active_approvals.png', 'Active loan – Approvals tab with the waive-off request for the checker and Treasury')}
-<h4>2.2.5 Rejection of the Waive-off Request</h4>
-<ul>
-<li>If the checker or Treasury declines the request in the Approvals tab, LMS should cancel it, so nothing is waived, and send a mail to the
-maker, who can raise a new request from the Waive-off page. {T(IC(17))}</li>
-</ul>
-
-<h2>3. Charges Payment, Receipt &amp; Accounting Entry (UNO)</h2>
-<h3>3.1 Charges Payment by the Customer</h3>
-<ul>
-<li>This applies only when some amount is payable after the rejection (no or partial waive-off).</li>
-<li>The customer needs an option to pay through the payment link in the SMS or mail. The link should open the LOS and verify the mobile
-number with an OTP.</li>
-<li>The LOS should show a <b>Pay Charges</b> page with the charges and the total, each amount including GST (shown as “incl. GST”) – one Processing Fee* (inclusive of Lien Marking, Lien
-Removal and Stamp Duty). The waived amounts should not be shown.</li>
-<li>Only the full amount in one payment; partial payment is not allowed.</li>
-<li>After the rejection, paying the charges should be the only action for this application in the LOS. The customer can start a new
-application from the Curated Offers page.</li>
-<li>If the payment fails, nothing changes. There is no update, no communication and no accounting entry, and the customer can pay again.</li>
-<li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 3.2).</li>
-<li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. {T(NM('09_Charges_Payment_Reminder', 39))}</li>
-<li>For a REJECTED LAN with a balance payable, LMS needs a <b>Resend Payment Link</b> CTA, so that OPS can send the payment link again
-whenever the customer asks for it (for example, 5 or 10 days after the rejection). OPS maker (OPS L1) clicks it and confirms in a pop-up;
-no checker or Treasury approval is needed. The customer gets the same SMS and mail as the monthly reminder, with the same payment link.
-LMS records it in the Audit tab. The CTA is disabled while a payment is pending Treasury confirmation, after the payment is approved, and
-for a full waive-off (nothing is payable). The customer can also open the LOS and pay at any time. {T(NM('09_Charges_Payment_Reminder', 39))}</li>
-</ul>
-<p><b>Payment journey and receipt for each scenario</b> – the amount changes from scenario to scenario</p>
-<table class="brd-table"><thead><tr><th>Scenario</th><th>Customer pays</th><th>LOS payment journey</th><th>Receipt</th></tr></thead><tbody>
-<tr><td>S 2.1 – Reject Without Waive-off</td><td>₹649 (Lien Marking ₹531 + Lien Removal ₹118)</td><td><a href="charges-payment-s2-1.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s2-1.html" target="_blank" rel="noopener">Open</a></td></tr>
-<tr><td>S 2.3 – Reject With Partial Waive-off</td><td>₹118 (Lien Removal; Lien Marking waived)</td><td><a href="charges-payment-s2-3.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s2-3.html" target="_blank" rel="noopener">Open</a></td></tr>
-<tr><td>S 3.1 – Reject Without Waive-off<br><small>Same for S 4.1, S 5.4 and S 6.4</small></td><td>₹1,768.82 (Processing Fee*)</td><td><a href="charges-payment-s3-1.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s3-1.html" target="_blank" rel="noopener">Open</a></td></tr>
-<tr><td>S 3.3 – Reject With Partial Waive-off<br><small>Same for S 4.3, S 5.6 and S 6.6</small></td><td>₹1,268.82 (Processing Fee*, ₹500 waived)</td><td><a href="charges-payment-s3-3.html" target="_blank" rel="noopener">Open</a></td><td><a href="charges-receipt-s3-3.html" target="_blank" rel="noopener">Open</a></td></tr>
-<tr><td>Reject With Full Waive-off (S 2.2, S 3.2, S 4.2, S 5.5, S 6.5)</td><td>Nothing</td><td colspan="2">No payment and no receipt</td></tr>
-</tbody></table>
-<div class="brd-figs">
-{fig('11_los_link.png', 'Payment link in the SMS', 'sm')}
-{fig('12_los_otp.png', 'LOS – OTP verification', 'sm')}
-</div>
-{fig('13_los_pay.png', 'LOS – Pay Charges (full amount only)')}
-<div class="brd-figs">
-{fig('14_los_gateway.png', 'Payment gateway (simulated) – success or failure', 'sm')}
-{fig('15_los_success.png', 'LOS – payment successful', 'sm')}
-</div>
-
-<h3>3.2 Payment Receipt &amp; Accounting Entry (UNO)</h3>
-<ul>
-<li>On a successful payment, the system should generate a receipt and save it in the Documents tab of the LAN in LMS. The receipt number format is RCPT/LAMF/{{{{Payment Year}}}}/{{{{Payment Month}}}}/{{{{Number of receipts as 4 digits}}}}, for example RCPT/LAMF/2026/11/0149.</li>
-<li>The paid amount should be posted in UNO immediately. Only the amount actually paid is posted.</li>
-<li>The SOA is not updated for these payments, because the SOA is updated only when the LAN status is ACTIVE. At the DRAFT, SUBMITTED and
-ACCOUNT OPENED stages, only UNO is updated.</li>
-<li>In UNO, each charge should be posted separately to its own income account, not as one combined Processing Fee. The Processing Fee goes to
-800102, Lien Marking to 800110, Lien Removal to 800098 and Stamp Duty to 800111, and the GST to IGST 715110. The customer still sees one
-Processing Fee* on the payment page and the receipt.</li>
-<li>After the payment, LMS sends an event mail to Treasury, Cc OPS – “Charges Payment Received” – to confirm that the payment is really
-received. {T(IC(14))}</li>
-<li>A duplicate or excess payment is refunded through the existing refund option in LMS.</li>
-<li>The UNO entry is posted automatically as soon as the customer pays. Treasury then does a manual cross-check that the payment is
-received, and needs an option in the Approvals tab to <b>Approve</b> the payment (received) or <b>Reject</b> it (not received).</li>
-<li>When Treasury approves, LMS reduces the balance payable by the amount paid. The balance is then ₹0 (no charge can be added after the
-rejection, see section 2.1.1.4), so LMS enables the
-<b>Initiate De-pledge</b> CTA, sends OPS an event mail, Cc Treasury – “Charges Received – Initiate De-pledge” – and the customer gets an
-SMS and mail with the payment receipt. {T(IC(15), NM('08_Charges_Payment_Received', 38))}</li>
-<li>If Treasury rejects the payment, the balance payable does not change and the Initiate De-pledge CTA stays disabled. LMS sends an
-internal event mail to OPS, Cc Treasury, that the payment is not received as per the entries.</li>
-<li>The customer gets an SMS and mail that the payment is not received, and that if the amount was debited, it will be returned
-automatically by the payment gateway. The customer can pay again with the same link. <span class="brd-ph">[Template – to be added]</span></li>
-<li>The same customer message is sent even if the payment was received and Treasury still rejects it. Such a case is handled by Treasury in
-the backend.</li>
-<li>This applies to every payment in every scenario.</li>
-</ul>
-<p><a href="charges-receipt.html" target="_blank" rel="noopener">Open the payment receipt</a> (the receipt sent to the customer, with the
-disclaimer; Download / Print).</p>
-<div class="brd-figs">{fig('16_receipt.png', 'Payment receipt', 'sm')}</div>
-{fig('17_lms_await.png', 'LMS – waiting for the customer’s payment, de-pledge disabled')}
-{fig('18_lms_received.png', 'LMS – payment received: Treasury cross-checks and approves or rejects')}
-<div class="brd-figs">{fig('19_lms_confirm_pop.png', 'Treasury confirmation pop-up', 'sm')}</div>
-{fig('20_lms_confirmed.png', 'LMS – payment approved, balance payable ₹0, Initiate De-pledge enabled')}
-{fig('21_lms_documents.png', 'LMS Documents tab – the receipt')}
-<p><b>Reference format</b> – how the charges with IGST post in UNO against the LAN</p>
-<table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
-<th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>
-<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>885</td><td></td><td>HLFCH</td><td>LAN</td></tr>
-<tr><td>SJV</td><td>P&amp;L_Income</td><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>450</td><td>HLTFC</td><td>LAN</td></tr>
-<tr><td>SJV</td><td>P&amp;L_Income</td><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>05-Nov-2026</td><td></td><td>100</td><td>HLTFC</td><td>LAN</td></tr>
-<tr><td>SJV</td><td>P&amp;L_Income</td><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>200</td><td>HLTFC</td><td>LAN</td></tr>
-<tr><td>SJV</td><td>BS_Liability</td><td>715110</td><td>IGST At Loan-1</td><td>05-Nov-2026</td><td></td><td>135</td><td>HLTFC</td><td>LAN</td></tr>
-</tbody></table>
-<ul>
-<li>SBR is the bank receipt, where the amount received is debited to the bank account. SJV is the journal, where the charges are credited to income and the GST to the IGST liability account.</li>
-<li>For a partial waive-off, only the balance actually paid is posted; the waived part is not posted.</li>
-</ul>
-<p><b>UNO account codes for the charges</b></p>
-<table class="brd-table"><thead><tr><th>A/c code</th><th>Description</th><th>A/c Nature</th></tr></thead><tbody>
-<tr><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF LOAN-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF LOAN-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>800102</td><td>LOAN PROCESSING FEES A/C-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>800113</td><td>EMI/ INSTALMENT BOUNCE CHARGES-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>800114</td><td>AMC-ANNUAL MAINTENANCE CHARGES-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>800115</td><td>PENAL INTEREST-1</td><td>P&amp;L – Income</td></tr>
-<tr><td>715110</td><td>IGST At Loan-1</td><td>Balance sheet – Liability</td></tr>
-<tr><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>Balance sheet – Asset</td></tr>
-</tbody></table>
-<p>The entries for each scenario are in section 6.2.</p>
-
-<h2>4. De-pledge</h2>
-<ul>
-<li>LMS enables the Initiate De-pledge CTA when Treasury approves the payment, as the balance payable is then ₹0. With a full waive-off,
-nothing is payable, so the CTA is enabled straight away.</li>
-<li>The Initiate De-pledge button should stay disabled until then.</li>
-<li>OPS maker initiates the de-pledge and OPS checker approves it.</li>
-</ul>
-
-<h2>5. Communication – Internal and Customer</h2>
-<table class="brd-table"><thead><tr><th>Scenario</th><th>Recipient</th><th>Communication Type</th><th>Sample template</th><th>Status</th></tr></thead><tbody>
-<tr><td>Maker raises a rejection request with the waive-off (DRAFT, SUBMITTED, ACCOUNT OPENED) – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(16)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Checker approves the rejection request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(12)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Treasury approves the rejection of a DRAFT loan – to OPS and Treasury</td><td>Internal</td><td>Email</td><td>{IC(13)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Treasury approves the rejection of a SUBMITTED or ACCOUNT OPENED loan – to OPS (revised alerts 3 and 5)</td><td>Internal</td><td>Email</td><td>{IC(22)} · {IC(23)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Checker or Treasury declines the request – to the OPS maker</td><td>Internal</td><td>Email</td><td>{IC(17)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Day 30 – pledged DRAFT LAN not submitted, reminder to complete the journey – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('10_Application_Pending_Lien_Marked', 40)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Day 31 – pledged DRAFT LAN not submitted, check with the customer – to OPS</td><td>Internal</td><td>Email</td><td>{IC(21)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>DRAFT loan rejected with no or partial waive-off, with the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('06_Draft_Application_Rejected_Pay_Charges', 36)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>DRAFT loan rejected with full waive-off, without the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('07_Draft_Application_Rejected', 37)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>SUBMITTED or ACCOUNT OPENED loan rejected with no or partial waive-off, with the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail')} · {lk('communications.html', 'SMS')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>SUBMITTED or ACCOUNT OPENED loan rejected with full waive-off, without the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('mails/29_Application_Rejected.html', 'Sample mail')} · {lk('communications.html', 'SMS')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Customer pays the charges – to Treasury and OPS</td><td>Internal</td><td>Email</td><td>{IC(14)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Treasury confirms the payment, initiate the de-pledge – to OPS</td><td>Internal</td><td>Email</td><td>{IC(15)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Treasury confirms the payment, with the payment receipt – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('08_Charges_Payment_Received', 38)} · {lk('charges-receipt.html', 'Receipt')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>Charges not paid, reminder every month – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>OPS clicks Resend Payment Link on a REJECTED LAN – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>ACCOUNT OPENED loan approved (Loan Lodgement) – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('communications.html', 'Loan Lodgement Approval')}</td><td><span class="brd-tbc">Already in use</span></td></tr>
-<tr><td>SUBMITTED loan approved (Loan Account Opening) – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
-<tr><td>ACTIVE loan – maker raises a waive-off request – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(18)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>ACTIVE loan – checker approves the waive-off request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(19)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>ACTIVE loan – Treasury approves the waive-off request – to OPS</td><td>Internal</td><td>Email</td><td>{IC(20)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>ACTIVE loan – checker or Treasury declines the waive-off request – to the OPS maker</td><td>Internal</td><td>Email</td><td>{IC(17)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
-<tr><td>ACTIVE loan – waive-off approved – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
-</tbody></table>
-<ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
-
-<h2>6. Scenarios</h2>
-<h3>6.1 Summary of scenarios</h3>
-{summary}
-<p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
-<h3>6.2 Scenario details – process flow and accounting entries</h3>
-{scen}
-<h3>6.3 Charges and amounts</h3>
-{charges}
-
-<h2>7. Open Points</h2>
-<ul>
-<li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
-<li>New customer template for “payment not received” – to be created.</li>
-</ul>
-"""
-
-
 # ---------------------------------------------------------------------------------------------------------------------------
 # BRD – DRAFT LAN Rejection (DISC-275)
 # ---------------------------------------------------------------------------------------------------------------------------
@@ -1418,9 +884,9 @@ def _waiver_scen_body():
     START = ["Customer starts the journey", "LAN created – DRAFT", "Units pledged"]
 
     return f"""
-<p class="brd-note">Scenario-wise version of the <a href="brd-waive-off.html">Charges Waiver BRD</a>, for an easy read from start to end.
-Section 2 has the rules that apply to every scenario; section 3 walks through each scenario step by step, with the sample mails and the
-UNO entry. The rules are the same as in the main BRD.</p>
+<p class="brd-note">The Charges Waiver BRD, written scenario by scenario for an easy read from start to end. Section 2 has the rules that
+apply to every scenario; section 3 walks through each scenario step by step, with the sample mails and the UNO entry; sections 4 to 6 have
+the communications, the UNO account codes and the open points.</p>
 <h2>1. Purpose</h2>
 <ul>
 <li>When a customer pledges the mutual fund units and then drops off the journey, charges are already incurred (lien marking, lien removal,
@@ -1475,7 +941,7 @@ received as per the entries, and the customer is told that the payment is not re
 payment gateway. If the payment was actually received, Treasury handles it in the backend.</li>
 </ul>
 <p>Each payable case links its own LOS payment journey and receipt (the amounts differ). S 4, S 5 and S 6 have the same amounts as S 3, so
-they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-waive-off.html">main Waiver BRD</a>.</p>
+they use the S 3 screens.</p>
 
 <h2>3. Scenarios</h2>
 {head(1, "DRAFT", "before pledging the mutual funds", "None.", "No action.", "INACTIVE (on day 31)",
@@ -1526,17 +992,77 @@ they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-w
 {ol(["Same as S 7.2, with part of a charge waived (Processing Fee and the other charges only).",
      "Example: ₹500 waived (₹423.73 charge plus ₹76.27 IGST) – the SOA balance goes from ₹1,768.82 to ₹1,268.82.",
      "The balance is collected as usual."])}
+<p><b>SOA example (ACTIVE) – Part A, application charges (₹500 of the Processing Fee waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Processing Fee Charges</td><td>883.82</td><td></td><td>883.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Marking Charges</td><td>531.00</td><td></td><td>1,414.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Lien Removal Charges</td><td>118.00</td><td></td><td>1,532.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Stamp Duty Charges</td><td>236.00</td><td></td><td>1,768.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>1,268.82</td><td>DR</td></tr></tbody></table><p><b>SOA example (ACTIVE) – Part B, loan charges (₹500 waived)</b></p><table class='brd-table brd-soa'><thead><tr><th>Date</th><th>Transaction Details</th><th>Debit</th><th>Credit</th><th>Balance</th><th>DR / CR</th></tr></thead><tbody><tr><td>14-07-2025</td><td>Bounce Charge</td><td>118.00</td><td></td><td>118.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Penal Charges</td><td>50.00</td><td></td><td>168.00</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Loan Renewal Charge</td><td>1,178.82</td><td></td><td>1,346.82</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Annual Maintenance Charge (AMC)</td><td>1,178.82</td><td></td><td>2,525.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Bank Swap Charge</td><td>295.00</td><td></td><td>2,820.64</td><td>DR</td></tr><tr><td>14-07-2025</td><td>Waive-off – approved by Treasury (waiver narration)</td><td></td><td>500.00</td><td>2,320.64</td><td>DR</td></tr></tbody></table>
 {DECLINE}
 <p><small>*Inclusive of Lien Marking, Lien Removal and Stamp Duty</small></p>
+
+<h2>4. Communication – Internal and Customer</h2>
+<table class="brd-table"><thead><tr><th>Scenario</th><th>Recipient</th><th>Communication Type</th><th>Sample template</th><th>Status</th></tr></thead><tbody>
+<tr><td>Maker raises a rejection request with the waive-off (DRAFT, SUBMITTED, ACCOUNT OPENED) – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(16)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Checker approves the rejection request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(12)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury approves the rejection of a DRAFT loan – to OPS and Treasury</td><td>Internal</td><td>Email</td><td>{IC(13)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury approves the rejection of a SUBMITTED or ACCOUNT OPENED loan – to OPS (revised alerts 3 and 5)</td><td>Internal</td><td>Email</td><td>{IC(22)} · {IC(23)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Checker or Treasury declines the request – to the OPS maker</td><td>Internal</td><td>Email</td><td>{IC(17)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 30 – pledged DRAFT LAN not submitted, reminder to complete the journey – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('10_Application_Pending_Lien_Marked', 40)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Day 31 – pledged DRAFT LAN not submitted, check with the customer – to OPS</td><td>Internal</td><td>Email</td><td>{IC(21)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>DRAFT loan rejected with no or partial waive-off, with the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('06_Draft_Application_Rejected_Pay_Charges', 36)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>DRAFT loan rejected with full waive-off, without the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('07_Draft_Application_Rejected', 37)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>SUBMITTED or ACCOUNT OPENED loan rejected with no or partial waive-off, with the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('mails/28_Application_Rejected_Pay_Charges.html', 'Sample mail')} · {lk('communications.html', 'SMS')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>SUBMITTED or ACCOUNT OPENED loan rejected with full waive-off, without the payment link – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('mails/29_Application_Rejected.html', 'Sample mail')} · {lk('communications.html', 'SMS')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Customer pays the charges – to Treasury and OPS</td><td>Internal</td><td>Email</td><td>{IC(14)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury confirms the payment, initiate the de-pledge – to OPS</td><td>Internal</td><td>Email</td><td>{IC(15)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Treasury confirms the payment, with the payment receipt – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('08_Charges_Payment_Received', 38)} · {lk('charges-receipt.html', 'Receipt')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>Charges not paid, reminder every month – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>OPS clicks Resend Payment Link on a REJECTED LAN – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACCOUNT OPENED loan approved (Loan Lodgement) – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('communications.html', 'Loan Lodgement Approval')}</td><td><span class="brd-tbc">Already in use</span></td></tr>
+<tr><td>SUBMITTED loan approved (Loan Account Opening) – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
+<tr><td>ACTIVE loan – maker raises a waive-off request – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(18)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – checker approves the waive-off request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(19)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – Treasury approves the waive-off request – to OPS</td><td>Internal</td><td>Email</td><td>{IC(20)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – checker or Treasury declines the waive-off request – to the OPS maker</td><td>Internal</td><td>Email</td><td>{IC(17)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>ACTIVE loan – waive-off approved – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
+</tbody></table>
+<ul><li>Internal mails do not need DLT approval. Customer SMS need DLT registration.</li></ul>
+
+<h2>5. Accounting Entry (UNO) – Reference Format and Account Codes</h2>
+<p><b>Reference format</b> – how the charges with IGST post in UNO against the LAN</p>
+<table class="brd-table"><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th><th>Doc. Dt</th>
+<th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>
+<tr><td>SBR</td><td>BS_Asset</td><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>05-Nov-2026</td><td>885</td><td></td><td>HLFCH</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>450</td><td>HLTFC</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>05-Nov-2026</td><td></td><td>100</td><td>HLTFC</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>P&amp;L_Income</td><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF Loan-1</td><td>05-Nov-2026</td><td></td><td>200</td><td>HLTFC</td><td>LAN</td></tr>
+<tr><td>SJV</td><td>BS_Liability</td><td>715110</td><td>IGST At Loan-1</td><td>05-Nov-2026</td><td></td><td>135</td><td>HLTFC</td><td>LAN</td></tr>
+</tbody></table>
+<ul>
+<li>SBR is the bank receipt, where the amount received is debited to the bank account. SJV is the journal, where the charges are credited to income and the GST to the IGST liability account.</li>
+<li>For a partial waive-off, only the balance actually paid is posted; the waived part is not posted.</li>
+</ul>
+<p><b>UNO account codes for the charges</b></p>
+<table class="brd-table"><thead><tr><th>A/c code</th><th>Description</th><th>A/c Nature</th></tr></thead><tbody>
+<tr><td>800110</td><td>LIEN MARKING CHARGES LAS/LAMF LOAN-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800098</td><td>LIEN REMOVAL CHARGES-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800111</td><td>STAMP DUTY CHARGES LAS/LAMF LOAN-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800102</td><td>LOAN PROCESSING FEES A/C-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800113</td><td>EMI/ INSTALMENT BOUNCE CHARGES-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800114</td><td>AMC-ANNUAL MAINTENANCE CHARGES-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>800115</td><td>PENAL INTEREST-1</td><td>P&amp;L – Income</td></tr>
+<tr><td>715110</td><td>IGST At Loan-1</td><td>Balance sheet – Liability</td></tr>
+<tr><td>165042</td><td>AXIS BANK - A/C 025010200017480</td><td>Balance sheet – Asset</td></tr>
+</tbody></table>
+<p>The entries for each scenario are under the scenario in section 3.</p>
+
+<h2>6. Open Points</h2>
+<ul>
+<li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
+<li>New customer template for “payment not received” – to be created.</li>
+</ul>
 """
 
 
 BRDS = [
-    {"slug": "waive-off", "title": "Charges Waiver & Post-Pledge Drop-off", "status": "Draft", "updated": "24-11-2026",
-     "summary": "Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.",
-     "body": _waiver_body()},
-    {"slug": "waive-off-scenarios", "title": "Charges Waiver & Post-Pledge Drop-off – Scenario-wise", "status": "Draft", "updated": "26-11-2026",
-     "summary": "The Charges Waiver BRD as one flow, scenario by scenario (S 1 – S 7): approvals, mails, payment, de-pledge and UNO entries.",
+    {"slug": "waive-off-scenarios", "title": "Charges Waiver & Post-Pledge Drop-off – Scenario-wise", "status": "Draft", "updated": "27-11-2026",
+     "summary": "Waive charges (none, partial or full) with reject or approve, scenario by scenario (S 1 – S 7): approvals, mails, payment, de-pledge and UNO entries.",
      "body": _waiver_scen_body()},
     {"slug": "draft-lan-rejection", "title": "DRAFT LAN Rejection", "status": "Draft", "updated": "16-11-2026",
      "summary": "Reject a loan application in DRAFT status in LMS when the mutual fund units are pledged (DRAFT → REJECTED, "
