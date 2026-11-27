@@ -26,16 +26,31 @@ for el in list(body):
     if el.tag != qn('w:sectPr'):
         body.remove(el)
 FONT = 'Calibri'
+BODY = 12   # DISC-474: Normal and List Paragraph in Calibri 12; headings Calibri, sized below; tables 10, captions 9
+
+
+def _style(name, size, bold=None):
+    st = d.styles[name]; st.font.name = FONT; st.font.size = Pt(size)
+    if bold is not None: st.font.bold = bold
+    rf = st.element.get_or_add_rPr().find(qn('w:rFonts'))
+    if rf is None: rf = OxmlElement('w:rFonts'); st.element.get_or_add_rPr().append(rf)
+    for k in ('w:ascii', 'w:hAnsi', 'w:eastAsia', 'w:cs'): rf.set(qn(k), FONT)
+    for k in ('w:asciiTheme', 'w:hAnsiTheme', 'w:eastAsiaTheme', 'w:cstheme'):
+        if rf.get(qn(k)) is not None: del rf.attrib[qn(k)]
+
+
+for _n, _sz in (('Normal', BODY), ('List Paragraph', BODY), ('Heading 1', 20), ('Heading 2', 16), ('Heading 3', 14), ('Heading 4', 13), ('Heading 5', 12)):
+    _style(_n, _sz)
 for sec in d.sections:
     sec.left_margin = sec.right_margin = Inches(0.75)
 
 
-def add_run(p, text, bold=False, italic=False, size=11):
+def add_run(p, text, bold=False, italic=False, size=BODY):
     if not text: return
     r = p.add_run(text); r.bold = bold or None; r.italic = italic or None; r.font.name = FONT; r.font.size = Pt(size)
 
 
-def add_link(p, url, text, size=11):
+def add_link(p, url, text, size=BODY):
     r_id = p.part.relate_to(url, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', is_external=True)
     h = OxmlElement('w:hyperlink'); h.set(qn('r:id'), r_id)
     r = OxmlElement('w:r'); rp = OxmlElement('w:rPr')
@@ -50,7 +65,7 @@ def norm(t):
     return re.sub(r'\s+', ' ', t)
 
 
-def inline(p, node, bold=False, italic=False, size=11):
+def inline(p, node, bold=False, italic=False, size=BODY):
     """write the inline content of node into paragraph p (bold, italic, links, line breaks)."""
     for ch in node.children:
         if isinstance(ch, NavigableString):
@@ -132,7 +147,7 @@ def table(t):
                 continue
             done[ref['id']] = wc
             wc.text = ''
-            inline(wc.paragraphs[0], ref['cell'], bold=ref['head'], size=9)
+            inline(wc.paragraphs[0], ref['cell'], bold=ref['head'], size=10)
             if ref['head']:
                 sh = OxmlElement('w:shd'); sh.set(qn('w:val'), 'clear'); sh.set(qn('w:fill'), 'D9E2F3'); wc._tc.get_or_add_tcPr().append(sh)
     # column widths (inches): fixed for the summary table, else by the longest text in each column
@@ -171,13 +186,13 @@ COL = {'m': RGBColor(0x37, 0x30, 0xA3), 'c': RGBColor(0x06, 0x5F, 0x46), 'brd-ph
 
 def flow(f):
     """process flow (DISC-393): bold sub-scenario title, then the steps joined by arrows; mails in colour."""
-    p = d.add_paragraph(); add_run(p, norm(f.find('b').get_text()).strip() if f.find('b') else 'Flow', bold=True, size=10)
+    p = d.add_paragraph(); add_run(p, norm(f.find('b').get_text()).strip() if f.find('b') else 'Flow', bold=True, size=BODY)
     p.paragraph_format.space_after = Pt(0); p.paragraph_format.keep_with_next = True
     q = d.add_paragraph()
     for i, sp in enumerate(f.select('.fl > span')):
-        if i: add_run(q, '  →  ', size=9)
+        if i: add_run(q, '  →  ', size=10)
         cls = [c for c in (sp.get('class') or []) if c in COL]
-        r = q.add_run(norm(sp.get_text())); r.font.name = FONT; r.font.size = Pt(9)
+        r = q.add_run(norm(sp.get_text())); r.font.name = FONT; r.font.size = Pt(10)
         if cls: r.font.color.rgb = COL[cls[0]]; r.bold = True
 
 
