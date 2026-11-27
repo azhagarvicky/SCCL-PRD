@@ -1330,7 +1330,6 @@ def _waiver_scen_body():
         rows = [f"<tr><td>{BANK[0]}</td><td>{BANK[1]}</td><td>{BANK[2]}</td><td>{BANK[3]}</td><td>{f(tot)}</td><td></td><td>{BANK[4]}</td><td>LAN</td></tr>"]
         rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td></td><td>{f(a)}</td><td>HLTFC</td><td>LAN</td></tr>"
                  for k, a in lines]
-        rows.append(f"<tr><td colspan='4'><b>Total</b></td><td><b>{f(tot)}</b></td><td><b>{f(tot)}</b></td><td colspan='2'></td></tr>")
         note = " (example for a sanction amount of ₹1,00,000 – Processing Fee* ₹1,499 + GST; the other charges are fixed)" if any(k == "PF" for k, _ in lines) else ""   # DISC-459: only the Processing Fee depends on the sanction
         return (f"<p><b>UNO entry</b> – posted when the customer pays{note}</p>"
                 "<table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th>"
@@ -1343,11 +1342,11 @@ def _waiver_scen_body():
 
     def chain(action, to, treasury_alert):
         verb = "Reject" if action == "reject" else "Approve"
-        return [f"OPS maker (OPS L1) selects the charges, enters the amounts, adds the note, uploads the file and clicks <b>{verb}</b>. Nothing "
+        return [f"OPS maker (OPS L1) selects the charges, enters the amounts, adds the note (mandatory), uploads the file (mandatory) and clicks <b>{verb}</b>. Nothing "
                 "is waived and the LAN status does not change yet. " + MAIL("OPS Checker", "Treasury") + S(IC(16)),
-                "OPS checker (OPS L2 or L3) checks the request, can change the waive-off, adds the note (and a file if the waive-off is changed) "
+                "OPS checker (OPS L2 or OPS L3) checks the request, can change the waive-off, adds the note (mandatory; a file is mandatory only if the waive-off is changed) "
                 "and approves. " + MAIL("Treasury", "OPS") + S(IC(12)),
-                "Treasury (L1, L2 or L3) adds the note and gives the final approval. "
+                "Treasury (Treasury L1, L2 or L3) adds the note (mandatory) and gives the final approval. "
                 f"The waive-off is applied and the LAN status changes to <b>{to}</b>. " + INFO("OPS", "Treasury") + S(treasury_alert)]
 
     PAY = lambda amt, mail, key: [
@@ -1388,8 +1387,8 @@ def _waiver_scen_body():
                 "The customer gets the Loan Lodgement Approval SMS and mail (already in use)." + S(lk("communications.html", "SMS row 13")))
         post = lambda what: [cust, what, "There is no de-pledge and no payment link – the loan continues."]
         return (f"<h4>S {n}.1 – Approve Without Waive-off</h4>"
-                + ol(["OPS maker adds the note, uploads the file and clicks <b>Approve</b> without a waive-off. " + MAIL("OPS Checker", "Treasury") + S(IC(16)),
-                      f"OPS checker checks, adds the note and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."]
+                + ol(["OPS maker (OPS L1) adds the note (mandatory), uploads the file (mandatory) and clicks <b>Approve</b> without a waive-off. " + MAIL("OPS Checker", "Treasury") + S(IC(16)),
+                      f"OPS checker (OPS L2 or OPS L3) checks, adds the note (mandatory) and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."]
                      + post("LMS shows the full charges (₹1,768.82). They are posted in UNO at the first withdrawal or repayment."))
                 + f"<h4>S {n}.2 – Approve With Full Waive-off</h4>"
                 + ol(chain("approve", to, IC(13)) + post("LMS shows no charges. There is no UNO entry."))
@@ -1509,10 +1508,10 @@ they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-w
 {ol(["Nothing is selected on the Waive-off page, so the Waive-off button stays disabled and no request is raised.",
      "The charges stay in the SOA and are collected as usual."])}
 <h4>S 7.2 – With Full Waive-off</h4>
-{ol(["OPS maker opens ≡ → Waive-off, selects the charges, adds the note, uploads the file and clicks Waive-off. On “Yes, Waive Off”, the "
+{ol(["OPS maker (OPS L1) opens ≡ → Waive-off, selects the charges, adds the note (mandatory), uploads the file (mandatory) and clicks Waive-off. On “Yes, Waive Off”, the "
      "request goes to the Approvals tab. " + MAIL("OPS Checker", "Treasury") + S(IC(18)),
-     "OPS checker approves the request in the Approvals tab with a note. " + MAIL("Treasury", "OPS") + S(IC(19)),
-     "Treasury gives the final approval with a note. " + INFO("OPS", "Treasury") + S(IC(20)),
+     "OPS checker (OPS L2 or OPS L3) approves the request in the Approvals tab with a note (mandatory). " + MAIL("Treasury", "OPS") + S(IC(19)),
+     "Treasury (Treasury L1, L2 or L3) gives the final approval with a note (mandatory). " + INFO("OPS", "Treasury") + S(IC(20)),
      "LMS updates the SOA: the waive-off is a credit with a waiver narration. Nothing is posted in UNO. The LAN stays ACTIVE.",
      "The customer gets no communication."])}
 <h4>S 7.3 – With Partial Waive-off</h4>
