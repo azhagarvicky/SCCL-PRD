@@ -467,6 +467,11 @@ application from the Curated Offers page.</li>
 <li>If the payment fails, nothing changes. There is no update, no communication and no accounting entry, and the customer can pay again.</li>
 <li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 3.2).</li>
 <li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. {T(NM('09_Charges_Payment_Reminder', 39))}</li>
+<li>For a REJECTED LAN with a balance payable, LMS needs a <b>Resend Payment Link</b> CTA, so that OPS can send the payment link again
+whenever the customer asks for it (for example, 5 or 10 days after the rejection). OPS maker (OPS L1) clicks it and confirms in a pop-up;
+no checker or Treasury approval is needed. The customer gets the same SMS and mail as the monthly reminder, with the same payment link.
+LMS records it in the Audit tab. The CTA is disabled while a payment is pending Treasury confirmation, after the payment is approved, and
+for a full waive-off (nothing is payable). The customer can also open the LOS and pay at any time. {T(NM('09_Charges_Payment_Reminder', 39))}</li>
 </ul>
 <p><b>Payment journey and receipt for each scenario</b> – the amount changes from scenario to scenario</p>
 <table class="brd-table"><thead><tr><th>Scenario</th><th>Customer pays</th><th>LOS payment journey</th><th>Receipt</th></tr></thead><tbody>
@@ -572,6 +577,7 @@ nothing is payable, so the CTA is enabled straight away.</li>
 <tr><td>Treasury confirms the payment, initiate the de-pledge – to OPS</td><td>Internal</td><td>Email</td><td>{IC(15)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Treasury confirms the payment, with the payment receipt – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('08_Charges_Payment_Received', 38)} · {lk('charges-receipt.html', 'Receipt')}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Charges not paid, reminder every month – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>OPS clicks Resend Payment Link on a REJECTED LAN – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>ACCOUNT OPENED loan approved (Loan Lodgement) – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('communications.html', 'Loan Lodgement Approval')}</td><td><span class="brd-tbc">Already in use</span></td></tr>
 <tr><td>SUBMITTED loan approved (Loan Account Opening) – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
 <tr><td>ACTIVE loan – maker raises a waive-off request – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(18)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
@@ -1453,6 +1459,10 @@ separate request from the ≡ menu → Waive-off page, approved in the Approvals
 <ul>
 <li>The customer pays the full payable amount, including GST, through the payment link (LOS, OTP, Pay Charges page). A failed payment changes nothing, and
 the customer can pay again. If the customer does not pay, a reminder SMS and mail is sent every month.{S(NM("09_Charges_Payment_Reminder", 39))}</li>
+<li>For a REJECTED LAN with a balance payable, OPS maker (OPS L1) can click <b>Resend Payment Link</b> in LMS whenever the customer asks
+for the link. After the confirmation pop-up, the customer gets the same SMS and mail as the monthly reminder, with the same payment link.
+No checker or Treasury approval is needed, and LMS records it in the Audit tab. The CTA is disabled while a payment is pending Treasury
+confirmation, after the payment is approved, and for a full waive-off.{S(NM("09_Charges_Payment_Reminder", 39))}</li>
 <li>On a successful payment, the amount is posted in UNO (each charge separately, one IGST line, Subaccd = LAN), and a
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>
 <li>The SOA is updated only when the LAN status is ACTIVE. For a DRAFT, SUBMITTED or ACCOUNT OPENED loan, a payment updates UNO only, not the

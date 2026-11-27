@@ -48,6 +48,10 @@ separate request from the ≡ menu → Waive-off page, approved in the Approvals
 <ul>
 <li>The customer pays the full payable amount, including GST, through the payment link (LOS, OTP, Pay Charges page). A failed payment changes nothing, and
 the customer can pay again. If the customer does not pay, a reminder SMS and mail is sent every month. <span class="brd-smp">(<a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS row 39</a>) <span class="brd-tbc">To be confirmed</span></span></li>
+<li>For a REJECTED LAN with a balance payable, OPS maker (OPS L1) can click <b>Resend Payment Link</b> in LMS whenever the customer asks
+for the link. After the confirmation pop-up, the customer gets the same SMS and mail as the monthly reminder, with the same payment link.
+No checker or Treasury approval is needed, and LMS records it in the Audit tab. The CTA is disabled while a payment is pending Treasury
+confirmation, after the payment is approved, and for a full waive-off. <span class="brd-smp">(<a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS row 39</a>) <span class="brd-tbc">To be confirmed</span></span></li>
 <li>On a successful payment, the amount is posted in UNO (each charge separately, one IGST line, Subaccd = LAN), and a
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>
 <li>The SOA is updated only when the LAN status is ACTIVE. For a DRAFT, SUBMITTED or ACCOUNT OPENED loan, a payment updates UNO only, not the

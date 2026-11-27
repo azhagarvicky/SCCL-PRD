@@ -177,6 +177,7 @@ def draft_approvals(r, tid):
             # DISC-351: after the rejection – customer payment (from the LOS), Treasury confirmation, then de-pledge
             '<div class="wv-pay-box" hidden><h3>Charges payment</h3><p class="wv-pay-st"></p>'
             '<div class="wv-pay-ctas"><button type="button" class="wv-sim">Simulate customer payment (prototype)</button>'
+            '<button type="button" class="wv-resend">Resend Payment Link</button>'   # DISC-463: OPS resends the link on the customer's request
             '<button type="button" class="wv-depledge" disabled>Initiate De-pledge</button></div>'
             # DISC-453: Treasury confirms the payment – Approve (received) or Reject (not received); LMS enables the de-pledge when the balance payable is ₹0
             '<div class="wv-tc" hidden><h4>Treasury – payment confirmation</h4>'
@@ -194,6 +195,9 @@ def draft_approvals(r, tid):
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-a">Yes</button></div>')
             + pop('wv-pd', '<h3>Are you sure you want to decline? The waive-off and rejection request will be cancelled.</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-d">Yes, decline</button></div>')
+            + pop('wv-prs', '<h3>Are you sure you want to send the payment link to the customer again?</h3>'
+                  '<p class="wv-ps-txt">The customer gets the payment reminder SMS and mail with the same payment link.</p>'
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-rs">Yes, send</button></div>')
             + pop('wv-pn', '<h3>Are you sure the payment is not received? The payment will be rejected.</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-n">Yes, reject</button></div>')
             + pop('wv-pc', '<h3>Are you sure you want to confirm the payment received from the customer?</h3>'
@@ -392,7 +396,7 @@ WAIVER_JS = """<script>
         pb.querySelector('.wv-depledge').disabled = true;
       } else {
         pb.querySelector('.wv-pay-st').innerHTML = 'Nothing payable (full waive-off) – the units can be de-pledged now.';
-        pb.querySelector('.wv-sim').hidden = true; pb.querySelector('.wv-dp-hint').hidden = true;
+        pb.querySelector('.wv-sim').hidden = true; pb.querySelector('.wv-dp-hint').hidden = true; pb.querySelector('.wv-resend').hidden = true;
       }
     }
     if (c.contains('wv-sim')) {          /* the customer pays in the LOS – LMS gets the payment, receipt and UNO entries */
@@ -400,7 +404,7 @@ WAIVER_JS = """<script>
       pb2.querySelector('.wv-pay-st').innerHTML = '<b>Payment received:</b> ' + amt + ' on ' + ts + ' · Transaction ID pay_SCCL7Q2X9K4M1B · ' +
         'Receipt RCPT/LAMF/2026/11/0149 (Documents tab) · UNO entries posted.<br>Mail sent to Treasury, Cc OPS: <i>Charges Payment Received</i> – ' +
         'please confirm the payment. <b>Pending Treasury confirmation.</b>';
-      e.target.hidden = true; pb2.querySelector('.wv-tc').hidden = false;
+      e.target.hidden = true; pb2.querySelector('.wv-tc').hidden = false; pb2.querySelector('.wv-resend').disabled = true;
       audit(w, 'Charges payment of ' + amt + ' received from the customer (pay_SCCL7Q2X9K4M1B); receipt RCPT/LAMF/2026/11/0149 generated', '-', 'System', '-');
       var docs = w.closest('.lms-lanpage').querySelector('.doc-table tbody');
       if (docs) { var nd = docs.querySelector('.doc-none'); if (nd) nd.remove();
@@ -409,6 +413,13 @@ WAIVER_JS = """<script>
           '<td><a href="charges-receipt.html" target="_blank" rel="noopener">View</a></td>';
         tr.children[2].textContent = ts; docs.prepend(tr); }
     }
+    if (c.contains('wv-resend')) show(w, '.wv-prs', true);
+    if (c.contains('wv-yes-rs')) {         /* DISC-463: OPS resends the payment link (same link, reminder SMS and mail) */
+      show(w, '.wv-prs', false);
+      w.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment link sent again</b> on ' + stamp() +
+        ' – reminder SMS and mail with the same link sent to the customer.');
+      audit(w, 'Payment link for ' + f2(+w.dataset.due) + ' resent to the customer (reminder SMS and mail)', '-', w.dataset.mk + ' user', '-');
+    }
     if (c.contains('wv-confirm')) show(w, '.wv-pc', true);
     if (c.contains('wv-yes-c')) {          /* Treasury approves – payment received; LMS enables the de-pledge when the balance payable is ₹0 (DISC-453) */
       show(w, '.wv-pc', false); var pb3 = w.querySelector('.wv-pay-box'), bal = 0, en = bal <= 0;   /* the full amount is paid in one payment */
@@ -416,7 +427,7 @@ WAIVER_JS = """<script>
       pb3.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment approved by Treasury</b> (received) on ' + stamp() + '. ' +
         (en ? 'Balance payable ₹0 – De-pledge enabled. Mail sent to OPS, Cc Treasury: <i>Charges Received – Initiate De-pledge</i>.'
             : 'An amount is still payable – De-pledge not enabled.'));
-      pb3.querySelector('.wv-tc').hidden = true; pb3.querySelector('.wv-depledge').disabled = !en; pb3.querySelector('.wv-dp-hint').hidden = en;
+      pb3.querySelector('.wv-tc').hidden = true; pb3.querySelector('.wv-depledge').disabled = !en; pb3.querySelector('.wv-dp-hint').hidden = en; pb3.querySelector('.wv-resend').hidden = true;
       audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' approved by Treasury (received)' + (en ? '; de-pledge enabled' : '; de-pledge not enabled'), '-', 'Treasury user', 'Treasury user');
     }
     if (c.contains('wv-tc-rej')) show(w, '.wv-pn', true);
@@ -425,7 +436,7 @@ WAIVER_JS = """<script>
       pb5.querySelector('.wv-pay-st').innerHTML = pb5.querySelector('.wv-pay-st').innerHTML.replace('<b>Pending Treasury confirmation.</b>', '');
       pb5.querySelector('.wv-pay-st').insertAdjacentHTML('beforeend', '<br><b>Payment rejected by Treasury</b> (not received) on ' + stamp() +
         '. De-pledge stays disabled; the amount is still payable. Mail sent to OPS, Cc Treasury.');
-      pb5.querySelector('.wv-tc').hidden = true; pb5.querySelector('.wv-depledge').disabled = true; pb5.querySelector('.wv-sim').hidden = false;
+      pb5.querySelector('.wv-tc').hidden = true; pb5.querySelector('.wv-depledge').disabled = true; pb5.querySelector('.wv-sim').hidden = false; pb5.querySelector('.wv-resend').disabled = false;
       audit(w, 'Charges payment of ' + f2(+w.dataset.due) + ' rejected by Treasury (not received)', '-', 'Treasury user', 'Treasury user');
     }
     if (c.contains('wv-depledge')) {
