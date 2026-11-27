@@ -927,7 +927,7 @@ IC_PAGE = """<!doctype html>
 <title>{title} – Internal mail</title>
 <style>
 body{{margin:0;background:#fff;font-family:"Segoe UI",Arial,Helvetica,sans-serif;color:#1a1a1a}}
-.top{{padding:14px 28px 0}} .top a{{font-size:13px;color:#555;text-decoration:none}} .top a:hover{{text-decoration:underline}}
+.top{{padding:14px 28px 0}} .vn{{margin:10px 28px 0;padding:10px 14px;border-radius:8px;font-size:14px;background:#fff4d6;border:1px solid #f0c24b}} .vn a{{color:#1a1a1a}} .top a{{font-size:13px;color:#555;text-decoration:none}} .top a:hover{{text-decoration:underline}}
 h1.subj{{font-size:24px;font-weight:400;margin:10px 28px 14px}}
 .msg{{margin:0 22px 28px;border:1px solid #e3e3e3;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06)}}
 .mh{{display:flex;gap:14px;padding:18px 22px 14px}} .av{{flex:none;width:44px;height:44px;border-radius:50%;background:#f4c7cb;color:#a4262c;display:flex;align-items:center;justify-content:center;font-size:18px}}
@@ -945,7 +945,7 @@ h1.subj{{font-size:24px;font-weight:400;margin:10px 28px 14px}}
 .foot{{background:#1a1a1a;color:#ccc;text-align:center;font-size:12px;padding:14px 40px;font-family:Arial,Helvetica,sans-serif}}
 @media (max-width:640px){{.mh{{flex-wrap:wrap}} .dt{{width:100%;text-align:left;padding-left:58px}} .sw{{padding-left:22px}} .wrap,.msg{{margin-left:8px;margin-right:8px}} .body,.disc{{padding-left:24px;padding-right:24px}}}}
 </style></head><body>
-<div class="top"><a href="../internal-communications.html">← Internal communications</a></div>
+<div class="top"><a href="../internal-communications.html">← Internal communications</a></div>{note}
 <h1 class="subj">{subject}</h1>
 <div class="msg">
 <div class="mh"><div class="av">S</div>
@@ -1001,7 +1001,19 @@ def ic_variant(body, kind):
                 tot[0] += a; tot[1] += w
                 line = f"| {name} | {a:,.2f} | {w:,.2f} | {a - w:,.2f}"
         out.append(line)
-    return "\n".join(out).replace(_IC_GENERIC, _IC_LINE[kind])
+    t = "\n".join(out).replace(_IC_GENERIC, _IC_LINE[kind])
+    # DISC-478 (alert 24): Treasury approves only with a waive-off
+    return t.replace("; Treasury: {{Treasury User Name}} (only with a full or partial waive-off)",
+                     "" if base == "no" else "; Treasury: {{Treasury User Name}}")
+
+
+# DISC-478: version notes shown above the mail (the mail content itself is not changed)
+IC_NOTE = {2: '<div class="vn"><b>Version 1 – current mail. To be changed</b> as per the Waiver BRD (S 5.1 – 5.3): the mail has to show the '
+              'type of waive-off and the charges. See <a href="IC-24.html">Version 2 – alert 24</a> '
+              '(<a href="IC-24-no.html">no</a> · <a href="IC-24-full.html">full</a> · <a href="IC-24.html">partial waive-off</a>).</div>',
+           24: '<div class="vn"><b>Version 2 – to be added</b> (replaces <a href="IC-02.html">Version 1 – alert 2</a>) as per the Waiver BRD '
+               '(S 5.1 – 5.3). Samples: <a href="IC-24-no.html">no waive-off</a> · <a href="IC-24-full.html">full waive-off</a> · '
+               '<a href="IC-24.html">partial waive-off</a>.</div>'}
 
 
 def write_internal_mails():
@@ -1029,7 +1041,7 @@ def write_internal_mails():
             with open(os.path.join(ROOT, IC_FILE(n).replace(".html", suf + ".html")), "w") as f:
                 f.write(IC_PAGE.format(title=html.escape(title), subject=ic_fill(subj, bold=False).strip(), switch=switch,
                                        to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]), greet=html.escape(rec[0]["dear"]),
-                                       body=ic_mail_body(b2), script=script))
+                                       body=ic_mail_body(b2), script=script, note=IC_NOTE.get(n, "")))
             IC_SAMPLE.clear(); IC_SAMPLE.update(saved)
 
 def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257, DISC-263)
