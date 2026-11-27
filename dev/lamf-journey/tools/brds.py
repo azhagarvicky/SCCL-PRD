@@ -943,6 +943,8 @@ confirmation, after the payment is approved, and for a full waive-off.{S(NM("09_
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>
 <li>The SOA is updated only when the LAN status is ACTIVE. For a DRAFT, SUBMITTED or ACCOUNT OPENED loan, a payment updates UNO only, not the
 SOA.</li>
+<li>Whenever LMS updates the SOA of an ACTIVE LAN (a payment or a waive-off), it updates the database at the same time, so the SOA and the
+database always match, with no gap.</li>
 <li>After every payment (the UNO entry is posted first, automatically), Treasury cross-checks that it is received and approves or rejects it. When
 Treasury approves, the balance payable is ₹0, so LMS enables the Initiate De-pledge CTA (straight away after a full waive-off).
 OPS maker initiates the de-pledge and OPS checker approves it.</li>
@@ -1001,8 +1003,7 @@ with no, full or partial waive-off (S 6.1 – S 6.3), or Reject with no, full or
      "request goes to the Approvals tab. " + MAIL("OPS Checker", "Treasury") + S(IC(18, "full")),
      "OPS checker (OPS L2 or OPS L3) approves the request in the Approvals tab with a note (mandatory). " + MAIL("Treasury", "OPS") + S(IC(19, "full")),
      "Treasury (Treasury L1, L2 or L3) gives the final approval with a note (mandatory). " + INFO("OPS", "Treasury") + S(IC(20, "full")),
-     "LMS updates the SOA: the waive-off is a credit with a waiver narration. At the same time, LMS updates the waived amount and the "
-     "balance payable in the database, so the SOA, the database and the Waive-off page always show the same amount, with no gap. Nothing is "
+     "LMS updates the SOA (the waive-off is a credit with a waiver narration) and the database at the same time (section 2.3). Nothing is "
      "posted in UNO. The LAN stays ACTIVE.",
      "The customer gets no communication."])}
 <h4>S 7.3 – With Partial Waive-off</h4>
