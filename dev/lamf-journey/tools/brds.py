@@ -916,7 +916,6 @@ request, the customer can continue the existing application. (LOS change – PRD
 <li>A DRAFT loan cannot be approved. For a rejection request (DRAFT, SUBMITTED or ACCOUNT OPENED), the checker and Treasury see the CTAs
 <b>Accept Rejection</b> and <b>Decline Rejection</b> – they accept or decline the rejection request, not the loan. Approve is used only to
 approve a SUBMITTED or ACCOUNT OPENED loan (S 5.1 – S 5.3, S 6.1 – S 6.3).</li>
-<li>Every approve or reject asks for confirmation in a pop-up – “This action is irreversible. Are you sure you want to proceed?”.</li>
 </ul>
 <h3>2.2 Charges and Waive-off</h3>
 <ul>
