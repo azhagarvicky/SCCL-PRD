@@ -1001,7 +1001,9 @@ with no, full or partial waive-off (S 6.1 – S 6.3), or Reject with no, full or
      "request goes to the Approvals tab. " + MAIL("OPS Checker", "Treasury") + S(IC(18, "full")),
      "OPS checker (OPS L2 or OPS L3) approves the request in the Approvals tab with a note (mandatory). " + MAIL("Treasury", "OPS") + S(IC(19, "full")),
      "Treasury (Treasury L1, L2 or L3) gives the final approval with a note (mandatory). " + INFO("OPS", "Treasury") + S(IC(20, "full")),
-     "LMS updates the SOA: the waive-off is a credit with a waiver narration. Nothing is posted in UNO. The LAN stays ACTIVE.",
+     "LMS updates the SOA: the waive-off is a credit with a waiver narration. At the same time, LMS updates the waived amount and the "
+     "balance payable in the database, so the SOA, the database and the Waive-off page always show the same amount, with no gap. Nothing is "
+     "posted in UNO. The LAN stays ACTIVE.",
      "The customer gets no communication."])}
 <h4>S 7.3 – With Partial Waive-off</h4>
 {ol(["Same as S 7.2, with part of a charge waived (Processing Fee and the other charges only).",
