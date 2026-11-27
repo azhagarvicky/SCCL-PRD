@@ -321,6 +321,9 @@ other charges. LMS should not allow an amount more than the charge.</li>
 request that the maker raises with the waive-off (no, partial or full waive-off), not for the loan.</li>
 <li>The maker (OPS L1) selects the charges, adds the note and the file, and clicks Reject. This only raises the rejection request. LMS should
 not waive anything or change the LAN status at this step, and should send a mail to the checker. {T(IC(16))}</li>
+<li>Once the rejection request is raised, the customer cannot continue the LOS journey, and after the LAN is REJECTED the customer cannot
+move to any next step (LOS shows an error). So no charge can be added after the request is raised – the customer can only pay the charges
+through the payment link. If the checker or Treasury declines the request, the customer can continue the journey.</li>
 <li>The checker (OPS L2 or L3) sees the request with the maker, the waive-off type, the amounts and the note, can change the waive-off, and
 approves or declines the request. On approval, LMS should send a mail to Treasury. The LAN status still does not change. {T(IC(12))}</li>
 <li>Treasury (L1, L2 or L3) gives the final approval and can only approve or decline the request, without changing the waive-off. On approval,
@@ -497,15 +500,10 @@ received. {T(IC(14))}</li>
 <li>A duplicate or excess payment is refunded through the existing refund option in LMS.</li>
 <li>The UNO entry is posted automatically as soon as the customer pays. Treasury then does a manual cross-check that the payment is
 received, and needs an option in the Approvals tab to <b>Approve</b> the payment (received) or <b>Reject</b> it (not received).</li>
-<li>When Treasury approves, LMS reduces the balance payable by the amount paid. If it is ₹0, LMS enables the
+<li>When Treasury approves, LMS reduces the balance payable by the amount paid. The balance is then ₹0 (no charge can be added after the
+rejection, see section 2.1.1.4), so LMS enables the
 <b>Initiate De-pledge</b> CTA, sends OPS an event mail, Cc Treasury – “Charges Received – Initiate De-pledge” – and the customer gets an
 SMS and mail with the payment receipt. {T(IC(15), NM('08_Charges_Payment_Received', 38))}</li>
-<li>If the balance payable is not ₹0 after the approval, more charges were added after the payment link was sent (for example, in S 2 the
-customer generated the Sanction Letter in the meantime, so the Processing Fee was added). The Initiate De-pledge CTA stays disabled, and LMS
-sends OPS an event mail, Cc Treasury, that the customer paid the amount but additional charges were added. The customer gets the receipt
-for the amount paid and, automatically, an SMS and mail with a new payment link for the balance. The previous payment link stops working, and
-only the new link works. The call centre team contacts the customer to inform them. When the balance is paid and approved, it becomes ₹0
-and the de-pledge is enabled. <span class="brd-ph">[Template – to be added]</span></li>
 <li>If Treasury rejects the payment, the balance payable does not change and the Initiate De-pledge CTA stays disabled. LMS sends an
 internal event mail to OPS, Cc Treasury, that the payment is not received as per the entries.</li>
 <li>The customer gets an SMS and mail that the payment is not received, and that if the amount was debited, it will be returned
@@ -551,11 +549,10 @@ disclaimer; Download / Print).</p>
 
 <h2>4. De-pledge</h2>
 <ul>
-<li>LMS enables the Initiate De-pledge CTA only when the balance payable is ₹0. After a payment, this is checked when Treasury approves the
-payment. With a full waive-off, nothing is payable, so the CTA is enabled straight away.</li>
+<li>LMS enables the Initiate De-pledge CTA when Treasury approves the payment, as the balance payable is then ₹0. With a full waive-off,
+nothing is payable, so the CTA is enabled straight away.</li>
 <li>The Initiate De-pledge button should stay disabled until then.</li>
 <li>OPS maker initiates the de-pledge and OPS checker approves it.</li>
-<li>If the balance payable is not ₹0, the de-pledge is not enabled.</li>
 </ul>
 
 <h2>5. Communication – Internal and Customer</h2>
@@ -597,7 +594,7 @@ payment. With a full waive-off, nothing is payable, so the CTA is enabled straig
 <h2>7. Open Points</h2>
 <ul>
 <li>The sample mail and SMS templates (marked To be confirmed) are to be reviewed and confirmed. The SMS also need DLT registration.</li>
-<li>New customer templates for “new payment link for the balance” and “payment not received” – to be created.</li>
+<li>New customer template for “payment not received” – to be created.</li>
 </ul>
 """
 
@@ -1358,7 +1355,7 @@ def _waiver_scen_body():
         "Treasury cross-checks that the payment is received and approves it (or rejects it if it is not received). The "
         "balance payable is now ₹0, so LMS enables the Initiate De-pledge CTA. " + INFO("OPS", "Treasury") + " The customer gets an SMS and mail "
         "with the receipt." + S(IC(15), NM("08_Charges_Payment_Received", 38)),
-        "OPS maker initiates the de-pledge and OPS checker approves it. If the balance payable is not ₹0, the de-pledge is not enabled."]
+        "OPS maker initiates the de-pledge and OPS checker approves it."]
     NOPAY = lambda mail: [f"The customer gets an SMS and mail that the application is rejected, without a payment link." + S(*mail),
                           "Nothing is payable, so OPS maker initiates the de-pledge straight away and OPS checker approves it."]
 
@@ -1437,6 +1434,9 @@ confirmed.</li>
 <li>The note is mandatory for all three. The file is mandatory for the maker, and for the checker only if the checker changes the waive-off.
 Treasury can only approve or decline. Every step is saved in the Audit tab.</li>
 <li>If the maker submits without the note or the file, LMS shows “Please add the note and upload a file.”</li>
+<li>Once the maker raises a rejection request, the customer cannot continue the LOS journey, and after the LAN is REJECTED the customer
+cannot move to any next step (LOS shows an error). So no charge can be added after the request – the customer can only pay through the
+payment link. If the checker or Treasury declines the request, the customer can continue.</li>
 <li>Every approve or reject asks for confirmation in a pop-up – “This action is irreversible. Are you sure you want to proceed?”.</li>
 </ul>
 <h3>2.2 Charges and Waive-off</h3>
@@ -1457,12 +1457,9 @@ the customer can pay again. If the customer does not pay, a reminder SMS and mai
 receipt RCPT/LAMF/YYYY/MM/NNNN is saved in the LMS Documents tab. A duplicate or excess payment is refunded through the existing refund option.</li>
 <li>The SOA is updated only when the LAN status is ACTIVE. For a DRAFT, SUBMITTED or ACCOUNT OPENED loan, a payment updates UNO only, not the
 SOA.</li>
-<li>After every payment (the UNO entry is posted first, automatically), Treasury cross-checks that it is received and approves or rejects it. LMS
-enables the Initiate De-pledge CTA only when the balance payable is ₹0 (after Treasury approves, or straight away after a full waive-off).
+<li>After every payment (the UNO entry is posted first, automatically), Treasury cross-checks that it is received and approves or rejects it. When
+Treasury approves, the balance payable is ₹0, so LMS enables the Initiate De-pledge CTA (straight away after a full waive-off).
 OPS maker initiates the de-pledge and OPS checker approves it.</li>
-<li>If more charges were added after the payment link was sent, the balance is not ₹0 after the approval. The de-pledge stays disabled,
-OPS gets a mail, and the customer automatically gets a new payment link for the balance (the old link stops working). The call centre
-team informs the customer.</li>
 <li>If Treasury rejects the payment, the balance and the de-pledge do not change. OPS gets an internal mail that the payment is not
 received as per the entries, and the customer is told that the payment is not received and that any debited amount will be returned by the
 payment gateway. If the payment was actually received, Treasury handles it in the backend.</li>

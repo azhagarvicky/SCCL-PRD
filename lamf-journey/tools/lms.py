@@ -183,7 +183,7 @@ def draft_approvals(r, tid):
             '<p class="wv-hint">Cross-check that the payment is received, then approve or reject.</p>'
             '<div class="wv-appr-ctas"><button type="button" class="wv-tc-rej">Reject – payment not received</button>'
             '<button type="button" class="wv-confirm">Approve – payment received</button></div></div>'
-            '<p class="wv-hint wv-dp-hint">De-pledge is enabled only when the balance payable is ₹0 (after Treasury approves the payment).</p></div>'
+            '<p class="wv-hint wv-dp-hint">De-pledge is enabled once Treasury approves the payment (the balance payable is then ₹0).</p></div>'
             + pop('wv-pr', '<h3>Are you sure you want to reject the application with the selected waive-off?</h3>' '<p class="wv-ptype"></p>'
                   f'<p class="wv-ps-txt">The request will be sent to {ck} (Checker) for approval.</p>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes, submit</button></div>')
