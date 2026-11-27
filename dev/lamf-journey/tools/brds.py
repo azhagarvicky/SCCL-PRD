@@ -861,14 +861,15 @@ def _waiver_scen_body():
         post = lambda what: [cust, what, "There is no de-pledge and no payment link – the loan continues."]
         return (f"<h4>S {n}.1 – Approve Without Waive-off</h4>"
                 + ol(["OPS maker (OPS L1) adds the note (mandatory), uploads the file (mandatory) and clicks <b>Approve</b> without a waive-off. " + MAIL("OPS Checker", "Treasury") + S(IC(16, "no")),
-                      f"OPS checker (OPS L2 or OPS L3) checks, adds the note (mandatory) and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."]
+                      f"OPS checker (OPS L2 or OPS L3) checks, adds the note (mandatory) and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."
+                      + (" " + INFO("OPS", "Treasury") + S(IC(24, "no")) if n == 5 else "")]
                      + post("LMS shows the charges split, each with GST – Processing Fee ₹883.82, Lien Marking ₹531, Lien Removal ₹118 and Stamp Duty "
                             "₹236 (₹1,768.82 in all; the customer sees one Processing Fee*). They are posted in UNO, each charge separately, at the "
                             "first withdrawal or repayment."))
                 + f"<h4>S {n}.2 – Approve With Full Waive-off</h4>"
-                + ol(chain("approve", to, lambda v: IC(13, v), "full") + post("LMS shows the four charges as waived, with ₹0 payable for each. There is no UNO entry."))
+                + ol(chain("approve", to, (lambda v: IC(24, v)) if n == 5 else (lambda v: IC(13, v)), "full") + post("LMS shows the four charges as waived, with ₹0 payable for each. There is no UNO entry."))
                 + f"<h4>S {n}.3 – Approve With Partial Waive-off</h4><p>Example: ₹500 of the Processing Fee waived.</p>"
-                + ol(chain("approve", to, lambda v: IC(13, v)) + post("LMS shows the charges split – Processing Fee ₹383.82 (₹500 waived), Lien Marking ₹531, "
+                + ol(chain("approve", to, (lambda v: IC(24, v)) if n == 5 else (lambda v: IC(13, v))) + post("LMS shows the charges split – Processing Fee ₹383.82 (₹500 waived), Lien Marking ₹531, "
                                                          "Lien Removal ₹118 and Stamp Duty ₹236 (₹1,268.82 in all). They are posted in UNO, each "
                                                          "charge separately, at the first withdrawal or repayment.")))
 
@@ -1033,6 +1034,7 @@ with no, full or partial waive-off (S 6.1 – S 6.3), or Reject with no, full or
 <tr><td>Charges not paid, reminder every month – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>OPS clicks Resend Payment Link on a REJECTED LAN – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{NM('09_Charges_Payment_Reminder', 39)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>ACCOUNT OPENED loan approved (Loan Lodgement) – to the customer</td><td>Customer</td><td>Email and SMS</td><td>{lk('communications.html', 'Loan Lodgement Approval')}</td><td><span class="brd-tbc">Already in use</span></td></tr>
+<tr><td>SUBMITTED loan approved (Loan Account Opening) with no, full or partial waive-off – to OPS (Version 2 of alert 2)</td><td>Internal</td><td>Email</td><td>{IC(24, "no")} · {IC(24, "full")} · {IC(24)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>SUBMITTED loan approved (Loan Account Opening) – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
 <tr><td>ACTIVE loan – maker raises a waive-off request – to the OPS checker</td><td>Internal</td><td>Email</td><td>{IC(18)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>ACTIVE loan – checker approves the waive-off request – to Treasury</td><td>Internal</td><td>Email</td><td>{IC(19)}</td><td><span class="brd-tbc">To be confirmed</span></td></tr>

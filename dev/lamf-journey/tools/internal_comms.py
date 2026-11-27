@@ -38,7 +38,7 @@ INTERNAL = [('DRAFT→SUBMITTED',
      'sarathananthan.m@shriramcredit.in'])]),
  ('SUBMITTED→ACCOUNT OPENED',
   'NA',
-  'Loan Account Opening approved; Loan Lodgement Approval becomes pending',
+  'Loan Account Opening approved; Loan Lodgement Approval becomes pending. TO BE CHANGED – see Version 2 (alert 24, with the waive-off type)',
   'Action Required | {{LAN}} | Approval for Loan Lodgement',
   'Loan Lodgement Approval Pending',
   '{{To User Name}}',
@@ -695,6 +695,35 @@ INTERNAL = [('DRAFT→SUBMITTED',
   [('Any Sanction amount',
     ['satyaparida@shriramcredit.in'],
     ['richajayswal@shriramcredit.in',
+     'ashok@shriramcredit.in',
+     'azhagarsamy.s@shriramcredit.in',
+     'nithin.ganga@shriramcredit.in',
+     'kruthika.s@shriramcredit.in',
+     'sachin.patil@shriramcredit.in',
+     'sarathananthan.m@shriramcredit.in'])]),
+ # DISC-478 – Waiver BRD S 5.1 – 5.3: VERSION 2 of alert 2. Alert 2 is kept unchanged (as it is today) and marked “to be changed”;
+ # this one replaces it once the Waiver BRD is live. One sample per approval type (no, full, partial waive-off).
+ ('SUBMITTED→ACCOUNT OPENED',
+  'NA',
+  'VERSION 2 of alert 2 (TO BE CHANGED) – Loan Account Opening approved with no, full or partial waive-off; Loan Lodgement Approval becomes pending',
+  'Action Required | {{LAN}} | Approval for Loan Lodgement | {{Waive-off Type}}',
+  'Loan Lodgement Approval Pending',
+  '{{To User Name}}',
+  '{{LAN}} for customer {{Customer Name}} with a sanction amount of {{Sanction Amount}} has been moved to ACCOUNT OPENED status. Type of '
+  'waive-off: {{Waive-off Type}}.\n'
+  '| Charges Name | Amount of Charges | Waived off Charges | Payable Charges\n'
+  '| Processing Fee | 883.82 | 500.00 | 383.82\n'
+  '| Lien Marking Charges | 531.00 | 0.00 | 531.00\n'
+  '| Lien Removal Charges | 118.00 | 0.00 | 118.00\n'
+  '| Stamp Duty Charges | 236.00 | 0.00 | 236.00\n'
+  '| Total | 1,768.82 | 500.00 | 1,268.82\n'
+  'Maker: {{OPS Maker Name}}; checker: {{OPS Checker Name}}; Treasury: {{Treasury User Name}} (only with a full or partial waive-off); '
+  'approved on {{Approval Date & Time}}. The payable charges are shown in LMS and posted in UNO at the first withdrawal or repayment.\n'
+  'Loan Lodgement Approval is pending. Please review and complete the process.',
+  [('Any Sanction amount',
+    ['satyaparida@shriramcredit.in'],
+    ['richajayswal@shriramcredit.in',
+     'satyaparida@shriramcredit.in',
      'ashok@shriramcredit.in',
      'azhagarsamy.s@shriramcredit.in',
      'nithin.ganga@shriramcredit.in',
