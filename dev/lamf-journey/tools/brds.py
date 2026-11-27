@@ -967,10 +967,9 @@ they use the S 3 screens.</p>
 {DAY30}
 {reject_subs(3, 1, False)}
 
-{head(4, "DRAFT", "after the Loan Agreement e-Sign", PF4, "Reject, with no, full or partial waive-off.", "REJECTED",
-      START + ["Sanction Letter", "Loan Agreement e-Sign", "Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Without Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
-{DAY30}
-{reject_subs(4, 1, False)}
+<h3>3.4 S 4 – DRAFT: customer dropped off after the Loan Agreement e-Sign</h3>
+<p>Same as <b>S 3</b> (section 3.3) – S 4.1 to S 4.3 follow S 3.1 to S 3.3: the same charges, approvals, mails, payment, receipt, UNO entry
+and de-pledge. The only difference is that the customer has also e-signed the Loan Agreement.</p>
 
 {head(5, "SUBMITTED", "after the E-Mandate", PF4, "Approve or reject, with no, full or partial waive-off.", "ACCOUNT OPENED or REJECTED",
       START + ["Sanction Letter", "Loan Agreement e-Sign", "E-Mandate", "SUBMITTED", "Approve or Reject request", "Checker", "Treasury (if waived)", "ACCOUNT OPENED / REJECTED"])}
