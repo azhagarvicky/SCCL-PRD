@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 06:51 IST
+**Last Updated:** 27-11-2026 06:54 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -491,6 +491,7 @@
 | DISC-456 | 27-11-2026 | brd-waive-off-scenarios.html | S 2 – S 4 flow end steps | Owner: in the S 2 flow, replace REJECTED → Payment (if any) with Rejected & Waive-off → Customer Payment → Receipt & UNO Entry → Treasury Confirmation → De-Pledge | Flow lines of S 2, S 3 and S 4 now end … → Treasury → Rejected & Waive-off → Customer Payment → Receipt & UNO Entry → Treasury Confirmation → De-pledge. Word file regenerated. | Implemented |
 | DISC-457 | 27-11-2026 | brd-waive-off-scenarios.html | Flow step renamed | Owner: “Rejected & Waive-off” was said wrongly – it is “Rejected & Without Waive-off” | S 2 – S 4 flow step renamed “Rejected & Without Waive-off”. Word file regenerated. | Implemented |
 | DISC-458 | 27-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | De-pledge not enabled while charges are pending | Owner: add that if charges are still available, the de-pledge should not be enabled | Main BRD section 4: new point – if any charge is still pending, the de-pledge is not enabled, so OPS cannot initiate it until the charges are paid. Scenario-wise de-pledge step: “If any charge is still pending, the de-pledge is not enabled.” Word files regenerated. | Implemented |
+| DISC-459 | 27-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html, exports/Waiver_BRD_Accounting_Entries.xlsx | No “sample amounts”; balance-payable wording for the de-pledge | Owner: all charges are fixed except the Processing Fee (it depends on the sanction amount) – instead of “sample amounts”, mention a sanction amount only where the Processing Fee is in the entry (e.g. ₹1 lakh); and instead of “pending charges”, say the de-pledge is not enabled if the balance payable is not 0 | UNO entry captions: S 2 (fixed charges) – no note; S 3 – S 6 – “example for a sanction amount of ₹1,00,000 – Processing Fee* ₹1,499 + GST; the other charges are fixed” (both BRDs, Excel title). De-pledge: “OPS maker initiates the de-pledge and OPS checker approves it. If the balance payable is not ₹0, the de-pledge is not enabled.” (main section 4, scenario-wise steps); main BRD flow step “Balance payable ₹0 – De-pledge enabled”. Word files and Excel regenerated. | Implemented |
 
 ---
 
