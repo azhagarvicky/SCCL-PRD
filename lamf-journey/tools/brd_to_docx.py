@@ -235,5 +235,6 @@ meta = soup.find(class_='brd-meta')
 p = d.add_paragraph(); add_run(p, norm(meta.get_text(' ')).strip() if meta else '', size=10)
 add_run(p, ' | Web: ', size=10); add_link(p, SITE + __import__('os').path.basename(SRC), 'Web page', 10)
 block(soup.find(class_='brd-body'))
+sys.path.insert(0, __import__('os').path.dirname(__file__)); from docx_black import black; black(d)   # DISC-476: every letter black
 d.save(OUT)
 print('saved', OUT)

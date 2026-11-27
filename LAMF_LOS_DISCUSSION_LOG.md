@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 09:42 IST
+**Last Updated:** 27-11-2026 09:52 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -508,6 +508,7 @@
 | DISC-473 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | SOA and database updated together – a general rule | Owner: whenever the SOA is updated for an ACTIVE LAN, the DB has to be updated at the same time (not only for the S 7 waiver) | Section 2.3 new point: whenever LMS updates the SOA of an ACTIVE LAN (a payment or a waive-off), it updates the database at the same time, so they always match. S 7.2 step 4 shortened to refer to section 2.3 (replaces the DISC-472 wording). Word file regenerated. | Implemented |
 | DISC-474 | 27-11-2026 | tools/brd_to_docx.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | Word file: Calibri 12 | Owner: Word file in Calibri, 12 pt for Normal and List Paragraph; the other sizes as suitable | Normal and List Paragraph styles and runs Calibri 12; headings Calibri – Heading 1 20, Heading 2 16, Heading 3 14, Heading 4 13, Heading 5 12; tables and the process-flow line 10; the meta line 10. Word file regenerated. | Implemented |
 | DISC-475 | 27-11-2026 | tools/brd_to_docx.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | Word file: all headings bold | Owner: all the headings have to be bold | Heading 1 – 5 styles set to bold. Word file regenerated. | Implemented |
+| DISC-476 | 27-11-2026 | tools/docx_black.py, tools/brd_to_docx.py, exports/BRD_Charges_Waiver_Scenario-wise.docx, exports/Waiver_BRD_Open_Points.docx | Word files: all letters black | Owner: all the letters in black only | New tools/docx_black.py sets every text colour (headings, links, coloured mail labels, placeholders) to black; brd_to_docx.py runs it before saving. Both Word files regenerated; links stay underlined, table header shading kept. | Implemented |
 
 ---
 
