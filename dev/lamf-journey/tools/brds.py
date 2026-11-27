@@ -126,7 +126,7 @@ def _waiver_body():
                 "<th>Description</th><th>Doc. Dt</th><th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead>"
                 f"<tbody>{''.join(rows)}</tbody></table>")
 
-    def entries(n):   # UNO entries for each reject sub-scenario (S 2 – S 6), sample amounts
+    def entries(n):   # UNO entries for each reject sub-scenario (S 2 – S 6); fixed charges, Processing Fee for a ₹1,00,000 sanction
         if n == 2:
             nw, fw, pw = [("LM", 450), ("LR", 100), ("GST", 99)], [], [("LR", 100), ("GST", 18)]
             pnote = "example – Lien Marking ₹531 waived in full, Lien Removal ₹118 paid"
@@ -136,7 +136,7 @@ def _waiver_body():
             pnote = "example – ₹500 of the Processing Fee waived, ₹1,268.82 paid"
         k = 4 if n in (5, 6) else 1
         sub = "LAN"   # DISC-439: the LAN is created when the journey starts and stays the same in every status
-        return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays; sample amounts</p>"
+        return ("<p><b>Accounting entries (UNO)</b> – posted when the customer pays" + ("" if n == 2 else " (example for a sanction amount of ₹1,00,000 – Processing Fee* ₹1,499 + GST; the other charges are fixed)") + "</p>"
                 + uno(f"S {n}.{k} – Reject Without Waive-off", nw, sub)
                 + uno(f"S {n}.{k + 1} – Reject With Full Waive-off", fw, sub)
                 + uno(f"S {n}.{k + 2} – Reject With Partial Waive-off ({pnote})", pw, sub)
@@ -158,7 +158,7 @@ def _waiver_body():
     def chain(first):
         return [first, M("Internal mail to OPS checker"), "OPS checker verifies and approves", M("Internal mail to Treasury"),
                 "Treasury approves", M("Internal mail to OPS and Treasury")]
-    DEPLEDGE = ["Check pending charges", "De-pledge initiated by OPS maker", "De-pledge approved by OPS checker"]
+    DEPLEDGE = ["Balance payable ₹0 – De-pledge enabled", "De-pledge initiated by OPS maker", "De-pledge approved by OPS checker"]
     PAY = [C("Customer SMS and mail with the payment link"), "Customer pays the charges in LOS", "Payment receipt generated",
            "Accounting entries posted in UNO", M("Internal mail to Treasury and OPS – payment received"),
            "Treasury confirms the payment in LMS", M("Internal mail to OPS – initiate de-pledge"),
@@ -554,8 +554,8 @@ disclaimer; Download / Print).</p>
 <li>LMS enables the Initiate De-pledge CTA only when the balance payable is ₹0. After a payment, this is checked when Treasury approves the
 payment. With a full waive-off, nothing is payable, so the CTA is enabled straight away.</li>
 <li>The Initiate De-pledge button should stay disabled until then.</li>
-<li>OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge.</li>
-<li>If any charge is still pending, the de-pledge should not be enabled, so OPS cannot initiate it until the pending charges are paid.</li>
+<li>OPS maker initiates the de-pledge and OPS checker approves it.</li>
+<li>If the balance payable is not ₹0, the de-pledge is not enabled.</li>
 </ul>
 
 <h2>5. Communication – Internal and Customer</h2>
@@ -1331,7 +1331,8 @@ def _waiver_scen_body():
         rows += [f"<tr><td>{INC[k][0]}</td><td>{INC[k][1]}</td><td>{INC[k][2]}</td><td>{INC[k][3]}</td><td></td><td>{f(a)}</td><td>HLTFC</td><td>LAN</td></tr>"
                  for k, a in lines]
         rows.append(f"<tr><td colspan='4'><b>Total</b></td><td><b>{f(tot)}</b></td><td><b>{f(tot)}</b></td><td colspan='2'></td></tr>")
-        return ("<p><b>UNO entry</b> – posted when the customer pays (sample amounts)</p>"
+        note = " (example for a sanction amount of ₹1,00,000 – Processing Fee* ₹1,499 + GST; the other charges are fixed)" if any(k == "PF" for k, _ in lines) else ""   # DISC-459: only the Processing Fee depends on the sanction
+        return (f"<p><b>UNO entry</b> – posted when the customer pays{note}</p>"
                 "<table class='brd-table'><thead><tr><th>DocType</th><th>A/c Nature</th><th>A/c code</th><th>Description</th>"
                 f"<th>Debit</th><th>Credit</th><th>Subdoctype</th><th>Subaccd</th></tr></thead><tbody>{''.join(rows)}</tbody></table>")
 
@@ -1358,8 +1359,7 @@ def _waiver_scen_body():
         "Treasury cross-checks that the payment is received and approves it (or rejects it if it is not received). The "
         "balance payable is now ₹0, so LMS enables the Initiate De-pledge CTA. " + INFO("OPS", "Treasury") + " The customer gets an SMS and mail "
         "with the receipt." + S(IC(15), NM("08_Charges_Payment_Received", 38)),
-        "OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge. If any charge is still "
-        "pending, the de-pledge is not enabled."]
+        "OPS maker initiates the de-pledge and OPS checker approves it. If the balance payable is not ₹0, the de-pledge is not enabled."]
     NOPAY = lambda mail: [f"The customer gets an SMS and mail that the application is rejected, without a payment link." + S(*mail),
                           "Nothing is payable, so OPS maker initiates the de-pledge straight away and OPS checker approves it."]
 
