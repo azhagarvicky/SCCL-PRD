@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 06:54 IST
+**Last Updated:** 27-11-2026 06:58 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -492,6 +492,7 @@
 | DISC-457 | 27-11-2026 | brd-waive-off-scenarios.html | Flow step renamed | Owner: “Rejected & Waive-off” was said wrongly – it is “Rejected & Without Waive-off” | S 2 – S 4 flow step renamed “Rejected & Without Waive-off”. Word file regenerated. | Implemented |
 | DISC-458 | 27-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | De-pledge not enabled while charges are pending | Owner: add that if charges are still available, the de-pledge should not be enabled | Main BRD section 4: new point – if any charge is still pending, the de-pledge is not enabled, so OPS cannot initiate it until the charges are paid. Scenario-wise de-pledge step: “If any charge is still pending, the de-pledge is not enabled.” Word files regenerated. | Implemented |
 | DISC-459 | 27-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html, exports/Waiver_BRD_Accounting_Entries.xlsx | No “sample amounts”; balance-payable wording for the de-pledge | Owner: all charges are fixed except the Processing Fee (it depends on the sanction amount) – instead of “sample amounts”, mention a sanction amount only where the Processing Fee is in the entry (e.g. ₹1 lakh); and instead of “pending charges”, say the de-pledge is not enabled if the balance payable is not 0 | UNO entry captions: S 2 (fixed charges) – no note; S 3 – S 6 – “example for a sanction amount of ₹1,00,000 – Processing Fee* ₹1,499 + GST; the other charges are fixed” (both BRDs, Excel title). De-pledge: “OPS maker initiates the de-pledge and OPS checker approves it. If the balance payable is not ₹0, the de-pledge is not enabled.” (main section 4, scenario-wise steps); main BRD flow step “Balance payable ₹0 – De-pledge enabled”. Word files and Excel regenerated. | Implemented |
+| DISC-460 | 27-11-2026 | brd-waive-off-scenarios.html, exports/Waiver_BRD_Accounting_Entries.xlsx | No Total line; mandatory note / file; roles in brackets | Owner: the Total line under the account entry is not required; say clearly that the note and the file are mandatory; write the roles in brackets (OPS checker = OPS L2 or OPS L3) | Scenario-wise UNO tables and the Excel (scenario entries and reference format) without the Total / Balanced line. Steps: OPS maker (OPS L1) … adds the note (mandatory), uploads the file (mandatory); OPS checker (OPS L2 or OPS L3) … note (mandatory; a file only if the waive-off is changed); Treasury (Treasury L1, L2 or L3) … note (mandatory) – in the reject, approve and S 7 steps. Word files and Excel regenerated. | Implemented |
 
 ---
 

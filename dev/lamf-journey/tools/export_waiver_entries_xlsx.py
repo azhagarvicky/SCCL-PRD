@@ -67,12 +67,7 @@ for el in sec.find_all_next(['h4', 'p', 'table']):
                 x = ws.cell(r, c, n if n is not None else (v or None)); x.border = BOX
                 if c in (6, 7): x.number_format = '#,##0.00'
             r += 1
-        ws.cell(r, 5, 'Total').font = BOLD
-        for c in (6, 7):
-            L = get_column_letter(c); x = ws.cell(r, c, f'=SUM({L}{first}:{L}{r - 1})'); x.font = BOLD; x.number_format = '#,##0.00'
-        ws.cell(r, 8, f'=IF(ROUND(F{r}-G{r},2)=0,"Balanced","Check")').font = BOLD
-        for c in range(5, 10): ws.cell(r, c).fill = TOT; ws.cell(r, c).border = BOX
-        r += 2
+        r += 1   # DISC-460: no Total line under the entries
 widths(ws, [10, 14, 10, 40, 13, 12, 12, 12, 20]); ws.freeze_panes = 'A4'
 
 # ---- Sheet 2: the owner's reference format and Sheet 3: account codes (section 4.3)
@@ -92,10 +87,6 @@ for name, t in (('Reference format', tables[0]), ('Account codes', tables[1])):
             x = w.cell(rr, c, n if n is not None else (v or None)); x.border = BOX
         rr += 1
     if name == 'Reference format':
-        w.cell(rr, 5, 'Total').font = BOLD
-        for c in (6, 7):
-            L = get_column_letter(c); w.cell(rr, c, f'=SUM({L}2:{L}{rr - 1})').font = BOLD
-        w.cell(rr, 8, f'=IF(ROUND(F{rr}-G{rr},2)=0,"Balanced","Check")').font = BOLD
         widths(w, [10, 14, 10, 40, 13, 12, 12, 12, 20])
     else:
         widths(w, [12, 42, 26])
