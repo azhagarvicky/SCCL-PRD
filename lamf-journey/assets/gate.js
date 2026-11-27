@@ -126,5 +126,16 @@
       show('otp');
     }).catch(function () { err.textContent = 'Could not send the OTP. Please try again.'; btn.disabled = false; });
   }
-  function notReady() { var m = document.querySelector('#adm-main'); if (m) m.innerHTML = '<p>The access service is not connected yet (no Apps Script URL in assets/gate.js).</p>'; }
+  function notReady() {   // shown on admin.html until the Apps Script web app URL is added above
+    var m = document.querySelector('#adm-main'); if (!m) return;
+    m.innerHTML = '<div style="background:#fff;border-radius:10px;padding:18px 22px;box-shadow:0 1px 3px rgba(0,0,0,.08);line-height:1.6">' +
+      '<h2 style="margin:0 0 8px;font-size:18px">Not switched on yet</h2>' +
+      '<p style="margin:0 0 10px">The portal is ready. It starts working once the Google Sheet and its Apps Script are set up:</p><ol style="margin:0 0 10px;padding-left:20px">' +
+      '<li>Create a Google Sheet named <b>LAMF Site Access</b>.</li>' +
+      '<li><b>Extensions → Apps Script</b> – paste the script <code>lamf-journey/tools/access-apps-script.gs</code> – <b>Save</b>.</li>' +
+      '<li>Select <b>setup</b> at the top and click <b>▶ Run</b>; allow the permissions.</li>' +
+      '<li><b>Deploy → New deployment → Web app</b> – Execute as: <b>Me</b>, Who has access: <b>Anyone</b> – <b>Deploy</b>.</li>' +
+      '<li>Send the <b>Web app URL</b> (ends in /exec) to Claude to connect it.</li></ol>' +
+      '<p style="margin:0;color:#555">After that, this page asks for the admin mail ID and an OTP, then lists the access requests.</p></div>';
+  }
 })();
