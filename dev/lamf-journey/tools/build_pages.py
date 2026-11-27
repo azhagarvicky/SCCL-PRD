@@ -961,6 +961,49 @@ h1.subj{{font-size:24px;font-weight:400;margin:10px 28px 14px}}
 </body></html>
 """
 
+IC_KIND = {"partial": {}, "no": {"{{Waive-off Type}}": "No waive-off", "{{Waived Amount}}": "0.00", "{{Balance Payable}}": "1,768.82",
+                          "{{Amount Paid}}": "1,768.82"},
+           "full": {"{{Waive-off Type}}": "Full waive-off", "{{Waived Amount}}": "1,768.82", "{{Balance Payable}}": "0.00", "{{Amount Paid}}": "0.00"},
+           # S 2 – only Lien Marking and Lien Removal are charged before the Sanction Letter
+           "s2-no": {"{{Waive-off Type}}": "No waive-off", "{{Waived Amount}}": "0.00", "{{Balance Payable}}": "649.00", "{{Amount Paid}}": "649.00"},
+           "s2-full": {"{{Waive-off Type}}": "Full waive-off", "{{Waived Amount}}": "649.00", "{{Balance Payable}}": "0.00", "{{Amount Paid}}": "0.00"},
+           "s2-partial": {"{{Waive-off Type}}": "Partial waive-off", "{{Waived Amount}}": "531.00", "{{Balance Payable}}": "118.00",
+                          "{{Amount Paid}}": "118.00"}}
+IC_S2 = (12, 13, 16)   # the alerts S 2 links
+_IC_GENERIC = ("The rejection SMS and mail have been sent to the customer – with the payment link for {{Balance Payable}} (no or partial waive-off) "
+               "or without it (full waive-off). The units will be de-pledged after the customer pays and Treasury confirms the payment, or straight "
+               "away for a full waive-off.")
+_IC_LINE = {"partial": "The rejection SMS and mail with the payment link for {{Balance Payable}} have been sent to the customer. The units will be "
+                       "de-pledged after the customer pays and Treasury confirms the payment.",
+            "full": "The rejection SMS and mail (without a payment link) have been sent to the customer. Nothing is payable, so the units can be "
+                    "de-pledged straight away."}
+_IC_LINE["no"] = _IC_LINE["s2-no"] = _IC_LINE["s2-partial"] = _IC_LINE["partial"]
+_IC_LINE["s2-full"] = _IC_LINE["full"]
+
+
+def ic_variant(body, kind):
+    """Sample of an internal mail for one waive-off type (DISC-461): charges table and the customer line."""
+    def amt(v):
+        try: return float(v.replace(",", ""))
+        except ValueError: return None
+    s2, base = kind.startswith("s2-"), kind.replace("s2-", "")
+    out, tot = [], [0.0, 0.0]
+    for line in body.split("\n"):
+        cells = line[1:].split("|") if line.startswith("|") else None
+        if cells and len(cells) == 4 and amt(cells[1]) is not None and (kind != "partial"):
+            name, a = cells[0].strip(), amt(cells[1])
+            if name == "Total":
+                line = f"| Total | {tot[0]:,.2f} | {tot[1]:,.2f} | {tot[0] - tot[1]:,.2f}"
+            else:
+                if s2 and not name.startswith("Lien"):
+                    continue
+                w = {"full": a, "no": 0.0}.get(base, a if (s2 and name.startswith("Lien Marking")) else 0.0)
+                tot[0] += a; tot[1] += w
+                line = f"| {name} | {a:,.2f} | {w:,.2f} | {a - w:,.2f}"
+        out.append(line)
+    return "\n".join(out).replace(_IC_GENERIC, _IC_LINE[kind])
+
+
 def write_internal_mails():
     import json as _json
     os.makedirs(os.path.join(ROOT, "internal"), exist_ok=True)
@@ -977,10 +1020,17 @@ def write_internal_mails():
                       "document.querySelectorAll('.sw button').forEach(function(x){x.classList.toggle('on',x===b)});var r=R[b.dataset.i];"
                       "document.getElementById('to').textContent=r.to;document.getElementById('cc').textContent=r.cc;"
                       "document.getElementById('dear').textContent=r.dear;};});</script>")
-        with open(os.path.join(ROOT, IC_FILE(n)), "w") as f:
-            f.write(IC_PAGE.format(title=html.escape(title), subject=ic_fill(subj, bold=False).strip(), switch=switch,
-                                   to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]), greet=html.escape(rec[0]["dear"]),
-                                   body=ic_mail_body(body), script=script))
+        # DISC-461: alerts that show the waive-off type get one sample per type – IC-NN.html (partial, the default), IC-NN-no.html, IC-NN-full.html
+        kinds = [("", "partial")] + ([("-no", "no"), ("-full", "full")] if "{{Waive-off Type}}" in body else []) + (
+            [("-s2-no", "s2-no"), ("-s2-full", "s2-full"), ("-s2-partial", "s2-partial")] if n in IC_S2 else [])
+        for suf, kind in kinds:
+            b2, saved = ic_variant(body, kind), dict(IC_SAMPLE)
+            IC_SAMPLE.update(IC_KIND[kind])
+            with open(os.path.join(ROOT, IC_FILE(n).replace(".html", suf + ".html")), "w") as f:
+                f.write(IC_PAGE.format(title=html.escape(title), subject=ic_fill(subj, bold=False).strip(), switch=switch,
+                                       to=html.escape(rec[0]["to"]), cc=html.escape(rec[0]["cc"]), greet=html.escape(rec[0]["dear"]),
+                                       body=ic_mail_body(b2), script=script))
+            IC_SAMPLE.clear(); IC_SAMPLE.update(saved)
 
 def calc_body(home):          # calculator page, opened by the 4th CTA on the home page (DISC-256); logic in assets/calc.js (DISC-257, DISC-263)
     opt = lambda vals, sel=None: "".join(f'<option{" selected" if v == sel else ""}>{v}</option>' for v in vals)
