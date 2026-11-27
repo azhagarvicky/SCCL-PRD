@@ -862,12 +862,15 @@ def _waiver_scen_body():
         return (f"<h4>S {n}.1 – Approve Without Waive-off</h4>"
                 + ol(["OPS maker (OPS L1) adds the note (mandatory), uploads the file (mandatory) and clicks <b>Approve</b> without a waive-off. " + MAIL("OPS Checker", "Treasury") + S(IC(16, "no")),
                       f"OPS checker (OPS L2 or OPS L3) checks, adds the note (mandatory) and approves. There is no Treasury approval. The LAN status changes to <b>{to}</b>."]
-                     + post("LMS shows the full charges (₹1,768.82). They are posted in UNO at the first withdrawal or repayment."))
+                     + post("LMS shows the charges split, each with GST – Processing Fee ₹883.82, Lien Marking ₹531, Lien Removal ₹118 and Stamp Duty "
+                            "₹236 (₹1,768.82 in all; the customer sees one Processing Fee*). They are posted in UNO, each charge separately, at the "
+                            "first withdrawal or repayment."))
                 + f"<h4>S {n}.2 – Approve With Full Waive-off</h4>"
-                + ol(chain("approve", to, lambda v: IC(13, v), "full") + post("LMS shows no charges. There is no UNO entry."))
+                + ol(chain("approve", to, lambda v: IC(13, v), "full") + post("LMS shows the four charges as waived, with ₹0 payable for each. There is no UNO entry."))
                 + f"<h4>S {n}.3 – Approve With Partial Waive-off</h4><p>Example: ₹500 of the Processing Fee waived.</p>"
-                + ol(chain("approve", to, lambda v: IC(13, v)) + post("LMS shows only the balance (₹1,268.82). It is posted in UNO at the first withdrawal or "
-                                                         "repayment.")))
+                + ol(chain("approve", to, lambda v: IC(13, v)) + post("LMS shows the charges split – Processing Fee ₹383.82 (₹500 waived), Lien Marking ₹531, "
+                                                         "Lien Removal ₹118 and Stamp Duty ₹236 (₹1,268.82 in all). They are posted in UNO, each "
+                                                         "charge separately, at the first withdrawal or repayment.")))
 
     def head(n, st, drop, charges, ops, to, steps):
         return (f"<h3>3.{n} S {n} – {st}: customer dropped off {drop}</h3>"
