@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 06:49 IST
+**Last Updated:** 27-11-2026 06:51 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -490,6 +490,7 @@
 | DISC-455 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Balance not ₹0 and Treasury reject confirmed | Owner: balance not 0 – the new payment link for the balance goes automatically, the previous link stops working, the call centre team (not OPS) informs the customer; Treasury reject – no reversal / cancellation in the flow: internal mail that the payment is not received as per the entries, customer told the payment is not received and any debited amount comes back via the payment gateway; the same message even if it was received and rejected – handled in the backend | BRD 3.2 and scenario-wise 2.3 rewritten accordingly (UNO reversal / cancelled receipt removed); customer templates for the balance link and payment not received marked to be added; open points replaced by one (create these two templates). Word files regenerated. | Implemented |
 | DISC-456 | 27-11-2026 | brd-waive-off-scenarios.html | S 2 – S 4 flow end steps | Owner: in the S 2 flow, replace REJECTED → Payment (if any) with Rejected & Waive-off → Customer Payment → Receipt & UNO Entry → Treasury Confirmation → De-Pledge | Flow lines of S 2, S 3 and S 4 now end … → Treasury → Rejected & Waive-off → Customer Payment → Receipt & UNO Entry → Treasury Confirmation → De-pledge. Word file regenerated. | Implemented |
 | DISC-457 | 27-11-2026 | brd-waive-off-scenarios.html | Flow step renamed | Owner: “Rejected & Waive-off” was said wrongly – it is “Rejected & Without Waive-off” | S 2 – S 4 flow step renamed “Rejected & Without Waive-off”. Word file regenerated. | Implemented |
+| DISC-458 | 27-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | De-pledge not enabled while charges are pending | Owner: add that if charges are still available, the de-pledge should not be enabled | Main BRD section 4: new point – if any charge is still pending, the de-pledge is not enabled, so OPS cannot initiate it until the charges are paid. Scenario-wise de-pledge step: “If any charge is still pending, the de-pledge is not enabled.” Word files regenerated. | Implemented |
 
 ---
 

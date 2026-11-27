@@ -555,6 +555,7 @@ disclaimer; Download / Print).</p>
 payment. With a full waive-off, nothing is payable, so the CTA is enabled straight away.</li>
 <li>The Initiate De-pledge button should stay disabled until then.</li>
 <li>OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge.</li>
+<li>If any charge is still pending, the de-pledge should not be enabled, so OPS cannot initiate it until the pending charges are paid.</li>
 </ul>
 
 <h2>5. Communication – Internal and Customer</h2>
@@ -1357,7 +1358,8 @@ def _waiver_scen_body():
         "Treasury cross-checks that the payment is received and approves it (or rejects it if it is not received). The "
         "balance payable is now ₹0, so LMS enables the Initiate De-pledge CTA. " + INFO("OPS", "Treasury") + " The customer gets an SMS and mail "
         "with the receipt." + S(IC(15), NM("08_Charges_Payment_Received", 38)),
-        "OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge."]
+        "OPS maker checks that no charges are pending and initiates the de-pledge. OPS checker approves the de-pledge. If any charge is still "
+        "pending, the de-pledge is not enabled."]
     NOPAY = lambda mail: [f"The customer gets an SMS and mail that the application is rejected, without a payment link." + S(*mail),
                           "Nothing is payable, so OPS maker initiates the de-pledge straight away and OPS checker approves it."]
 
