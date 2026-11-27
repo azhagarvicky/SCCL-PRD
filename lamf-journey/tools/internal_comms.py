@@ -374,9 +374,10 @@ INTERNAL = [('DRAFT→SUBMITTED',
   '| Stamp Duty Charges | 236.00 | 0.00 | 236.00\n'
   '| Total | 1,768.82 | 500.00 | 1,268.82\n'
   'Rejection reason: {{Rejection Reason}}\n'
-  'Maker: {{OPS Maker Name}}; checker: {{OPS Checker Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The rejection SMS and mail with the '
-  'payment link for {{Balance Payable}} have been sent to the customer. The units will be de-pledged after the customer pays and Treasury '
-  'confirms the payment.',
+  'Maker: {{OPS Maker Name}}; checker: {{OPS Checker Name}}; approved by {{Treasury User Name}} on {{Approval Date & Time}}. The '
+  'rejection SMS and mail have been sent to the customer – with the payment link for {{Balance Payable}} (no or partial waive-off) or '
+  'without it (full waive-off). The units will be de-pledged after the customer pays and Treasury confirms the payment, or straight away '
+  'for a full waive-off.',
   [('Any Sanction amount',
     ['richajayswal@shriramcredit.in'],
     ['satyaparida@shriramcredit.in',
