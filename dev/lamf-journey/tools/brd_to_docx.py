@@ -40,7 +40,7 @@ def _style(name, size, bold=None):
 
 
 for _n, _sz in (('Normal', BODY), ('List Paragraph', BODY), ('Heading 1', 20), ('Heading 2', 16), ('Heading 3', 14), ('Heading 4', 13), ('Heading 5', 12)):
-    _style(_n, _sz)
+    _style(_n, _sz, True if _n.startswith('Heading') else None)   # DISC-475: every heading bold
 for sec in d.sections:
     sec.left_margin = sec.right_margin = Inches(0.75)
 
