@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF – BRD – Charges Waiver & Post-Pledge Drop-off</title>
-<link rel="stylesheet" href="assets/lamf.css?v=0d36682">
+<link rel="stylesheet" href="assets/lamf.css?v=129fab2">
 </head>
 <body class="page-screens page-brd"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><p class="brd-back"><a href="brd.html">← All BRD documents</a></p><h1>BRD – Charges Waiver &amp; Post-Pledge Drop-off</h1><p class="brd-meta"><span class="brd-st st-draft">Draft</span>Last updated 24-11-2026 · Waive charges (full, partial or none) with reject or approve, OPS maker → checker → Treasury, collect the balance, then de-pledge.</p><div class="brd-body">
 <p class="brd-cta"><a class="brd-cta-btn" href="brd-waive-off-scenarios.html">Scenario-wise BRD →</a>
@@ -254,6 +254,11 @@ application from the Curated Offers page.</li>
 <li>If the payment fails, nothing changes. There is no update, no communication and no accounting entry, and the customer can pay again.</li>
 <li>If the payment is successful, the LOS should show “Payment successful” and “Your lien removal will be initiated soon.” (section 3.2).</li>
 <li>If the customer does not pay, the system should send a reminder SMS and mail once a month until the customer pays. The units stay pledged until then. <a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></li>
+<li>For a REJECTED LAN with a balance payable, LMS needs a <b>Resend Payment Link</b> CTA, so that OPS can send the payment link again
+whenever the customer asks for it (for example, 5 or 10 days after the rejection). OPS maker (OPS L1) clicks it and confirms in a pop-up;
+no checker or Treasury approval is needed. The customer gets the same SMS and mail as the monthly reminder, with the same payment link.
+LMS records it in the Audit tab. The CTA is disabled while a payment is pending Treasury confirmation, after the payment is approved, and
+for a full waive-off (nothing is payable). The customer can also open the LOS and pay at any time. <a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a> <span class="brd-tbc">To be confirmed</span></li>
 </ul>
 <p><b>Payment journey and receipt for each scenario</b> – the amount changes from scenario to scenario</p>
 <table class="brd-table"><thead><tr><th>Scenario</th><th>Customer pays</th><th>LOS payment journey</th><th>Receipt</th></tr></thead><tbody>
@@ -359,6 +364,7 @@ nothing is payable, so the CTA is enabled straight away.</li>
 <tr><td>Treasury confirms the payment, initiate the de-pledge – to OPS</td><td>Internal</td><td>Email</td><td><a href="internal/IC-15.html" target="_blank" rel="noopener">Sample – alert 15</a></td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Treasury confirms the payment, with the payment receipt – to the customer</td><td>Customer</td><td>Email and SMS</td><td><a href="new-mails/08_Charges_Payment_Received.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 38</a> · <a href="charges-receipt.html" target="_blank" rel="noopener">Receipt</a></td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>Charges not paid, reminder every month – to the customer</td><td>Customer</td><td>Email and SMS</td><td><a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a></td><td><span class="brd-tbc">To be confirmed</span></td></tr>
+<tr><td>OPS clicks Resend Payment Link on a REJECTED LAN – to the customer</td><td>Customer</td><td>Email and SMS</td><td><a href="new-mails/09_Charges_Payment_Reminder.html" target="_blank" rel="noopener">Sample mail</a> · <a href="communications.html" target="_blank" rel="noopener">SMS – row 39</a></td><td><span class="brd-tbc">To be confirmed</span></td></tr>
 <tr><td>ACCOUNT OPENED loan approved (Loan Lodgement) – to the customer</td><td>Customer</td><td>Email and SMS</td><td><a href="communications.html" target="_blank" rel="noopener">Loan Lodgement Approval</a></td><td><span class="brd-tbc">Already in use</span></td></tr>
 <tr><td>SUBMITTED loan approved (Loan Account Opening) – to the customer</td><td>Customer</td><td>–</td><td>–</td><td>No communication</td></tr>
 <tr><td>ACTIVE loan – maker raises a waive-off request – to the OPS checker</td><td>Internal</td><td>Email</td><td><a href="internal/IC-18.html" target="_blank" rel="noopener">Sample – alert 18</a></td><td><span class="brd-tbc">To be confirmed</span></td></tr>
@@ -390,7 +396,7 @@ nothing is payable, so the CTA is enabled straight away.</li>
 <li>New customer template for “payment not received” – to be created.</li>
 </ul>
 </div><p class="home-contact">Created by <b>Azhagarsamy Subburaj</b>. For any observation or clarification, please reach out to <a href="mailto:azhagarsamy.s@shriramcredit.in">azhagarsamy.s@shriramcredit.in</a></p>
-<script src="assets/review.js?v=0d36682"></script>
-<script src="assets/colresize.js?v=0d36682"></script>
+<script src="assets/review.js?v=129fab2"></script>
+<script src="assets/colresize.js?v=129fab2"></script>
 </body>
 </html>
