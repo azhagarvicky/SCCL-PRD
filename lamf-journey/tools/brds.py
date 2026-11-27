@@ -976,11 +976,17 @@ and de-pledge. The only difference is that the customer has also e-signed the Lo
 
 {head(5, "SUBMITTED", "after the E-Mandate", PF4, "Approve or reject, with no, full or partial waive-off.", "ACCOUNT OPENED or REJECTED",
       START + ["Sanction Letter", "Loan Agreement e-Sign", "E-Mandate", "SUBMITTED", "Approve or Reject request", "Checker", "Treasury (if waived)", "ACCOUNT OPENED / REJECTED"])}
+<p class="brd-note">At this stage OPS does the <b>Loan Account Opening</b> in LMS with <b>Approve</b> or <b>Reject</b>. Approve moves the
+LAN from SUBMITTED to ACCOUNT OPENED; Reject moves it straight to REJECTED. With this BRD, OPS chooses the waive-off with both: Approve
+with no, full or partial waive-off (S 5.1 – S 5.3), or Reject with no, full or partial waive-off (S 5.4 – S 5.6).</p>
 {approve_subs(5)}
 {reject_subs(5, 4, False)}
 
 {head(6, "ACCOUNT OPENED", "after the Loan Account Opening", PF4, "Approve or reject, with no, full or partial waive-off.", "ACTIVE or REJECTED",
       START + ["SUBMITTED", "Loan Account Opening", "ACCOUNT OPENED", "Approve or Reject request", "Checker", "Treasury (if waived)", "ACTIVE / REJECTED"])}
+<p class="brd-note">At this stage OPS does the <b>Loan Lodgement</b> in LMS with <b>Approve</b> or <b>Reject</b>. Approve moves the
+LAN from ACCOUNT OPENED to ACTIVE; Reject moves it straight to REJECTED. With this BRD, OPS chooses the waive-off with both: Approve
+with no, full or partial waive-off (S 6.1 – S 6.3), or Reject with no, full or partial waive-off (S 6.4 – S 6.6).</p>
 {approve_subs(6)}
 {reject_subs(6, 4, False)}
 
