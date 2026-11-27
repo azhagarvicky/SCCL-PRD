@@ -1476,17 +1476,17 @@ they use the S 3 screens. The screenshots are in section 3 of the <a href="brd-w
      "No charges, no waive-off, no de-pledge and no accounting entry."])}
 
 {head(2, "DRAFT", "after pledging the mutual funds", "Lien Marking ₹531 and Lien Removal ₹118 (full waive-off only).",
-      "Reject, with no, full or partial waive-off.", "REJECTED", START + ["Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
+      "Reject, with no, full or partial waive-off.", "REJECTED", START + ["Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Without Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
 {DAY30}
 {reject_subs(2, 1, True)}
 
 {head(3, "DRAFT", "after the Sanction Letter is generated", PF4, "Reject, with no, full or partial waive-off.", "REJECTED",
-      START + ["Sanction Letter", "Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
+      START + ["Sanction Letter", "Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Without Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
 {DAY30}
 {reject_subs(3, 1, False)}
 
 {head(4, "DRAFT", "after the Loan Agreement e-Sign", PF4, "Reject, with no, full or partial waive-off.", "REJECTED",
-      START + ["Sanction Letter", "Loan Agreement e-Sign", "Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
+      START + ["Sanction Letter", "Loan Agreement e-Sign", "Customer asks to remove the lien", "Rejection request", "Checker", "Treasury", "Rejected &amp; Without Waive-off", "Customer Payment", "Receipt &amp; UNO Entry", "Treasury Confirmation", "De-pledge"])}
 {DAY30}
 {reject_subs(4, 1, False)}
 

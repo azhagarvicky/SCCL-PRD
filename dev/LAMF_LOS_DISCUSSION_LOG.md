@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 06:47 IST
+**Last Updated:** 27-11-2026 06:49 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -489,6 +489,7 @@
 | DISC-454 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html, lms.html | Treasury cross-check after the automatic UNO entry; balance not ₹0; reject | Owner: the UNO entry is posted first automatically; Treasury only cross-checks that the payment is received (no payment-portal wording); on approval the system checks the balance payable – ₹0 → De-pledge CTA and mail to OPS; not ₹0 (additional charges added, e.g. Sanction Letter generated meanwhile) → no De-pledge, mail to OPS; reject is a grey area – write it and show | BRD 3.2: UNO first, Treasury manual cross-check, approve with balance ₹0 (CTA, mail to OPS Cc Treasury, customer receipt), approve with balance not ₹0 (CTA disabled, mail to OPS Cc Treasury, receipt + new payment link for the balance – To be confirmed), reject (balance unchanged, CTA disabled, mail to OPS, UNO reversal and receipt cancelled, customer told – To be confirmed). Section 4 and scenario-wise 2.3 the same; two open points added. “Payment portal” removed (BRD and prototype hint). Word files regenerated. | Implemented |
 | DISC-455 | 26-11-2026 | brd-waive-off.html, brd-waive-off-scenarios.html | Balance not ₹0 and Treasury reject confirmed | Owner: balance not 0 – the new payment link for the balance goes automatically, the previous link stops working, the call centre team (not OPS) informs the customer; Treasury reject – no reversal / cancellation in the flow: internal mail that the payment is not received as per the entries, customer told the payment is not received and any debited amount comes back via the payment gateway; the same message even if it was received and rejected – handled in the backend | BRD 3.2 and scenario-wise 2.3 rewritten accordingly (UNO reversal / cancelled receipt removed); customer templates for the balance link and payment not received marked to be added; open points replaced by one (create these two templates). Word files regenerated. | Implemented |
 | DISC-456 | 27-11-2026 | brd-waive-off-scenarios.html | S 2 – S 4 flow end steps | Owner: in the S 2 flow, replace REJECTED → Payment (if any) with Rejected & Waive-off → Customer Payment → Receipt & UNO Entry → Treasury Confirmation → De-Pledge | Flow lines of S 2, S 3 and S 4 now end … → Treasury → Rejected & Waive-off → Customer Payment → Receipt & UNO Entry → Treasury Confirmation → De-pledge. Word file regenerated. | Implemented |
+| DISC-457 | 27-11-2026 | brd-waive-off-scenarios.html | Flow step renamed | Owner: “Rejected & Waive-off” was said wrongly – it is “Rejected & Without Waive-off” | S 2 – S 4 flow step renamed “Rejected & Without Waive-off”. Word file regenerated. | Implemented |
 
 ---
 
