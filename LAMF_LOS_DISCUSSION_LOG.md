@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 08:22 IST
+**Last Updated:** 27-11-2026 09:14 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -502,6 +502,7 @@
 | DISC-467 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | Payment is made in the LOS, not “through the payment link” | Owner: the link opens the LOS; after the OTP the only option is to pay the charges; the de-pledge starts only after the payment – “pay only through the payment link” in 2.1 is confusing | 2.1: removed “the customer can only pay through the payment link”. 2.3 point 1: the link in the rejection SMS and mail opens the LOS; after the OTP the only option is to pay the charges (full amount incl. GST, one payment); the de-pledge is initiated only after the payment. Word file regenerated. | Implemented |
 | DISC-468 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports | S 4 written as “Same as S 3” | Owner: S 3 (after the Sanction Letter) and S 4 (after the Loan Agreement e-Sign) have the same impact – do not repeat, say it is the same as S 3 | Section 3.4 now has only the heading and one line: same as S 3 (S 4.1 – 4.3 follow S 3.1 – 3.3: charges, approvals, mails, payment, receipt, UNO entry, de-pledge); the only difference is the e-signed Loan Agreement. Word file and Excel regenerated (S 4 has no separate entries). | Implemented |
 | DISC-469 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | Approve cases: LMS shows the charges split | Owner: “LMS shows the full charges (₹1,768.82)” is wrong – the customer sees one Processing Fee*, but LMS shows the charges split (Lien Marking, Lien Removal, Stamp Duty, and the balance as Processing Fee) | S 5.1 / 6.1: Processing Fee ₹883.82, Lien Marking ₹531, Lien Removal ₹118, Stamp Duty ₹236 (₹1,768.82 in all), posted in UNO each separately at the first withdrawal or repayment. S 5.2 / 6.2: the four charges waived, ₹0 payable each, no UNO entry. S 5.3 / 6.3: Processing Fee ₹383.82 (₹500 waived) + the three fixed charges (₹1,268.82). Word file regenerated. | Implemented |
+| DISC-470 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports | S 7 SOA: waiver row marked CR | Owner: in the S 7 SOA example the waive-off (waiver narration) is a credit, so its DR / CR mark must be CR, not DR | Part A and Part B waiver rows now show CR. Word file and Excel (SOA sheet) regenerated. | Implemented |
 
 ---
 
