@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 09:24 IST
+**Last Updated:** 27-11-2026 09:28 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -505,6 +505,7 @@
 | DISC-470 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports | S 7 SOA: waiver row marked CR | Owner: in the S 7 SOA example the waive-off (waiver narration) is a credit, so its DR / CR mark must be CR, not DR | Part A and Part B waiver rows now show CR. Word file and Excel (SOA sheet) regenerated. | Implemented |
 | DISC-471 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | S 5 / S 6: Approve or Reject, now with the waive-off | Owner: after submission OPS does the Loan Account Opening (SUBMITTED) and the Loan Lodgement (ACCOUNT OPENED) with Approve or Reject – Approve moves to the next LAN status, Reject straight to REJECTED; now both come with or without a waive-off | New note at the top of 3.5 (S 5) and 3.6 (S 6): OPS does the Loan Account Opening / Loan Lodgement with Approve or Reject; Approve SUBMITTED → ACCOUNT OPENED / ACCOUNT OPENED → ACTIVE, Reject straight to REJECTED; with this BRD both come with no, full or partial waive-off (S 5.1 – 5.3 / 5.4 – 5.6, S 6.1 – 6.3 / 6.4 – 6.6). Word file regenerated. | Implemented |
 | DISC-472 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | S 7: SOA and database updated together | Owner: when the SOA is updated, the DB has to be updated at the same time, so there is no gap | S 7.2 step 4 (S 7.3 follows it): LMS updates the SOA and, at the same time, the waived amount and the balance payable in the database, so the SOA, the database and the Waive-off page show the same amount. Word file regenerated. | Implemented |
+| DISC-473 | 27-11-2026 | brd-waive-off-scenarios.html, tools/brds.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | SOA and database updated together – a general rule | Owner: whenever the SOA is updated for an ACTIVE LAN, the DB has to be updated at the same time (not only for the S 7 waiver) | Section 2.3 new point: whenever LMS updates the SOA of an ACTIVE LAN (a payment or a waive-off), it updates the database at the same time, so they always match. S 7.2 step 4 shortened to refer to section 2.3 (replaces the DISC-472 wording). Word file regenerated. | Implemented |
 
 ---
 
