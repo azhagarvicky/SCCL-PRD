@@ -165,13 +165,13 @@ def draft_approvals(r, tid):
             '<textarea class="wv-cnote" rows="2" placeholder="Add a note"></textarea>'
             '<label class="wv-lbl">Upload a file <span>(required if changed)</span></label>'
             '<label class="wv-drop">Drop files here or <u>click</u><input type="file" class="wv-cfile" hidden></label><p class="wv-fname"></p>'
-            '<p class="wv-cerr"></p><div class="wv-appr-ctas"><button type="button" class="wv-ck-dec">Decline</button>'
-            f'<button type="button" class="wv-ck-app">Approve</button></div><p class="wv-hint">{ck} only.</p></div>'
+            '<p class="wv-cerr"></p><div class="wv-appr-ctas"><button type="button" class="wv-ck-dec">Decline Rejection</button>'
+            f'<button type="button" class="wv-ck-app">Accept Rejection</button></div><p class="wv-hint">{ck} only.</p></div>'
             # DISC-361 / 362: Treasury – approve or decline only, no change to the amounts
             f'<div class="wv-appr" hidden><h3>Waive-off &amp; Rejection – pending {tr} approval</h3><p class="wv-appr-st"></p>'
             '<label class="wv-lbl">Treasury note <span>(required)</span></label>'
             '<textarea class="wv-tnote" rows="2" placeholder="Add a note"></textarea><p class="wv-terr"></p>'
-            '<div class="wv-appr-ctas"><button type="button" class="wv-decline">Decline</button><button type="button" class="wv-approve">Approve</button></div>'
+            '<div class="wv-appr-ctas"><button type="button" class="wv-decline">Decline Rejection</button><button type="button" class="wv-approve">Accept Rejection</button></div>'   # DISC-465
             f'<p class="wv-hint">{tr} only – Treasury can only approve or decline; the amounts cannot be changed.</p></div>'
             '<div class="wv-done" hidden></div>'
             # DISC-351: after the rejection – customer payment (from the LOS), Treasury confirmation, then de-pledge
@@ -188,12 +188,12 @@ def draft_approvals(r, tid):
             + pop('wv-pr', '<h3>Are you sure you want to reject the application with the selected waive-off?</h3>' '<p class="wv-ptype"></p>'
                   f'<p class="wv-ps-txt">The request will be sent to {ck} (Checker) for approval.</p>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-r">Yes, submit</button></div>')
-            + pop('wv-pk', '<h3>Are you sure you want to approve the waive-off and rejection?</h3>' '<p class="wv-ptype"></p>'
+            + pop('wv-pk', '<h3>Are you sure you want to accept the rejection with the selected waive-off?</h3>' '<p class="wv-ptype"></p>'
                   f'<p class="wv-ps-txt">The request will be sent to {tr} for approval.</p>'
-                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-k">Yes, approve</button></div>')
+                  '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-k">Yes, accept</button></div>')
             + pop('wv-pa', '<h3>This action is irreversible. Are you sure you want to proceed?</h3>' '<p class="wv-ptype"></p>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-a">Yes</button></div>')
-            + pop('wv-pd', '<h3>Are you sure you want to decline? The waive-off and rejection request will be cancelled.</h3>'
+            + pop('wv-pd', '<h3>Are you sure you want to decline the rejection? The waive-off and rejection request will be cancelled.</h3>'
                   '<div class="wv-pbtns"><button type="button" class="wv-no">No</button><button type="button" class="wv-yes-d">Yes, decline</button></div>')
             + pop('wv-prs', '<h3>Are you sure you want to send the payment link to the customer again?</h3>'
                   '<p class="wv-ps-txt">The customer gets the payment reminder SMS and mail with the same payment link.</p>'
@@ -383,7 +383,7 @@ WAIVER_JS = """<script>
       audit(w, 'Application rejected – LAN status changed from DRAFT to REJECTED (' + q.type.toLowerCase() + '; charges payable ' + f2(q.tp) + ')',
             note2, w.dataset.mk + ' user', w.dataset.ck + ' user, ' + w.dataset.tr + ' user');
       var d = w.querySelector('.wv-done'); d.hidden = false; d.className = 'wv-done';
-      d.innerHTML = '<b>Approved by ' + w.dataset.ck + ' (Checker) and ' + w.dataset.tr + ' – application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + q.type + '</b>. ' +
+      d.innerHTML = '<b>Rejection accepted by ' + w.dataset.ck + ' (Checker) and ' + w.dataset.tr + ' – application rejected.</b> LAN status: REJECTED. Type of waive-off: <b>' + q.type + '</b>. ' +
         'Mail sent to OPS and Treasury: <i>Waive-off &amp; Rejection Approved</i>. ' +
         (q.tp > 0 ? 'Payable charges ' + f(q.tp) + ' – rejection SMS and mail with the payment link sent to the customer; de-pledge after payment and Treasury confirmation.'
                   : 'Nothing payable – rejection SMS and mail sent without a payment link; the units can be de-pledged now.');

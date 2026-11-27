@@ -811,11 +811,14 @@ def _waiver_scen_body():
 
     def chain(action, to, treasury_alert, v=""):
         verb = "Reject" if action == "reject" else "Approve"
+        rj = action == "reject"   # DISC-465: on a rejection the checker and Treasury accept the rejection request (not a loan approval)
+        ck_act = ("approves the rejection request (<b>Accept Rejection</b>; <b>Decline Rejection</b> cancels it)" if rj else "approves")
+        tr_act = ("approves the rejection request (<b>Accept Rejection</b>)" if rj else "gives the final approval")
         return [f"OPS maker (OPS L1) selects the charges, enters the amounts, adds the note (mandatory), uploads the file (mandatory) and clicks <b>{verb}</b>. Nothing "
                 "is waived and the LAN status does not change yet. " + MAIL("OPS Checker", "Treasury") + S(IC(16, v)),
                 "OPS checker (OPS L2 or OPS L3) checks the request, can change the waive-off, adds the note (mandatory; a file is mandatory only if the waive-off is changed) "
-                "and approves. " + MAIL("Treasury", "OPS") + S(IC(12, v)),
-                "Treasury (Treasury L1, L2 or L3) adds the note (mandatory) and gives the final approval. "
+                f"and {ck_act}. " + MAIL("Treasury", "OPS") + S(IC(12, v)),
+                f"Treasury (Treasury L1, L2 or L3) adds the note (mandatory) and {tr_act}. "
                 f"The waive-off is applied and the LAN status changes to <b>{to}</b>. " + INFO("OPS", "Treasury") + S(treasury_alert(v))]
 
     PAY = lambda amt, mail, key: [
@@ -906,9 +909,13 @@ confirmed.</li>
 <li>The note is mandatory for all three. The file is mandatory for the maker, and for the checker only if the checker changes the waive-off.
 Treasury can only approve or decline. Every step is saved in the Audit tab.</li>
 <li>If the maker submits without the note or the file, LMS shows “Please add the note and upload a file.”</li>
-<li>Once the maker raises a rejection request, the customer cannot continue the LOS journey, and after the LAN is REJECTED the customer
-cannot move to any next step (LOS shows an error). So no charge can be added after the request – the customer can only pay through the
-payment link. If the checker or Treasury declines the request, the customer can continue.</li>
+<li>Once the maker raises a rejection request, the customer cannot continue that loan application in the LOS, and after the LAN is
+REJECTED the customer cannot move to any next step of it (LOS shows a message). So no charge can be added after the request – the customer
+can only pay through the payment link. The customer can still start a fresh loan application. If the checker or Treasury declines the
+request, the customer can continue the existing application. (LOS change – PRD Pending Changes, CR-19.)</li>
+<li>A DRAFT loan cannot be approved. For a rejection request (DRAFT, SUBMITTED or ACCOUNT OPENED), the checker and Treasury see the CTAs
+<b>Accept Rejection</b> and <b>Decline Rejection</b> – they accept or decline the rejection request, not the loan. Approve is used only to
+approve a SUBMITTED or ACCOUNT OPENED loan (S 5.1 – S 5.3, S 6.1 – S 6.3).</li>
 <li>Every approve or reject asks for confirmation in a pop-up – “This action is irreversible. Are you sure you want to proceed?”.</li>
 </ul>
 <h3>2.2 Charges and Waive-off</h3>

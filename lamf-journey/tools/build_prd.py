@@ -102,6 +102,12 @@ TO_IMPLEMENT = [
  ('CR-18', 'Module 3', 'Sl. No 4 – PAN Number (4th character – individual PAN only)',
   change('Any letter is accepted in the 4th place (e.g. CBOCA8195B can be entered); a non-letter shows “4th character must be a letter”',
          'Only P is accepted in the 4th place (individual PAN only). Any other character is not entered and “The 4th character must be (P) – only individual PAN is allowed.” is shown at once next to the PAN Number label, so a non-individual PAN is stopped in the PAN Number field itself (DISC-137)'), '06-10-2026'),
+ ('CR-19', 'Module 8', 'Sl. No 17.3 – Ongoing application pop up (application with a rejection request in LMS)',
+  change('The customer with an ongoing application can always click Yes, Continue and carry on with that application',
+         'Once OPS raises a rejection request for the application in LMS (Waiver BRD), the customer cannot continue that existing loan '
+         'application – it stays stopped while the request is pending and after the LAN is REJECTED, and the LOS shows a message instead '
+         '(wording to be confirmed). The customer can still start a fresh loan application. If the checker or Treasury declines the '
+         'rejection request, the customer can continue the existing application again (DISC-465)'), '27-11-2026'),
 ]
 # Moved here only when the owner confirms the item is live in the LOS journey:
 # (ID, Module, Where in the PRD, What was implemented, Implemented on)
@@ -907,13 +913,13 @@ MODULES = [
                'When exactly this pop up is shown is to be confirmed ' + pend('P-24') + '</p>'
                + screen_content([
                    ('Text', '“You have an ongoing loan application, would you like to proceed further with it?”'),
-                   ('CTAs', '“No, Take me to the dashboard” and “Yes, Continue”'),
+                   ('CTAs', '“No, Take me to the dashboard” and “Yes, Continue” ' + todo('CR-19')),
                ])),
       'data': '<b>Ongoing Application Choice:</b><ul><li>Yes, Continue</li><li>No, Take me to the dashboard</li></ul>',
       'status': WIP,
       'fields': [
         (img('f173-modal.png'), spec(Field_Name='No, Take me to the dashboard / Yes, Continue', Field_Type='CTAs',
-            Action='Yes, Continue: the Mutual Fund Selection page opens. No, Take me to the dashboard: the Curated Offers page opens.'), OK),
+            Action='Yes, Continue: the Mutual Fund Selection page opens. No, Take me to the dashboard: the Curated Offers page opens. ' + todo('CR-19')), OK),
       ],
     },
     {
