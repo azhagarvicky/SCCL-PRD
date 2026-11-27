@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 27-11-2026 09:52 IST
+**Last Updated:** 27-11-2026 10:24 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -509,6 +509,7 @@
 | DISC-474 | 27-11-2026 | tools/brd_to_docx.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | Word file: Calibri 12 | Owner: Word file in Calibri, 12 pt for Normal and List Paragraph; the other sizes as suitable | Normal and List Paragraph styles and runs Calibri 12; headings Calibri – Heading 1 20, Heading 2 16, Heading 3 14, Heading 4 13, Heading 5 12; tables and the process-flow line 10; the meta line 10. Word file regenerated. | Implemented |
 | DISC-475 | 27-11-2026 | tools/brd_to_docx.py, exports/BRD_Charges_Waiver_Scenario-wise.docx | Word file: all headings bold | Owner: all the headings have to be bold | Heading 1 – 5 styles set to bold. Word file regenerated. | Implemented |
 | DISC-476 | 27-11-2026 | tools/docx_black.py, tools/brd_to_docx.py, exports/BRD_Charges_Waiver_Scenario-wise.docx, exports/Waiver_BRD_Open_Points.docx | Word files: all letters black | Owner: all the letters in black only | New tools/docx_black.py sets every text colour (headings, links, coloured mail labels, placeholders) to black; brd_to_docx.py runs it before saving. Both Word files regenerated; links stay underlined, table header shading kept. | Implemented |
+| DISC-477 | 27-11-2026 | assets/gate.js, admin.html, assets/admin.js, tools/access-apps-script.gs, tools/build_pages.py (brd.html), CLAUDE.md | Site access: SCCL mail ID + OTP + admin approval – trial on brd.html (dev) | Owner: anyone with the link can open the site – allow only verified users: SCCL mail ID → OTP to that mail → wait for the owner’s approval; an admin portal to give access; admin azhagarsamy.s@shriramcredit.in; logged in for 30 days; first only brd.html on dev, then the whole site | Option A (login gate; the files stay on public GitHub Pages – a deterrent, not full security, explained to the owner). Google Sheet “LAMF Site Access” (Users, Sessions, Log) + Apps Script: OTP 6 digits, 10 min, 3 tries, 5 per hour, stored only as a salted hash; login key 30 days (hash in Sessions); new user → Pending + mail to the admin; Approve / Reject mail the user; Remove ends all logins (user can ask again). gate.js hides the page until the key is checked (re-check every 10 min); admin.html lists users (Pending first) with Approve / Reject / Remove. Tested with a mock backend. ENDPOINT in gate.js is empty until the owner deploys the script – until then brd.html is not blocked. | WIP – waiting for the Apps Script URL |
 
 ---
 
