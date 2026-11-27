@@ -1135,6 +1135,11 @@ with open(os.path.join(ROOT, "brd.html"), "w") as f:
 for _b in BRDS:
     with open(os.path.join(ROOT, BRD_FILE(_b)), "w") as f:
         f.write(PAGE.format(title=f"LAMF – BRD – {_b['title']}", cls="page-screens page-brd", body=brd_body("index.html", "brd.html", _b)))
+# DISC-464: the main Waiver BRD is removed – only the scenario-wise BRD is kept; the old link opens it
+with open(os.path.join(ROOT, "brd-waive-off.html"), "w") as f:
+    f.write('<!doctype html><meta charset="utf-8"><title>LAMF – BRD – Charges Waiver</title>'
+            '<meta http-equiv="refresh" content="0; url=brd-waive-off-scenarios.html">'
+            '<p>This BRD has moved: <a href="brd-waive-off-scenarios.html">Charges Waiver &amp; Post-Pledge Drop-off – Scenario-wise</a>.</p>')
 with open(os.path.join(ROOT, "internal-communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Internal Communications", cls="page-screens page-comms page-ic", body=internal_body("index.html")))
 write_internal_mails()

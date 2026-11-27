@@ -1,6 +1,6 @@
 # Waiver BRD (web page) → Word, in the owner's BRD.docx format (their file used as the style template) – DISC-384
 # Run ONLY when the owner asks for the Word file (DISC-297):
-#   python3 lamf-journey/tools/brd_to_docx.py lamf-journey/brd-waive-off.html exports/BRD_Charges_Waiver_Post-Pledge_Drop-off.docx
+#   python3 lamf-journey/tools/brd_to_docx.py lamf-journey/brd-waive-off-scenarios.html exports/BRD_Charges_Waiver_Scenario-wise.docx
 # Needs python-docx and beautifulsoup4, and the owner's BRD.docx as the template (TEMPLATE below).
 import sys, re
 import docx
