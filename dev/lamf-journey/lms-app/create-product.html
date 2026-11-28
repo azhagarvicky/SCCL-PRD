@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=22">
+<link rel="stylesheet" href="app.css?v=24">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -53,7 +53,7 @@
         <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20KYC"><span>6</span>KYC</a></li>
       </ol>
       <form class="cp-f" id="p1" novalidate>
-        <label for="cp-n">Name of the Product</label><input id="cp-n" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="80"><p class="cp-err" id="cp-err" role="alert"></p>
+        <label for="cp-n">Name of the Product <span class="fe" id="cp-err" role="alert"></span></label><input id="cp-n" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="80">
         <label for="cp-d">Description of the Product</label><input id="cp-d" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="200">
         <div class="cp-2">
           <div><label for="cp-from">Valid From</label><input id="cp-from" class="cp-in" type="date"></div>
@@ -62,22 +62,25 @@
         <p class="cp-pol">Product Access Policy for LSPs <a href="#" id="cp-upd">Update</a></p>
       </form>
       <div class="cp-f" id="p2" hidden>
-        <div class="cp-rds"><label class="cp-rd"><input type="radio" name="disb" value="Revolving Overdraft" checked><i></i>Revolving Overdraft <i class="cp-i" title="Revolving Overdraft" aria-label="Revolving Overdraft">i</i></label><label class="cp-rd"><input type="radio" name="disb" value="Single Disbursement"><i></i>Single Disbursement <i class="cp-i" title="Single Disbursement" aria-label="Single Disbursement">i</i></label><label class="cp-rd"><input type="radio" name="disb" value="Multiple Disbursement"><i></i>Multiple Disbursement <i class="cp-i" title="Multiple Disbursement" aria-label="Multiple Disbursement">i</i></label></div>
+        <div class="cp-rds"><label class="cp-rd"><input type="radio" name="disb" value="Revolving Overdraft" checked><i></i>Revolving Overdraft <i class="cp-i" role="button" tabindex="0" title="Revolving Overdraft" aria-label="Revolving Overdraft">i</i></label><label class="cp-rd"><input type="radio" name="disb" value="Single Disbursement"><i></i>Single Disbursement <i class="cp-i" role="button" tabindex="0" title="Single Disbursement" aria-label="Single Disbursement">i</i></label><label class="cp-rd"><input type="radio" name="disb" value="Multiple Disbursement"><i></i>Multiple Disbursement <i class="cp-i" role="button" tabindex="0" title="Multiple Disbursement" aria-label="Multiple Disbursement">i</i></label></div>
       </div>
       <div class="cp-f tm" id="p3" hidden>
-        <div class="tm-r"><div class="tm-l"><b>Sanction Amount</b><span>Set minimum and maximum sanction amount</span></div>
+        <div class="tm-r"><div class="tm-l"><b>Sanction Amount</b><span>Set minimum and maximum sanction amount</span><p class="fe" role="alert"></p></div>
           <div class="tm-2"><div class="ig"><span class="ig-p">MIN</span><span class=ig-s>₹</span><input id="t-sa1" inputmode="decimal" placeholder="Ex. 1Cr"></div><div class="ig"><span class="ig-p">MAX</span><span class=ig-s>₹</span><input id="t-sa2" inputmode="decimal" placeholder="Ex. 2Cr"></div></div></div>
-        <div class="tm-r"><div class="tm-l"><b>Rate of Interest</b><span>Set minimum and maximum rate of interest</span></div>
+        <div class="tm-r"><div class="tm-l"><b>Rate of Interest</b><span>Set minimum and maximum rate of interest</span><p class="fe" role="alert"></p></div>
           <div class="tm-2"><div class="ig"><span class="ig-p">MIN</span><input id="t-ri1" inputmode="decimal" placeholder="Ex. 9.49"><span class=ig-x>%</span></div><div class="ig"><span class="ig-p">MAX</span><input id="t-ri2" inputmode="decimal" placeholder="Ex. 10.59"><span class=ig-x>%</span></div></div></div>
-        <div class="tm-r"><div class="tm-l"><b>Tenure</b><span>Set minimum and maximum tenure (in months)</span></div>
+        <div class="tm-r"><div class="tm-l"><b>Tenure</b><span>Set minimum and maximum tenure (in months)</span><p class="fe" role="alert"></p></div>
           <div class="tm-3"><div class="sel"><select id="t-tt" aria-label="Tenure type"><option>Range</option><option>Fixed</option></select></div><div class="ig"><span class="ig-p">MIN</span><input id="t-te1" inputmode="decimal" placeholder="Ex. 3 months"></div><div class="ig"><span class="ig-p">MAX</span><input id="t-te2" inputmode="decimal" placeholder="Ex. 36 months"></div></div></div>
-        <div class="tm-r"><div class="tm-l"><b>Processing Fee</b><span>Set the minimum and maximum PF</span></div>
+        <div class="tm-r"><div class="tm-l"><b>Processing Fee</b><span>Set the minimum and maximum PF</span><p class="fe" role="alert"></p></div>
           <div class="tm-2"><div><label class="tm-k">Min</label><div class="tm-pf"><div class="sel"><select id="t-pu1" aria-label="Min PF in"><option>₹</option><option>%</option></select></div><input class="cp-in" id="t-pf1" inputmode="decimal" placeholder="Type here"></div></div>
             <div><label class="tm-k">Max</label><div class="tm-pf"><div class="sel"><select id="t-pu2" aria-label="Max PF in"><option>₹</option><option>%</option></select></div><input class="cp-in" id="t-pf2" inputmode="decimal" placeholder="Type here"></div></div></div></div>
       </div>
     </div>
   </main>
   <footer class="cp-foot"><button type="button" class="b-fill cp-next" id="cp-next">Next</button></footer>
+</div>
+<div class="md-bg" id="inf" hidden>
+  <div class="md inf" role="dialog" aria-modal="true" aria-labelledby="inf-t"><i class="inf-i">i</i><h2 id="inf-t"></h2><p id="inf-p"></p></div>
 </div>
 <div class="md-bg" id="ap" hidden>
   <div class="md ap" role="dialog" aria-modal="true" aria-labelledby="ap-t">
@@ -134,10 +137,39 @@
   $('ap').addEventListener('click', function (e) { if (e.target === $('ap')) ap(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') ap(false); });
   $('cp-n').addEventListener('input', function () { $('cp-err').textContent = ''; $('cp-n').classList.remove('bad'); });
+  // DISC-516: (i) next to each disbursement type opens the info pop-up (text from the UAT); it does not change the selection
+  var INFO = { 'Revolving Overdraft': 'Withdrawal limit is restored when paid back',
+    'Single Disbursement': 'Entire sanction amount is disbursed at once and withdrawal limit is not restored on repayment',
+    'Multiple Disbursement': 'Sanction amount is disbursed multiple times and withdrawal limit is not restored on repayment' };
+  var inf = function (k) { $('inf').hidden = !k; if (k) { $('inf-t').textContent = k; $('inf-p').textContent = INFO[k]; } };
+  [].forEach.call(document.querySelectorAll('.cp-i'), function (i) {
+    var k = i.getAttribute('title');
+    i.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); inf(k); });
+    i.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inf(k); } });
+  });
+  $('inf').addEventListener('click', function () { inf(null); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') inf(null); });
+  // DISC-516: Terms – Next with an empty box shows "Minimum … is missing" (or "Maximum … is missing") under the row; empty boxes get a red border
+  var ROWS = [['t-sa1', 't-sa2', 'sanction amount'], ['t-ri1', 't-ri2', 'rate of interest'], ['t-te1', 't-te2', 'tenure'], ['t-pf1', 't-pf2', 'processing fee']];
+  var bad = function (id, on) { var el = $(id); (el.closest('.ig') || el).classList.toggle('bad', on); };
+  var checkTerms = function () {
+    var ok = true;
+    ROWS.forEach(function (r) {
+      var e1 = !$(r[0]).value.trim(), e2 = !$(r[1]).value.trim();
+      bad(r[0], e1); bad(r[1], e2);
+      $(r[0]).closest('.tm-r').querySelector('.fe').textContent = e1 ? 'Minimum ' + r[2] + ' is missing' : e2 ? 'Maximum ' + r[2] + ' is missing' : '';
+      if (e1 || e2) ok = false;
+    });
+    return ok;
+  };
+  ROWS.forEach(function (r) { [r[0], r[1]].forEach(function (id) { $(id).addEventListener('input', function () {
+    if ($(id).value.trim()) { bad(id, false); var other = id === r[0] ? r[1] : r[0], fe = $(id).closest('.tm-r').querySelector('.fe');
+      fe.textContent = !$(r[0]).value.trim() ? 'Minimum ' + r[2] + ' is missing' : !$(r[1]).value.trim() && fe.textContent ? 'Maximum ' + r[2] + ' is missing' : ''; }
+  }); }); });
   $('cp-next').addEventListener('click', function () {
     if (step === 1) {
       var n = $('cp-n').value.trim();
-      if (!n) { $('cp-err').textContent = 'Please enter the name of the product.'; $('cp-n').classList.add('bad'); $('cp-n').focus(); return; }
+      if (!n) { $('cp-err').textContent = 'Product name is missing'; $('cp-n').classList.add('bad'); $('cp-n').focus(); return; }   // UAT wording (DISC-516)
       if (!cur) {   // next code after the latest one in the list (sample list ends at LAMF20261115)
         var max = 20261115; all.forEach(function (x) { max = Math.max(max, +x.code.slice(4)); });
         cur = { code: 'LAMF' + (max + 1), done: 0 }; all.unshift(cur);
@@ -146,6 +178,7 @@
     } else if (step === 2) {
       cur.disb = document.querySelector('input[name="disb"]:checked').value;   // Revolving Overdraft by default, as the UAT
     } else {
+      if (!checkTerms()) return;
       cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; });
     }
     cur.done = Math.max(cur.done || 0, step); save(all); saved();

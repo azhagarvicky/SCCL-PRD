@@ -305,3 +305,18 @@ svg.ch rect, svg.sp rect { cursor: default; }
 .tm-pf .cp-in { height: 46px; margin: 0; }
 @media (max-width: 1000px) { .tm-r { grid-template-columns: 1fr; } .tm-3 { grid-template-columns: 1fr; } .tm-2 { grid-template-columns: 1fr; } }
 button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; }
+
+/* DISC-516: field errors as the UAT – red (!) + "… is missing"; info pop-up for the disbursement types */
+.fe { display: inline-flex; align-items: center; gap: 6px; color: #d92d20; font-size: 13px; font-weight: 500; margin: 0 0 0 10px; }
+.fe:empty { display: none; }
+.fe::before { content: "!"; width: 15px; height: 15px; border-radius: 50%; background: #e02424; color: #fff; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.tm-l .fe { display: flex; margin: 10px 0 0; white-space: nowrap; font-size: 12.5px; }
+.tm-l .fe:empty { display: none; }
+.cp-in.bad { border-color: #8a8f99; }
+.ig.bad, .tm-pf .cp-in.bad { border-color: #e5484d; }
+.ig.bad:focus-within, .tm-pf .cp-in.bad:focus { border-color: var(--blue); }
+.cp-rd .cp-i { cursor: pointer; }
+.md.inf { width: 488px; max-width: 100%; text-align: center; padding: 50px 36px 40px; border-radius: 6px; cursor: default; }
+.inf-i { width: 38px; height: 38px; border-radius: 50%; background: #000; color: #fff; font-style: normal; font-family: Georgia, serif; font-weight: 700; font-size: 22px; display: inline-flex; align-items: center; justify-content: center; }
+.md.inf h2 { font-size: 22px; font-weight: 800; margin: 20px 0 10px; }
+.md.inf p { margin: 0; font-size: 15.5px; line-height: 23px; }
