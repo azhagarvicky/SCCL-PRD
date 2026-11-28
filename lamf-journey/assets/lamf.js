@@ -434,12 +434,28 @@
   };
   // Banner ticker (DISC-172): three messages scroll up one after another, 3 seconds each, then repeat
   const TICKER = ['Borrow only what you need and pay interest only on the utilised amount', 'Avail a loan of up to 75% of your eligible Mutual Fund portfolio', 'Quick digital process with fast loan disbursal'];
+  // DISC-533 (prototype only): a product created and approved in the LMS prototype (lms-app) with "SCCL LOS" access switched on in its
+  // Update Product Access Policy pop-up is offered here too, first, as in the UAT (rate = the product's minimum rate, tenure = its tenure).
+  const lmsOffers = () => { try { return (JSON.parse(localStorage.getItem('lms-products-v4')) || []).filter((x) => x.status === 'Active' && (x.lsp || []).indexOf('SCCL LOS') >= 0 && x.terms); } catch (e) { return []; } };
+  const lmsOffer = (x) => {
+    const t = x.terms, ten = t['t-tt'] === 'Discrete' ? (t.chips || []).join(', ') : `${t['t-te1']} - ${t['t-te2']}`;
+    return `<div class="offer" title="${String(x.name).replace(/"/g, '&quot;')} (${x.code})"><div class="offer-in">
+          <div class="offer-row"><span class="ol">Credit Limit</span><a class="ov" data-cta="how-calculated">${rs(PORTFOLIO.creditLimit)}</a></div>
+          <div class="offer-grid">
+            <div><span>Interest Rate</span><u class="tip" tabindex="0" data-tip="${OFFER_TIPS.rate}">${Number(t['t-ri1']).toFixed(2)}% p.a.</u></div>
+            <div style="text-align:center"><span>Processing Fee</span><u class="tip tip-c" tabindex="0" data-tip="${OFFER_TIPS.fee}">${rs(inr(processingFee(PORTFOLIO.creditLimit)))}</u></div>
+            <div style="text-align:right"><span>Tenure in Months</span><u class="tip tip-r" tabindex="0" data-tip="${OFFER_TIPS.tenure}">${ten}</u></div>
+          </div></div>
+        <a class="kfs-row" data-cta="kfs-document"><span class="kfs-ico">${ICON.doc}</span>KFS document<span class="kfs-chev">›</span></a>
+        <button class="offer-btn" data-cta="start-application">Start Application</button></div>`;
+  };
   T.curated = (o = {}) => `
     ${header('app')}
     <div class="info-banner ticker"><div class="tk-win"><div class="tk-list">${[...TICKER, TICKER[0]].map((t) => `<span>${img('banner-icon.png')}${t}</span>`).join('')}</div></div></div>
     <main class="wrap-980 curated">
       <h3 class="co-t">Curated offers for you</h3>
       <p class="co-s">Processing fee and monthly EMI shown are indicative. Final values will depend on the actual loan amount availed.</p>
+      <div class="offers ${!o.dropoff && lmsOffers().length ? 'two' : ''}">${o.dropoff ? '' : lmsOffers().map(lmsOffer).join('')}
       <div class="offer ${o.dropoff ? 'drop' : ''}">
         ${o.dropoff ? '<div class="offer-prog">1/4 Complete your application to get cash</div>' : ''}
         <div class="offer-in">
@@ -453,7 +469,7 @@
         <a class="kfs-row" data-cta="kfs-document"><span class="kfs-ico">${ICON.doc}</span>KFS document<span class="kfs-chev">›</span></a>
         ${o.dropoff ? `<div class="offer-2btn"><button class="discard" data-cta="discard">Discard</button><button class="btn-primary" data-cta="continue">Continue</button></div>`
                     : `<button class="offer-btn" data-cta="start-application">Start Application</button>`}
-      </div>
+      </div></div>
       <p class="tpv">Total Portfolio Value <span>${rs(PORTFOLIO.total)}</span></p>
       <p class="lu">Last updated: ${PORTFOLIO.lastUpdated} <a class="rf" data-cta="refresh-portfolio"><span>${ICON.refresh}</span>Refresh portfolio</a></p>
       <div class="mobile-strip"><span>${CUSTOMER.mobileMasked2}</span><span>13 Security<span class="dotsep">•</span>${rs(PORTFOLIO.total)}</span></div>

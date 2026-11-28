@@ -72,7 +72,7 @@
     <div class="md-h"><h2 id="ap-t">Update Product Access Policy</h2>
       <button type="button" class="md-x" id="ap-x" aria-label="Close"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></button></div>
     <table class="ap-t"><thead><tr><th>LSP Name</th><th class="r">LSP Access</th></tr></thead>
-      <tbody><tr><td>sccl-los</td><td class="r"><label class="sw"><input type="checkbox" checked aria-label="sccl-los access"><i></i></label></td></tr></tbody></table>
+      <tbody id="ap-rows"><tr><td>sccl-los</td><td class="r"><label class="sw"><input type="checkbox" checked aria-label="sccl-los access"><i></i></label></td></tr></tbody></table>
     <button type="button" class="b-out ap-c" id="ap-c">Cancel</button>
   </div>
 </div>
@@ -99,7 +99,7 @@
            'Maximum Mandate Amount': '₹10,000 - ₹2,00,00,000', 'Repayment Frequency': '1st, Monthly' } }
   };
   var code = new URLSearchParams(location.search).get('code'), d = P[code];
-  if (!d) LMS_PROD.load().forEach(function (x) { if (x.code === code) d = LMS_PROD.page(x); });   // DISC-520: a product created in this browser
+  if (!d) LMS_PROD.load().forEach(function (x) { if (x.code === code) { d = LMS_PROD.page(x); d.mine = true; } });   // DISC-520: a product created in this browser
   d = d || P.LAMF20261102;
   if (d.kyc) d.kyc.forEach(function (k) { var sp = document.createElement('span'); sp.textContent = k; document.querySelector('.pv-k').appendChild(sp); });
   $('pv-n').textContent = d.n; $('pv-v').textContent = 'Validity: ' + d.v; $('pv-s').textContent = d.s;
@@ -167,7 +167,21 @@
   $('pv-menu').addEventListener('click', function (e) { e.stopPropagation(); dd($('pv-dd').hidden); });
   document.addEventListener('click', function () { dd(false); });
   var ap = function (on) { $('ap').hidden = !on; };
-  $('pv-upd').addEventListener('click', function () { dd(false); ap(true); });
+  $('pv-upd').addEventListener('click', function () { dd(false); if (d.mine) drawLsp(); ap(true); });
+  // DISC-533 (UAT): for a product created in the LMS the pop-up lists every LSP; a toggle saves at once, LSPs with access are listed first.
+  // SCCL LOS on → the product is offered on the LOS Curated offers page (the prototype journey reads the same browser storage).
+  var LSPS = ['Quicklend', 'Test', 'LARK', 'Liquify', 'SCCL LOS', 'Forward Wealth'];
+  function drawLsp() {
+    var all = LMS_PROD.load(), x = null; all.forEach(function (y) { if (y.code === code) x = y; });
+    if (!x) return; var on = x.lsp || [];
+    var list = LSPS.filter(function (n) { return on.indexOf(n) >= 0; }).concat(LSPS.filter(function (n) { return on.indexOf(n) < 0; }));
+    $('ap-rows').innerHTML = list.map(function (n) { return '<tr><td>' + n + '</td><td class="r"><label class="sw"><input type="checkbox" data-l="' + n + '"' + (on.indexOf(n) >= 0 ? ' checked' : '') + ' aria-label="' + n + ' access"><i></i></label></td></tr>'; }).join('');
+    [].forEach.call($('ap-rows').querySelectorAll('input'), function (c) { c.addEventListener('change', function () {
+      var all2 = LMS_PROD.load();
+      all2.forEach(function (y) { if (y.code === code) { var l = y.lsp || []; l = l.filter(function (k) { return k !== c.dataset.l; }); if (c.checked) l.push(c.dataset.l); y.lsp = l; } });
+      LMS_PROD.save(all2);
+    }); });
+  }
   $('ap-x').addEventListener('click', function () { ap(false); }); $('ap-c').addEventListener('click', function () { ap(false); });
   $('ap').addEventListener('click', function (e) { if (e.target === $('ap')) ap(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { ap(false); dd(false); } });
