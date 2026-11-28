@@ -1110,7 +1110,7 @@ def home_body(home, prd, journey, comms, calc, internal, brd):
             f'<a class="home-cta" href="{journey}">Start the LAMF journey →</a>'
             '<a class="home-cta" href="#comms-pop">Communications →</a>'
             f'<a class="home-cta" href="{calc}">Calculator →</a>'
-            '<a class="home-cta" href="lms.html">LMS →</a>'   # LMS modules page (DISC-327)
+            '<a class="home-cta" href="lms-screens.html">LMS →</a>'   # LMS screen list (DISC-485; earlier lms.html, DISC-327)
             '</div>' + CONTACT + '</main>'
             '<div class="home-pop" id="comms-pop" role="dialog" aria-label="Communications"><a class="home-pop-bg" href="#" aria-label="Close"></a>'
             '<div class="home-pop-box"><a class="home-pop-x" href="#" aria-label="Close">×</a><h2>Communications</h2>'
@@ -1161,8 +1161,10 @@ with open(os.path.join(ROOT, "calculator.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Calculator", cls="page-screens page-calc", body=calc_body("index.html") + '<script src="assets/calc.js"></script>'))
 with open(os.path.join(ROOT, "communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
-# LMS modules page, opened by the LMS CTA on the home page (DISC-327); data in tools/lms.py
-from lms import lms_body
+# LMS modules page (DISC-327); data in tools/lms.py. The home LMS CTA opens the LMS screen list lms-screens.html (DISC-485)
+from lms import lms_body, lms_screens_body
+with open(os.path.join(ROOT, "lms-screens.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF LMS – Screens", cls="page-screens", body=lms_screens_body(LOGO.format(home="index.html"))))
 with open(os.path.join(ROOT, "lms.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")))
 # LOS charges payment after a DRAFT rejection and the payment receipt (DISC-351); data in tools/charges_payment.py

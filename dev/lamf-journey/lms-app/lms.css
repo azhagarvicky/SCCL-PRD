@@ -36,7 +36,8 @@ body { margin: 0; font-family: "Inter", "Segoe UI", Arial, Helvetica, sans-serif
 .lg-next { margin: 18px 0 0; padding: 12px 14px; border-radius: 8px; background: #f3f6ff; color: #1e3a8a; font-size: 14px; line-height: 1.5; }
 
 .proto-tag { position: fixed; right: 12px; top: 12px; z-index: 5; font-size: 12px; background: #fff7d6; color: #7a5b00; border: 1px solid #f0d27a;
-  border-radius: 12px; padding: 3px 10px; }
+  border-radius: 12px; padding: 3px 10px; text-decoration: none; }
+.proto-tag:hover { background: #ffefb0; }
 
 @media (max-width: 1100px) {
   .lg-hero h1 { font-size: 30px; }
