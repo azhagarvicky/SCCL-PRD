@@ -447,7 +447,7 @@
             <div style="text-align:right"><span>Tenure in Months</span><u class="tip tip-r" tabindex="0" data-tip="${OFFER_TIPS.tenure}">${ten}</u></div>
           </div></div>
         <a class="kfs-row" data-cta="kfs-document"><span class="kfs-ico">${ICON.doc}</span>KFS document<span class="kfs-chev">›</span></a>
-        <button class="offer-btn" data-cta="start-application">Start Application</button></div>`;
+        <button class="offer-btn" data-cta="start-application" data-lms="${x.code}">Start Application</button></div>`;
   };
   T.curated = (o = {}) => `
     ${header('app')}
@@ -546,6 +546,28 @@
     <div class="modal m-ongoing"><p>You have an ongoing loan application, would you like to proceed further with it?</p>
       <div class="two"><button class="btn btn-outline" data-cta="go-dashboard">No, Take me to the dashboard</button><button class="btn btn-primary" data-cta="yes-continue">Yes, Continue</button></div></div>`;
 
+  // DISC-534 (prototype only): when the customer starts from an offer of a product created in the LMS prototype, the summary follows
+  // that product (UAT): Tenure drop-down = every month from min to max (Range, default the max) or only the months set (Discrete);
+  // Repayment Type = a drop-down when the product allows both Interest Only (Balloon Type) and Fully Amortized, else the one type;
+  // Disbursement Type Revolving → "Line of Credit"; Interest Rate = the product's minimum rate.
+  const lmsProduct = () => { try { const c = sessionStorage.getItem('lamf.lmsOffer'); return c ? (JSON.parse(localStorage.getItem('lms-products-v4')) || []).filter((x) => x.code === c)[0] : null; } catch (e) { return null; } };
+  const lmsSummary = () => {
+    const x = lmsProduct();
+    if (!x || !x.terms) return `<div class="kv big"><b>Tenure</b><span>12 months</span></div>
+        <div class="kv big"><b>Disbursement Type</b><span>Multiple</span></div>
+        <div class="kv big"><b>Repayment Type</b><span>Interest Only</span></div>
+        <div class="sum-2"><div><span>Interest Rate ${i()}</span><em>10.5% p.a</em></div>`;
+    const t = x.terms, k = x.coll || {};
+    let months = t['t-tt'] === 'Discrete' ? (t.chips || []).map(Number).sort((a, b) => a - b) : [];
+    if (t['t-tt'] !== 'Discrete') for (let m = +t['t-te1']; m <= +t['t-te2']; m += 1) months.push(m);
+    const opt = (v, sel) => `<option${sel ? ' selected' : ''}>${v}</option>`;
+    const rep = [k.bt && 'Interest Only', k.fa && 'Fully Amortized'].filter(Boolean);
+    const disb = ({ 'Revolving Overdraft': 'Line of Credit', 'Single Disbursement': 'Single', 'Multiple Disbursement': 'Multiple' })[x.disb] || 'Multiple';
+    return `<div class="kv big"><b>Tenure (in months)</b><span class="sum-sel"><select aria-label="Tenure in months">${months.map((m, j) => opt(m, j === months.length - 1)).join('')}</select></span></div>
+        <div class="kv big"><b>Disbursement Type</b><span>${disb}</span></div>
+        <div class="kv big"><b>Repayment Type</b>${rep.length > 1 ? `<span class="sum-sel"><select aria-label="Repayment Type">${rep.map((r, j) => opt(r, !j)).join('')}</select></span>` : `<span>${rep[0] || 'Interest Only'}</span>`}</div>
+        <div class="sum-2"><div><span>Interest Rate ${i()}</span><em>${+t['t-ri1']}% p.a</em></div>`;
+  };
   /* 14 Summary */
   T.summary = () => `
     <div class="sticky-top">${header('app')}${stepper(1)}</div>
@@ -554,10 +576,7 @@
       <div class="wrap-840 sum">
         <h3>Application details</h3>
         <div class="sum-box"><div><span>Loan amount</span><b>${rs('1,55,36,100')}</b></div><div style="text-align:right"><span>Pledge Value</span><b>${rs('2,07,14,800.22')}</b></div></div>
-        <div class="kv big"><b>Tenure</b><span>12 months</span></div>
-        <div class="kv big"><b>Disbursement Type</b><span>Multiple</span></div>
-        <div class="kv big"><b>Repayment Type</b><span>Interest Only</span></div>
-        <div class="sum-2"><div><span>Interest Rate ${i()}</span><em>10.5% p.a</em></div><div><span>Monthly Interest ${i()}</span><em>${rs('1,35,940.88')}</em></div></div>
+        ${lmsSummary()}<div><span>Monthly Interest ${i()}</span><em>${rs('1,35,940.88')}</em></div></div>
         <h3>Charges (Inclusive of GST)</h3>
         <div class="kv"><span class="g">Processing fee ${i()}</span><em>${rs('91,664')}</em></div>
         <div class="kv"><span class="g">Stamp duty ${i()}</span><span>${rs('236')}</span></div>
@@ -1420,6 +1439,9 @@
     on('how-calculated', '12.1.1) How is it calculated_All Portfolio');
     on('refresh-portfolio', '12.2) Refresh portfolio');
     on('start-application', SEL);
+    // DISC-534: remember which offer was started (an LMS product, or the standard offer) for the Application summary
+    document.querySelectorAll('[data-cta="start-application"]').forEach((b) => b.addEventListener('click', () => {
+      try { if (b.dataset.lms) sessionStorage.setItem('lamf.lmsOffer', b.dataset.lms); else sessionStorage.removeItem('lamf.lmsOffer'); } catch (e) {} }, true));
     on('continue', SEL);
   };
   // Success toast (DISC-172, DISC-174): every time the customer lands on the Curated Offers page it shows
