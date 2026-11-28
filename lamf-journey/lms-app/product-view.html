@@ -70,15 +70,15 @@
   </div>
 </div>
 <script src="shell.js?v=1"></script>
-<script src="product-data.js?v=3"></script>
+<script src="product-data.js?v=4"></script>
 <script>
 (function () {   // Product details (DISC-512): tabs Product Details / Documents; ≡ menu → Update Access Policy pop-up
   var $ = function (i) { return document.getElementById(i); };
   // DISC-513: one page for the 3 statuses (sample data from the owner's UAT screenshots).
   // Inactive: ≡ is grey and not clickable. In Review: ≡ grey, bottom bar with Reject / Approve (both disabled, as the UAT).
   var P = {
-    LAMF20261114: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
-    LAMF20261111: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
+    LAMF2026112: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
+    LAMF2026111: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
       f: { 'Disbursement Type': 'Multiple', 'Tenure': '12 months', 'Processing Fee': '₹999 - 1%' } },
     LAMF2026108: { n: 'UAT_LSP_Forward_Liquify', st: 'In Review', v: '13/10/2026 - 28/10/2036', s: 'Testing LSP',
       f: { 'Disbursement Type': 'Multiple', 'Rate of Interest': '9.6% - 15%', 'Tenure': '12 months', 'Processing Fee': '₹999 - 3%',
@@ -86,7 +86,7 @@
   };
   var code = new URLSearchParams(location.search).get('code'), d = P[code];
   if (!d) LMS_PROD.load().forEach(function (x) { if (x.code === code) d = LMS_PROD.page(x); });   // DISC-520: a product created in this browser
-  d = d || P.LAMF20261114;
+  d = d || P.LAMF2026112;
   if (d.kyc) d.kyc.forEach(function (k) { var sp = document.createElement('span'); sp.textContent = k; document.querySelector('.pv-k').appendChild(sp); });
   $('pv-n').textContent = d.n; $('pv-v').textContent = 'Validity: ' + d.v; $('pv-s').textContent = d.s;
   $('pv-st').textContent = d.st; $('pv-st').className = 'pill p-' + d.st.toLowerCase().replace(' ', '');
