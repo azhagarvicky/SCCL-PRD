@@ -277,9 +277,11 @@
     if (step === 1) {
       var n = $('cp-n').value.trim();
       if (!n) { $('cp-err').textContent = 'Product name is missing'; $('cp-n').classList.add('bad'); $('cp-n').focus(); return; }   // UAT wording (DISC-516)
-      if (!cur) {   // next code after the latest one in the list (sample list ends at LAMF20261115)
-        var max = 20261115; all.forEach(function (x) { max = Math.max(max, +x.code.slice(4)); });
-        cur = { code: 'LAMF' + (max + 1), done: 0 }; all.unshift(cur);
+      if (!cur) {   // DISC-523 product code = LAMF + year + month + running number of products created that month
+        // (LAMF20261117 = LAMF · 2026 · 11 · 17th product of Nov 2026; LAMF2026108 = Oct 2026, 8th). Sample list already has Nov 2026 no. 11–15.
+        var dt = new Date(), pre = 'LAMF' + dt.getFullYear() + (dt.getMonth() + 1), seq = pre === 'LAMF202611' ? 15 : 0;
+        all.forEach(function (x) { if (x.code.indexOf(pre) === 0) seq = Math.max(seq, +x.code.slice(pre.length)); });
+        cur = { code: pre + (seq + 1), done: 0 }; all.unshift(cur);
       }
       cur.name = n; cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
     } else if (step === 2) {
