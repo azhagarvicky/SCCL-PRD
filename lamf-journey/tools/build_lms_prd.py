@@ -447,7 +447,7 @@ MODULES = [
             Action='Disbursal, Repayment, Soft Freeze, Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI, Foreclose, Waive-off, Add Credit Note – each opens its own flow.',
             Condition='Unfreeze is grey (not clickable) while the loan is not frozen ' + pend('LP-10')), OK),
         (img('l18-loan-card'), spec(Field_Name='Loan Details', Field_Type='Card (read only)',
-            Condition='“Repayments: On time” and “Utilized Drawing Power” (with the warning-triangle level icon) in green; Product Name is a link to the product page (Sl. No 7).'), OK),
+            Condition='“Repayments: On time” and “Utilized Drawing Power” (with the warning-triangle level icon) in green; Product Name (the product this loan was created with) is a link – clicking it opens that product’s page (Sl. No 7: name, status, validity, Product Details / Documents) in a new browser tab; the loan page stays open.'), OK),
         (states(('l18-pf', 'Processing Fee'), ('l18-tip', 'Hover on ⓘ')), spec(Field_Name='ⓘ Fee / GST', Field_Type='Tooltip',
             Action='Hover on ⓘ shows “Fee: ₹… | GST: ₹…” (GST 18%). Same on Renewal, Bounce, Bank Mandate Swap, Lien Marking, Lien Removal Charges and Stamp Duty.'), OK),
         (img('l18-coll'), spec(Field_Name='Collection Details', Field_Type='Card (read only)', Action='Collected / Due / Overdue for Interest, Principal and Charges.', Note='Charges Collected shows a minus value in UAT ' + pend('LP-10')), OK),
