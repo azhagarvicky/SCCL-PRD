@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 12:02 IST
+**Last Updated:** 28-11-2026 12:05 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -516,6 +516,7 @@
 | DISC-481 | 28-11-2026 | assets/gate.js | Site access connected (brd.html, dev) | Owner set up the Apps Script (setup run, deployed as a web app, access Anyone) | Sheet “LAMF Site Access”: 1k124Ppz37jLXUwSR7s8sLH-4yWVnSmTdmO-32nkK-v0 (Users, Sessions, Log; owner as admin). Web app URL added to ENDPOINT in gate.js – the login on brd.html and admin.html are live on dev. Optional daily OTP cap (80 / day) offered, not added yet. | Implemented |
 | DISC-482 | 28-11-2026 | tools/build_pages.py, brd.html | Access gate switched off – site open to all again | Owner: remove all the access checks for now – anyone can open everything; the access part (SCCL sender via Gmail “Send mail as”, module-wise access) will be reworked later | GATE_ON = False in build_pages.py – brd.html no longer loads gate.js. Kept for later: assets/gate.js (connected to the Apps Script), admin.html / admin.js, the Apps Script and the sheet “LAMF Site Access”. Pending for the rework: OTP sender azhagarsamy.s@shriramcredit.in via Gmail Send mail as; module-wise access (7 modules proposed); optional daily OTP cap. | Implemented |
 | DISC-483 | 28-11-2026 | lms.html (tools/lms.py) | Full LMS prototype – start from scratch | Owner: build the full LMS now – a clickable prototype (sample data, no database), copied from the live LMS (uatlms.shriramcredit.in) screen by screen from the owner’s UAT screenshots; start from scratch, the owner sets the order | Agreed approach: rebuild module by module from the screenshots, sample data only (no real customer data). The current lms.html (Loans lists, LAN page, Waiver flows) stays until each part is rebuilt. Waiting for the first screenshots. | WIP |
+| DISC-484 | 28-11-2026 | lms-app/login.html, lms-app/lms.css, lms-app/lms.js, lms-app/img/login-preview.png, CLAUDE.md | New LMS prototype – screen 1: Login | Owner shared the live LMS login (uatlms.shriramcredit.in/user/login): Email ID + Send OTP; only an @shriramcredit.in mail ID may be accepted | New folder lms-app/ (hand-written source). Login page as in the screenshot: left panel (heading, 4 features, LMS preview cropped from the owner’s screenshot), right card Login – Email ID (placeholder abc@gmail.com) – Send OTP. Validation on Send OTP: empty → “Please enter your email ID.”; not @shriramcredit.in → “Please enter a valid Shriram Credit email ID (@shriramcredit.in).” (wording to be confirmed – PEND). A valid ID shows “OTP sent to …” until the OTP screen is shared. Works at phone width (form first). | WIP |
 
 ---
 
