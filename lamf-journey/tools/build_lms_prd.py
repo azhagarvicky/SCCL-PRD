@@ -162,7 +162,7 @@ MODULES = [
                    ('Columns', '“Code” · “Loan Product” · “Status” · “Validity” · “Sanction Amount” · “Rate of Interest” · “Processing Fee”'),
                    ('Status values', '“Draft” (grey) · “In Review” (orange) · “Active” (green) · “Inactive” (red)'),
                    ('Pager', '“Showing 1 - 10 items” · “10 rows/page” · ‹ ›')])),
-      'data': 'Code: LAMF20261104<br>Loan Product: TEST Product SCCL<br>Status: Draft / In Review / Active / Inactive<br>Validity: DD/MM/YYYY - DD/MM/YYYY<br>Sanction Amount: ₹min - ₹max<br>Rate of Interest: min% - max%<br>Processing Fee: min - max (₹ or %)',
+      'data': 'Code: LAMF20261103<br>Loan Product: TEST Product SCCL<br>Status: Draft / In Review / Active / Inactive<br>Validity: DD/MM/YYYY - DD/MM/YYYY<br>Sanction Amount: ₹min - ₹max<br>Rate of Interest: min% - max%<br>Processing Fee: min - max (₹ or %)',
       'status': WIP,
       'fields': [
         (img('l05-head'), spec(Field_Name='Product list columns', Field_Type='Table',
@@ -370,7 +370,7 @@ MODULES = [
       'desc': ('<p>Menu Approvals.</p>'
                + screen_content([('Tabs', '“My Pending Approvals” · “All Approvals”'), ('Empty', '“No actions pending for your approval”'),
                    ('Columns', '“Date of Change” · “Change Type” · “Details” (Product / ID chips) · “Permitted Roles” (Ops_L2, Ops_L3, Admin, UpdateProductCreationTasks) · “Initiated By”')])),
-      'data': 'Date of Change: DD/MM/YYYY<br>Change Type: Product creation<br>Product: TEST Product SCCL<br>ID: LAMF20261104<br>Initiated By: Ops Maker',
+      'data': 'Date of Change: DD/MM/YYYY<br>Change Type: Product creation<br>Product: TEST Product SCCL<br>ID: LAMF20261103<br>Initiated By: Ops Maker',
       'status': WIP,
       'fields': [
         (states(('l15-pending-empty', 'Maker – nothing to approve'), ('l15-pending', 'Checker – request waiting')), spec(Field_Name='My Pending Approvals', Field_Type='Tab',

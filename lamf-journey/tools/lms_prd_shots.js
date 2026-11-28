@@ -9,7 +9,7 @@ const U = 'http://localhost:8098/lamf-journey/lms-app/';
 fs.mkdirSync(OUT, { recursive: true });
 
 const TERMS = { 't-sa1': '10000', 't-sa2': '20000000', 't-ri1': '11', 't-ri2': '11', 't-tt': 'Range', 't-te1': '12', 't-te2': '36', 't-pu1': '₹', 't-pf1': '1499', 't-pu2': '%', 't-pf2': '1' };
-const PROD = { code: 'LAMF20261104', name: 'TEST Product SCCL', desc: 'This is Testing Creation', from: '2026-11-28', till: '2036-11-28', done: 6,
+const PROD = { code: 'LAMF20261103', name: 'TEST Product SCCL', desc: 'This is Testing Creation', from: '2026-11-28', till: '2036-11-28', done: 6,
   disb: 'Revolving Overdraft', terms: TERMS, charges: { 'c-ren': '999', 'c-bou': '100', 'c-bms': '250', 'c-pen': '36', 'c-liq': '0', 'c-pre': '0' },
   coll: { mand: 'Sanction Amount', fa: true, bt: true, mo: true, day: '5th', amt: '', pf: '1st Disbursement' }, kyc: { liv: false },
   status: 'In Review', req: 'tnBtVbQKpQvU', maker: 'opsmaker@shriramcredit.in', on: '28/11/2026' };
@@ -96,7 +96,7 @@ const PROD = { code: 'LAMF20261104', name: 'TEST Product SCCL', desc: 'This is T
   await p.waitForURL('**/products.html'); await p.waitForTimeout(300); await shot('l13-products-inreview');
 
   // ---- Module 5 – Approvals
-  await setProds([PROD]); await go('product-view.html?code=LAMF20261104'); await shot('l14-maker-view'); await el('.pv-chg', 'l14-change'); await el('#pv-foot', 'l14-maker-foot');
+  await setProds([PROD]); await go('product-view.html?code=LAMF20261103'); await shot('l14-maker-view'); await el('.pv-chg', 'l14-change'); await el('#pv-foot', 'l14-maker-foot');
   await go('approvals.html'); await shot('l15-pending-empty'); await p.click('text=All Approvals'); await shot('l15-all');
   await p.click('#ct-b'); await area('.ct-th', 'l15-filter', -8, -8, 400, 440); await shot('l15-filter-open'); await p.keyboard.press('Escape');
   await setUser('opschecker@shriramcredit.in'); await go('approvals.html'); await shot('l15-pending');
@@ -105,7 +105,7 @@ const PROD = { code: 'LAMF20261104', name: 'TEST Product SCCL', desc: 'This is T
   await p.click('#pv-apr'); await el('#ck', 'l16-note-err');
   await p.fill('#ck-n', 'Test Approved'); await p.click('#pv-apr'); await p.waitForTimeout(200); await el('#cf .md', 'l16-confirm');
   await p.click('#cf-y'); await p.waitForURL('**/approvals.html*'); await p.waitForTimeout(250); await shot('l16-approved'); await el('#ap-toast', 'l16-toast');
-  await go('product-view.html?code=LAMF20261104'); await p.click('#pv-menu'); await p.click('#pv-upd'); await p.waitForTimeout(200); await el('#ap .md', 'l16-policy-all');
+  await go('product-view.html?code=LAMF20261103'); await p.click('#pv-menu'); await p.click('#pv-upd'); await p.waitForTimeout(200); await el('#ap .md', 'l16-policy-all');
   await p.click('#ap-rows tr:nth-child(5) .sw'); await p.click('#ap-c'); await p.click('#pv-menu'); await p.click('#pv-upd'); await p.waitForTimeout(200); await el('#ap .md', 'l16-policy-los');
   await b.close();
   console.log('LMS PRD shots:', fs.readdirSync(OUT).length);
