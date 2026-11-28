@@ -45,7 +45,7 @@ h1.subj{font-size:24px;font-weight:400;margin:10px 28px 14px}
     <div class="band">E-Mail Verification</div>
     <div class="body">
       <p class="dear">Dear user,</p>
-      <div class="otp"><div class="k">ONE-TIME PASSWORD</div><div class="v">482915</div></div>
+      <div class="otp"><div class="k">ONE-TIME PASSWORD</div><div class="v">000000</div></div>
       <p class="warn">Please do not share the OTP with anyone.</p>
       <p>Use the OTP above to login to Shriram Credit LMS portal.</p>
       <p class="reg">Warm regards,<br><b>Team Shriram Credit</b></p>
@@ -57,7 +57,7 @@ h1.subj{font-size:24px;font-weight:400;margin:10px 28px 14px}
   </div></div>
 </div>
 <script>
-(function () {   // the To address is the mail ID entered on the login page (sample OTP – any 6 digits are accepted in the prototype)
+(function () {   // the To address is the mail ID entered on the login page (sample OTP 000000 – the correct OTP in the prototype)
   var m = (new URLSearchParams(location.search).get('mail') || '').toLowerCase();
   if (/^[a-z0-9._%+-]+@shriramcredit\.in$/.test(m)) {
     document.getElementById('to').textContent = m;

@@ -45,9 +45,10 @@ body { margin: 0; font-family: var(--font); color: var(--ink); background: #fff;
 .ot-boxes input { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 6px; text-align: center; font: inherit; font-size: 18px;
   font-weight: 500; color: var(--ink); padding: 0; background: #fff; }
 .ot-boxes input:focus { outline: none; border-color: var(--blue); }
-.ot-boxes.bad input { border-color: var(--err); }
-.ot-err { min-height: 0; margin: 6px 0 0; }
+.ot-boxes.bad input { border-color: var(--err); color: var(--err); }
+.ot-err { color: var(--err); font-size: 16px; line-height: 22px; text-align: center; margin: 34px 0 -18px; }   /* as the UAT: centred just above Submit */
 .ot-err:empty { margin: 0; }
+.ot-err:not(:empty) + .ot-btn { margin-top: 26px; }
 .ot-resend { margin: 26px 0 0; font-size: 16.5px; line-height: 24px; color: var(--ink); }
 .ot-resend span { color: #8a8f99; margin-left: 4px; }
 .ot-resend button { margin-left: 4px; padding: 0; border: 0; background: none; font: inherit; color: var(--blue); font-weight: 500; cursor: pointer; }

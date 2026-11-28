@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 13:37 IST
+**Last Updated:** 28-11-2026 13:40 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -528,6 +528,7 @@
 | DISC-493 | 28-11-2026 | lms-access.html, tools/build_pages.py, assets/lamf.css | LMS lock – show / hide the code | Owner got “Mail ID or secret code is incorrect” | Checked: the stored hash matches the owner’s mail ID + code (verified again, also with capitals and spaces). Likely browser autofill or a typo. Added a 👁 show / hide button in the Secret code box and switched off password autofill for it. | Implemented |
 | DISC-494 | 28-11-2026 | lms-app/otp.html (new), lms-app/login.html, lms-app/lms.js, lms-app/lms.css, tools/lms.py, lms-screens.html | New LMS – screen 2: Login OTP | Owner shared the UAT OTP step (after Send OTP): back arrow, Login, “6-digit OTP has been sent to your Email Id "…"”, 6 OTP boxes, “Didn't receive OTP? 0:28” timer, Submit | Send OTP on the login page now opens otp.html with the entered mail ID. OTP page as the UAT (same left panel; card sizes measured from the screenshot): back arrow → login, the mail ID in bold quotes, 6 boxes (digits only, auto-move, Backspace back, paste of 6 digits), 30-second timer then “Resend OTP” (assumed – to confirm), Submit. Submit with fewer than 6 digits → “Please enter the 6-digit OTP.” (wording to confirm); with 6 digits a note asks for the next screen. Added to the LMS screen list as 02) Login – OTP. | WIP |
 | DISC-495 | 28-11-2026 | lms-app/mail-otp.html (new), tools/lms.py, lms-screens.html | New LMS – screen 3: OTP mail | Owner shared the OTP mail received after Send OTP (subject “Email Verification OTP – Shriram Credit”, from noreply@shriramcredit.in) | Mail page as the screenshot: logo, yellow rule, black band “E-Mail Verification”, Dear user, cream OTP box “ONE-TIME PASSWORD” with a sample OTP (482915 – not the owner’s real one), red “Please do not share the OTP with anyone.”, “Use the OTP above to login to Shriram Credit LMS portal.”, Warm regards / Team Shriram Credit, yellow disclaimer, black © footer. To = the mail ID entered on the login page. Listed as 03) OTP mail; the OTP page itself is unchanged (exact UAT copy). Prototype accepts any 6 digits. | Implemented |
+| DISC-496 | 28-11-2026 | lms-app/otp.html, lms-app/lms.js, lms-app/lms.css, lms-app/mail-otp.html, lms-app/login.html | LMS OTP – wrong OTP validation; sample OTP 000000 | Owner shared the UAT wrong-OTP state (red boxes and digits, “Bad credentials” in red above Submit, toast “Request failed with status code 401”): show a proper message “Please enter the correct OTP” instead; the sample correct OTP is 000000 | Wrong 6 digits → boxes and digits red, “Please enter the correct OTP.” centred in red just above Submit (as the UAT position); the technical 401 toast is not copied. Fewer than 6 digits → “Please enter the 6-digit OTP.”. Typing again clears the red. 000000 is accepted (then the note asks for the next screen). The OTP mail sample now shows 000000. | Implemented |
 
 ---
 
