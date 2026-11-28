@@ -1599,3 +1599,7 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 /* DISC-528: access page – "no access" message */
 .page-lk .lk-no { max-width: 420px; margin: 18px auto 0; padding: 12px 14px; border-radius: 8px; background: #fff4e5; color: #7a4a00; font-size: 14px; line-height: 1.5; }
 .page-lk .lk-no a { color: inherit; font-weight: 700; }
+
+/* DISC-533: LMS product offered on the LOS Curated offers page – two offer cards side by side (UAT) */
+.offers.two { display: flex; gap: 22px; flex-wrap: wrap; }
+.offers.two .offer { flex: 1 1 420px; width: auto; max-width: 482px; }
