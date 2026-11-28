@@ -1110,7 +1110,7 @@ def home_body(home, prd, journey, comms, calc, internal, brd):
             f'<a class="home-cta" href="{journey}">Start the LAMF journey →</a>'
             '<a class="home-cta" href="#comms-pop">Communications →</a>'
             f'<a class="home-cta" href="{calc}">Calculator →</a>'
-            '<a class="home-cta" href="lms-access.html">LMS →</a>'   # LMS lock page → LMS screen list (DISC-489, DISC-485; earlier lms.html, DISC-327)
+            '<a class="home-cta" href="lms-screens.html">LMS →</a>'   # LMS lock page → LMS screen list (DISC-489, DISC-485; earlier lms.html, DISC-327)
             '</div>' + CONTACT + '</main>'
             '<div class="home-pop" id="comms-pop" role="dialog" aria-label="Communications"><a class="home-pop-bg" href="#" aria-label="Close"></a>'
             '<div class="home-pop-box"><a class="home-pop-x" href="#" aria-label="Close">×</a><h2>Communications</h2>'
@@ -1163,7 +1163,7 @@ with open(os.path.join(ROOT, "communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
 # LMS modules page (DISC-327); data in tools/lms.py. The home LMS CTA opens the LMS screen list lms-screens.html (DISC-485)
 from lms import lms_body, lms_screens_body
-LMS_LOCK = '<script src="assets/lms-lock.js?v=2"></script>\n</head>'   # DISC-489: the LMS pages open only after the mail ID + secret code
+LMS_LOCK = '</head>'   # DISC-529: the old LMS lock (DISC-489) is replaced by the module-wise access check (assets/access.js, module lms)
 with open(os.path.join(ROOT, "lms-screens.html"), "w") as f:
     f.write(PAGE.format(title="LAMF LMS – Screens", cls="page-screens", body=lms_screens_body(LOGO.format(home="index.html"))).replace("</head>", LMS_LOCK, 1))
 LMS_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1>LMS – Access</h1>'
@@ -1188,8 +1188,8 @@ LMS_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1>LMS – Acc
               'e.textContent=r.blocked?"Too many wrong attempts. Please try again after "+Math.ceil(r.blocked/60000)+" minute(s).":'
               '"Mail ID or secret code is incorrect. "+r.left+" attempt(s) left.";});});'
               '})();</script>')
-with open(os.path.join(ROOT, "lms-access.html"), "w") as f:
-    f.write(PAGE.format(title="LAMF LMS – Access", cls="page-screens page-lk", body=LMS_ACCESS))
+with open(os.path.join(ROOT, "lms-access.html"), "w") as f:   # DISC-529: old LMS access page → the common access page (module LMS)
+    f.write('<!doctype html><meta charset="utf-8"><title>LAMF LMS – Access</title><script>location.replace("access.html?m=lms&next="+encodeURIComponent(new URL("lms-screens.html",location.href).href));</script>')
 # DISC-528: common access page for every module – mail ID + secret code, checked live against the Google Sheet
 # "LAMF Site Access" → tab "Module Access" through the Apps Script web app (assets/access.js).
 SITE_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1 id="ac-h">Access</h1>'
@@ -1201,7 +1201,7 @@ SITE_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1 id="ac-h">
               'i.type=i.type===\'password\'?\'text\':\'password\';this.textContent=i.type===\'password\'?\'👁\':\'🙈\';">👁</button></div>'
               '<p class="lk-err" id="lk-err" role="alert"></p><button type="submit" id="lk-go" disabled>Continue</button></form>'
               '<p class="lk-no" id="ac-no" hidden></p></main>'
-              '<script src="assets/access.js?v=1"></script><script>(function(){'
+              '<script src="assets/access.js?v=2"></script><script>(function(){'
               'var A=window.LAMF_ACCESS,P=new URLSearchParams(location.search),md=P.get("m")||"",q=P.get("next")||"",nx="index.html";'
               'try{var u=q&&new URL(q,location.href);if(u&&u.origin===location.origin&&/\/lamf-journey\//.test(u.pathname)&&!/\/access\.html/.test(u.pathname))nx=u.href;}catch(e){}'
               'var nm=A.names[md]||"";if(nm){document.getElementById("ac-h").textContent=nm+" – Access";document.title="LAMF – "+nm+" – Access";}'
@@ -1284,7 +1284,7 @@ CLOUD = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF Online Journey</title>
-<script src="assets/access.js?v=1"></script>
+<script src="assets/access.js?v=2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">

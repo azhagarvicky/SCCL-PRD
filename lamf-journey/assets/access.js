@@ -6,7 +6,7 @@
    the sheet (module removed, Active = N) takes effect at once. Secret codes stay in the private sheet – never in this site.
    Note: this hides the pages from people who are not on the list; it is not a replacement for real server security. */
 (function () {
-  var ON = false;   // DISC-528: switched on once the owner has deployed the new Apps Script version (until then the site works as before)
+  var ON = true;   // DISC-528/529: on – the owner deployed the new Apps Script version on 28-11-2026
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxrag9tuAwoD111KNMX07yNhgxjkJriKNlGw_2TeBkGLzdIxQ3K_z_2X9QxwBQKBIYG/exec';
   var KEY = 'lamf-access', RECHECK = 5 * 60 * 1000;
   var NAMES = { prd: 'PRD document', brd: 'BRD documents', journey: 'LAMF journey', comms: 'Communications', calc: 'Calculator', lms: 'LMS' };

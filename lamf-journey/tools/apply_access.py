@@ -12,7 +12,7 @@ Module of each page:
 import os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = 1
+VER = 2
 TAG = re.compile(r'<script src="(?:\.\./)?assets/access\.js[^"]*" data-m="[a-z]+"></script>\n?')
 
 

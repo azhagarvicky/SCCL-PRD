@@ -29,8 +29,8 @@ def lms_screens_body(logo):
             'from the live LMS (sample data only).</p>'
             f'<ol>{items}</ol>'
             '<p class="lms-old">Earlier LMS prototype (Loans lists, LAN page, Waiver flows): <a href="lms.html">open lms.html</a>.</p>'
-            + '<p class="lms-lockbar"><button type="button" onclick="LMS_LOCK.lock();location.replace(\'lms-access.html\')">🔒 Lock LMS</button> '
-            'Locks the LMS on this browser – the mail ID and secret code are asked again.</p>')
+            + '<p class="lms-lockbar"><button type="button" onclick="LAMF_ACCESS.logout();location.replace(\'index.html\')">🔒 Sign out</button> '
+            'Signs you out of the site in this tab – the mail ID and secret code are asked again (DISC-529).</p>')
 
 
 LMS_MODULES = [   # (id, name, sub-modules, description)
