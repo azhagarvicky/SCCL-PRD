@@ -1,4 +1,4 @@
-/* LMS lock (DISC-489): the LMS pages open only after the mail ID and the 8-digit secret code are entered on lms-access.html.
+/* LMS lock (DISC-489, DISC-490): the LMS pages open only after the mail ID and the secret code are entered on lms-access.html (no hints shown).
    The code is not stored here – only a PBKDF2-SHA256 hash (300,000 rounds) of "mail:code". Client-side only: a front door, not real security.
    Protected pages load this script in <head> (assets/lms-lock.js); lms-access.html calls LMS_LOCK.check(mail, code). */
 (function () {

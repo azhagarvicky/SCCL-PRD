@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 12:37 IST
+**Last Updated:** 28-11-2026 12:40 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -522,6 +522,7 @@
 | DISC-487 | 28-11-2026 | lms-app/lms.css, lms-app/login.html | LMS Login – fine-tuned against the UAT at 100% zoom | Owner shared the UAT and the prototype side by side at 100% zoom | Measured both: heading 33/48 and a little lower, features 16.5 px with 26 px icons and a 20 px gap, card 540 px wide (padding 40), title 24 px, label lighter grey, input 47 px high with 16.5 px text, button 45 px and a little lower. Also noted: no further requests to the UAT host (SCCL firewall blocked the one attempt). | Implemented |
 | DISC-488 | 28-11-2026 | – (working rule for the LMS prototype) | LMS: work only from what the owner shares | Owner: the live LMS is developed by a vendor – Claude must not access the UAT (uatlms.shriramcredit.in) or any SCCL system directly; the owner shares screenshots, images or copied code, and Claude recreates the screens from those only | Rule for every session: never open, fetch or test any SCCL site (UAT / live) – build the LMS prototype only from the screenshots, images and code the owner pastes. Raised with the owner: a pixel-exact public copy of the vendor UI and the vendor preview image on the login page may be a contract / IP question – owner to decide (options: own design, private site, or pause). | Rule |
 | DISC-489 | 28-11-2026 | index.html, lms-access.html (new), lms-screens.html, lms.html, lms-app/login.html, assets/lms-lock.js (new), assets/lamf.css, tools/build_pages.py, CLAUDE.md | LMS lock – mail ID + 8-digit secret code | Owner: after the LMS CTA, a page asks for the mail ID (the owner’s SCCL ID) and an 8-digit secret code (given by the owner – not written anywhere in the repo) before the LMS opens | Home LMS CTA → lms-access.html (Mail ID, Secret code 8 digits masked, Continue enabled only when both are filled). Only the owner’s mail ID + code opens the LMS; check against a PBKDF2-SHA256 hash (300,000 rounds, salted) – the code is not stored. Wrong: “Mail ID or secret code is incorrect. N attempt(s) left.”; 5 wrong → wait 5 minutes. Unlocked for 12 hours on that browser. lms-screens.html, lms.html and lms-app/* redirect to the lock page when locked, and come back to the page asked for. Client-side only (a front door on a public site, not real security) – explained to the owner. | Implemented |
+| DISC-490 | 28-11-2026 | lms-access.html, tools/build_pages.py, assets/lms-lock.js | LMS lock page – no hints | Owner: no hint text in the boxes (mail ID format, “8-digit code”) – just a Mail ID box, a Secret code box and Continue; the code will change from time to time | Placeholders removed; sub-line “Enter your mail ID and secret code to open the LMS.”; the code box takes any characters (no digits-only / 8-length rule), Continue enabled when both boxes are filled. The code is stored only as a hash – it cannot be read back from the repo; the owner keeps it, and Claude sets a new one on request. | Implemented |
 
 ---
 
