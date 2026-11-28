@@ -40,9 +40,9 @@
 .kp { position: relative; display: flex; flex-direction: column; justify-content: flex-start; min-height: 113px; padding: 18px 16px; }
 .kp .t { font-size: 14px; font-weight: 500; }
 .kp .vr { display: flex; align-items: center; gap: 16px; margin-top: 8px; position: relative; z-index: 1; }
-.kp .v { font-size: 32px; font-weight: 700; letter-spacing: -.3px; line-height: 1; }
-.kp .dl { font-size: 11.5px; line-height: 20px; font-weight: 500; color: #3f4350; }
-.kp .dl b { font-weight: 700; margin-left: 6px; }
+.kp .v { font-size: 33px; font-weight: 900; letter-spacing: -.6px; line-height: 1; }   /* Satoshi Black, as the live LMS */
+.kp .dl { font-size: 12px; line-height: 20px; font-weight: 500; color: #3f4350; }
+.kp .dl b { font-weight: 500; margin-left: 6px; }
 .up { color: #0a8a3a; } .dn-c { color: #d7291f; }
 .kp .sp { position: absolute; right: 22px; top: 22px; width: 132px; height: 66px; }
 .kp.sm .sp { display: none; }
@@ -62,7 +62,7 @@ svg.ch text { font-family: var(--font); fill: #6b7080; font-size: 11px; }
 .col1 { display: grid; grid-template-columns: 1fr .82fr 1.07fr; gap: 16px; }
 .col2 { display: grid; grid-template-columns: 291fr 290fr 174fr 302fr 324fr 305fr; gap: 16px; margin-top: 16px; }
 .col2 .kp { min-height: 100px; }
-.col2 .kp .v { font-size: 30px; }
+.col2 .kp .v { font-size: 31px; }
 .soon { text-align: center; border-style: dashed; border-color: #ededf0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #6b7080; min-height: 100px; }
 .soon b { font-size: 15.5px; font-weight: 500; color: #555a66; }
 .soon span { font-size: 11.5px; }
