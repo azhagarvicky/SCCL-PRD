@@ -1576,3 +1576,17 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .wv-chkl{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px}
 .wv-chkl span{color:#666;font-size:12px}
 .wv-tc-rej{background:#fff;color:#b42318;border:1px solid #f1a9a0;border-radius:6px;padding:8px 14px;font-weight:600;cursor:pointer}
+
+/* DISC-489: LMS access (mail ID + 8-digit secret code) */
+.page-lk .lk { max-width: 420px; margin: 24px auto 40px; padding: 0 16px; }
+.page-lk .lk h1 { margin: 0 0 6px; }
+.page-lk .lk-sub { color: #555; margin: 0 0 18px; }
+.page-lk .lk-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+.page-lk .lk-card label { display: block; font-weight: 600; font-size: 14px; margin: 12px 0 6px; }
+.page-lk .lk-card label:first-child { margin-top: 0; }
+.page-lk .lk-card input { width: 100%; box-sizing: border-box; font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid #bbb; border-radius: 8px; }
+.page-lk .lk-card input:focus { outline: 2px solid #FFC20E; border-color: #1a1a1a; }
+.page-lk .lk-err { color: #b91c1c; font-size: 13px; min-height: 18px; margin: 8px 0 0; }
+.page-lk .lk-card button { width: 100%; margin-top: 8px; font: inherit; font-weight: 700; font-size: 15px; padding: 11px; border: 0; border-radius: 8px;
+  background: #FFC20E; color: #1a1a1a; cursor: pointer; }
+.page-lk .lk-card button:disabled { opacity: .5; cursor: default; }

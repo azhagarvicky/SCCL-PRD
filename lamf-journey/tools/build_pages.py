@@ -1110,7 +1110,7 @@ def home_body(home, prd, journey, comms, calc, internal, brd):
             f'<a class="home-cta" href="{journey}">Start the LAMF journey →</a>'
             '<a class="home-cta" href="#comms-pop">Communications →</a>'
             f'<a class="home-cta" href="{calc}">Calculator →</a>'
-            '<a class="home-cta" href="lms-screens.html">LMS →</a>'   # LMS screen list (DISC-485; earlier lms.html, DISC-327)
+            '<a class="home-cta" href="lms-access.html">LMS →</a>'   # LMS lock page → LMS screen list (DISC-489, DISC-485; earlier lms.html, DISC-327)
             '</div>' + CONTACT + '</main>'
             '<div class="home-pop" id="comms-pop" role="dialog" aria-label="Communications"><a class="home-pop-bg" href="#" aria-label="Close"></a>'
             '<div class="home-pop-box"><a class="home-pop-x" href="#" aria-label="Close">×</a><h2>Communications</h2>'
@@ -1163,10 +1163,33 @@ with open(os.path.join(ROOT, "communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
 # LMS modules page (DISC-327); data in tools/lms.py. The home LMS CTA opens the LMS screen list lms-screens.html (DISC-485)
 from lms import lms_body, lms_screens_body
+LMS_LOCK = '<script src="assets/lms-lock.js?v=1"></script>\n</head>'   # DISC-489: the LMS pages open only after the mail ID + secret code
 with open(os.path.join(ROOT, "lms-screens.html"), "w") as f:
-    f.write(PAGE.format(title="LAMF LMS – Screens", cls="page-screens", body=lms_screens_body(LOGO.format(home="index.html"))))
+    f.write(PAGE.format(title="LAMF LMS – Screens", cls="page-screens", body=lms_screens_body(LOGO.format(home="index.html"))).replace("</head>", LMS_LOCK, 1))
+LMS_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1>LMS – Access</h1>'
+              '<p class="lk-sub">Enter your mail ID and the 8-digit secret code to open the LMS.</p>'
+              '<form class="lk-card" id="lk-form" novalidate autocomplete="off">'
+              '<label for="lk-mail">Mail ID</label><input id="lk-mail" type="email" placeholder="name@shriramcredit.in" maxlength="120" autocomplete="username">'
+              '<label for="lk-code">Secret code</label><input id="lk-code" type="password" inputmode="numeric" maxlength="8" placeholder="8-digit code" autocomplete="current-password">'
+              '<p class="lk-err" id="lk-err" role="alert"></p><button type="submit" id="lk-go" disabled>Continue</button></form></main>'
+              '<script src="assets/lms-lock.js?v=1" data-gate="off"></script><script>(function(){'
+              'var q=new URLSearchParams(location.search).get("next")||"",nx="lms-screens.html";'
+              'try{var u=q&&new URL(q,location.href);if(u&&u.origin===location.origin&&/\\/lamf-journey\\//.test(u.pathname)&&!/lms-access/.test(u.pathname))nx=u.href;}catch(e){}'
+              'if(LMS_LOCK.isOpen())return location.replace(nx);'
+              'var f=document.getElementById("lk-form"),m=document.getElementById("lk-mail"),c=document.getElementById("lk-code"),'
+              'e=document.getElementById("lk-err"),b=document.getElementById("lk-go");'
+              'function v(){c.value=c.value.replace(/\\D/g,"").slice(0,8);b.disabled=!(m.value.trim()&&c.value.length===8);e.textContent="";}'
+              'm.addEventListener("input",v);c.addEventListener("input",v);'
+              'f.addEventListener("submit",function(x){x.preventDefault();if(b.disabled)return;b.disabled=true;b.textContent="Checking…";'
+              'LMS_LOCK.check(m.value,c.value).then(function(r){if(r.ok)return location.replace(nx);'
+              'b.textContent="Continue";c.value="";v();'
+              'e.textContent=r.blocked?"Too many wrong attempts. Please try again after "+Math.ceil(r.blocked/60000)+" minute(s).":'
+              '"Mail ID or secret code is incorrect. "+r.left+" attempt(s) left.";});});'
+              '})();</script>')
+with open(os.path.join(ROOT, "lms-access.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF LMS – Access", cls="page-screens page-lk", body=LMS_ACCESS))
 with open(os.path.join(ROOT, "lms.html"), "w") as f:
-    f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")))
+    f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")).replace("</head>", LMS_LOCK, 1))
 # LOS charges payment after a DRAFT rejection and the payment receipt (DISC-351); data in tools/charges_payment.py
 import charges_payment as _cp
 with open(os.path.join(ROOT, "charges-payment.html"), "w") as f:
