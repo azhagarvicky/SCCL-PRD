@@ -1,7 +1,7 @@
 /* LMS prototype (DISC-484, DISC-486) – rebuilt from the live LMS (uatlms.shriramcredit.in) UAT screenshots. Source file.
    Sizes measured from the owner's UAT screenshot (1440 px wide window). */
 :root {
-  --blue: #1f6bff; --blue-d: #1a5ce0; --ink: #0b0b0f; --muted: #3f4350; --line: #e4e6eb; --ph: #9aa0ab; --err: #d92d20;
+  --blue: #1f6bff; --blue-d: #1a5ce0; --ink: #0b0b0f; --muted: #5b6170; --line: #e4e6eb; --ph: #9aa0ab; --err: #d92d20;
   --font: "Satoshi", "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
 }
 * { box-sizing: border-box; }
@@ -10,26 +10,26 @@ body { margin: 0; font-family: var(--font); color: var(--ink); background: #fff;
 
 /* ---- Login page ---- */
 .lg { display: flex; min-height: 100vh; }
-.lg-hero { position: relative; flex: 0 0 50%; overflow: hidden; color: #fff; padding: 64px 40px 0 39px;
+.lg-hero { position: relative; flex: 0 0 50%; overflow: hidden; color: #fff; padding: 69px 40px 0 40px;
   background: linear-gradient(180deg, #010626 0%, #021457 40%, #0a3ad1 82%, #1452f5 100%); }
-.lg-hero h1 { font-size: 32px; line-height: 46px; font-weight: 500; margin: 0 0 30px; max-width: 470px; letter-spacing: -.1px; }
+.lg-hero h1 { font-size: 33px; line-height: 48px; font-weight: 500; margin: 0 0 34px; max-width: 470px; letter-spacing: -.1px; }
 .lg-feat { list-style: none; margin: 0; padding: 0; }
-.lg-feat li { display: flex; align-items: center; gap: 16px; font-size: 16px; line-height: 22px; font-weight: 400; color: #dfe3f2; margin: 0 0 23px; }
-.lg-feat svg { flex: none; width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.lg-feat li { display: flex; align-items: center; gap: 20px; font-size: 16.5px; line-height: 23px; font-weight: 400; color: #e3e7f4; margin: 0 0 24px; }
+.lg-feat svg { flex: none; width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .lg-shot { position: absolute; right: 0; bottom: 0; width: 66.4%; border-top-left-radius: 14px; overflow: hidden; }
 .lg-shot img { display: block; width: 100%; height: auto; }
 
 .lg-side { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 16px; background: #fff; }
-.lg-card { width: 514px; max-width: 100%; background: #fff; border-radius: 20px; padding: 40px 38px 38px;
+.lg-card { width: 540px; max-width: 100%; background: #fff; border-radius: 20px; padding: 40px 40px 41px;
   box-shadow: 0 0 0 1px rgba(17, 24, 39, .03), 0 4px 22px rgba(17, 24, 39, .06); }
-.lg-card h2 { font-size: 23px; line-height: 30px; font-weight: 700; margin: 0 0 36px; letter-spacing: -.1px; }
+.lg-card h2 { font-size: 24px; line-height: 30px; font-weight: 700; margin: 0 0 38px; letter-spacing: -.1px; }
 .lg-card label { display: block; font-size: 14px; line-height: 20px; font-weight: 500; color: var(--muted); margin: 0 0 9px; }
-.lg-in { width: 100%; height: 45px; border: 1px solid var(--line); border-radius: 8px; padding: 0 15px; font: inherit; font-size: 15px; color: var(--ink); background: #fff; }
+.lg-in { width: 100%; height: 47px; border: 1px solid var(--line); border-radius: 7px; padding: 0 16px; font: inherit; font-size: 16.5px; color: var(--ink); background: #fff; }
 .lg-in::placeholder { color: var(--ph); }
 .lg-in:focus { outline: none; border-color: var(--blue); }
 .lg-in.bad { border-color: var(--err); }
 .lg-err { color: var(--err); font-size: 13px; line-height: 18px; min-height: 18px; margin: 6px 0 0; }
-.lg-btn { width: 100%; height: 44px; margin-top: 100px; border: 0; border-radius: 6px; background: var(--blue); color: #fff; font: inherit;
+.lg-btn { width: 100%; height: 45px; margin-top: 108px; border: 0; border-radius: 6px; background: var(--blue); color: #fff; font: inherit;
   font-size: 15.5px; font-weight: 700; cursor: pointer; }
 .lg-btn:hover { background: var(--blue-d); }
 .lg-btn:disabled { opacity: .6; cursor: default; }
