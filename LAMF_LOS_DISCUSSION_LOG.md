@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 11:42 IST
+**Last Updated:** 28-11-2026 11:56 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -514,6 +514,7 @@
 | DISC-479 | 27-11-2026 | assets/gate.js | Admin portal – setup steps until it is connected | Owner opened admin.html and saw only “The access service is not connected yet” | Until the Apps Script URL is added, admin.html shows “Not switched on yet” with the 5 setup steps (sheet, paste script, run setup, deploy as web app, send the URL). | Implemented |
 | DISC-480 | 28-11-2026 | brd.html, brd-waive-off-scenarios.html, tools/brds.py, tools/build_pages.py, assets/lamf.css, exports/BRD_Charges_Waiver_Scenario-wise.docx | Waiver BRD status: In Review | Owner: mark the Waiver BRD as In Review; work moves to another part | Status Draft → In Review (blue tag on the BRD list and the BRD page; Word file meta line). Open items stay in the Waiver open points (exports/Waiver_BRD_Open_Points.docx) and the access-gate setup (DISC-477). | Implemented |
 | DISC-481 | 28-11-2026 | assets/gate.js | Site access connected (brd.html, dev) | Owner set up the Apps Script (setup run, deployed as a web app, access Anyone) | Sheet “LAMF Site Access”: 1k124Ppz37jLXUwSR7s8sLH-4yWVnSmTdmO-32nkK-v0 (Users, Sessions, Log; owner as admin). Web app URL added to ENDPOINT in gate.js – the login on brd.html and admin.html are live on dev. Optional daily OTP cap (80 / day) offered, not added yet. | Implemented |
+| DISC-482 | 28-11-2026 | tools/build_pages.py, brd.html | Access gate switched off – site open to all again | Owner: remove all the access checks for now – anyone can open everything; the access part (SCCL sender via Gmail “Send mail as”, module-wise access) will be reworked later | GATE_ON = False in build_pages.py – brd.html no longer loads gate.js. Kept for later: assets/gate.js (connected to the Apps Script), admin.html / admin.js, the Apps Script and the sheet “LAMF Site Access”. Pending for the rework: OTP sender azhagarsamy.s@shriramcredit.in via Gmail Send mail as; module-wise access (7 modules proposed); optional daily OTP cap. | Implemented |
 
 ---
 

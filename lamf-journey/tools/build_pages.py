@@ -1142,9 +1142,10 @@ with open(os.path.join(ROOT, "index.html"), "w") as f:
     f.write(PAGE.format(title="LAMF Online Journey", cls="page-home",
                         body=home_body("index.html", "SCCL_LAMF_LOS_PRD.html", "screens.html", "communications.html", "calculator.html",
                                        "internal-communications.html", "brd.html")))
+GATE_ON = False   # DISC-482: access gate switched off – the site is open to everyone again (rework later); set True to turn it back on for brd.html
 GATE = '<script src="assets/gate.js?v=2"></script>\n</head>'   # ?v=N – raise N after a gate.js change so browsers load the new copy   # DISC-477: SCCL mail ID + OTP + admin approval – brd.html only for now (trial)
 with open(os.path.join(ROOT, "brd.html"), "w") as f:
-    f.write(PAGE.format(title="LAMF – BRD Documents", cls="page-screens page-brd", body=brd_list_body("index.html", BRD_FILE)).replace("</head>", GATE, 1))
+    f.write(PAGE.format(title="LAMF – BRD Documents", cls="page-screens page-brd", body=brd_list_body("index.html", BRD_FILE)).replace("</head>", GATE if GATE_ON else "</head>", 1))
 for _b in BRDS:
     with open(os.path.join(ROOT, BRD_FILE(_b)), "w") as f:
         f.write(PAGE.format(title=f"LAMF – BRD – {_b['title']}", cls="page-screens page-brd", body=brd_body("index.html", "brd.html", _b)))
