@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 12:05 IST
+**Last Updated:** 28-11-2026 12:07 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -517,6 +517,7 @@
 | DISC-482 | 28-11-2026 | tools/build_pages.py, brd.html | Access gate switched off – site open to all again | Owner: remove all the access checks for now – anyone can open everything; the access part (SCCL sender via Gmail “Send mail as”, module-wise access) will be reworked later | GATE_ON = False in build_pages.py – brd.html no longer loads gate.js. Kept for later: assets/gate.js (connected to the Apps Script), admin.html / admin.js, the Apps Script and the sheet “LAMF Site Access”. Pending for the rework: OTP sender azhagarsamy.s@shriramcredit.in via Gmail Send mail as; module-wise access (7 modules proposed); optional daily OTP cap. | Implemented |
 | DISC-483 | 28-11-2026 | lms.html (tools/lms.py) | Full LMS prototype – start from scratch | Owner: build the full LMS now – a clickable prototype (sample data, no database), copied from the live LMS (uatlms.shriramcredit.in) screen by screen from the owner’s UAT screenshots; start from scratch, the owner sets the order | Agreed approach: rebuild module by module from the screenshots, sample data only (no real customer data). The current lms.html (Loans lists, LAN page, Waiver flows) stays until each part is rebuilt. Waiting for the first screenshots. | WIP |
 | DISC-484 | 28-11-2026 | lms-app/login.html, lms-app/lms.css, lms-app/lms.js, lms-app/img/login-preview.png, CLAUDE.md | New LMS prototype – screen 1: Login | Owner shared the live LMS login (uatlms.shriramcredit.in/user/login): Email ID + Send OTP; only an @shriramcredit.in mail ID may be accepted | New folder lms-app/ (hand-written source). Login page as in the screenshot: left panel (heading, 4 features, LMS preview cropped from the owner’s screenshot), right card Login – Email ID (placeholder abc@gmail.com) – Send OTP. Validation on Send OTP: empty → “Please enter your email ID.”; not @shriramcredit.in → “Please enter a valid Shriram Credit email ID (@shriramcredit.in).” (wording to be confirmed – PEND). A valid ID shows “OTP sent to …” until the OTP screen is shared. Works at phone width (form first). | WIP |
+| DISC-485 | 28-11-2026 | index.html, lms-screens.html (new), tools/lms.py (LMS_SCREENS), tools/build_pages.py, lms-app/login.html, lms-app/lms.css | LMS CTA opens the list of LMS screens | Owner: like the LOS screens page (screens.html), the LMS CTA on the first page should open a page listing all the LMS screens, the first being the Login | New generated page lms-screens.html (from LMS_SCREENS in tools/lms.py – each new LMS screen is added there): “LAMF LMS – Screens”, 01) Login. Home LMS CTA now opens it; a link at the bottom keeps the earlier lms.html. The login page’s top-right tag links back to the list (☰ LMS screens). | Implemented |
 
 ---
 

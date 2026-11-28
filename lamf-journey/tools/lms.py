@@ -6,6 +6,22 @@ Each module opens its own section (CSS :target, no script). Content for each mod
 """
 import html as _h
 
+# DISC-485: the new LMS prototype (lms-app/, rebuilt from scratch from the live LMS screenshots) – its screen list, shown on
+# lms-screens.html (the LMS CTA on the home page), in order. Add each new screen here: (name, page under lms-app/).
+LMS_SCREENS = [
+    ("01) Login", "lms-app/login.html"),
+]
+
+
+def lms_screens_body(logo):
+    items = "\n".join(f'<li><a href="{href}">{_h.escape(n)}</a></li>' for n, href in LMS_SCREENS)
+    return (logo + '<h1>LAMF LMS – Screens</h1>'
+            f'<p>{len(LMS_SCREENS)} screen{"s" if len(LMS_SCREENS) != 1 else ""}, in order. The LMS prototype is rebuilt screen by screen '
+            'from the live LMS (sample data only).</p>'
+            f'<ol>{items}</ol>'
+            '<p class="lms-old">Earlier LMS prototype (Loans lists, LAN page, Waiver flows): <a href="lms.html">open lms.html</a>.</p>')
+
+
 LMS_MODULES = [   # (id, name, sub-modules, description)
     ("dashboard", "Dashboard", [], ""),
     ("products", "Products", [], ""),
