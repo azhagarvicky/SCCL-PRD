@@ -11,7 +11,7 @@ body { margin: 0; font-family: var(--font); color: var(--ink); background: #fff;
 /* ---- Login page ---- */
 .lg { display: flex; min-height: 100vh; }
 .lg-hero { position: relative; flex: 0 0 50%; overflow: hidden; color: #fff; padding: 69px 40px 0 40px;
-  background: linear-gradient(180deg, #010626 0%, #021457 40%, #0a3ad1 82%, #1452f5 100%); }
+  background: linear-gradient(180deg, #000a32 0%, #010e3a 14.5%, #03123f 29%, #031745 43.5%, #041a49 53%, #041c4d 63%, #05255e 72.5%, #06358e 82%, #074ed3 96.5%, #0752df 100%);   /* sampled from the UAT screenshot (DISC-492) */ }
 .lg-hero h1 { font-size: 33px; line-height: 48px; font-weight: 500; margin: 0 0 34px; max-width: 470px; letter-spacing: -.1px; }
 .lg-feat { list-style: none; margin: 0; padding: 0; }
 .lg-feat li { display: flex; align-items: center; gap: 20px; font-size: 16.5px; line-height: 23px; font-weight: 400; color: #e3e7f4; margin: 0 0 24px; }

@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 12:43 IST
+**Last Updated:** 28-11-2026 12:45 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -524,6 +524,7 @@
 | DISC-489 | 28-11-2026 | index.html, lms-access.html (new), lms-screens.html, lms.html, lms-app/login.html, assets/lms-lock.js (new), assets/lamf.css, tools/build_pages.py, CLAUDE.md | LMS lock – mail ID + 8-digit secret code | Owner: after the LMS CTA, a page asks for the mail ID (the owner’s SCCL ID) and an 8-digit secret code (given by the owner – not written anywhere in the repo) before the LMS opens | Home LMS CTA → lms-access.html (Mail ID, Secret code 8 digits masked, Continue enabled only when both are filled). Only the owner’s mail ID + code opens the LMS; check against a PBKDF2-SHA256 hash (300,000 rounds, salted) – the code is not stored. Wrong: “Mail ID or secret code is incorrect. N attempt(s) left.”; 5 wrong → wait 5 minutes. Unlocked for 12 hours on that browser. lms-screens.html, lms.html and lms-app/* redirect to the lock page when locked, and come back to the page asked for. Client-side only (a front door on a public site, not real security) – explained to the owner. | Implemented |
 | DISC-490 | 28-11-2026 | lms-access.html, tools/build_pages.py, assets/lms-lock.js | LMS lock page – no hints | Owner: no hint text in the boxes (mail ID format, “8-digit code”) – just a Mail ID box, a Secret code box and Continue; the code will change from time to time | Placeholders removed; sub-line “Enter your mail ID and secret code to open the LMS.”; the code box takes any characters (no digits-only / 8-length rule), Continue enabled when both boxes are filled. The code is stored only as a hash – it cannot be read back from the repo; the owner keeps it, and Claude sets a new one on request. | Implemented |
 | DISC-491 | 28-11-2026 | assets/lms-lock.js, tools/lms.py, tools/build_pages.py, assets/lamf.css, lms-screens.html, lms.html, lms-access.html, lms-app/login.html | LMS lock – ask again in every new tab; Lock LMS button | Owner: after unlocking once, the LMS CTA went straight in without asking (the unlock was kept for 12 hours on that browser); it should ask again | The unlock is now kept only in the current browser tab (sessionStorage): a new tab, or closing the tab / browser, asks for the mail ID and code again; the older 12-hour unlock is cleared. New “🔒 Lock LMS” button on the LMS screen list locks it at once. Tested: same tab stays open, new tab asks, after Lock it asks. | Implemented |
+| DISC-492 | 28-11-2026 | lms-app/lms.css, lms-app/login.html | LMS Login – left panel gradient as the UAT | Owner: in the UAT the dark navy covers more than half of the left panel; in the prototype the blue started below the middle | Colours sampled down the left panel of the owner’s UAT screenshot: dark navy #000a32 → #041c4d until about 63 %, then #05255e (72 %), #06358e (82 %), bright blue #074ed3 / #0752df at the bottom. Gradient replaced with these stops. | Implemented |
 
 ---
 
