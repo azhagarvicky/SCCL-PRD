@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="lms.css?v=6">
+<link rel="stylesheet" href="lms.css?v=7">
 </head>
 <body>
 <main class="lg">
@@ -36,13 +36,13 @@
       <div class="ot-boxes" id="ot-boxes">
         <input inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="OTP digit 1"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 2"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 3"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 4"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 5"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 6">
       </div>
-      <p class="lg-err ot-err" id="ot-err" role="alert"></p>
       <p class="ot-resend">Didn't receive OTP? <span id="ot-timer">0:30</span><button type="button" id="ot-again" hidden>Resend OTP</button></p>
+      <p class="ot-err" id="ot-err" role="alert"></p>
       <button class="lg-btn ot-btn" id="ot-go" type="submit">Submit</button>
       <p class="lg-next" id="ot-next" hidden></p>
     </form>
   </section>
 </main>
-<script src="lms.js?v=3"></script>
+<script src="lms.js?v=4"></script>
 </body>
 </html>

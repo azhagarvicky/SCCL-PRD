@@ -29,7 +29,8 @@
     var wrap = document.getElementById('ot-boxes'), boxes = [].slice.call(wrap.querySelectorAll('input'));
     var oerr = document.getElementById('ot-err'), onext = document.getElementById('ot-next');
     var timer = document.getElementById('ot-timer'), again = document.getElementById('ot-again');
-    var OMSG = { short: 'Please enter the 6-digit OTP.' };   // wording to be confirmed against the live LMS
+    var OTP_OK = '000000';   // DISC-496: the sample correct OTP of the prototype (also shown in the OTP mail)
+    var OMSG = { short: 'Please enter the 6-digit OTP.', wrong: 'Please enter the correct OTP.' };   // wrong OTP: UAT shows “Bad credentials” – owner's wording
     var bad = function (msg) { oerr.textContent = msg || ''; wrap.classList.toggle('bad', !!msg); };
     boxes.forEach(function (b, i) {
       b.addEventListener('input', function () {
@@ -66,6 +67,7 @@
       e.preventDefault();
       var v = boxes.map(function (b) { return b.value; }).join('');
       if (v.length < 6) return bad(OMSG.short);
+      if (v !== OTP_OK) return bad(OMSG.wrong);
       bad(''); onext.hidden = false;
       onext.textContent = 'OTP submitted. The screen after login comes next – please share its UAT screenshot.';
     });
