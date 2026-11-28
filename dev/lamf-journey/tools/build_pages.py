@@ -1105,7 +1105,7 @@ def home_body(home, prd, journey, comms, calc, internal, brd):
             '<h1>LAMF – LOS Customer Online Journey</h1>'
             '<p class="home-sub">Product requirements and the clickable prototype of the online loan journey.</p>'
             '<div class="home-ctas">'
-            f'<a class="home-cta" href="{prd}">Open the PRD document →</a>'
+            '<a class="home-cta" href="#prd-pop">Open the PRD document →</a>'   # DISC-535: pop-up with LOS PRD / LMS PRD
             f'<a class="home-cta" href="{brd}">Open BRD document →</a>'
             f'<a class="home-cta" href="{journey}">LOS →</a>'   # DISC-531 renamed from "Start the LAMF journey"
             '<a class="home-cta" href="#comms-pop">Communications →</a>'
@@ -1116,7 +1116,12 @@ def home_body(home, prd, journey, comms, calc, internal, brd):
             '<div class="home-pop-box"><a class="home-pop-x" href="#" aria-label="Close">×</a><h2>Communications</h2>'
             '<p>Choose the communications to open.</p><div class="home-pop-ctas">'
             f'<a class="home-cta" href="{comms}">Customer communications →</a>'
-            f'<a class="home-cta" href="{internal}">Internal communications →</a></div></div></div>')
+            f'<a class="home-cta" href="{internal}">Internal communications →</a></div></div></div>'
+            '<div class="home-pop" id="prd-pop" role="dialog" aria-label="PRD documents"><a class="home-pop-bg" href="#" aria-label="Close"></a>'
+            '<div class="home-pop-box"><a class="home-pop-x" href="#" aria-label="Close">×</a><h2>PRD documents</h2>'
+            '<p>Choose the PRD to open.</p><div class="home-pop-ctas">'
+            f'<a class="home-cta" href="{prd}">LOS PRD →</a>'
+            '<a class="home-cta" href="LMS_PRD.html">LMS PRD →</a></div></div></div>')
 
 def screens_body(home, link):
     items = "\n".join(f'<li><a href="{link(n)}">{html.escape(n)}</a></li>' for n in PAGES)
@@ -1222,6 +1227,10 @@ SITE_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1 id="ac-h">
               '})();</script>')
 with open(os.path.join(ROOT, "access.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Access", cls="page-screens page-lk", body=SITE_ACCESS))
+# DISC-535: LMS PRD (content in tools/lms_prd.py)
+import lms_prd as _lp
+with open(os.path.join(ROOT, "LMS_PRD.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – LMS PRD", cls="page-screens page-lmsprd", body=_lp.body(LOGO.format(home="index.html"), "28-11-2026")))
 with open(os.path.join(ROOT, "lms.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")).replace("</head>", LMS_LOCK, 1))
 # LOS charges payment after a DRAFT rejection and the payment receipt (DISC-351); data in tools/charges_payment.py
@@ -1327,7 +1336,8 @@ CLOUD = """<!doctype html>
     if (name === 'CALC') { LAMF.render(window.CALC_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-calc'); window.LAMFCalc.init(); return; }
     if (name === 'COMMS') { LAMF.render(window.COMMS_HTML, { bodyClass: 'page-screens' }); document.body.classList.add('page-comms'); return; }
     LAMF.render(window.HOME_HTML, { bodyClass: 'page-home' });
-    if (name === 'comms-pop') document.getElementById('comms-pop').classList.add('open');   // Communications pop-up (DISC-269)
+    if (name === 'comms-pop') document.getElementById('comms-pop').classList.add('open');
+    if (name === 'prd-pop') document.getElementById('prd-pop').classList.add('open');   // DISC-535   // Communications pop-up (DISC-269)
   }
   window.addEventListener('hashchange', route);
   route();

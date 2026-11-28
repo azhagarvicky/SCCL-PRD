@@ -1,7 +1,7 @@
 """DISC-528: adds the module-wise access check (assets/access.js) to every module page of the site.
 Run at the end of build_pages.py and build_prd.py (it can also be run on its own). Idempotent – an existing tag is replaced.
 Module of each page:
-  prd      SCCL_LAMF_LOS_PRD.html
+  prd      SCCL_LAMF_LOS_PRD.html, LMS_PRD.html
   brd      brd.html, brd-*.html
   journey  the numbered LOS screen pages, screens.html, charges-payment*.html, charges-receipt*.html
   comms    communications.html, internal-communications.html, internal/*.html, new-mails.html, new-mails/*.html, mails/*.html
@@ -25,7 +25,7 @@ def module_of(rel):
         return 'lms'
     if d:
         return None
-    if name == 'SCCL_LAMF_LOS_PRD.html':
+    if name in ('SCCL_LAMF_LOS_PRD.html', 'LMS_PRD.html'):
         return 'prd'
     if name == 'brd.html' or name.startswith('brd-'):
         return 'brd'
