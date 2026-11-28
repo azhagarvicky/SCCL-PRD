@@ -11,6 +11,7 @@ import html as _h
 LMS_SCREENS = [
     ("01) Login", "lms-app/login.html"),
     ("02) Login – OTP", "lms-app/otp.html?mail=abc%40shriramcredit.in"),
+    ("03) OTP mail – Email Verification OTP", "lms-app/mail-otp.html?mail=abc%40shriramcredit.in"),
 ]
 
 
