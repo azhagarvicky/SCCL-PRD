@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=28">
+<link rel="stylesheet" href="app.css?v=30">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -68,6 +68,7 @@
   </div>
 </div>
 <script src="shell.js?v=1"></script>
+<script src="product-data.js?v=1"></script>
 <script>
 (function () {   // Product details (DISC-512): tabs Product Details / Documents; ≡ menu → Update Access Policy pop-up
   var $ = function (i) { return document.getElementById(i); };
@@ -81,7 +82,10 @@
       f: { 'Disbursement Type': 'Multiple', 'Rate of Interest': '9.6% - 15%', 'Tenure': '12 months', 'Processing Fee': '₹999 - 3%',
            'Maximum Mandate Amount': '₹10,000 - ₹2,00,00,000', 'Repayment Frequency': '1st, Monthly' } }
   };
-  var code = new URLSearchParams(location.search).get('code'), d = P[code] || P.LAMF20261114;
+  var code = new URLSearchParams(location.search).get('code'), d = P[code];
+  if (!d) LMS_PROD.load().forEach(function (x) { if (x.code === code) d = LMS_PROD.page(x); });   // DISC-520: a product created in this browser
+  d = d || P.LAMF20261114;
+  if (d.kyc) d.kyc.forEach(function (k) { var sp = document.createElement('span'); sp.textContent = k; document.querySelector('.pv-k').appendChild(sp); });
   $('pv-n').textContent = d.n; $('pv-v').textContent = 'Validity: ' + d.v; $('pv-s').textContent = d.s;
   $('pv-st').textContent = d.st; $('pv-st').className = 'pill p-' + d.st.toLowerCase().replace(' ', '');
   document.title = 'LMS – ' + d.n;

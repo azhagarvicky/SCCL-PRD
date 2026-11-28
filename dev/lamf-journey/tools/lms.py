@@ -14,7 +14,7 @@ LMS_SCREENS = [
     ("03) OTP mail – Email Verification OTP", "lms-app/mail-otp.html?mail=abc%40shriramcredit.in"),
     ("04) Dashboard", "lms-app/dashboard.html"),
     ("05) Products – list and Select security pop-up", "lms-app/products.html"),
-    ("06) Create a Product – 1 Product Details … 5 Collections (Next moves step by step)", "lms-app/create-product.html"),
+    ("06) Create a Product – 6 steps, Submit → In Review (Product details … KYC)", "lms-app/create-product.html"),
     ("07) Product details – Active (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html?code=LAMF20261114"),
     ("08) Product details – Inactive", "lms-app/product-view.html?code=LAMF20261111"),
     ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF2026108"),
