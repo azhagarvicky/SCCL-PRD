@@ -407,3 +407,8 @@ button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: point
 .apv-c.g { background: #f1f1f2; border-color: #f1f1f2; }
 .ap-r { display: inline-block; background: #f1f1f2; border-radius: 4px; padding: 4px 8px; margin: 2px 6px 2px 0; font-size: 14.5px; }
 .ap-pager { display: flex; justify-content: flex-end; gap: 6px; margin-top: 16px; }
+
+/* DISC-522: Collections errors and the empty Date box */
+.co-k .fe { margin-left: 10px; }
+.sel-b.ph { color: #9aa0ab; }
+.k-ig .ig-s[hidden] + input { padding-left: 16px; }
