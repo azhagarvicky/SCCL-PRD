@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=26">
+<link rel="stylesheet" href="app.css?v=28">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -48,8 +48,8 @@
         <li data-s="1"><span>1</span>Product Details</li>
         <li data-s="2"><span>2</span>Disbursement Type</li>
         <li data-s="3"><span>3</span>Terms</li>
-        <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20Charges"><span>4</span>Charges</a></li>
-        <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20Collections"><span>5</span>Collections</a></li>
+        <li data-s="4"><span>4</span>Charges</li>
+        <li data-s="5"><span>5</span>Collections</li>
         <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20KYC"><span>6</span>KYC</a></li>
       </ol>
       <form class="cp-f" id="p1" novalidate>
@@ -63,6 +63,20 @@
       </form>
       <div class="cp-f" id="p2" hidden>
         <div class="cp-rds"><label class="cp-rd"><input type="radio" name="disb" value="Revolving Overdraft" checked><i></i>Revolving Overdraft <i class="cp-i" role="button" tabindex="0" title="Revolving Overdraft" aria-label="Revolving Overdraft">i</i></label><label class="cp-rd"><input type="radio" name="disb" value="Single Disbursement"><i></i>Single Disbursement <i class="cp-i" role="button" tabindex="0" title="Single Disbursement" aria-label="Single Disbursement">i</i></label><label class="cp-rd"><input type="radio" name="disb" value="Multiple Disbursement"><i></i>Multiple Disbursement <i class="cp-i" role="button" tabindex="0" title="Multiple Disbursement" aria-label="Multiple Disbursement">i</i></label></div>
+      </div>
+      <div class="cp-f tm" id="p4" hidden><div class="tm-r ch-r"><div class="tm-l"><b>Renewal Charges</b><span>in INR</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-ren" inputmode="decimal" placeholder="Ex. 1000" data-err="Renewal charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Bounce Charges</b><span>in INR</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-bou" inputmode="decimal" placeholder="Ex. 100" data-err="Bounce charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Bank Mandate Swap Charges</b><span>in INR</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-bms" inputmode="decimal" placeholder="Ex. 1000" data-err="Bank mandate swap is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Penal Charges</b><span>% of defaulted amount</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-pen" inputmode="decimal" placeholder="Ex. 2" data-err="Penal charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Liquidation Charges</b><span>% of sale value</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-liq" inputmode="decimal" placeholder="Ex. 2" data-err="Liquidation charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Prepayment Charges</b><span>% of principal outstanding</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-pre" inputmode="decimal" placeholder="Ex. 2" data-err="Prepayment charge is missing"></div></div>
+      <div class="cp-f co" id="p5" hidden>
+        <h3>Maximum amount for mandate</h3>
+        <div class="sel"><select id="k-mand" aria-label="Maximum amount for mandate"><option>Sanction Amount</option><option>2 time(s) of Sanction amount</option></select></div>
+        <h3>Repayment</h3>
+        <span class="co-k">Type</span>
+        <label class="cb"><input type="checkbox" id="k-fa"><i></i>Fully Amortized</label>
+        <label class="cb"><input type="checkbox" id="k-bt"><i></i>Balloon Type</label>
+        <span class="co-k">Frequency</span>
+        <div class="co-fr"><label class="cb"><input type="checkbox" id="k-mo"><i></i>Monthly</label><div class="sel cal"><select id="k-day" aria-label="Repayment day of the month"><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option><option>6th</option><option>7th</option><option>8th</option><option>9th</option><option>10th</option><option>11th</option><option>12th</option><option>13th</option><option>14th</option><option>15th</option><option>16th</option><option>17th</option><option>18th</option><option>19th</option><option>20th</option><option>21st</option><option>22nd</option><option>23rd</option><option>24th</option><option>25th</option><option>26th</option><option>27th</option><option>28th</option></select></div></div>
+        <h3>Processing Fee</h3>
+        <label class="cp-rd"><input type="radio" name="pfc" value="1st Disbursement" checked><i></i>1st Disbursement</label>
+        <label class="cp-rd"><input type="radio" name="pfc" value="1st Collection"><i></i>1st Collection</label>
       </div>
       <div class="cp-f tm" id="p3" hidden>
         <div class="tm-r"><div class="tm-l"><b>Sanction Amount</b><span>Set minimum and maximum sanction amount</span><p class="fe" role="alert"></p></div>
@@ -102,10 +116,14 @@
   var save = function (l) { try { localStorage.setItem(KEY, JSON.stringify(l)); } catch (e) {} };
   var code = new URLSearchParams(location.search).get('code'), all = load(), cur = null;
   all.forEach(function (x) { if (x.code === code) cur = x; });
+  var CHG = ['c-ren', 'c-bou', 'c-bms', 'c-pen', 'c-liq', 'c-pre'];   // DISC-519 Charges
+  var keep4 = function () { cur.charges = {}; CHG.forEach(function (k) { cur.charges[k] = $(k).value.trim(); }); };
+  var keep5 = function () { cur.coll = { mand: $('k-mand').value, fa: $('k-fa').checked, bt: $('k-bt').checked, mo: $('k-mo').checked, day: $('k-day').value, pf: document.querySelector('input[name="pfc"]:checked').value }; };
   var chips = [];   // DISC-518: Discrete tenure months
   var T = ['t-sa1', 't-sa2', 't-ri1', 't-ri2', 't-tt', 't-te1', 't-te2', 't-pu1', 't-pf1', 't-pu2', 't-pf2'];
   var step = 1;
   var saved = function () { $('cp-dt').textContent = 'Draft Saved'; $('cp-di').setAttribute('d', 'M9.5 13l2 2 3.5-3.5'); };
+  var unsaved = function () { $('cp-dt').textContent = 'Cannot Save Draft'; $('cp-di').setAttribute('d', 'M12 10v3.5M12 16h.01'); };
   // DISC-515: steps 1–3 on one page. A finished step shows the blue tick; the open step has the blue border; steps up to the next unfinished one can be clicked.
   var paint = function () {
     var done = cur ? cur.done || 0 : 0;
@@ -115,7 +133,7 @@
       li.querySelector('span').textContent = n <= done ? '' : n;
       li.classList.toggle('go', n !== step && n <= done + 1 && !!cur);
     });
-    ['p1', 'p2', 'p3'].forEach(function (id, i) { $(id).hidden = i + 1 !== step; });
+    ['p1', 'p2', 'p3', 'p4', 'p5'].forEach(function (id, i) { $(id).hidden = i + 1 !== step; });
   };
   var go = function (n, push) {
     step = n; paint(); window.scrollTo(0, 0);
@@ -125,8 +143,10 @@
     $('cp-n').value = cur.name; $('cp-d').value = cur.desc; $('cp-from').value = cur.from; $('cp-till').value = cur.till; saved();
     if (cur.done === undefined) cur.done = 1;
     if (cur.disb) document.querySelector('input[name="disb"][value="' + cur.disb + '"]').checked = true;
+    if (cur.charges) CHG.forEach(function (k) { $(k).value = cur.charges[k] || ''; });
+    if (cur.coll) { $('k-mand').value = cur.coll.mand; $('k-fa').checked = cur.coll.fa; $('k-bt').checked = cur.coll.bt; $('k-mo').checked = cur.coll.mo; $('k-day').value = cur.coll.day; document.querySelector('input[name="pfc"][value="' + cur.coll.pf + '"]').checked = true; }
     if (cur.terms) { T.forEach(function (k) { if (cur.terms[k] !== undefined) $(k).value = cur.terms[k]; }); if (cur.terms.t_tt === undefined && cur.terms['t-tt'] === 'Fixed') $('t-tt').value = 'Range'; chips = (cur.terms.chips || []).slice(); }
-    var q = +new URLSearchParams(location.search).get('step'); if (q >= 1 && q <= Math.min(3, cur.done + 1)) step = q;
+    var q = +new URLSearchParams(location.search).get('step'); if (q >= 1 && q <= Math.min(5, cur.done + 1)) step = q;
   } else { $('cp-from').value = iso(d); var t = new Date(d); t.setFullYear(t.getFullYear() + 10); $('cp-till').value = iso(t); }
   paint();
   window.addEventListener('popstate', function (e) { if (e.state && e.state.s) { step = e.state.s; paint(); } });
@@ -184,6 +204,7 @@
     var n = $('cp-n').value.trim(); if (n) cur.name = n;
     cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
     if (step === 2) cur.disb = document.querySelector('input[name="disb"]:checked').value;
+    if (step === 4) keep4(); if (step === 5) keep5();
     if (step === 3) { cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); cur.terms.chips = chips.slice(); }
     save(all);
   });
@@ -229,6 +250,7 @@
     if ($(id).value.trim()) { bad(id, false); var other = id === r[0] ? r[1] : r[0], fe = $(id).closest('.tm-r').querySelector('.fe');
       fe.textContent = !$(r[0]).value.trim() ? 'Minimum ' + r[2] + ' is missing' : !$(r[1]).value.trim() && fe.textContent ? 'Maximum ' + r[2] + ' is missing' : ''; }
   }); }); });
+  CHG.forEach(function (k) { $(k).addEventListener('input', function () { if ($(k).value.trim()) { $(k).classList.remove('bad'); $(k).closest('.tm-r').querySelector('.fe').textContent = ''; } }); });
   $('cp-next').addEventListener('click', function () {
     if (step === 1) {
       var n = $('cp-n').value.trim();
@@ -240,13 +262,19 @@
       cur.name = n; cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
     } else if (step === 2) {
       cur.disb = document.querySelector('input[name="disb"]:checked').value;   // Revolving Overdraft by default, as the UAT
-    } else {
+    } else if (step === 3) {
       if (!checkTerms()) return;
       cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); cur.terms.chips = chips.slice();
-    }
+    } else if (step === 4) {
+      // DISC-519: every charge is needed (0 is accepted); with an error the header shows "Cannot Save Draft", as the UAT
+      var miss = false;
+      CHG.forEach(function (k) { var e = !$(k).value.trim(); $(k).classList.toggle('bad', e); $(k).closest('.tm-r').querySelector('.fe').textContent = e ? $(k).dataset.err : ''; if (e) miss = true; });
+      if (miss) { unsaved(); return; }
+      keep4();
+    } else { keep5(); }
     cur.done = Math.max(cur.done || 0, step); save(all); saved();
-    if (step < 3) go(step + 1, true);
-    else { paint(); history.replaceState({ s: 3 }, '', 'create-product.html?code=' + cur.code + '&step=3'); location.href = 'wip.html?p=' + encodeURIComponent('Create a Product – Charges'); }
+    if (step < 5) go(step + 1, true);
+    else { paint(); history.replaceState({ s: 5 }, '', 'create-product.html?code=' + cur.code + '&step=5'); location.href = 'wip.html?p=' + encodeURIComponent('Create a Product – KYC'); }
   });
 })();
 </script>
