@@ -35,6 +35,24 @@ body { margin: 0; font-family: var(--font); color: var(--ink); background: #fff;
 .lg-btn:disabled { opacity: .6; cursor: default; }
 .lg-next { margin: 14px 0 0; padding: 10px 12px; border-radius: 8px; background: #f2f6ff; color: #1e3a8a; font-size: 13px; line-height: 1.5; }
 
+/* ---- Login – OTP step (DISC-494), sizes from the UAT screenshot ---- */
+.ot-back { display: inline-flex; width: 24px; height: 24px; margin: 0 0 10px; color: var(--ink); }
+.ot-back svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ot-card h2 { margin-bottom: 8px; }
+.ot-sent { margin: 0; font-size: 16.5px; line-height: 24px; color: var(--ink); }
+.ot-sent b { font-weight: 700; }
+.ot-boxes { display: flex; gap: 9px; margin-top: 36px; }
+.ot-boxes input { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 6px; text-align: center; font: inherit; font-size: 18px;
+  font-weight: 500; color: var(--ink); padding: 0; background: #fff; }
+.ot-boxes input:focus { outline: none; border-color: var(--blue); }
+.ot-boxes.bad input { border-color: var(--err); }
+.ot-err { min-height: 0; margin: 6px 0 0; }
+.ot-err:empty { margin: 0; }
+.ot-resend { margin: 26px 0 0; font-size: 16.5px; line-height: 24px; color: var(--ink); }
+.ot-resend span { color: #8a8f99; margin-left: 4px; }
+.ot-resend button { margin-left: 4px; padding: 0; border: 0; background: none; font: inherit; color: var(--blue); font-weight: 500; cursor: pointer; }
+.ot-btn { margin-top: 32px; }
+
 @media (max-width: 860px) {
   .lg { flex-direction: column-reverse; }
   .lg-hero { flex: none; padding: 36px 16px 230px; }
