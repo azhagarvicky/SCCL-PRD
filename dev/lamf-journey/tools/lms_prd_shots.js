@@ -107,6 +107,11 @@ const PROD = { code: 'LAMF20261103', name: 'TEST Product SCCL', desc: 'This is T
   await p.click('#cf-y'); await p.waitForURL('**/approvals.html*'); await p.waitForTimeout(250); await shot('l16-approved'); await el('#ap-toast', 'l16-toast');
   await go('product-view.html?code=LAMF20261103'); await p.click('#pv-menu'); await p.click('#pv-upd'); await p.waitForTimeout(200); await el('#ap .md', 'l16-policy-all');
   await p.click('#ap-rows tr:nth-child(5) .sw'); await p.click('#ap-c'); await p.click('#pv-menu'); await p.click('#pv-upd'); await p.waitForTimeout(200); await el('#ap .md', 'l16-policy-los');
+
+  // ---- Module 6 – Loans
+  await go('loans-active.html'); await shot('l17-active'); await el('.sb-grp', 'l17-menu'); await el('#ln-lsp', 'l17-lsp'); await el('.ln-chips', 'l17-chips'); await el('.ln-tb thead', 'l17-head');
+  await p.click('#ln-lsp-b'); await area('#ln-lsp', 'l17-lsp-open', -8, -8, 280, 340); await p.keyboard.press('Escape');
+  await p.click('.ln-chips button[data-t="1"]'); await shot('l17-shortfall');
   await b.close();
   console.log('LMS PRD shots:', fs.readdirSync(OUT).length);
 })();
