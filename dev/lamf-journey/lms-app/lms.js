@@ -69,6 +69,7 @@
       if (v.length < 6) return bad(OMSG.short);
       if (v !== OTP_OK) return bad(OMSG.wrong);
       bad('');
+      try { sessionStorage.setItem('lms-user', m); } catch (e2) {}   // shown in the profile pop-up (DISC-499)
       location.href = 'dashboard.html';   // DISC-497: after login the user lands on the Dashboard
     });
   }

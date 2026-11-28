@@ -10,12 +10,17 @@
 <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=8">
-<link rel="stylesheet" href="app.css?v=2">
+<link rel="stylesheet" href="app.css?v=3">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
-  <div class="sb-top"><span class="sb-av" title="Profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+  <div class="sb-top"><img class="sb-logo" src="../assets/img/shriram-logo.png" alt="Shriram Credit">
+    <button type="button" class="sb-av" id="sb-av" title="Profile" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
     <button type="button" class="sb-x" id="sb-x" aria-label="Expand menu"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <div class="pf" id="pf" hidden>
+    <div class="pf-n" id="pf-n">Azhagar</div><div class="pf-m" id="pf-m">azhagarsamy.s@shriramcredit.in</div>
+    <button type="button" class="pf-out" id="pf-out">Logout <svg viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M3 12h11M10 8l4 4-4 4"/></svg></button>
+  </div>
   <nav class="sb-nav">
     <a class="sb-i on" href="dashboard.html"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M6 15l4-5 4 3 6-7"/></svg><span>Dashboard</span></a>
     <a class="sb-i" href="#" data-todo="Products"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></svg><span>Products</span></a>
@@ -28,7 +33,7 @@
     <a class="sb-i" href="#" data-todo="Collaterals"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Collaterals</span></a>
     <a class="sb-i" href="#" data-todo="Clients"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.3-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="16.5" cy="8.5" r="3"/><path d="M17 14.5c2.6.3 4.3 2.2 4.8 5.5"/></svg><span>Clients</span></a>
     <a class="sb-i" href="#" data-todo="Approvals"><svg viewBox="0 0 24 24"><path d="M2 13l4 4 8-9M11 16l1 1 9-10"/></svg><span>Approvals</span></a>
-    <a class="sb-i" href="#" data-todo="Disbursement Management"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.9 2.7.9 2.7-2.4 1.5-.9 2.7-2.8-.2L12 21.5l-2.3-1.7-2.8.2-.9-2.7-2.4-1.5.9-2.7-.9-2.7 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Disbursem...</span></a>
+    <a class="sb-i" href="#" data-todo="Disbursement Management"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.9 2.7.9 2.7-2.4 1.5-.9 2.7-2.8-.2L12 21.5l-2.3-1.7-2.8.2-.9-2.7-2.4-1.5.9-2.7-.9-2.7 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span data-long="Disbursement Management">Disbursem...</span></a>
     <a class="sb-i" href="#" data-todo="Reports"><svg viewBox="0 0 24 24"><path d="M5 12V4a1 1 0 0 1 1-1h8l4 4v5"/><path d="M14 3v4h4"/><text x="12" y="21.5" text-anchor="middle" font-size="7.5" font-weight="700" stroke="none" fill="currentColor" font-family="Arial">DOC</text></svg><span>Reports</span></a>
     <a class="sb-i" href="#" data-todo="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
   </nav>
@@ -77,6 +82,6 @@
   </main>
 </div>
 <div class="toast" id="toast" hidden></div>
-<script src="dashboard.js?v=1"></script>
+<script src="dashboard.js?v=2"></script>
 </body>
 </html>
