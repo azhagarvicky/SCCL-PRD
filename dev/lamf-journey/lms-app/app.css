@@ -223,3 +223,41 @@ svg.ch rect, svg.sp rect { cursor: default; }
   .kp .sp { width: 96px; }
   .dn svg { width: 150px; height: 150px; }
 }
+
+/* Product details – Active product (DISC-512), sizes from the owner's UAT screenshots */
+.pv-h { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.pv-h h1 { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 600; margin: 0 0 8px; word-break: break-all; }
+.pv-h p { margin: 0 0 12px; font-size: 14.5px; color: #5b6170; }
+.pv-mw { position: relative; }
+.pv-menu { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 6px; background: none; cursor: pointer; color: #111; padding: 0; }
+.pv-menu.open, .pv-menu:hover { border-color: #c9ccd3; }
+.pv-menu svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.pv-dd { position: absolute; right: 4px; top: 34px; z-index: 6; background: #fff; border: 1px solid #ececef; border-radius: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, .1); padding: 4px; }
+.pv-dd button { display: block; white-space: nowrap; border: 0; background: none; font: inherit; font-size: 15.5px; color: #111; padding: 8px 12px; border-radius: 4px; cursor: pointer; min-width: 220px; text-align: left; }
+.pv-dd button:hover { background: #f1f1f2; }
+.pv-tabs { display: flex; border-bottom: 1px solid #e4e6eb; margin: 34px 0 24px; }
+.pv-tabs button { border: 0; background: none; font: inherit; font-size: 13.5px; font-weight: 600; color: #6b7080; padding: 12px 12px 14px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.pv-tabs button.on { color: var(--blue); border-bottom-color: var(--blue); }
+.pv-c { background: #fcfcfd; border: 1px solid #efeff2; border-radius: 10px; padding: 0 23px 24px; margin-bottom: 20px; }
+.pv-c h2 { font-size: 14.5px; font-weight: 500; margin: 0 0 24px; padding: 28px 0 18px; border-bottom: 1px solid #e9eaee; }
+.pv-g { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px 16px; }
+.pv-g span { display: block; font-size: 13.5px; color: #6b7080; margin-bottom: 6px; }
+.pv-g b { display: block; font-size: 14px; font-weight: 500; color: #111; }
+.pv-g b span { display: inline; font-size: inherit; color: inherit; margin: 0; }
+.pv-k { display: flex; flex-wrap: wrap; gap: 6px 8px; font-size: 14px; font-weight: 500; }
+.pv-none { font-style: italic; font-size: 15px; margin: 0; }
+.md.ap { width: 570px; max-width: 100%; }
+.ap-t { width: 100%; border-collapse: collapse; margin: 22px 0 46px; font-size: 13.5px; }
+.ap-t th { background: #f6f6f7; font-weight: 600; text-align: left; padding: 14px 12px; border-bottom: 1px solid #e4e6eb; }
+.ap-t td { padding: 12px; border-bottom: 1px solid #e4e6eb; }
+.ap-t .r { text-align: right; }
+.sw { position: relative; display: inline-block; width: 34px; height: 20px; cursor: pointer; vertical-align: middle; }
+.sw input { position: absolute; opacity: 0; }
+.sw i { position: absolute; left: 0; right: 0; top: 4px; height: 12px; border-radius: 6px; background: #d5d7dc; transition: background .15s; }
+.sw i::after { content: ""; position: absolute; left: -2px; top: -4px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: left .15s, background .15s; }
+.sw input:checked + i { background: #c8d9ff; }
+.sw input:checked + i::after { left: 16px; background: var(--blue); box-shadow: none; }
+.sw input:focus-visible + i { box-shadow: 0 0 0 3px rgba(31, 107, 255, .25); }
+.ap-c { width: 100%; height: 46px; border-radius: 6px; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; }
+@media (max-width: 1100px) { .pv-g { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .pv-g { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
