@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LMS – Login</title>
+<!-- DISC-484: LMS prototype from scratch – Login (live: uatlms.shriramcredit.in/user/login). Source file. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lms.css?v=1">
+</head>
+<body>
+<span class="proto-tag">Prototype – sample data</span>
+<main class="lg">
+  <section class="lg-hero" aria-label="About the LMS">
+    <h1>Experience the simplicity of managing secured lending</h1>
+    <ul class="lg-feat">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Custom loan products with 30+ configurable parameters</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Real-time collateral tracking with automated risk alerts and thresholds</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 15h3l4 2h5a1.5 1.5 0 0 0 0-3h-3"/><path d="M5 13l3-2h4l1 1"/><path d="M14 17l5-2.5a1.5 1.5 0 0 1 1.5 2.5L15 20H8l-3-1.5"/><circle cx="16" cy="6" r="2.5"/><path d="M19.5 9.5a3.5 3.5 0 0 0-7 0"/></svg>
+        Flexible digital, manual, and partner-assisted loan application workflows</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        Role-based access with audit-ready security and governance controls</li>
+    </ul>
+    <div class="lg-shot"><img src="img/login-preview.png" alt="Preview of the LMS loan account page"></div>
+  </section>
+
+  <section class="lg-side">
+    <form class="lg-card" id="lg-form" novalidate>
+      <h2>Login</h2>
+      <label for="lg-mail">Email ID</label>
+      <input class="lg-in" id="lg-mail" type="email" placeholder="abc@gmail.com" autocomplete="email" maxlength="120">
+      <p class="lg-err" id="lg-err" role="alert"></p>
+      <button class="lg-btn" id="lg-send" type="submit">Send OTP</button>
+      <p class="lg-next" id="lg-next" hidden></p>
+    </form>
+  </section>
+</main>
+<script src="lms.js?v=1"></script>
+</body>
+</html>
