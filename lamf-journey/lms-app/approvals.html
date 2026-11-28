@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=35">
+<link rel="stylesheet" href="app.css?v=37">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -45,7 +45,7 @@
     <h1 class="ap-h" id="ap-h">My Pending Approvals</h1>
     <div class="ap-empty" id="ap-empty" hidden><svg viewBox="0 0 48 48"><path d="M30 42H12a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3h20a3 3 0 0 1 3 3v15"/><path d="M15 15h14M15 21h14M15 27h8"/><circle cx="35" cy="35" r="7"/><path d="M32 35l2.2 2.2L38.5 33"/></svg>No actions pending for your approval</div>
     <div class="tb-wrap" id="ap-wrap"><table class="tb ap-tb">
-      <thead><tr><th>Date of Change</th><th>Change Type <i class="flt"></i></th><th>Details</th><th>Permitted Roles <i class="flt"></i></th><th>Initiated By</th></tr></thead>
+      <thead><tr><th>Date of Change</th><th class="ct-th">Change Type <button type="button" class="flt-b" id="ct-b" aria-label="Filter by change type" aria-expanded="false"><i class="flt"></i></button><div class="ct-dd" id="ct-dd" hidden><label class="cb ct-i"><input type="checkbox" id="ct-all" checked><i></i>All</label><label class="cb ct-i"><input type="checkbox" value="Product creation" checked><i></i>Product creation</label><label class="cb ct-i"><input type="checkbox" value="Loan account opening" checked><i></i>Loan account opening</label><label class="cb ct-i"><input type="checkbox" value="Loan lodgement" checked><i></i>Loan lodgement</label><label class="cb ct-i"><input type="checkbox" value="Disbursement" checked><i></i>Disbursement</label><label class="cb ct-i"><input type="checkbox" value="Foreclosure" checked><i></i>Foreclosure</label><label class="cb ct-i"><input type="checkbox" value="Physical loan agreement" checked><i></i>Physical loan agreement</label><label class="cb ct-i"><input type="checkbox" value="Physical mandate" checked><i></i>Physical mandate</label><label class="cb ct-i"><input type="checkbox" value="Upsert asset ltv bulk" checked><i></i>Upsert asset ltv bulk</label><label class="cb ct-i"><input type="checkbox" value="Upsert asset ltv" checked><i></i>Upsert asset ltv</label><label class="cb ct-i"><input type="checkbox" value="Pledging" checked><i></i>Pledging</label><label class="cb ct-i"><input type="checkbox" value="Pledge release" checked><i></i>Pledge release</label><label class="cb ct-i"><input type="checkbox" value="Liquidation" checked><i></i>Liquidation</label><label class="cb ct-i"><input type="checkbox" value="Loan roi change" checked><i></i>Loan roi change</label><label class="cb ct-i"><input type="checkbox" value="Loan email change" checked><i></i>Loan email change</label><label class="cb ct-i"><input type="checkbox" value="Loan mobile change" checked><i></i>Loan mobile change</label><label class="cb ct-i"><input type="checkbox" value="Update correspondence address" checked><i></i>Update correspondence address</label><label class="cb ct-i"><input type="checkbox" value="Loan transaction review" checked><i></i>Loan transaction review</label><label class="cb ct-i"><input type="checkbox" value="Collateral sale price confirmation" checked><i></i>Collateral sale price confirmation</label></div></th><th>Details</th><th>Permitted Roles <i class="flt"></i></th><th>Initiated By</th></tr></thead>
       <tbody id="ap-rows"></tbody></table>
       <div class="ap-pager"><a class="pp-b dis" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></a><a class="pp-b dis" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a></div></div>
   </main>
@@ -61,16 +61,28 @@
   var show = function (t) {
     [].forEach.call(document.querySelectorAll('.ap-tabs button'), function (b) { b.classList.toggle('on', b.dataset.t === t); b.setAttribute('aria-selected', b.dataset.t === t); });
     $('ap-h').textContent = t === 'my' ? 'My Pending Approvals' : 'All Approvals';
-    var l = t === 'my' ? reqs.filter(function (x) { return x.maker !== me && LMS_PROD.role() !== 'Maker'; }) : reqs;   // DISC-526: only Checker / Admin have pending approvals
-    $('ap-empty').hidden = !!l.length; $('ap-wrap').hidden = !l.length;
+    var base = t === 'my' ? reqs.filter(function (x) { return x.maker !== me && LMS_PROD.role() !== 'Maker'; }) : reqs;   // DISC-526: only Checker / Admin have pending approvals
+    var on = [].map.call(document.querySelectorAll('#ct-dd input[value]:checked'), function (c) { return c.value; });
+    var l = base.filter(function (x) { return on.indexOf('Product creation') >= 0; });   // DISC-530: Change Type filter (every request here is a Product creation)
+    $('ap-empty').hidden = !!base.length; $('ap-wrap').hidden = !base.length;
     $('ap-rows').innerHTML = l.map(function (x) {
       return '<tr><td>' + esc(x.on) + '</td><td><a class="ap-lk" href="product-view.html?code=' + encodeURIComponent(x.code) + '">Product creation</a></td>' +
         '<td><div class="ap-d"><span class="apv-c g">Product</span><span class="apv-c">' + esc(x.name) + '</span></div><div class="ap-d"><span class="apv-c g">ID</span><span class="apv-c">' + esc(x.code) + '</span></div></td>' +
-        '<td><span class="ap-r">Admin</span><span class="ap-r">Ops_L3</span><span class="ap-r">Ops_L2</span><span class="ap-r">UpdateProductCreationTasks</span></td>' +
+        '<td><span class="ap-r">Ops_L2</span><span class="ap-r">Ops_L3</span><span class="ap-r">Admin</span><span class="ap-r">UpdateProductCreationTasks</span></td>' +
         '<td>' + esc(LMS_PROD.nameOf(x.maker)) + '</td></tr>';
     }).join('');
   };
   [].forEach.call(document.querySelectorAll('.ap-tabs button'), function (b) { b.addEventListener('click', function () { show(b.dataset.t); }); });
+  // DISC-530: Change Type filter as the UAT – list of all change types, every one ticked by default; All ticks / clears every type
+  var cur = 'my', dd = $('ct-dd'), open = function (o) { dd.hidden = !o; $('ct-b').classList.toggle('open', o); $('ct-b').setAttribute('aria-expanded', o); };
+  $('ct-b').addEventListener('click', function (e) { e.stopPropagation(); open(dd.hidden); });
+  dd.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', function () { open(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+  var boxes = [].slice.call(dd.querySelectorAll('input[value]'));
+  $('ct-all').addEventListener('change', function () { var v = this.checked; boxes.forEach(function (b) { b.checked = v; }); show(cur); });
+  boxes.forEach(function (b) { b.addEventListener('change', function () { $('ct-all').checked = boxes.every(function (x) { return x.checked; }); show(cur); }); });
+  [].forEach.call(document.querySelectorAll('.ap-tabs button'), function (b) { b.addEventListener('click', function () { cur = b.dataset.t; }); });
   show('my');
 })();
 </script>
