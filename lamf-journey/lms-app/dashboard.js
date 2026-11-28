@@ -149,34 +149,4 @@
     $('aum').appendChild(s);
   })();
 
-  // ---- profile pop-up and expand / collapse menu (DISC-499)
-  var app = document.body, sb = $('sb'), av = $('sb-av'), pf = $('pf'), sx = $('sb-x');
-  try { var who = sessionStorage.getItem('lms-user'); if (who) $('pf-m').textContent = who; } catch (e) {}
-  function openPf(on) { pf.hidden = !on; av.setAttribute('aria-expanded', on ? 'true' : 'false'); }
-  av.addEventListener('click', function (e) { e.stopPropagation(); openPf(pf.hidden); });
-  document.addEventListener('click', function (e) { if (!pf.hidden && !pf.contains(e.target)) openPf(false); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') openPf(false); });
-  $('pf-out').addEventListener('click', function () {   // logout → back to the LMS login page (the LMS lock stays)
-    try { sessionStorage.removeItem('lms-user'); } catch (e) {}
-    location.href = 'login.html';
-  });
-  var longs = [].slice.call(document.querySelectorAll('[data-long]'));
-  function wide(on) {
-    sb.classList.toggle('wide', on); app.classList.toggle('wide', on);
-    sx.setAttribute('aria-label', on ? 'Collapse menu' : 'Expand menu');
-    longs.forEach(function (x) { if (!x.dataset.short) x.dataset.short = x.textContent; x.textContent = on ? x.dataset.long : x.dataset.short; });
-    try { sessionStorage.setItem('lms-menu-wide', on ? '1' : ''); } catch (e) {}
-  }
-  sx.addEventListener('click', function () { wide(!sb.classList.contains('wide')); });
-  try { if (sessionStorage.getItem('lms-menu-wide')) wide(true); } catch (e) {}
-
-  // ---- menu items not built yet
-  var toast = $('toast'), tt;
-  [].forEach.call(document.querySelectorAll('[data-todo]'), function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      toast.textContent = a.getAttribute('data-todo') + ' – this screen comes next. Please share its screenshot.';
-      toast.hidden = false; clearTimeout(tt); tt = setTimeout(function () { toast.hidden = true; }, 2600);
-    });
-  });
 })();
