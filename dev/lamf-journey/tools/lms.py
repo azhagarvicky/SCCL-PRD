@@ -13,6 +13,7 @@ LMS_SCREENS = [
     ("02) Login – OTP", "lms-app/otp.html?mail=abc%40shriramcredit.in"),
     ("03) OTP mail – Email Verification OTP", "lms-app/mail-otp.html?mail=abc%40shriramcredit.in"),
     ("04) Dashboard", "lms-app/dashboard.html"),
+    ("05) Products – list and Select security pop-up", "lms-app/products.html"),
 ]
 
 

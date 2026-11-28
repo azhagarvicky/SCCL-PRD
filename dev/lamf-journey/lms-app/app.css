@@ -117,6 +117,49 @@ svg.ch text { font-family: var(--font); fill: #6b7080; font-size: 11px; }
 .dn svg .seg { cursor: pointer; }
 svg.ch rect, svg.sp rect { cursor: default; }
 
+/* Products list + modal (DISC-505) – sizes from the owner's UAT screenshot */
+.pg { padding: 30px 24px 40px; }
+.pg-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.pg-h h1 { font-size: 20px; font-weight: 700; margin: 0; }
+.pg-new { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--blue); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; padding: 4px; }
+.pg-new svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.tb-wrap { overflow-x: auto; }
+.tb { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.tb th { background: #f6f6f7; font-weight: 700; text-align: left; padding: 14px 12px; white-space: nowrap; border-bottom: 1px solid #e4e6eb; }
+.tb td { padding: 15px 12px; border-bottom: 1px solid #e4e6eb; white-space: nowrap; }
+.tb .r { text-align: right; }
+.tb tbody tr { cursor: pointer; }
+.tb tbody tr:hover td { background: #fafafb; }
+.pill { display: inline-block; font-size: 11.5px; font-weight: 500; padding: 3px 8px; border-radius: 8px; line-height: 16px; }
+.p-draft { background: #efefef; color: #333; } .p-active { background: #e8f7ee; color: #0a8a3a; }
+.p-inactive { background: #fdecea; color: #d7291f; } .p-inreview { background: #fff1dd; color: #e07b00; }
+.pager { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13.5px; flex-wrap: wrap; gap: 10px; }
+.pager-r { display: inline-flex; align-items: center; gap: 8px; }
+.pp-sel { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #e4e6eb; border-radius: 6px; padding: 8px 12px; color: var(--ink); text-decoration: none; font-size: 15px; }
+.pp-sel svg, .pp-b svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.pp-b { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; background: #f6f6f7; color: var(--ink); }
+.pp-b.dis { color: #c4c7ce; }
+.md-bg { position: fixed; inset: 0; z-index: 40; background: rgba(0, 0, 0, .5); display: flex; align-items: center; justify-content: center; padding: 16px; }
+.md-bg[hidden] { display: none; }
+.md { width: 600px; max-width: 100%; background: #fff; border-radius: 16px; padding: 40px 48px 48px; }
+.md-h { display: flex; justify-content: space-between; align-items: center; }
+.md-h h2 { font-size: 20px; font-weight: 700; margin: 0; }
+.md-x { width: 26px; height: 26px; border: 1px solid #d5d7dc; border-radius: 4px; background: #fff; padding: 2px; cursor: pointer; color: #555; display: flex; }
+.md-x svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.md-r { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 34px; font-size: 16px; }
+.md-r label { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; position: relative; }
+.md-r input { position: absolute; opacity: 0; }
+.md-r i { width: 22px; height: 22px; border-radius: 50%; border: 1.8px solid #1a1a1a; display: inline-block; position: relative; }
+.md-r input:checked + i { border-color: var(--blue); }
+.md-r input:checked + i::after { content: ""; position: absolute; inset: 3.5px; border-radius: 50%; background: var(--blue); }
+.md-r input:focus-visible + i { box-shadow: 0 0 0 3px rgba(31, 107, 255, .25); }
+.md-b { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.md-b button { height: 46px; border-radius: 6px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+.b-out { background: #fff; color: var(--blue); border: 1px solid var(--blue); }
+.b-fill { background: var(--blue); color: #fff; border: 0; }
+.b-fill:hover { background: var(--blue-d); }
+@media (max-width: 700px) { .pg { padding: 20px 12px 32px; } .md { padding: 26px 20px 24px; } .pg-h { flex-wrap: wrap; gap: 8px; } }
+
 /* Work in progress page (DISC-503) */
 .wip { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
 .wip-c { text-align: center; max-width: 460px; }
