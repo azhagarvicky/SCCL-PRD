@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="../assets/access.js?v=2" data-m="lms"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LMS – Loan details</title>
+<!-- DISC-539: LMS prototype – loan page (LAN Number …): Overview tab, ≡ actions menu, fee tooltips; from the owner's UAT screenshots. Sample data only. Source file. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lms.css?v=9">
+<link rel="stylesheet" href="app.css?v=40">
+</head>
+<body class="app">
+<aside class="sb" id="sb">
+  <div class="sb-top"><img class="sb-logo" src="../assets/img/shriram-logo.png" alt="Shriram Credit">
+    <button type="button" class="sb-av" id="sb-av" title="Profile" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></button>
+    <button type="button" class="sb-x" id="sb-x" aria-label="Expand menu"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <div class="pf" id="pf" hidden>
+    <div class="pf-n" id="pf-n">Azhagarsamy S</div><div class="pf-m" id="pf-m">azhagarsamy.s@shriramcredit.in</div>
+    <button type="button" class="pf-out" id="pf-out">Logout <svg viewBox="0 0 24 24"><path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3"/><path d="M10 12h10M16 8l4 4-4 4"/></svg></button>
+  </div>
+  <nav class="sb-nav">
+    <a class="sb-i" href="dashboard.html"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M6 15l4-5 4 3 6-7"/></svg><span>Dashboard</span></a>
+    <a class="sb-i" href="products.html"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></svg><span>Products</span></a>
+    <div class="sb-grp">
+      <span class="sb-i sb-p"><svg viewBox="0 0 24 24"><rect x="2" y="13" width="3.2" height="6" rx="1"/><path d="M5.2 14.2h3.3c1.3 0 2.2-1.4 3.8-1.4h2.4a1.2 1.2 0 0 1 0 2.4h-3.2"/><path d="M5.2 18.6h8.6c.9 0 1.6-.3 2.3-.8l3.6-3a1.2 1.2 0 0 0-1.5-1.8l-3 2.1"/><circle cx="15.2" cy="5.6" r="2.3"/><circle cx="18.6" cy="7.9" r="2.3"/></svg><span>Loans</span></span>
+      <a class="sb-s on" href="loans-active.html" aria-current="page">Active</a><a class="sb-s" href="#" data-todo="Loans – Inactive">Inactive</a>
+      <a class="sb-s" href="#" data-todo="Loans – Draft">Draft</a><a class="sb-s" href="#" data-todo="Loans – Submitted">Submitted</a>
+      <a class="sb-s" href="#" data-todo="Loans – Closed">Closed</a><a class="sb-s" href="#" data-todo="Loans – Rejected">Rejected</a>
+    </div>
+    <a class="sb-i" href="#" data-todo="Collaterals"><svg viewBox="0 0 24 24"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5z" fill="currentColor"/><path d="M9 12.5h6M9 15.5h6"/></svg><span>Collaterals</span></a>
+    <a class="sb-i" href="#" data-todo="Clients"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="4"/><path d="M2.5 20.5a6.5 6.5 0 0 1 13 0"/><path d="M15.2 4.6a4 4 0 0 1 0 7.8"/><path d="M18 14.8a6.5 6.5 0 0 1 3.5 5.7"/></svg><span>Clients</span></a>
+    <a class="sb-i" href="approvals.html"><svg viewBox="0 0 24 24"><path d="M2 13l4 4 8-9M11 16l1 1 9-10"/></svg><span>Approvals</span></a>
+    <a class="sb-i" href="#" data-todo="Disbursement Management"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.9 2.7.9 2.7-2.4 1.5-.9 2.7-2.8-.2L12 21.5l-2.3-1.7-2.8.2-.9-2.7-2.4-1.5.9-2.7-.9-2.7 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span data-long="Disbursement Management">Disbursem...</span></a>
+    <a class="sb-i" href="#" data-todo="Reports"><svg viewBox="0 0 24 24"><path d="M5.5 11V3.5h8l4 4V11"/><path d="M13.5 3.5v4h4z" fill="currentColor"/><text x="11.5" y="21" text-anchor="middle" font-size="7.6" font-weight="700" stroke="none" fill="currentColor" font-family="Arial">DOC</text></svg><span>Reports</span></a>
+    <a class="sb-i" href="#" data-todo="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
+  </nav>
+</aside>
+
+<div class="mn">
+  <main class="pg lv">
+    <div class="lv-top">
+      <div class="lv-h">
+        <a class="lv-back" href="loans-active.html" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></a>
+        <h1>LAN Number: <span id="lv-lan"></span></h1><span class="pill p-active">Active</span><span class="lv-rk">No Risk</span>
+        <a class="lv-lk" href="#" data-todo="Loan – View status">View status</a>
+        <span class="lv-sp"></span>
+        <a class="lv-lk" href="#" data-todo="Loan – Go to Simulator">Go to Simulator</a>
+        <div class="pv-mw"><button type="button" class="pv-menu" id="lv-menu" aria-label="Loan actions" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+          <div class="pv-dd lv-dd" id="lv-dd" hidden></div></div>
+      </div>
+      <div class="pv-tabs lv-tabs" role="tablist" id="lv-tabs"></div>
+    </div>
+    <section class="pv-c"><h2>Loan Details</h2><div class="lv-g" id="lv-loan"></div></section>
+    <section class="pv-c"><h2>Collection Details</h2><div class="lv-g" id="lv-coll"></div></section>
+    <section class="pv-c"><h2>Client Details</h2><div class="lv-g" id="lv-cli"></div></section>
+    <section class="pv-c"><h2>KFS Details</h2><div class="lv-g" id="lv-kfs"></div></section>
+    <div class="lv-tip" id="lv-tip" role="tooltip" hidden></div>
+  </main>
+</div>
+<script src="loan-data.js?v=1"></script>
+<script>
+(function () {   // DISC-539: loan page – Overview only; other tabs, ≡ actions, View status and Go to Simulator open Work in progress
+  var $ = function (id) { return document.getElementById(id); }, inr = LMS_LOAN.inr;
+  var lan = new URLSearchParams(location.search).get('lan') || 'SCCLMF20261100043', d = LMS_LOAN.find(lan) || LMS_LOAN.all()[0];
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var wip = function (p) { return 'wip.html?p=' + encodeURIComponent(p); };
+  document.title = 'LMS – ' + d.lan; $('lv-lan').textContent = d.lan;
+  var INFO = '<button type="button" class="lv-i" aria-label="Fee and GST" data-tip="TIP"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg></button>';
+  var fg = function (fee) { var g = Math.round(fee * 18) / 100, dec = g % 1 !== 0; return { v: inr(fee + g, dec), t: 'Fee: ' + inr(fee) + ' | GST: ' + inr(g, dec) }; };
+  var tipd = function (o) { return esc(o.v) + ' ' + INFO.replace('TIP', esc(o.t)); };
+  var cell = function (l, v, cls) { return '<div><span>' + l + '</span><b' + (cls ? ' class="' + cls + '"' : '') + '>' + v + '</b></div>'; };
+  var TABS = ['Overview', 'Approvals', 'Disbursement & Repayments', 'Collateral', 'Transactions & Reports', 'KYC', 'Documents', 'Audit', 'Notes', 'Communication'];
+  $('lv-tabs').innerHTML = TABS.map(function (t, i) { return '<button type="button" role="tab"' + (i ? '' : ' class="on" aria-selected="true"') + ' data-t="' + t + '">' + esc(t) + '</button>'; }).join('');
+  [].forEach.call($('lv-tabs').children, function (b, i) { if (i) b.addEventListener('click', function () { location.href = wip('Loan – ' + b.dataset.t); }); });
+  var ACTS = ['Disbursal', 'Repayment', 'Soft Freeze', 'Hard Freeze', 'Unfreeze', 'De-Pledge Assets', 'Liquidate Assets', 'Change ROI', 'Foreclose', 'Waive-off', 'Add Credit Note'];
+  $('lv-dd').innerHTML = ACTS.map(function (a) { return '<button type="button"' + (a === 'Unfreeze' ? ' disabled' : '') + ' data-a="' + a + '">' + a + '</button>'; }).join('');
+  [].forEach.call($('lv-dd').children, function (b) { b.addEventListener('click', function () { location.href = wip('Loan – ' + b.dataset.a); }); });
+  var mb = $('lv-menu'), dd = $('lv-dd'), menu = function (on) { dd.hidden = !on; mb.classList.toggle('open', on); mb.setAttribute('aria-expanded', on); };
+  mb.addEventListener('click', function (e) { e.stopPropagation(); menu(dd.hidden); });
+  document.addEventListener('click', function (e) { if (!dd.contains(e.target)) menu(false); });
+  var pf = { v: inr(d.pf), t: 'Fee: ' + inr(d.fee) + ' | GST: ' + inr(d.gst) };
+  $('lv-loan').innerHTML = cell('LSP', esc(d.lsp)) + cell('Sanctioned Amount', inr(d.sanction)) + cell('Drawing Power', inr(d.sanction)) + cell('Disbursed Amount', inr(0)) +
+    cell('Repaid Amount', inr(0)) + cell('Principal Outstanding', inr(0)) + cell('Available for Disbursement', inr(d.sanction)) +
+    cell('Utilized Drawing Power', '0% <svg class="lv-warn" viewBox="0 0 24 24" aria-label="Utilisation level"><path d="M12 3L2 21h20z"/><path d="M12 10v5M12 17.6v.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>', 'g') +
+    cell('Repayments', 'On time', 'g') + cell('Deduction Date', '5th, Monthly') + cell('Repayment Type', 'Interest Only') + cell('Disbursement Type', 'Revolving') +
+    cell('Rate of Interest', d.roi) + cell('Processing Fee', tipd(pf)) + cell('Tenure', d.tenure + ' months') +
+    cell('Product Name', '<a class="lv-a" href="product-view.html?code=' + encodeURIComponent(d.product) + '">' + esc(d.productName) + '</a>') +
+    cell('Application Start Date', d.start) + cell('Application Submitted Date', d.start) + cell('Loan Start Date', d.start) + cell('Loan End Date', d.end);
+  var cc = function (l, c, du) { return '<div><span>' + l + '</span><b class="lv-ln">Collected: ' + c + '</b><b class="lv-ln">Due: ' + du + '</b><b class="lv-ln">Overdue: ' + inr(0) + '</b></div>'; };
+  $('lv-coll').innerHTML = cc('Interest', inr(0), inr(0)) + cc('Principal', inr(0), inr(0)) + cc('Charges', inr(-d.pf), inr(2 * d.pf));   // as the live LMS shows it (LP-10)
+  $('lv-cli').innerHTML = cell('Client Name', '<a class="lv-a" href="' + wip('Clients – ' + d.client) + '">' + esc(d.client.toUpperCase()) + '</a>') + cell('PAN', d.pan) +
+    cell('Email Id', esc(d.mail)) + cell('Contact Number', d.phone) + cell('Credit Score', d.score, 'g');
+  $('lv-kfs').innerHTML = cell('Renewal Charges', tipd(fg(999))) + cell('Bounce Charges', tipd(fg(100))) + cell('Penal Charges (P.A)', '36%') + cell('Liquidation Charges', '-') +
+    cell('Prepayment Charges/Foreclosure', '-') + cell('Bank Mandate Swap Charges', tipd(fg(250))) + cell('Lien Marking Charges', tipd(fg(450))) + cell('Lien Removal Charges', tipd(fg(100))) +
+    cell('Stamp Duty', tipd(fg(200)));
+  // (i) → tooltip "Fee: ₹… | GST: ₹…" under the icon, on hover or click
+  var tip = $('lv-tip');
+  function show(b) { var r = b.getBoundingClientRect(); tip.textContent = b.dataset.tip; tip.hidden = false; tip.style.left = (r.left + window.scrollX - 10) + 'px'; tip.style.top = (r.bottom + window.scrollY + 8) + 'px'; }
+  [].forEach.call(document.querySelectorAll('.lv-i'), function (b) {
+    b.addEventListener('mouseenter', function () { show(b); }); b.addEventListener('mouseleave', function () { tip.hidden = true; });
+    b.addEventListener('focus', function () { show(b); }); b.addEventListener('blur', function () { tip.hidden = true; });
+  });
+})();
+</script>
+<script src="shell.js?v=2"></script>
+</body>
+</html>

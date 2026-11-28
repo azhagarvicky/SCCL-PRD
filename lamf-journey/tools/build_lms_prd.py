@@ -404,7 +404,7 @@ MODULES = [
  },
  {
   'title': 'Module 6 – Loans',
-  'screens': 'Loans menu · Active loans (LSP filter, All / Shortfall / In Default)',
+  'screens': 'Loans menu · Active loans (LSP filter, All / Shortfall / In Default) · Loan page (Overview, ≡ actions)',
   'rows': [
     {
       'sl': '17', 'shot': img('l17-active'),
@@ -423,7 +423,36 @@ MODULES = [
         (states(('l17-chips', 'All'), ('l17-shortfall', 'Shortfall – no loans')), spec(Field_Name='All / Shortfall / In Default', Field_Type='Chips',
             Prefilled_Value='All', Action='All – every active loan; Shortfall – loans in shortfall (URL ?tab=1); In Default – loans in default (?tab=2). Nothing to show → icon and “No shortfall application”.'), OK),
         (img('l17-head'), spec(Field_Name='Loans table', Field_Type='Table', Action='Scrolls sideways. Risk “No Risk” in green bold; Status pill “Active”; a long Client Name ends with “…”.'), OK),
-        ('', spec(Field_Name='Loan row', Field_Type='Link (row)', Action='Opens the loan page ' + pend('LP-09')), OK),
+        ('', spec(Field_Name='Loan row', Field_Type='Link (row)', Action='Opens the loan page (Sl. No 18).'), OK),
+      ],
+    },
+    {
+      'sl': '18', 'shot': img('l18-loan'),
+      'func': 'Ops user viewing one loan',
+      'desc': ('<p>Opened by clicking a loan in the list. The title row and the tabs stay at the top while the page scrolls. Only the Overview tab is described here; the other tabs and the ≡ actions are separate screens.</p>'
+               + screen_content([('Title', '“LAN Number: {LAN}” · “Active” pill · “No Risk” · “View status” · “Go to Simulator”'),
+                   ('Tabs', '“Overview” · “Approvals” · “Disbursement & Repayments” · “Collateral” · “Transactions & Reports” · “KYC” · “Documents” · “Audit” · “Notes” · “Communication”'),
+                   ('Loan Details', '“LSP” · “Sanctioned Amount” · “Drawing Power” · “Disbursed Amount” · “Repaid Amount” · “Principal Outstanding” · “Available for Disbursement” · “Utilized Drawing Power” · “Repayments” · “Deduction Date” · “Repayment Type” · “Disbursement Type” · “Rate of Interest” · “Processing Fee” · “Tenure” · “Product Name” · “Application Start Date” · “Application Submitted Date” · “Loan Start Date” · “Loan End Date”'),
+                   ('Collection Details', '“Interest” · “Principal” · “Charges”, each “Collected:” · “Due:” · “Overdue:”'),
+                   ('Client Details', '“Client Name” · “PAN” · “Email Id” · “Contact Number” · “Credit Score”'),
+                   ('KFS Details', '“Renewal Charges” · “Bounce Charges” · “Penal Charges (P.A)” · “Liquidation Charges” · “Prepayment Charges/Foreclosure” · “Bank Mandate Swap Charges” · “Lien Marking Charges” · “Lien Removal Charges” · “Stamp Duty”'),
+                   ('Tooltip', '“Fee: ₹{fee} | GST: ₹{GST}”'),
+                   ('≡ menu', '“Disbursal” · “Repayment” · “Soft Freeze” · “Hard Freeze” · “Unfreeze” · “De-Pledge Assets” · “Liquidate Assets” · “Change ROI” · “Foreclose” · “Waive-off” · “Add Credit Note”')])),
+      'data': 'LAN: SCCLMF20261100043<br>LSP: SCCL LOS<br>Sanctioned Amount: ₹12,00,000<br>Processing Fee: ₹11,328 (Fee ₹9,600 + GST ₹1,728)<br>Tenure: 48 months<br>Rate of Interest: 10.5%<br>Deduction Date: 5th, Monthly<br>Dates: DD/MM/YYYY<br>Client: (sample)',
+      'status': WIP,
+      'fields': [
+        (img('l18-head'), spec(Field_Name='Title row', Field_Type='Header', Action='← goes back to the loans list; “View status” and “Go to Simulator” are links ' + pend('LP-10')), OK),
+        (img('l18-tabs'), spec(Field_Name='Tabs', Field_Type='Tabs', Prefilled_Value='Overview', Action='Overview is open; the other tabs are separate screens (to be shared).'), OK),
+        (states(('l18-menu-closed', 'Closed'), ('l18-menu', 'Open')), spec(Field_Name='≡ Loan actions', Field_Type='Menu',
+            Action='Disbursal, Repayment, Soft Freeze, Hard Freeze, Unfreeze, De-Pledge Assets, Liquidate Assets, Change ROI, Foreclose, Waive-off, Add Credit Note – each opens its own flow.',
+            Condition='Unfreeze is grey (not clickable) while the loan is not frozen ' + pend('LP-10')), OK),
+        (img('l18-loan-card'), spec(Field_Name='Loan Details', Field_Type='Card (read only)',
+            Condition='“Repayments: On time” and “Utilized Drawing Power” (with the warning-triangle level icon) in green; Product Name is a link to the product page (Sl. No 7).'), OK),
+        (states(('l18-pf', 'Processing Fee'), ('l18-tip', 'Hover on ⓘ')), spec(Field_Name='ⓘ Fee / GST', Field_Type='Tooltip',
+            Action='Hover on ⓘ shows “Fee: ₹… | GST: ₹…” (GST 18%). Same on Renewal, Bounce, Bank Mandate Swap, Lien Marking, Lien Removal Charges and Stamp Duty.'), OK),
+        (img('l18-coll'), spec(Field_Name='Collection Details', Field_Type='Card (read only)', Action='Collected / Due / Overdue for Interest, Principal and Charges.', Note='Charges Collected shows a minus value in UAT ' + pend('LP-10')), OK),
+        (img('l18-client'), spec(Field_Name='Client Details', Field_Type='Card (read only)', Action='Client Name (capitals) is a link to the client page; Credit Score in green.'), OK),
+        (img('l18-kfs'), spec(Field_Name='KFS Details', Field_Type='Card (read only)', Action='Charges of the product with GST; “-” when not applicable.'), OK),
       ],
     },
   ],
@@ -450,7 +479,8 @@ PENDING = [
  ('LP-06', 'Module 5', 'Sl. No 16 – Reject: message after Yes and the product status after rejection.'),
  ('LP-07', 'LOS', 'INT-L01 / L02 – default tenure on the LOS Application summary (prototype: the maximum); Credit Limit and Processing Fee on the LMS product’s offer card.'),
  ('LP-08', 'Module 6', 'Sl. No 17 – empty text of the In Default chip (prototype: “No in default application”); Risk Level values; what “Generated” shows.'),
- ('LP-09', 'Module 6', 'Sl. No 17 – the loan page opened from a row (screenshot to be shared; prototype: Work in progress).'),
+ ('LP-09', 'Module 6', 'Sl. No 18 – the other loan tabs (Approvals … Communication) and each ≡ action flow – screenshots to be shared.'),
+ ('LP-10', 'Module 6', 'Sl. No 18 – what View status and Go to Simulator open; when Unfreeze is enabled; why Charges “Collected” shows a minus value (₹-11,328) and Due is twice the processing fee; Drawing Power decimals (₹12,00,003.0765 in UAT).'),
 ]
 COMPLETED = []
 TO_IMPLEMENT = []

@@ -112,6 +112,11 @@ const PROD = { code: 'LAMF20261103', name: 'TEST Product SCCL', desc: 'This is T
   await go('loans-active.html'); await shot('l17-active'); await el('.sb-grp', 'l17-menu'); await el('#ln-lsp', 'l17-lsp'); await el('.ln-chips', 'l17-chips'); await el('.ln-tb thead', 'l17-head');
   await p.click('#ln-lsp-b'); await area('#ln-lsp', 'l17-lsp-open', -8, -8, 280, 340); await p.keyboard.press('Escape');
   await p.click('.ln-chips button[data-t="1"]'); await shot('l17-shortfall');
+  await go('loan-view.html?lan=SCCLMF20261100043'); await shot('l18-loan'); await el('.lv-h', 'l18-head'); await el('#lv-tabs', 'l18-tabs');
+  await area('#lv-menu', 'l18-menu-closed', -300, -10, 340, 50); await el('#lv-loan', 'l18-loan-card');
+  await el('#lv-loan > div:nth-child(14)', 'l18-pf'); await p.hover('#lv-loan .lv-i'); await area('#lv-loan .lv-i', 'l18-tip', -130, -40, 360, 110);
+  await el('#lv-coll', 'l18-coll'); await el('#lv-cli', 'l18-client'); await el('#lv-kfs', 'l18-kfs');
+  await p.mouse.move(5, 5); await p.click('#lv-menu'); await area('#lv-menu', 'l18-menu', -240, -10, 280, 440);
   await b.close();
   console.log('LMS PRD shots:', fs.readdirSync(OUT).length);
 })();
