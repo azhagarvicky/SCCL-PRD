@@ -41,7 +41,7 @@
 
 <div class="mn">
   <main class="pg cp">
-    <div class="pg-h"><h1 class="cp-t"><a class="cp-back" href="products.html" aria-label="Back to Products"><svg viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></a>Create a Product</h1>
+    <div class="pg-h"><h1 class="cp-t"><a class="cp-back" id="cp-back" href="products.html" aria-label="Back to Products"><svg viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></a>Create a Product</h1>
       <span class="cp-draft" id="cp-draft"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/><path id="cp-di" d="M12 10v3.5M12 16h.01"/></svg><b id="cp-dt">Cannot Save Draft</b></span></div>
     <div class="cp-g">
       <ol class="cp-steps" id="cp-steps">
@@ -129,6 +129,15 @@
   } else { $('cp-from').value = iso(d); var t = new Date(d); t.setFullYear(t.getFullYear() + 10); $('cp-till').value = iso(t); }
   paint();
   window.addEventListener('popstate', function (e) { if (e.state && e.state.s) { step = e.state.s; paint(); } });
+  // DISC-517: ← back to Products keeps what was typed in a saved draft (UAT: name changed to "TEST Product", back → the list shows TEST Product)
+  $('cp-back').addEventListener('click', function () {
+    if (!cur) return;   // nothing saved yet (Cannot Save Draft) – just go back
+    var n = $('cp-n').value.trim(); if (n) cur.name = n;
+    cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
+    if (step === 2) cur.disb = document.querySelector('input[name="disb"]:checked').value;
+    if (step === 3) { cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); }
+    save(all);
+  });
   $('cp-steps').addEventListener('click', function (e) { var li = e.target.closest('li.go'); if (li) go(+li.dataset.s, true); });
   // DISC-513: "Update" opens the Update Product Access Policy pop-up – the LSP list, all off for a new product (toggles move, not saved)
   var ap = function (on) { $('ap').hidden = !on; };
