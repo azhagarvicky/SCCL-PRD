@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LMS – Create a Product</title>
 <script src="../assets/lms-lock.js?v=2"></script>
-<!-- DISC-506: LMS prototype – Create a Product, step 1 Product Details (after Select security → Loan Against Mutual Funds). Source file. -->
+<!-- DISC-506/507: LMS prototype – Create a Product, step 1 Product Details (after Select security → Loan Against Mutual Funds). Next saves a Draft (DISC-507). Source file. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=13">
+<link rel="stylesheet" href="app.css?v=14">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -42,10 +42,10 @@
 <div class="mn">
   <main class="pg cp">
     <div class="pg-h"><h1 class="cp-t"><a class="cp-back" href="products.html" aria-label="Back to Products"><svg viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></a>Create a Product</h1>
-      <span class="cp-draft"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/><path d="M12 10v3.5M12 16h.01"/></svg>Cannot Save Draft</span></div>
+      <span class="cp-draft" id="cp-draft"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6 9.5 4.3 4.3 0 0 0 7 18z"/><path id="cp-di" d="M12 10v3.5M12 16h.01"/></svg><b id="cp-dt">Cannot Save Draft</b></span></div>
     <div class="cp-g">
       <ol class="cp-steps">
-        <li class="on"><span>1</span>Product Details</li>
+        <li class="on" id="cp-s1"><span>1</span>Product Details</li>
         <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20Disbursement%20Type"><span>2</span>Disbursement Type</a></li>
         <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20Terms"><span>3</span>Terms</a></li>
         <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20Charges"><span>4</span>Charges</a></li>
@@ -53,7 +53,7 @@
         <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20KYC"><span>6</span>KYC</a></li>
       </ol>
       <form class="cp-f" id="cp-f" novalidate>
-        <label for="cp-n">Name of the Product</label><input id="cp-n" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="80">
+        <label for="cp-n">Name of the Product</label><input id="cp-n" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="80"><p class="cp-err" id="cp-err" role="alert"></p>
         <label for="cp-d">Description of the Product</label><input id="cp-d" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="200">
         <div class="cp-2">
           <div><label for="cp-from">Valid From</label><input id="cp-from" class="cp-in" type="date"></div>
@@ -68,10 +68,33 @@
 <script src="shell.js?v=1"></script>
 <script>
 (function () {   // Create a Product – step 1 (DISC-506): default validity today → today + 10 years, as the UAT
+  // DISC-507: Next saves the product as a Draft (next LAMF code), the header turns to "Draft Saved", step 1 gets a tick
+  // and the Draft row shows at the top of the Products list. Drafts are kept in this browser only (sample data).
+  var $ = function (i) { return document.getElementById(i); };
   var d = new Date(), iso = function (x) { return x.getFullYear() + '-' + ('0' + (x.getMonth() + 1)).slice(-2) + '-' + ('0' + x.getDate()).slice(-2); };
-  document.getElementById('cp-from').value = iso(d);
-  var t = new Date(d); t.setFullYear(t.getFullYear() + 10); document.getElementById('cp-till').value = iso(t);
+  var KEY = 'lms-drafts', load = function () { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
+  var save = function (l) { try { localStorage.setItem(KEY, JSON.stringify(l)); } catch (e) {} };
+  var code = new URLSearchParams(location.search).get('code'), all = load(), cur = null;
+  all.forEach(function (x) { if (x.code === code) cur = x; });
+  var saved = function () {   // as the UAT after Next: cloud with a tick + "Draft Saved", step 1 ticked
+    $('cp-dt').textContent = 'Draft Saved'; $('cp-di').setAttribute('d', 'M9.5 13l2 2 3.5-3.5');
+    $('cp-s1').classList.add('done'); $('cp-s1').querySelector('span').textContent = '';
+  };
+  if (cur) { $('cp-n').value = cur.name; $('cp-d').value = cur.desc; $('cp-from').value = cur.from; $('cp-till').value = cur.till; saved(); }
+  else { $('cp-from').value = iso(d); var t = new Date(d); t.setFullYear(t.getFullYear() + 10); $('cp-till').value = iso(t); }
+  $('cp-n').addEventListener('input', function () { $('cp-err').textContent = ''; $('cp-n').classList.remove('bad'); });
+  $('cp-next').addEventListener('click', function (e) {
+    var n = $('cp-n').value.trim();
+    if (!n) { e.preventDefault(); $('cp-err').textContent = 'Please enter the name of the product.'; $('cp-n').classList.add('bad'); $('cp-n').focus(); return; }
+    if (!cur) {   // next code after the latest one in the list (sample list ends at LAMF20261115)
+      var max = 20261115; all.forEach(function (x) { max = Math.max(max, +x.code.slice(4)); });
+      cur = { code: 'LAMF' + (max + 1) }; all.unshift(cur);
+    }
+    cur.name = n; cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
+    save(all); saved(); history.replaceState(null, '', 'create-product.html?code=' + cur.code);
+  });
 })();
+</script>
 </script>
 </body>
 </html>

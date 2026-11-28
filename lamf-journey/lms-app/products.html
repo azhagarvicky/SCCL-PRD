@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=13">
+<link rel="stylesheet" href="app.css?v=14">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -76,6 +76,18 @@
 <script src="shell.js?v=1"></script>
 <script>
 (function () {   // Products: row → details (Work in progress); Create a new product → Select security pop-up (DISC-505)
+  // DISC-507: drafts saved from Create a Product show on top (Draft, "-" for the values not set yet); the list keeps 10 rows.
+  var tb = document.querySelector('.tb tbody'), dl = [];
+  try { dl = JSON.parse(localStorage.getItem('lms-drafts')) || []; } catch (e) {}
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var dmy = function (v) { var p = (v || '').split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : '-'; };
+  dl.slice().reverse().forEach(function (x) {
+    var tr = document.createElement('tr'); tr.dataset.href = 'create-product.html?code=' + encodeURIComponent(x.code);
+    tr.innerHTML = '<td>' + esc(x.code) + '</td><td>' + esc(x.name) + '</td><td><span class="pill p-draft">Draft</span></td><td>' + dmy(x.from) + ' - ' + dmy(x.till) +
+      '</td><td class="r">-</td><td class="r">-</td><td class="r">-</td>';
+    tb.insertBefore(tr, tb.firstChild);
+  });
+  while (tb.rows.length > 10) tb.deleteRow(-1);
   [].forEach.call(document.querySelectorAll('.tb tbody tr'), function (tr) { tr.addEventListener('click', function () { location.href = tr.dataset.href; }); });
   var bg = document.getElementById('sec'), open = function (on) { bg.hidden = !on; };
   document.getElementById('new-prod').addEventListener('click', function () { open(true); });
