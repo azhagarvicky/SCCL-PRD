@@ -1596,3 +1596,6 @@ body.page-lms { margin: 0; background: #F6F7F9; }
 .page-lk .lk-pw input { padding-right: 44px; }
 .page-lk .lk-card .lk-eye { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 36px; margin: 0; padding: 4px; background: none;
   border: 0; font-size: 16px; cursor: pointer; }
+/* DISC-528: access page – "no access" message */
+.page-lk .lk-no { max-width: 420px; margin: 18px auto 0; padding: 12px 14px; border-radius: 8px; background: #fff4e5; color: #7a4a00; font-size: 14px; line-height: 1.5; }
+.page-lk .lk-no a { color: inherit; font-weight: 700; }
