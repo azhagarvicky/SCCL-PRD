@@ -1,6 +1,20 @@
 /* LMS prototype (DISC-520) – turns a product saved from Create a Product (localStorage "lms-products" – DISC-524/525 new key, old test products cleared, this browser only)
    into the texts shown on the Products list and the product page. Source file. */
 window.LMS_PROD = (function () {
+  // DISC-537: the sample Draft LAMF20261103 was removed, so November 2026 products created in this browser move down by one
+  // (LAMF20261104 → LAMF20261103 …) – done once per browser.
+  try {
+    if (!localStorage.getItem('lms-code-fix-537')) {
+      var l = JSON.parse(localStorage.getItem('lms-products-v4')) || [], map = {};
+      l.filter(function (x) { return /^LAMF202611\d{2,}$/.test(x.code) && +x.code.slice(10) >= 4; })
+        .sort(function (a, b) { return +a.code.slice(10) - +b.code.slice(10); })
+        .forEach(function (x, i) { var n = 3 + i; map[x.code] = 'LAMF202611' + (n < 10 ? '0' : '') + n; });
+      l.forEach(function (x) { if (map[x.code]) x.code = map[x.code]; });
+      localStorage.setItem('lms-products-v4', JSON.stringify(l));
+      var o = sessionStorage.getItem('lamf.lmsOffer'); if (o && map[o]) sessionStorage.setItem('lamf.lmsOffer', map[o]);
+      localStorage.setItem('lms-code-fix-537', '1');
+    }
+  } catch (e) {}
   var inr = function (v) { var n = Number(String(v).replace(/[^\d.]/g, '')); return isNaN(n) || v === '' ? '' : '₹' + n.toLocaleString('en-IN'); };
   var pct = function (v) { return v === '' || v == null ? '' : String(+v) + '%'; };
   var dmy = function (v) { var p = (v || '').split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : '-'; };
