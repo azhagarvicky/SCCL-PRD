@@ -18,6 +18,7 @@ LMS_SCREENS = [
     ("07) Product details – Active (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html?code=LAMF20261114"),
     ("08) Product details – Inactive", "lms-app/product-view.html?code=LAMF20261111"),
     ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF2026108"),
+    ("10) Approvals – My Pending Approvals / All Approvals", "lms-app/approvals.html"),
 ]
 
 

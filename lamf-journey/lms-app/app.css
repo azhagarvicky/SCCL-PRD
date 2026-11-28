@@ -379,3 +379,31 @@ button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: point
 .toast[hidden] { display: none; }
 .toast svg { width: 22px; height: 22px; fill: #1f9d55; }
 .cp-f label.ky-r.dis { color: #9aa0ab; cursor: default; }
+
+/* DISC-521: change request block, maker / checker footer, Approvals page – from the owner's UAT screenshots */
+.pv-chg h1 { font-size: 24px; font-weight: 700; margin: 0 0 10px; }
+.pv-rq { font-size: 15.5px; font-weight: 700; margin: 0 0 26px; }
+.pv-by { font-size: 16px; margin: 0 0 30px; }
+.pv-sp { display: inline-block; width: 24px; }
+.pv-foot { flex-direction: column; align-items: stretch; gap: 14px; }
+.pv-btns { display: flex; justify-content: flex-end; gap: 22px; }
+.pv-mk { background: #fdf1d6; border-radius: 6px; text-align: center; padding: 11px; font-size: 16px; font-weight: 500; }
+.pv-mk[hidden] { display: none; }
+.has-foot.mk .pv { padding-bottom: 190px; }
+.pv-foot.chk .pv-rej { border-color: #e5484d; color: #e5484d; background: #fff; cursor: pointer; }
+.pv-foot.chk .pv-apr { background: var(--blue); color: #fff; cursor: pointer; }
+.pv-foot.chk .pv-apr:hover { background: var(--blue-d); }
+.ap-tabs { margin-top: 0; }
+.ap-h { font-size: 22px; font-weight: 600; margin: 0 0 24px; }
+.ap-empty { display: flex; flex-direction: column; align-items: center; gap: 14px; font-size: 16px; font-weight: 500; }
+.ap-empty[hidden], #ap-wrap[hidden] { display: none; }
+.ap-empty svg { width: 44px; height: 44px; fill: none; stroke: #111; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ap-tb td { vertical-align: middle; }
+.flt { display: inline-block; width: 13px; height: 9px; margin-left: 8px; vertical-align: middle; background: linear-gradient(#111, #111) top/13px 1.6px no-repeat, linear-gradient(#111, #111) center/9px 1.6px no-repeat, linear-gradient(#111, #111) bottom/5px 1.6px no-repeat; }
+.ap-lk { color: var(--blue); text-decoration: none; }
+.ap-lk:hover { text-decoration: underline; }
+.ap-d { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+.apv-c { flex: none; line-height: 18px; display: inline-block; border: 1px solid #e4e6eb; border-radius: 16px; padding: 4px 10px; font-size: 12.5px; font-weight: 600; background: #fff; }
+.apv-c.g { background: #f1f1f2; border-color: #f1f1f2; }
+.ap-r { display: inline-block; background: #f1f1f2; border-radius: 4px; padding: 4px 8px; margin: 2px 6px 2px 0; font-size: 14.5px; }
+.ap-pager { display: flex; justify-content: flex-end; gap: 6px; margin-top: 16px; }
