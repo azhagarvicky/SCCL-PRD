@@ -412,3 +412,18 @@ button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: point
 .co-k .fe { margin-left: 10px; }
 .sel-b.ph { color: #9aa0ab; }
 .k-ig .ig-s[hidden] + input { padding-left: 16px; }
+
+/* DISC-525: checker – Upload a file / Add a note above Reject / Approve (UAT) */
+.ck { margin-top: 26px; }
+.ck[hidden] { display: none; }
+.ck-l { display: block; font-size: 14.5px; color: #5b6170; margin: 0 0 10px; }
+.ck-drop { display: block; border: 1.5px dashed #c9ccd3; border-radius: 6px; padding: 16px; text-align: center; font-size: 14.5px; color: #5b6170; cursor: pointer; background: #fff; }
+.ck-drop b { color: var(--blue); font-weight: 600; }
+.ck-drop.ov { border-color: var(--blue); background: #f5f8ff; }
+.ck-h { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #5b6170; margin: 8px 0 14px; }
+.ck-h svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.ck-h.bad { color: #d92d20; }
+.ck-fl { display: flex; flex-wrap: wrap; gap: 8px; margin: -4px 0 14px; }
+.ck-fl:empty { display: none; }
+.ck .cp-in { margin: 0; }
+.ckr.has-foot .pv { padding-bottom: 120px; }

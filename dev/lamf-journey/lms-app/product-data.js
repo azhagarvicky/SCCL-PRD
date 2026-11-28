@@ -1,4 +1,4 @@
-/* LMS prototype (DISC-520) – turns a product saved from Create a Product (localStorage "lms-products" – DISC-524 new key, old test products cleared, this browser only)
+/* LMS prototype (DISC-520) – turns a product saved from Create a Product (localStorage "lms-products" – DISC-524/525 new key, old test products cleared, this browser only)
    into the texts shown on the Products list and the product page. Source file. */
 window.LMS_PROD = (function () {
   var inr = function (v) { var n = Number(String(v).replace(/[^\d.]/g, '')); return isNaN(n) || v === '' ? '' : '₹' + n.toLocaleString('en-IN'); };
@@ -11,8 +11,8 @@ window.LMS_PROD = (function () {
   function nameOf(m) { if (!m) return '-'; if (m === 'azhagarsamy.s@shriramcredit.in') return 'Azhagarsamy S';
     return m.split('@')[0].split(/[._-]+/).map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' '); }
   function rid() { var c = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz', r = ''; for (var i = 0; i < 10; i++) r += c.charAt(Math.floor(Math.random() * c.length)); return r; }
-  function save(l) { try { localStorage.setItem('lms-products', JSON.stringify(l)); } catch (e) {} }
-  function load() { try { return JSON.parse(localStorage.getItem('lms-products')) || []; } catch (e) { return []; } }
+  function save(l) { try { localStorage.setItem('lms-products-v3', JSON.stringify(l)); } catch (e) {} }
+  function load() { try { return JSON.parse(localStorage.getItem('lms-products-v3')) || []; } catch (e) { return []; } }
   function list(x) {   // Products list columns
     var t = x.terms;
     return { validity: dmy(x.from) + ' - ' + dmy(x.till),

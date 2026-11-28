@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=34">
+<link rel="stylesheet" href="app.css?v=35">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -56,6 +56,13 @@
       <section class="pv-c"><h2>Charges</h2><div class="pv-g"><div><span>Renewal Charges</span><b>₹999</b></div><div><span>Bounce Charges</span><b>₹100</b></div><div><span>Penal Charges</span><b>36%</b></div><div><span>Liquidation Charges</span><b>-</b></div><div><span>Prepayment Charges</span><b>-</b></div><div><span>Bank Mandate Swap Charges</span><b>₹250</b></div></div></section>
     </div>
     <div id="t-doc" hidden><p class="pv-none">No preview documents available</p></div>
+    <div class="ck" id="ck" hidden>   <!-- DISC-525: checker only – upload a file and add a note before Approve / Reject -->
+      <label class="ck-l">Upload a file</label>
+      <label class="ck-drop" id="ck-drop" for="ck-f">Drop files here or <b>click</b><input type="file" id="ck-f" accept=".pdf,.png,.jpg,.jpeg" hidden></label>
+      <p class="ck-h" id="ck-h"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>PDF, PNG or JPG. Max 5MB</p>
+      <div class="ck-fl" id="ck-fl"></div>
+      <label class="ck-l" for="ck-n">Add a note</label><input class="cp-in" id="ck-n" placeholder="Add a note" maxlength="500">
+    </div>
   </main>
   <footer class="cp-foot pv-foot" id="pv-foot" hidden><div class="pv-btns"><button type="button" class="pv-rej" id="pv-rej" disabled>Reject</button><button type="button" class="pv-apr" id="pv-apr" disabled>Approve</button></div><div class="pv-mk" id="pv-mk" hidden>Maker cannot check</div></footer>
 </div>
@@ -70,23 +77,23 @@
   </div>
 </div>
 <script src="shell.js?v=1"></script>
-<script src="product-data.js?v=4"></script>
+<script src="product-data.js?v=5"></script>
 <script>
 (function () {   // Product details (DISC-512): tabs Product Details / Documents; ≡ menu → Update Access Policy pop-up
   var $ = function (i) { return document.getElementById(i); };
   // DISC-513: one page for the 3 statuses (sample data from the owner's UAT screenshots).
   // Inactive: ≡ is grey and not clickable. In Review: ≡ grey, bottom bar with Reject / Approve (both disabled, as the UAT).
   var P = {
-    LAMF2026112: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
-    LAMF2026111: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
+    LAMF20261114: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
+    LAMF20261111: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
       f: { 'Disbursement Type': 'Multiple', 'Tenure': '12 months', 'Processing Fee': '₹999 - 1%' } },
-    LAMF2026108: { n: 'UAT_LSP_Forward_Liquify', st: 'In Review', v: '13/10/2026 - 28/10/2036', s: 'Testing LSP',
+    LAMF20261008: { n: 'UAT_LSP_Forward_Liquify', st: 'In Review', v: '13/10/2026 - 28/10/2036', s: 'Testing LSP',
       f: { 'Disbursement Type': 'Multiple', 'Rate of Interest': '9.6% - 15%', 'Tenure': '12 months', 'Processing Fee': '₹999 - 3%',
            'Maximum Mandate Amount': '₹10,000 - ₹2,00,00,000', 'Repayment Frequency': '1st, Monthly' } }
   };
   var code = new URLSearchParams(location.search).get('code'), d = P[code];
   if (!d) LMS_PROD.load().forEach(function (x) { if (x.code === code) d = LMS_PROD.page(x); });   // DISC-520: a product created in this browser
-  d = d || P.LAMF2026112;
+  d = d || P.LAMF20261114;
   if (d.kyc) d.kyc.forEach(function (k) { var sp = document.createElement('span'); sp.textContent = k; document.querySelector('.pv-k').appendChild(sp); });
   $('pv-n').textContent = d.n; $('pv-v').textContent = 'Validity: ' + d.v; $('pv-s').textContent = d.s;
   $('pv-st').textContent = d.st; $('pv-st').className = 'pill p-' + d.st.toLowerCase().replace(' ', '');
@@ -100,6 +107,25 @@
     $('pv-chg').hidden = false; $('pv-rq').textContent = d.req; $('pv-by').textContent = LMS_PROD.nameOf(d.maker); $('pv-on').textContent = d.on;
     if (d.st === 'In Review') {
       var mk = d.maker === LMS_PROD.me();
+      if (!mk) {   // DISC-525 checker: Upload a file (PDF, PNG or JPG, max 5 MB – click or drop) and Add a note, as the UAT
+        $('ck').hidden = false; document.body.classList.add('ckr');
+        var files = [], drawF = function () {
+          $('ck-fl').innerHTML = '';
+          files.forEach(function (f, i) { var c = document.createElement('span'); c.className = 'chip'; c.textContent = f.name;
+            var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + f.name);
+            x.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>';
+            x.addEventListener('click', function () { files.splice(i, 1); drawF(); }); c.appendChild(x); $('ck-fl').appendChild(c); });
+        };
+        var add = function (list) {
+          [].forEach.call(list, function (f) { var ok = /\.(pdf|png|jpe?g)$/i.test(f.name) && f.size <= 5 * 1024 * 1024;
+            $('ck-h').classList.toggle('bad', !ok); if (ok) files.push(f); });
+          drawF();
+        };
+        $('ck-f').addEventListener('change', function () { add(this.files); this.value = ''; });
+        $('ck-drop').addEventListener('dragover', function (e) { e.preventDefault(); this.classList.add('ov'); });
+        $('ck-drop').addEventListener('dragleave', function () { this.classList.remove('ov'); });
+        $('ck-drop').addEventListener('drop', function (e) { e.preventDefault(); this.classList.remove('ov'); add(e.dataTransfer.files); });
+      }
       $('pv-mk').hidden = !mk; $('pv-rej').disabled = mk; $('pv-apr').disabled = mk; $('pv-foot').classList.toggle('chk', !mk); document.body.classList.toggle('mk', mk);
       ['pv-rej', 'pv-apr'].forEach(function (id) { $(id).addEventListener('click', function () {
         location.href = 'wip.html?p=' + encodeURIComponent((id === 'pv-apr' ? 'Approve' : 'Reject') + ' – ' + d.n); }); });

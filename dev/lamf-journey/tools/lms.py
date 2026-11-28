@@ -15,9 +15,9 @@ LMS_SCREENS = [
     ("04) Dashboard", "lms-app/dashboard.html"),
     ("05) Products – list and Select security pop-up", "lms-app/products.html"),
     ("06) Create a Product – 6 steps, Submit → In Review (Product details … KYC)", "lms-app/create-product.html"),
-    ("07) Product details – Active (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html?code=LAMF2026112"),
-    ("08) Product details – Inactive", "lms-app/product-view.html?code=LAMF2026111"),
-    ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF2026108"),
+    ("07) Product details – Active (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html?code=LAMF20261114"),
+    ("08) Product details – Inactive", "lms-app/product-view.html?code=LAMF20261111"),
+    ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF20261008"),
     ("10) Approvals – My Pending Approvals / All Approvals", "lms-app/approvals.html"),
 ]
 
