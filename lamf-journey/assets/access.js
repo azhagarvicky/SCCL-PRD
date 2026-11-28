@@ -9,7 +9,7 @@
   var ON = true;   // DISC-528/529: on – the owner deployed the new Apps Script version on 28-11-2026
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxrag9tuAwoD111KNMX07yNhgxjkJriKNlGw_2TeBkGLzdIxQ3K_z_2X9QxwBQKBIYG/exec';
   var KEY = 'lamf-access', RECHECK = 5 * 60 * 1000;
-  var NAMES = { prd: 'PRD document', brd: 'BRD documents', journey: 'LAMF journey', comms: 'Communications', calc: 'Calculator', lms: 'LMS' };
+  var NAMES = { prd: 'PRD document', brd: 'BRD documents', journey: 'LOS', comms: 'Communications', calc: 'Calculator', lms: 'LMS' };
   var me = document.currentScript, mod = me && me.getAttribute('data-m');
   var base = me ? me.src.replace(/assets\/access\.js.*$/, '') : '';   // site folder (…/lamf-journey/), works from sub-folders too
   function get() { try { var s = JSON.parse(sessionStorage.getItem(KEY)); return s && s.exp > Date.now() ? s : null; } catch (e) { return null; } }
