@@ -1163,7 +1163,7 @@ with open(os.path.join(ROOT, "communications.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Customer Communications", cls="page-screens page-comms", body=comms_body("index.html")))
 # LMS modules page (DISC-327); data in tools/lms.py. The home LMS CTA opens the LMS screen list lms-screens.html (DISC-485)
 from lms import lms_body, lms_screens_body
-LMS_LOCK = '<script src="assets/lms-lock.js?v=1"></script>\n</head>'   # DISC-489: the LMS pages open only after the mail ID + secret code
+LMS_LOCK = '<script src="assets/lms-lock.js?v=2"></script>\n</head>'   # DISC-489: the LMS pages open only after the mail ID + secret code
 with open(os.path.join(ROOT, "lms-screens.html"), "w") as f:
     f.write(PAGE.format(title="LAMF LMS – Screens", cls="page-screens", body=lms_screens_body(LOGO.format(home="index.html"))).replace("</head>", LMS_LOCK, 1))
 LMS_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1>LMS – Access</h1>'
@@ -1172,7 +1172,7 @@ LMS_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1>LMS – Acc
               '<label for="lk-mail">Mail ID</label><input id="lk-mail" type="email" maxlength="120" autocomplete="username">'
               '<label for="lk-code">Secret code</label><input id="lk-code" type="password" maxlength="40" autocomplete="current-password">'
               '<p class="lk-err" id="lk-err" role="alert"></p><button type="submit" id="lk-go" disabled>Continue</button></form></main>'
-              '<script src="assets/lms-lock.js?v=1" data-gate="off"></script><script>(function(){'
+              '<script src="assets/lms-lock.js?v=2" data-gate="off"></script><script>(function(){'
               'var q=new URLSearchParams(location.search).get("next")||"",nx="lms-screens.html";'
               'try{var u=q&&new URL(q,location.href);if(u&&u.origin===location.origin&&/\\/lamf-journey\\//.test(u.pathname)&&!/lms-access/.test(u.pathname))nx=u.href;}catch(e){}'
               'if(LMS_LOCK.isOpen())return location.replace(nx);'
