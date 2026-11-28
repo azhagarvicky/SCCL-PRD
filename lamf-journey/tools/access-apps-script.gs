@@ -3,8 +3,9 @@
  * SCCL mail ID → OTP by mail → admin approval. Used by assets/gate.js (login on the protected pages) and admin.html (admin portal).
  *
  * Setup (one time):
- *   1. Create a Google Sheet named "LAMF Site Access" (any tab name – the script creates Users, Sessions and Log).
- *   2. Extensions → Apps Script, replace everything with this file, Save.
+ *   1. Create a Google Sheet named "LAMF Site Access" and open Extensions → Apps Script (or start a new project at script.google.com –
+ *      then setup creates the sheet "LAMF Site Access" in your Drive itself).
+ *   2. Replace everything in Code.gs with this file, Save.
  *   3. Run the function "setup" once (▶ Run) and allow the permissions (Sheets, send mail).
  *   4. Deploy → New deployment → type "Web app":  Execute as: Me  ·  Who has access: Anyone  → Deploy.
  *   5. Copy the Web app URL (ends in /exec) and give it to Claude.
@@ -28,11 +29,24 @@ function setup() {
   tab_('Users', USERS); tab_('Sessions', SESS); tab_('Log', LOG); salt_();
   const u = tab_('Users', USERS);
   if (!find_(u, ADMIN)) u.appendRow([ADMIN, 'Admin', now_(), 'Approved', 'Setup', now_(), '']);
+  const first = ss_().getSheetByName('Sheet1');
+  if (first && first.getLastRow() === 0 && ss_().getSheets().length > 1) ss_().deleteSheet(first);   // remove the empty default tab
+  Logger.log('Setup done. Sheet: ' + ss_().getUrl());
 }
 
 // ---- helpers ------------------------------------------------------------------------------------------------------------
+// The sheet: the one this script is attached to (Extensions → Apps Script), else one it creates itself on the first setup run.
+function ss_() {
+  const a = SpreadsheetApp.getActiveSpreadsheet();
+  if (a) return a;
+  const p = PropertiesService.getScriptProperties(), id = p.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  const ss = SpreadsheetApp.create('LAMF Site Access');
+  p.setProperty('SHEET_ID', ss.getId());
+  return ss;
+}
 function tab_(name, head) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   let sh = ss.getSheetByName(name);
   if (!sh) sh = ss.insertSheet(name);
   if (sh.getLastRow() === 0) {
