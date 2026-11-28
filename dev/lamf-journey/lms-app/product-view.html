@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=30">
+<link rel="stylesheet" href="app.css?v=32">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -32,7 +32,7 @@
     </div>
     <a class="sb-i" href="#" data-todo="Collaterals"><svg viewBox="0 0 24 24"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5z" fill="currentColor"/><path d="M9 12.5h6M9 15.5h6"/></svg><span>Collaterals</span></a>
     <a class="sb-i" href="#" data-todo="Clients"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="4"/><path d="M2.5 20.5a6.5 6.5 0 0 1 13 0"/><path d="M15.2 4.6a4 4 0 0 1 0 7.8"/><path d="M18 14.8a6.5 6.5 0 0 1 3.5 5.7"/></svg><span>Clients</span></a>
-    <a class="sb-i" href="#" data-todo="Approvals"><svg viewBox="0 0 24 24"><path d="M2 13l4 4 8-9M11 16l1 1 9-10"/></svg><span>Approvals</span></a>
+    <a class="sb-i" href="approvals.html"><svg viewBox="0 0 24 24"><path d="M2 13l4 4 8-9M11 16l1 1 9-10"/></svg><span>Approvals</span></a>
     <a class="sb-i" href="#" data-todo="Disbursement Management"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.9 2.7.9 2.7-2.4 1.5-.9 2.7-2.8-.2L12 21.5l-2.3-1.7-2.8.2-.9-2.7-2.4-1.5.9-2.7-.9-2.7 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span data-long="Disbursement Management">Disbursem...</span></a>
     <a class="sb-i" href="#" data-todo="Reports"><svg viewBox="0 0 24 24"><path d="M5.5 11V3.5h8l4 4V11"/><path d="M13.5 3.5v4h4z" fill="currentColor"/><text x="11.5" y="21" text-anchor="middle" font-size="7.6" font-weight="700" stroke="none" fill="currentColor" font-family="Arial">DOC</text></svg><span>Reports</span></a>
     <a class="sb-i" href="#" data-todo="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
@@ -41,6 +41,8 @@
 
 <div class="mn">
   <main class="pg pv">
+    <div class="pv-chg" id="pv-chg" hidden><h1>Change: Product Creation</h1><p class="pv-rq">Request ID:&nbsp; <span id="pv-rq"></span></p>
+      <p class="pv-by">Initiated By:&nbsp; <span id="pv-by"></span><span class="pv-sp"></span>Initiated On:&nbsp; <span id="pv-on"></span></p></div>
     <div class="pv-h">
       <div><h1><span id="pv-n">LAMF_UAT_SCCL_LOC</span> <span class="pill p-active" id="pv-st">Active</span></h1>
         <p id="pv-v">Validity: 09/11/2026 - 30/11/2026</p><p id="pv-s">LAMF_Internal_OD</p></div>
@@ -55,7 +57,7 @@
     </div>
     <div id="t-doc" hidden><p class="pv-none">No preview documents available</p></div>
   </main>
-  <footer class="cp-foot pv-foot" id="pv-foot" hidden><button type="button" class="pv-rej" disabled>Reject</button><button type="button" class="pv-apr" disabled>Approve</button></footer>
+  <footer class="cp-foot pv-foot" id="pv-foot" hidden><div class="pv-btns"><button type="button" class="pv-rej" id="pv-rej" disabled>Reject</button><button type="button" class="pv-apr" id="pv-apr" disabled>Approve</button></div><div class="pv-mk" id="pv-mk" hidden>Maker cannot check</div></footer>
 </div>
 
 <div class="md-bg" id="ap" hidden>
@@ -68,7 +70,7 @@
   </div>
 </div>
 <script src="shell.js?v=1"></script>
-<script src="product-data.js?v=1"></script>
+<script src="product-data.js?v=2"></script>
 <script>
 (function () {   // Product details (DISC-512): tabs Product Details / Documents; ≡ menu → Update Access Policy pop-up
   var $ = function (i) { return document.getElementById(i); };
@@ -92,6 +94,17 @@
   [].forEach.call(document.querySelectorAll('.pv-g > div'), function (x) { var k = x.firstChild.textContent; if (d.f[k]) x.lastChild.textContent = d.f[k]; });
   if (d.st !== 'Active') { $('pv-menu').disabled = true; $('pv-menu').setAttribute('aria-disabled', 'true'); }
   if (d.st === 'In Review') { $('pv-foot').hidden = false; document.body.classList.add('has-foot'); }
+  // DISC-521: a product created here – the change request block on top; the maker sees Reject / Approve greyed + "Maker cannot check",
+  // any other logged-in user (checker) gets Reject (red) / Approve (blue). What Approve / Reject do is not built yet (Work in progress).
+  if (d.req) {
+    $('pv-chg').hidden = false; $('pv-rq').textContent = d.req; $('pv-by').textContent = LMS_PROD.nameOf(d.maker); $('pv-on').textContent = d.on;
+    if (d.st === 'In Review') {
+      var mk = d.maker === LMS_PROD.me();
+      $('pv-mk').hidden = !mk; $('pv-rej').disabled = mk; $('pv-apr').disabled = mk; $('pv-foot').classList.toggle('chk', !mk); document.body.classList.toggle('mk', mk);
+      ['pv-rej', 'pv-apr'].forEach(function (id) { $(id).addEventListener('click', function () {
+        location.href = 'wip.html?p=' + encodeURIComponent((id === 'pv-apr' ? 'Approve' : 'Reject') + ' – ' + d.n); }); });
+    }
+  }
   [].forEach.call(document.querySelectorAll('.pv-tabs button'), function (b) {
     b.addEventListener('click', function () {
       [].forEach.call(document.querySelectorAll('.pv-tabs button'), function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
