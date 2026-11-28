@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=37">
+<link rel="stylesheet" href="app.css?v=38">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -61,7 +61,7 @@
       <label class="ck-drop" id="ck-drop" for="ck-f">Drop files here or <b>click</b><input type="file" id="ck-f" accept=".pdf,.png,.jpg,.jpeg" hidden></label>
       <p class="ck-h" id="ck-h"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>PDF, PNG or JPG. Max 5MB</p>
       <div class="ck-fl" id="ck-fl"></div>
-      <label class="ck-l" for="ck-n">Add a note</label><input class="cp-in" id="ck-n" placeholder="Add a note" maxlength="500">
+      <label class="ck-l" for="ck-n">Add a note</label><input class="cp-in" id="ck-n" placeholder="Add a note" maxlength="500"><p class="ck-e" id="ck-e" role="alert"></p>
     </div>
   </main>
   <footer class="cp-foot pv-foot" id="pv-foot" hidden><div class="pv-btns"><button type="button" class="pv-rej" id="pv-rej" disabled>Reject</button><button type="button" class="pv-apr" id="pv-apr" disabled>Approve</button></div><div class="pv-mk" id="pv-mk" hidden>Maker cannot check</div></footer>
@@ -74,6 +74,13 @@
     <table class="ap-t"><thead><tr><th>LSP Name</th><th class="r">LSP Access</th></tr></thead>
       <tbody><tr><td>sccl-los</td><td class="r"><label class="sw"><input type="checkbox" checked aria-label="sccl-los access"><i></i></label></td></tr></tbody></table>
     <button type="button" class="b-out ap-c" id="ap-c">Cancel</button>
+  </div>
+</div>
+<div class="md-bg" id="cf" hidden>   <!-- DISC-532 confirmation before Approve / Reject (UAT) -->
+  <div class="md cf" role="alertdialog" aria-modal="true" aria-labelledby="cf-t">
+    <button type="button" class="cf-x" id="cf-x" aria-label="Close"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></button>
+    <h2 id="cf-t">This action is irreversible. Are you sure you want to proceed?</h2>
+    <div class="md-b"><button type="button" class="b-out" id="cf-n">No</button><button type="button" class="b-fill" id="cf-y">Yes</button></div>
   </div>
 </div>
 <script src="shell.js?v=2"></script>
@@ -103,7 +110,7 @@
   if (d.st === 'In Review') { $('pv-foot').hidden = false; document.body.classList.add('has-foot'); }
   // DISC-521: a product created here – the change request block on top; the maker sees Reject / Approve greyed + "Maker cannot check",
   // any other logged-in user (checker) gets Reject (red) / Approve (blue). What Approve / Reject do is not built yet (Work in progress).
-  if (d.req) {
+  if (d.req && d.st === 'In Review') {   // DISC-532: after approval the product page shows no change block
     $('pv-chg').hidden = false; $('pv-rq').textContent = d.req; $('pv-by').textContent = LMS_PROD.nameOf(d.maker); $('pv-on').textContent = d.on;
     if (d.st === 'In Review') {
       // DISC-526: Checker or Admin may approve (Permitted Roles), never the user who made the request
@@ -128,8 +135,26 @@
         $('ck-drop').addEventListener('drop', function (e) { e.preventDefault(); this.classList.remove('ov'); add(e.dataTransfer.files); });
       }
       $('pv-mk').hidden = d.maker !== LMS_PROD.me(); $('pv-rej').disabled = mk; $('pv-apr').disabled = mk; $('pv-foot').classList.toggle('chk', !mk); document.body.classList.toggle('mk', mk);
+      // DISC-532 as the UAT: a note is mandatory → "Note is required"; then "This action is irreversible. Are you sure you want to proceed?"
+      // No / Yes; Yes on Approve → product Active, request leaves Approvals, back to Approvals with "Approved successfully".
+      // Reject: same note + confirmation (assumed), result screen not shared yet → Work in progress.
+      var act = '';
+      $('ck-n').addEventListener('input', function () { if (this.value.trim()) { $('ck-e').textContent = ''; this.classList.remove('bad'); } });
       ['pv-rej', 'pv-apr'].forEach(function (id) { $(id).addEventListener('click', function () {
-        location.href = 'wip.html?p=' + encodeURIComponent((id === 'pv-apr' ? 'Approve' : 'Reject') + ' – ' + d.n); }); });
+        if (!$('ck-n').value.trim()) { $('ck-e').textContent = 'Note is required'; $('ck-n').classList.add('bad'); $('ck-n').focus(); return; }
+        act = id; $('cf').hidden = false; $('cf-y').focus();
+      }); });
+      var cf = function (o) { $('cf').hidden = !o; };
+      $('cf-n').addEventListener('click', function () { cf(false); }); $('cf-x').addEventListener('click', function () { cf(false); });
+      $('cf').addEventListener('click', function (e) { if (e.target === $('cf')) cf(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') cf(false); });
+      $('cf-y').addEventListener('click', function () {
+        if (act === 'pv-rej') { location.href = 'wip.html?p=' + encodeURIComponent('Reject – ' + d.n); return; }
+        var all = LMS_PROD.load(), dt = new Date();
+        all.forEach(function (x) { if (x.code === code) { x.status = 'Active'; x.note = $('ck-n').value.trim(); x.checker = LMS_PROD.me();
+          x.approvedOn = ('0' + dt.getDate()).slice(-2) + '/' + ('0' + (dt.getMonth() + 1)).slice(-2) + '/' + dt.getFullYear(); } });
+        LMS_PROD.save(all); location.href = 'approvals.html?toast=approved';
+      });
     }
   }
   [].forEach.call(document.querySelectorAll('.pv-tabs button'), function (b) {

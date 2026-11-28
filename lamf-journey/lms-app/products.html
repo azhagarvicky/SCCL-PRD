@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=37">
+<link rel="stylesheet" href="app.css?v=38">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -78,7 +78,7 @@
   dl.slice().reverse().forEach(function (x) {   // DISC-520: a submitted product shows In Review with its values; In Review opens the product page
     var st = x.status || 'Draft', l = LMS_PROD.list(x), tr = document.createElement('tr');
     tr.dataset.href = (st === 'Draft' ? 'create-product.html?code=' : 'product-view.html?code=') + encodeURIComponent(x.code);
-    tr.innerHTML = '<td>' + esc(x.code) + '</td><td>' + esc(x.name) + '</td><td><span class="pill p-' + st.toLowerCase().replace(' ', '') + '">' + st + '</span></td><td>' + l.validity +
+    tr.innerHTML = '<td>' + esc(x.code) + '</td><td title="' + esc(x.name) + '">' + esc(x.name) + '</td><td><span class="pill p-' + st.toLowerCase().replace(' ', '') + '">' + st + '</span></td><td>' + l.validity +
       '</td><td class="r">' + l.sa + '</td><td class="r">' + l.ri + '</td><td class="r">' + l.pf + '</td>';
     tb.insertBefore(tr, tb.firstChild);
   });

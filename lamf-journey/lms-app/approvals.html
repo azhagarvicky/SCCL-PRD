@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=37">
+<link rel="stylesheet" href="app.css?v=38">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -50,6 +50,7 @@
       <div class="ap-pager"><a class="pp-b dis" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></a><a class="pp-b dis" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a></div></div>
   </main>
 </div>
+<div class="toast" id="ap-toast" role="status" hidden><svg viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.6-.9 2.9.9 2.9-2.5 1.6-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9L3.2 15.9l.9-2.9-.9-2.9 2.5-1.6.9-2.9 3 .2z"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Approved successfully</div>
 <script src="shell.js?v=2"></script>
 <script src="product-data.js?v=6"></script>
 <script>
@@ -84,6 +85,9 @@
   boxes.forEach(function (b) { b.addEventListener('change', function () { $('ct-all').checked = boxes.every(function (x) { return x.checked; }); show(cur); }); });
   [].forEach.call(document.querySelectorAll('.ap-tabs button'), function (b) { b.addEventListener('click', function () { cur = b.dataset.t; }); });
   show('my');
+  if (new URLSearchParams(location.search).get('toast') === 'approved') {   // DISC-532 after Approve → Yes
+    $('ap-toast').hidden = false; history.replaceState(null, '', 'approvals.html'); setTimeout(function () { $('ap-toast').hidden = true; }, 3500);
+  }
 })();
 </script>
 </body>
