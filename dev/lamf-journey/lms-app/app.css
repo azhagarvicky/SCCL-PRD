@@ -106,6 +106,13 @@ svg.ch text { font-family: var(--font); fill: #6b7080; font-size: 11px; }
 .sk-r i.s { width: 50px; }
 .sk-b { height: 300px; border-radius: 8px; background: #eeeef0; margin-top: 20px; }
 
+/* Work in progress page (DISC-503) */
+.wip { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.wip-c { text-align: center; max-width: 460px; }
+.wip-c svg { width: 44px; height: 44px; fill: none; stroke: #9aa0ab; stroke-width: 1.5; stroke-linecap: round; }
+.wip-c h1 { font-size: 24px; font-weight: 700; margin: 14px 0 10px; }
+.wip-c p { margin: 6px 0; font-size: 15px; color: #3f4350; line-height: 1.5; }
+.wip-c a { color: var(--blue); }
 .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #1a1a1a; color: #fff; font-size: 13px; padding: 10px 16px; border-radius: 8px; z-index: 9; }
 
 @media (max-width: 1100px) {
