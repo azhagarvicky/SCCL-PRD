@@ -19,7 +19,9 @@ def lms_screens_body(logo):
             f'<p>{len(LMS_SCREENS)} screen{"s" if len(LMS_SCREENS) != 1 else ""}, in order. The LMS prototype is rebuilt screen by screen '
             'from the live LMS (sample data only).</p>'
             f'<ol>{items}</ol>'
-            '<p class="lms-old">Earlier LMS prototype (Loans lists, LAN page, Waiver flows): <a href="lms.html">open lms.html</a>.</p>')
+            '<p class="lms-old">Earlier LMS prototype (Loans lists, LAN page, Waiver flows): <a href="lms.html">open lms.html</a>.</p>'
+            + '<p class="lms-lockbar"><button type="button" onclick="LMS_LOCK.lock();location.replace(\'lms-access.html\')">🔒 Lock LMS</button> '
+            'Locks the LMS on this browser – the mail ID and secret code are asked again.</p>')
 
 
 LMS_MODULES = [   # (id, name, sub-modules, description)
