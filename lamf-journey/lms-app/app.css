@@ -266,6 +266,7 @@ svg.ch rect, svg.sp rect { cursor: default; }
 .pv-menu:disabled { color: #b4b8c0; cursor: default; border-color: transparent; }
 .has-foot .pv { padding-bottom: 120px; }
 .pv-foot { gap: 22px; }
+.pv-foot[hidden] { display: none; }   /* only In Review shows Reject / Approve (DISC-514) */
 .pv-foot button { width: 228px; height: 45px; border-radius: 6px; font: inherit; font-size: 16px; font-weight: 600; }
 .pv-rej { background: #fff; border: 1px solid #c9ccd3; color: #a3a7b0; }
 .pv-apr { background: #f6f6f7; border: 0; color: #a3a7b0; }
