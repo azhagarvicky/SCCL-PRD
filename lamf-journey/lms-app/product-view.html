@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LMS – Product details</title>
 <script src="../assets/lms-lock.js?v=2"></script>
-<!-- DISC-512: LMS prototype – Product details of an Active product (Products list → Active row), from the owner's UAT screenshots. SAMPLE data. Source file. -->
+<!-- DISC-512/513: LMS prototype – Product details (Products list → Active / Inactive / In Review row, ?code=…), from the owner's UAT screenshots. SAMPLE data. Source file. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=18">
+<link rel="stylesheet" href="app.css?v=19">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -42,8 +42,8 @@
 <div class="mn">
   <main class="pg pv">
     <div class="pv-h">
-      <div><h1>LAMF_UAT_SCCL_LOC <span class="pill p-active">Active</span></h1>
-        <p>Validity: 09/11/2026 - 30/11/2026</p><p>LAMF_Internal_OD</p></div>
+      <div><h1><span id="pv-n">LAMF_UAT_SCCL_LOC</span> <span class="pill p-active" id="pv-st">Active</span></h1>
+        <p id="pv-v">Validity: 09/11/2026 - 30/11/2026</p><p id="pv-s">LAMF_Internal_OD</p></div>
       <div class="pv-mw"><button type="button" class="pv-menu" id="pv-menu" aria-label="More actions" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
         <div class="pv-dd" id="pv-dd" hidden><button type="button" id="pv-upd">Update Access Policy</button></div></div>
     </div>
@@ -55,6 +55,7 @@
     </div>
     <div id="t-doc" hidden><p class="pv-none">No preview documents available</p></div>
   </main>
+  <footer class="cp-foot pv-foot" id="pv-foot" hidden><button type="button" class="pv-rej" disabled>Reject</button><button type="button" class="pv-apr" disabled>Approve</button></footer>
 </div>
 
 <div class="md-bg" id="ap" hidden>
@@ -70,6 +71,23 @@
 <script>
 (function () {   // Product details (DISC-512): tabs Product Details / Documents; ≡ menu → Update Access Policy pop-up
   var $ = function (i) { return document.getElementById(i); };
+  // DISC-513: one page for the 3 statuses (sample data from the owner's UAT screenshots).
+  // Inactive: ≡ is grey and not clickable. In Review: ≡ grey, bottom bar with Reject / Approve (both disabled, as the UAT).
+  var P = {
+    LAMF20261114: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
+    LAMF20261111: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
+      f: { 'Disbursement Type': 'Multiple', 'Tenure': '12 months', 'Processing Fee': '₹999 - 1%' } },
+    LAMF2026108: { n: 'UAT_LSP_Forward_Liquify', st: 'In Review', v: '13/10/2026 - 28/10/2036', s: 'Testing LSP',
+      f: { 'Disbursement Type': 'Multiple', 'Rate of Interest': '9.6% - 15%', 'Tenure': '12 months', 'Processing Fee': '₹999 - 3%',
+           'Maximum Mandate Amount': '₹10,000 - ₹2,00,00,000', 'Repayment Frequency': '1st, Monthly' } }
+  };
+  var code = new URLSearchParams(location.search).get('code'), d = P[code] || P.LAMF20261114;
+  $('pv-n').textContent = d.n; $('pv-v').textContent = 'Validity: ' + d.v; $('pv-s').textContent = d.s;
+  $('pv-st').textContent = d.st; $('pv-st').className = 'pill p-' + d.st.toLowerCase().replace(' ', '');
+  document.title = 'LMS – ' + d.n;
+  [].forEach.call(document.querySelectorAll('.pv-g > div'), function (x) { var k = x.firstChild.textContent; if (d.f[k]) x.lastChild.textContent = d.f[k]; });
+  if (d.st !== 'Active') { $('pv-menu').disabled = true; $('pv-menu').setAttribute('aria-disabled', 'true'); }
+  if (d.st === 'In Review') { $('pv-foot').hidden = false; document.body.classList.add('has-foot'); }
   [].forEach.call(document.querySelectorAll('.pv-tabs button'), function (b) {
     b.addEventListener('click', function () {
       [].forEach.call(document.querySelectorAll('.pv-tabs button'), function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=18">
+<link rel="stylesheet" href="app.css?v=19">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -59,11 +59,20 @@
           <div><label for="cp-from">Valid From</label><input id="cp-from" class="cp-in" type="date"></div>
           <div><label for="cp-till">Valid Till</label><input id="cp-till" class="cp-in" type="date"></div>
         </div>
-        <p class="cp-pol">Product Access Policy for LSPs <a href="wip.html?p=Product%20Access%20Policy%20for%20LSPs">Update</a></p>
+        <p class="cp-pol">Product Access Policy for LSPs <a href="#" id="cp-upd">Update</a></p>
       </form>
     </div>
   </main>
   <footer class="cp-foot"><a class="b-fill cp-next" id="cp-next" href="wip.html?p=Create%20a%20Product%20%E2%80%93%20Disbursement%20Type">Next</a></footer>
+</div>
+<div class="md-bg" id="ap" hidden>
+  <div class="md ap" role="dialog" aria-modal="true" aria-labelledby="ap-t">
+    <div class="md-h"><h2 id="ap-t">Update Product Access Policy</h2>
+      <button type="button" class="md-x" id="ap-x" aria-label="Close"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></button></div>
+    <table class="ap-t"><thead><tr><th>LSP Name</th><th class="r">LSP Access</th></tr></thead>
+      <tbody><tr><td>Quicklend</td><td class="r"><label class="sw"><input type="checkbox" aria-label="Quicklend access"><i></i></label></td></tr><tr><td>Test</td><td class="r"><label class="sw"><input type="checkbox" aria-label="Test access"><i></i></label></td></tr><tr><td>LARK</td><td class="r"><label class="sw"><input type="checkbox" aria-label="LARK access"><i></i></label></td></tr><tr><td>Liquify</td><td class="r"><label class="sw"><input type="checkbox" aria-label="Liquify access"><i></i></label></td></tr><tr><td>SCCL LOS</td><td class="r"><label class="sw"><input type="checkbox" aria-label="SCCL LOS access"><i></i></label></td></tr><tr><td>Forward Wealth</td><td class="r"><label class="sw"><input type="checkbox" aria-label="Forward Wealth access"><i></i></label></td></tr></tbody></table>
+    <button type="button" class="b-out ap-c" id="ap-c">Cancel</button>
+  </div>
 </div>
 <script src="shell.js?v=1"></script>
 <script>
@@ -82,6 +91,12 @@
   };
   if (cur) { $('cp-n').value = cur.name; $('cp-d').value = cur.desc; $('cp-from').value = cur.from; $('cp-till').value = cur.till; saved(); }
   else { $('cp-from').value = iso(d); var t = new Date(d); t.setFullYear(t.getFullYear() + 10); $('cp-till').value = iso(t); }
+  // DISC-513: "Update" opens the Update Product Access Policy pop-up – the LSP list, all off for a new product (toggles move, not saved)
+  var ap = function (on) { $('ap').hidden = !on; };
+  $('cp-upd').addEventListener('click', function (e) { e.preventDefault(); ap(true); });
+  $('ap-x').addEventListener('click', function () { ap(false); }); $('ap-c').addEventListener('click', function () { ap(false); });
+  $('ap').addEventListener('click', function (e) { if (e.target === $('ap')) ap(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') ap(false); });
   $('cp-n').addEventListener('input', function () { $('cp-err').textContent = ''; $('cp-n').classList.remove('bad'); });
   $('cp-next').addEventListener('click', function (e) {
     var n = $('cp-n').value.trim();
