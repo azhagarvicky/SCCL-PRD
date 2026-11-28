@@ -2,7 +2,7 @@
    Sizes measured from the owner's UAT screenshot (1440 px wide window). */
 :root {
   --blue: #1f6bff; --blue-d: #1a5ce0; --ink: #0b0b0f; --muted: #5b6170; --line: #e4e6eb; --ph: #9aa0ab; --err: #d92d20;
-  --font: "Satoshi", "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
+  --font: "Figtree", "Segoe UI", Arial, Helvetica, sans-serif;   /* the live LMS font (owner's Inspect, DISC-506) */
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
