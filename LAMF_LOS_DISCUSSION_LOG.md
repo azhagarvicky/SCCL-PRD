@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 16:05 IST
+**Last Updated:** 28-11-2026 16:12 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -542,6 +542,7 @@
 | DISC-507 | 28-11-2026 | lms-app/create-product.html, lms-app/products.html, lms-app/app.css, lms-app/*.html (css version) | LMS – Create a Product: Next saves a Draft | Owner shared the UAT after Next on step 1 (name TEST): URL create-a-product/LAMF20261116, header “Draft Saved”, step 1 ticked; the Products list shows LAMF20261116 TEST – Draft – 28/11/2026 - 28/11/2036 – “-” for Sanction Amount, Rate of Interest, Processing Fee, on top | Next on step 1 now saves the product as a Draft with the next code (LAMF20261116, then 17 …) in this browser only (sample data): header turns to cloud-tick “Draft Saved”, step 1 shows a blue tick, the page address becomes create-product.html?code=…, then Next opens step 2 (Work in progress). Products list shows saved drafts on top (Draft pill, “-” values), keeping 10 rows; clicking a draft reopens it filled with “Draft Saved”. Assumed (not in the screenshots): empty name blocks Next with “Please enter the name of the product.” – to confirm with the UAT. Step 2 Disbursement Type screen still needed. | WIP |
 | DISC-508 | 28-11-2026 | lms-app/app.css, lms-app/*.html (css version) | LMS Products table – text and status pill style as the UAT | Owner zoomed in the prototype and the UAT Products list side by side: the dates / values and the “Draft” pill looked different | Measured from the zoomed screenshots: table cells 14 px, medium (500), near-black; column headers semibold (600); status pills 12 px text, tighter height (2 px top / bottom), rounder corners (10 px); Draft pill #ececec with darker text. | WIP |
 | DISC-509 | 28-11-2026 | lms-app/app.css, lms-app/*.html (css version) | LMS Products – “+ Create a new product” hover | Owner shared the UAT hover state of “+ Create a new product” | On mouse-over (and keyboard focus) the CTA gets a light blue-grey rounded background (#f3f6fe, 8 px corners, 8 px / 12 px padding), as the UAT. | WIP |
+| DISC-510 | 28-11-2026 | lms-app/products.html | LMS Products list – one sample row per status | Owner: too many rows; keep one line item for each status | Products list now has 4 sample rows: LAMF20261115 aa12 – Draft, LAMF20261114 LAMF_UAT_SCCL_LOC – Active, LAMF20261111 LAMF_UAT_NOV_2026_SCCL_MULTIPLE – Inactive, LAMF20261010 Test 122 – In Review. “Showing 1 - 4 items” (count follows the rows, incl. drafts saved from Create a Product), next-page arrow disabled. | WIP |
 
 ---
 
