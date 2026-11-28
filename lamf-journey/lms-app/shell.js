@@ -13,6 +13,9 @@
   // ---- profile pop-up and expand / collapse menu (DISC-499)
   var app = document.body, sb = $('sb'), av = $('sb-av'), pf = $('pf'), sx = $('sb-x');
   try { var who = sessionStorage.getItem('lms-user'); if (who) $('pf-m').textContent = who; } catch (e) {}
+  // DISC-526: name in the profile pop-up for the 3 sample users (opsmaker = Maker, opschecker = Checker, azhagarsamy.s = Admin)
+  var NM = { 'opsmaker@shriramcredit.in': 'Ops Maker', 'opschecker@shriramcredit.in': 'Ops Checker', 'azhagarsamy.s@shriramcredit.in': 'Azhagarsamy S' };
+  if (who) $('pf-n').textContent = NM[who] || who.split('@')[0];
   function openPf(on) { pf.hidden = !on; av.setAttribute('aria-expanded', on ? 'true' : 'false'); }
   av.addEventListener('click', function (e) { e.stopPropagation(); openPf(pf.hidden); });
   document.addEventListener('click', function (e) { if (!pf.hidden && !pf.contains(e.target)) openPf(false); });

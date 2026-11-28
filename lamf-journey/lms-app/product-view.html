@@ -76,24 +76,24 @@
     <button type="button" class="b-out ap-c" id="ap-c">Cancel</button>
   </div>
 </div>
-<script src="shell.js?v=1"></script>
-<script src="product-data.js?v=5"></script>
+<script src="shell.js?v=2"></script>
+<script src="product-data.js?v=6"></script>
 <script>
 (function () {   // Product details (DISC-512): tabs Product Details / Documents; ≡ menu → Update Access Policy pop-up
   var $ = function (i) { return document.getElementById(i); };
   // DISC-513: one page for the 3 statuses (sample data from the owner's UAT screenshots).
   // Inactive: ≡ is grey and not clickable. In Review: ≡ grey, bottom bar with Reject / Approve (both disabled, as the UAT).
   var P = {
-    LAMF20261114: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
-    LAMF20261111: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
+    LAMF20261102: { n: 'LAMF_UAT_SCCL_LOC', st: 'Active', v: '09/11/2026 - 30/11/2026', s: 'LAMF_Internal_OD', f: {} },
+    LAMF20261101: { n: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE', st: 'Inactive', v: '02/11/2026 - 30/11/2036', s: 'LAMF_UAT_NOV_2026_SCCL_MULTIPLE',
       f: { 'Disbursement Type': 'Multiple', 'Tenure': '12 months', 'Processing Fee': '₹999 - 1%' } },
-    LAMF20261008: { n: 'UAT_LSP_Forward_Liquify', st: 'In Review', v: '13/10/2026 - 28/10/2036', s: 'Testing LSP',
+    LAMF20261001: { n: 'UAT_LSP_Forward_Liquify', st: 'In Review', v: '13/10/2026 - 28/10/2036', s: 'Testing LSP',
       f: { 'Disbursement Type': 'Multiple', 'Rate of Interest': '9.6% - 15%', 'Tenure': '12 months', 'Processing Fee': '₹999 - 3%',
            'Maximum Mandate Amount': '₹10,000 - ₹2,00,00,000', 'Repayment Frequency': '1st, Monthly' } }
   };
   var code = new URLSearchParams(location.search).get('code'), d = P[code];
   if (!d) LMS_PROD.load().forEach(function (x) { if (x.code === code) d = LMS_PROD.page(x); });   // DISC-520: a product created in this browser
-  d = d || P.LAMF20261114;
+  d = d || P.LAMF20261102;
   if (d.kyc) d.kyc.forEach(function (k) { var sp = document.createElement('span'); sp.textContent = k; document.querySelector('.pv-k').appendChild(sp); });
   $('pv-n').textContent = d.n; $('pv-v').textContent = 'Validity: ' + d.v; $('pv-s').textContent = d.s;
   $('pv-st').textContent = d.st; $('pv-st').className = 'pill p-' + d.st.toLowerCase().replace(' ', '');
@@ -106,7 +106,8 @@
   if (d.req) {
     $('pv-chg').hidden = false; $('pv-rq').textContent = d.req; $('pv-by').textContent = LMS_PROD.nameOf(d.maker); $('pv-on').textContent = d.on;
     if (d.st === 'In Review') {
-      var mk = d.maker === LMS_PROD.me();
+      // DISC-526: Checker or Admin may approve (Permitted Roles), never the user who made the request
+      var mk = d.maker === LMS_PROD.me() || LMS_PROD.role() === 'Maker';
       if (!mk) {   // DISC-525 checker: Upload a file (PDF, PNG or JPG, max 5 MB – click or drop) and Add a note, as the UAT
         $('ck').hidden = false; document.body.classList.add('ckr');
         var files = [], drawF = function () {
@@ -126,7 +127,7 @@
         $('ck-drop').addEventListener('dragleave', function () { this.classList.remove('ov'); });
         $('ck-drop').addEventListener('drop', function (e) { e.preventDefault(); this.classList.remove('ov'); add(e.dataTransfer.files); });
       }
-      $('pv-mk').hidden = !mk; $('pv-rej').disabled = mk; $('pv-apr').disabled = mk; $('pv-foot').classList.toggle('chk', !mk); document.body.classList.toggle('mk', mk);
+      $('pv-mk').hidden = d.maker !== LMS_PROD.me(); $('pv-rej').disabled = mk; $('pv-apr').disabled = mk; $('pv-foot').classList.toggle('chk', !mk); document.body.classList.toggle('mk', mk);
       ['pv-rej', 'pv-apr'].forEach(function (id) { $(id).addEventListener('click', function () {
         location.href = 'wip.html?p=' + encodeURIComponent((id === 'pv-apr' ? 'Approve' : 'Reject') + ' – ' + d.n); }); });
     }

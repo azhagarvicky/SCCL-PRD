@@ -112,15 +112,15 @@
     <button type="button" class="b-out ap-c" id="ap-c">Cancel</button>
   </div>
 </div>
-<script src="shell.js?v=1"></script>
-<script src="product-data.js?v=5"></script>
+<script src="shell.js?v=2"></script>
+<script src="product-data.js?v=6"></script>
 <script>
 (function () {   // Create a Product – steps 1–3 (DISC-506, 507, 515): default validity today → today + 10 years, as the UAT
   // DISC-507: Next saves the product as a Draft (next LAMF code), the header turns to "Draft Saved", step 1 gets a tick
   // and the Draft row shows at the top of the Products list. Drafts are kept in this browser only (sample data).
   var $ = function (i) { return document.getElementById(i); };
   var d = new Date(), iso = function (x) { return x.getFullYear() + '-' + ('0' + (x.getMonth() + 1)).slice(-2) + '-' + ('0' + x.getDate()).slice(-2); };
-  var KEY = 'lms-products-v3', load = function () { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
+  var KEY = 'lms-products-v4', load = function () { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } };
   var save = function (l) { try { localStorage.setItem(KEY, JSON.stringify(l)); } catch (e) {} };
   var code = new URLSearchParams(location.search).get('code'), all = load(), cur = null;
   all.forEach(function (x) { if (x.code === code) cur = x; });
@@ -278,8 +278,8 @@
       var n = $('cp-n').value.trim();
       if (!n) { $('cp-err').textContent = 'Product name is missing'; $('cp-n').classList.add('bad'); $('cp-n').focus(); return; }   // UAT wording (DISC-516)
       if (!cur) {   // DISC-525 product code = LAMF + year (4 digits) + month (2 digits) + running number of the month (2 digits, 3 when over 99)
-        // e.g. LAMF20261116 = Nov 2026, 16th product. The sample list has Nov 2026 numbers up to 15 (LAMF20261111, 14, 15).
-        var dt = new Date(), pre = 'LAMF' + dt.getFullYear() + ('0' + (dt.getMonth() + 1)).slice(-2), seq = pre === 'LAMF202611' ? 15 : 0;
+        // e.g. LAMF20261104 = Nov 2026, 4th product. DISC-526: the sample list has 3 products of Nov 2026 (LAMF20261101-03) and 1 of Oct (LAMF20261001).
+        var dt = new Date(), pre = 'LAMF' + dt.getFullYear() + ('0' + (dt.getMonth() + 1)).slice(-2), seq = pre === 'LAMF202611' ? 3 : pre === 'LAMF202610' ? 1 : 0;
         all.forEach(function (x) { if (x.code.indexOf(pre) === 0) seq = Math.max(seq, +x.code.slice(pre.length)); });
         cur = { code: pre + (seq + 1 < 10 ? '0' : '') + (seq + 1), done: 0 }; all.unshift(cur);
       }

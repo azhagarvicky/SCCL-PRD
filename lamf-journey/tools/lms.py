@@ -15,9 +15,9 @@ LMS_SCREENS = [
     ("04) Dashboard", "lms-app/dashboard.html"),
     ("05) Products – list and Select security pop-up", "lms-app/products.html"),
     ("06) Create a Product – 6 steps, Submit → In Review (Product details … KYC)", "lms-app/create-product.html"),
-    ("07) Product details – Active (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html?code=LAMF20261114"),
-    ("08) Product details – Inactive", "lms-app/product-view.html?code=LAMF20261111"),
-    ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF20261008"),
+    ("07) Product details – Active (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html?code=LAMF20261102"),
+    ("08) Product details – Inactive", "lms-app/product-view.html?code=LAMF20261101"),
+    ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF20261001"),
     ("10) Approvals – My Pending Approvals / All Approvals", "lms-app/approvals.html"),
 ]
 
@@ -57,7 +57,7 @@ REJECTED_COLS = ["LAN", "Product Id", "Client Name", "PAN", "Sanction Amount", "
 _NAMES = ["Sample Customer A", "Sample Customer B", "Sample Customer C", "Sample Customer D", "Sample Customer E",
           "Sample Customer F", "Sample Customer G", "Sample Customer H", "Sample Customer I", "Sample Customer J"]
 _SRC = ["SCCL LOS", "Quicklend", "Liquify", "SCCL LOS", "Quicklend", "Forward wealth", "SCCL LOS", "Liquify", "Quicklend", "SCCL LOS"]
-_PROD = ["LAMF20261114", "LAMF20261113", "LAMF20261117", "LAMF20261114", "LAMF2026106", "LAMF20261113", "LAMF20261114",
+_PROD = ["LAMF20261102", "LAMF20261113", "LAMF20261117", "LAMF20261102", "LAMF2026106", "LAMF20261113", "LAMF20261102",
          "LAMF20261117", "LAMF2026106", "LAMF20261113"]
 _AMT = ["₹1,25,000", "₹59,300", "₹19,300", "₹1,06,000", "₹32,500", "₹10,600", "₹22,400", "₹19,000", "₹18,700", "₹18,200"]
 _ROI = ["10.49%", "11%", "10.49%", "10.49%", "11%", "11%", "10.49%", "10.49%", "10.49%", "10.49%"]
