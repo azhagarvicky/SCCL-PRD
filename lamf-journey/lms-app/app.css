@@ -5,7 +5,8 @@
 /* ---- left menu ---- */
 .sb { position: fixed; left: 0; top: 0; bottom: 0; width: 100px; border-right: 1px solid var(--bd); background: #fff; display: flex; flex-direction: column; z-index: 5; }
 .sb-top { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 12px 12px; border-bottom: 1px solid var(--bd); height: 64px; }
-.sb-av { width: 32px; height: 32px; border-radius: 50%; background: #eceef2; display: flex; align-items: center; justify-content: center; }
+.sb-av { width: 32px; height: 32px; border-radius: 50%; background: #eceef2; display: flex; align-items: center; justify-content: center; border: 0; padding: 0; cursor: pointer; color: var(--ink); flex: none; }
+.sb-av:hover, .sb-av[aria-expanded="true"] { background: #e1e4ea; }
 .sb-av svg, .sb-x svg, .sb-i svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .sb-av svg { width: 18px; height: 18px; }
 .sb-x { border: 0; background: none; padding: 0; width: 20px; height: 20px; cursor: pointer; color: var(--ink); }
@@ -22,7 +23,30 @@
 .sb-nav > .sb-i + .sb-grp { margin-top: 0; }
 
 /* ---- main ---- */
-.mn { flex: 1; margin-left: 100px; min-width: 0; }
+.mn { flex: 1; margin-left: 100px; min-width: 0; transition: margin-left .2s; }
+.sb { transition: width .2s; }
+.sb-logo { display: none; }
+
+/* expanded menu (DISC-499) – arrow next to the profile icon */
+.sb.wide { width: 316px; }
+.sb.wide + .pf + .mn, .app.wide .mn { margin-left: 316px; }
+.sb.wide .sb-top { height: 92px; padding: 10px 12px 10px 14px; gap: 14px; justify-content: flex-start; }
+.sb.wide .sb-logo { display: block; width: 200px; height: auto; margin-right: auto; }
+.sb.wide .sb-x { width: 28px; height: 28px; border: 1px solid #c9ccd3; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.sb.wide .sb-x svg { width: 20px; height: 20px; transform: rotate(180deg); }
+.sb.wide .sb-i { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 17px 16px; font-size: 16.5px; }
+.sb.wide .sb-i svg { width: 22px; height: 22px; }
+.sb.wide .sb-s { padding: 17px 16px 17px 64px; font-size: 16.5px; }
+.sb.wide .sb-nav { border-top: 4px solid #f1f2f4; }
+
+/* profile pop-up (DISC-499) */
+.pf { position: fixed; left: 16px; top: 52px; z-index: 8; width: 226px; background: #fff; border-radius: 6px; box-shadow: 0 4px 18px rgba(0, 0, 0, .16); padding: 6px 0; }
+.app.wide .pf { left: 220px; top: 70px; }
+.pf-n, .pf-m { padding: 8px 12px; font-size: 13px; color: var(--ink); overflow-wrap: anywhere; }
+.pf-out { width: 100%; display: flex; justify-content: space-between; align-items: center; border: 0; border-top: 1px solid #ececef; background: none; font: inherit;
+  font-size: 13.5px; padding: 10px 12px 6px; margin-top: 2px; cursor: pointer; color: var(--ink); }
+.pf-out:hover { background: #f5f6f9; }
+.pf-out svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .upd { position: sticky; top: 0; z-index: 4; height: 45px; display: flex; align-items: center; justify-content: center; gap: 5px; background: #f6f6f7;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .12); font-size: 15px; font-weight: 500; color: #3d4049; }
 .db { padding: 6px 24px 40px; }
@@ -53,7 +77,7 @@
 .dn ul { list-style: none; margin: 0; padding: 0; font-size: 12.5px; font-weight: 500; }
 .dn li { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
 .dn li i, .sq-key i { width: 11px; height: 11px; border-radius: 50%; background: var(--c); display: inline-block; }
-.sq-key { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 8px; font-size: 11.5px; font-weight: 500; margin-top: 8px; align-items: center; }
+.sq-key { display: flex; justify-content: center; flex-wrap: nowrap; white-space: nowrap; gap: 6px 6px; font-size: 11.5px; font-weight: 500; margin-top: 8px; align-items: center; }
 .sq-key i { border-radius: 2px; width: 9px; height: 9px; margin-left: 8px; }
 svg.ch { display: block; width: 100%; height: auto; overflow: visible; }
 svg.ch text { font-family: var(--font); fill: #6b7080; font-size: 11px; }
