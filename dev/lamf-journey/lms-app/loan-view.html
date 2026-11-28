@@ -87,7 +87,7 @@
     cell('Utilized Drawing Power', '0% <svg class="lv-warn" viewBox="0 0 24 24" aria-label="Utilisation level"><path d="M12 3L2 21h20z"/><path d="M12 10v5M12 17.6v.4" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>', 'g') +
     cell('Repayments', 'On time', 'g') + cell('Deduction Date', '5th, Monthly') + cell('Repayment Type', 'Interest Only') + cell('Disbursement Type', 'Revolving') +
     cell('Rate of Interest', d.roi) + cell('Processing Fee', tipd(pf)) + cell('Tenure', d.tenure + ' months') +
-    cell('Product Name', '<a class="lv-a" href="product-view.html?code=' + encodeURIComponent(d.product) + '">' + esc(d.productName) + '</a>') +
+    cell('Product Name', '<a class="lv-a" href="product-view.html?code=' + encodeURIComponent(d.product) + '" target="_blank" data-newtab="1" title="Opens the product page in a new tab">' + esc(d.productName) + '</a>') +
     cell('Application Start Date', d.start) + cell('Application Submitted Date', d.start) + cell('Loan Start Date', d.start) + cell('Loan End Date', d.end);
   var cc = function (l, c, du) { return '<div><span>' + l + '</span><b class="lv-ln">Collected: ' + c + '</b><b class="lv-ln">Due: ' + du + '</b><b class="lv-ln">Overdue: ' + inr(0) + '</b></div>'; };
   $('lv-coll').innerHTML = cc('Interest', inr(0), inr(0)) + cc('Principal', inr(0), inr(0)) + cc('Charges', inr(-d.pf), inr(2 * d.pf));   // as the live LMS shows it (LP-10)
@@ -96,6 +96,11 @@
   $('lv-kfs').innerHTML = cell('Renewal Charges', tipd(fg(999))) + cell('Bounce Charges', tipd(fg(100))) + cell('Penal Charges (P.A)', '36%') + cell('Liquidation Charges', '-') +
     cell('Prepayment Charges/Foreclosure', '-') + cell('Bank Mandate Swap Charges', tipd(fg(250))) + cell('Lien Marking Charges', tipd(fg(450))) + cell('Lien Removal Charges', tipd(fg(100))) +
     cell('Stamp Duty', tipd(fg(200)));
+  // DISC-540: Product Name opens the product page in a NEW tab. window.open copies this tab's session (site access + LMS user) to the new tab,
+  // so the new tab does not ask for the login again (a plain target=_blank link would not copy it).
+  [].forEach.call(document.querySelectorAll('[data-newtab]'), function (a) { a.addEventListener('click', function (e) {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return; e.preventDefault(); window.open(a.href, '_blank');
+  }); });
   // (i) → tooltip "Fee: ₹… | GST: ₹…" under the icon, on hover or click
   var tip = $('lv-tip');
   function show(b) { var r = b.getBoundingClientRect(); tip.textContent = b.dataset.tip; tip.hidden = false; tip.style.left = (r.left + window.scrollX - 10) + 'px'; tip.style.top = (r.bottom + window.scrollY + 8) + 'px'; }
