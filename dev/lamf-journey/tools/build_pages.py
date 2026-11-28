@@ -1107,7 +1107,7 @@ def home_body(home, prd, journey, comms, calc, internal, brd):
             '<div class="home-ctas">'
             f'<a class="home-cta" href="{prd}">Open the PRD document →</a>'
             f'<a class="home-cta" href="{brd}">Open BRD document →</a>'
-            f'<a class="home-cta" href="{journey}">Start the LAMF journey →</a>'
+            f'<a class="home-cta" href="{journey}">LOS →</a>'   # DISC-531 renamed from "Start the LAMF journey"
             '<a class="home-cta" href="#comms-pop">Communications →</a>'
             f'<a class="home-cta" href="{calc}">Calculator →</a>'
             '<a class="home-cta" href="lms-screens.html">LMS →</a>'   # LMS lock page → LMS screen list (DISC-489, DISC-485; earlier lms.html, DISC-327)
