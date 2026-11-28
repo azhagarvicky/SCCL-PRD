@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=28">
+<link rel="stylesheet" href="app.css?v=30">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -50,7 +50,7 @@
         <li data-s="3"><span>3</span>Terms</li>
         <li data-s="4"><span>4</span>Charges</li>
         <li data-s="5"><span>5</span>Collections</li>
-        <li><a href="wip.html?p=Create%20a%20Product%20%E2%80%93%20KYC"><span>6</span>KYC</a></li>
+        <li data-s="6"><span>6</span>KYC</li>
       </ol>
       <form class="cp-f" id="p1" novalidate>
         <label for="cp-n">Name of the Product <span class="fe" id="cp-err" role="alert"></span></label><input id="cp-n" class="cp-in" placeholder="Ex. Product Quicklend" maxlength="80">
@@ -67,7 +67,8 @@
       <div class="cp-f tm" id="p4" hidden><div class="tm-r ch-r"><div class="tm-l"><b>Renewal Charges</b><span>in INR</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-ren" inputmode="decimal" placeholder="Ex. 1000" data-err="Renewal charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Bounce Charges</b><span>in INR</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-bou" inputmode="decimal" placeholder="Ex. 100" data-err="Bounce charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Bank Mandate Swap Charges</b><span>in INR</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-bms" inputmode="decimal" placeholder="Ex. 1000" data-err="Bank mandate swap is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Penal Charges</b><span>% of defaulted amount</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-pen" inputmode="decimal" placeholder="Ex. 2" data-err="Penal charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Liquidation Charges</b><span>% of sale value</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-liq" inputmode="decimal" placeholder="Ex. 2" data-err="Liquidation charge is missing"></div><div class="tm-r ch-r"><div class="tm-l"><b>Prepayment Charges</b><span>% of principal outstanding</span><p class="fe" role="alert"></p></div><input class="cp-in" id="c-pre" inputmode="decimal" placeholder="Ex. 2" data-err="Prepayment charge is missing"></div></div>
       <div class="cp-f co" id="p5" hidden>
         <h3>Maximum amount for mandate</h3>
-        <div class="sel"><select id="k-mand" aria-label="Maximum amount for mandate"><option>Sanction Amount</option><option>2 time(s) of Sanction amount</option></select></div>
+        <div class="sel"><select id="k-mand" aria-label="Maximum amount for mandate"><option>Sanction Amount</option><option>Multiple of Loan Amount</option><option>Absolute Value</option></select></div>
+        <div id="k-amw" hidden><label class="co-k" for="k-amt">Enter the Amount</label><div class="ig k-ig"><span class="ig-s" id="k-rs">₹</span><input id="k-amt" inputmode="decimal" placeholder="Ex. 2X"></div></div>
         <h3>Repayment</h3>
         <span class="co-k">Type</span>
         <label class="cb"><input type="checkbox" id="k-fa"><i></i>Fully Amortized</label>
@@ -77,6 +78,11 @@
         <h3>Processing Fee</h3>
         <label class="cp-rd"><input type="radio" name="pfc" value="1st Disbursement" checked><i></i>1st Disbursement</label>
         <label class="cp-rd"><input type="radio" name="pfc" value="1st Collection"><i></i>1st Collection</label>
+      </div>
+      <div class="cp-f ky" id="p6" hidden>
+        <label class="cb ky-r dis"><input type="checkbox" checked disabled><i></i>PAN</label>
+        <label class="cb ky-r dis"><input type="checkbox" checked disabled><i></i>Aadhaar</label>
+        <label class="cb ky-r"><input type="checkbox" id="y-liv"><i></i>Liveness</label>
       </div>
       <div class="cp-f tm" id="p3" hidden>
         <div class="tm-r"><div class="tm-l"><b>Sanction Amount</b><span>Set minimum and maximum sanction amount</span><p class="fe" role="alert"></p></div>
@@ -91,6 +97,7 @@
       </div>
     </div>
   </main>
+  <div class="toast" id="cp-toast" role="status" hidden><svg viewBox="0 0 24 24"><path d="M12 2l2.4 1.8 3-.2.9 2.9 2.5 1.6-.9 2.9.9 2.9-2.5 1.6-.9 2.9-3-.2L12 22l-2.4-1.8-3 .2-.9-2.9L3.2 15.9l.9-2.9-.9-2.9 2.5-1.6.9-2.9 3 .2z"/><path d="M8.5 12l2.5 2.5 4.5-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Product creation successful</div>
   <footer class="cp-foot"><button type="button" class="b-fill cp-next" id="cp-next">Next</button></footer>
 </div>
 <div class="md-bg" id="inf" hidden>
@@ -118,13 +125,18 @@
   all.forEach(function (x) { if (x.code === code) cur = x; });
   var CHG = ['c-ren', 'c-bou', 'c-bms', 'c-pen', 'c-liq', 'c-pre'];   // DISC-519 Charges
   var keep4 = function () { cur.charges = {}; CHG.forEach(function (k) { cur.charges[k] = $(k).value.trim(); }); };
-  var keep5 = function () { cur.coll = { mand: $('k-mand').value, fa: $('k-fa').checked, bt: $('k-bt').checked, mo: $('k-mo').checked, day: $('k-day').value, pf: document.querySelector('input[name="pfc"]:checked').value }; };
+  var keep5 = function () { cur.coll = { mand: $('k-mand').value, fa: $('k-fa').checked, bt: $('k-bt').checked, mo: $('k-mo').checked, day: $('k-day').value, amt: $('k-amt').value.trim(), pf: document.querySelector('input[name="pfc"]:checked').value }; };
   var chips = [];   // DISC-518: Discrete tenure months
   var T = ['t-sa1', 't-sa2', 't-ri1', 't-ri2', 't-tt', 't-te1', 't-te2', 't-pu1', 't-pf1', 't-pu2', 't-pf2'];
   var step = 1;
   var saved = function () { $('cp-dt').textContent = 'Draft Saved'; $('cp-di').setAttribute('d', 'M9.5 13l2 2 3.5-3.5'); };
   var unsaved = function () { $('cp-dt').textContent = 'Cannot Save Draft'; $('cp-di').setAttribute('d', 'M12 10v3.5M12 16h.01'); };
   // DISC-515: steps 1–3 on one page. A finished step shows the blue tick; the open step has the blue border; steps up to the next unfinished one can be clicked.
+  // DISC-520: mandate – Multiple of Loan Amount → "Enter the Amount" (Ex. 2X); Absolute Value → ₹ amount (Ex. ₹2,00,000)
+  var mandMode = function () {
+    var m = $('k-mand').value; $('k-amw').hidden = m === 'Sanction Amount';
+    $('k-rs').hidden = m !== 'Absolute Value'; $('k-amt').placeholder = m === 'Absolute Value' ? 'Ex. ₹2,00,000' : 'Ex. 2X';
+  };
   var paint = function () {
     var done = cur ? cur.done || 0 : 0;
     [].forEach.call(document.querySelectorAll('#cp-steps li[data-s]'), function (li) {
@@ -133,7 +145,8 @@
       li.querySelector('span').textContent = n <= done ? '' : n;
       li.classList.toggle('go', n !== step && n <= done + 1 && !!cur);
     });
-    ['p1', 'p2', 'p3', 'p4', 'p5'].forEach(function (id, i) { $(id).hidden = i + 1 !== step; });
+    ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'].forEach(function (id, i) { $(id).hidden = i + 1 !== step; });
+    $('cp-next').textContent = step === 6 ? 'Submit' : 'Next';   // DISC-520: last step shows Submit
   };
   var go = function (n, push) {
     step = n; paint(); window.scrollTo(0, 0);
@@ -144,9 +157,9 @@
     if (cur.done === undefined) cur.done = 1;
     if (cur.disb) document.querySelector('input[name="disb"][value="' + cur.disb + '"]').checked = true;
     if (cur.charges) CHG.forEach(function (k) { $(k).value = cur.charges[k] || ''; });
-    if (cur.coll) { $('k-mand').value = cur.coll.mand; $('k-fa').checked = cur.coll.fa; $('k-bt').checked = cur.coll.bt; $('k-mo').checked = cur.coll.mo; $('k-day').value = cur.coll.day; document.querySelector('input[name="pfc"][value="' + cur.coll.pf + '"]').checked = true; }
+    if (cur.coll) { $('k-mand').value = cur.coll.mand; $('k-fa').checked = cur.coll.fa; $('k-bt').checked = cur.coll.bt; $('k-mo').checked = cur.coll.mo; $('k-day').value = cur.coll.day; $('k-amt').value = cur.coll.amt || ''; document.querySelector('input[name="pfc"][value="' + cur.coll.pf + '"]').checked = true; }
     if (cur.terms) { T.forEach(function (k) { if (cur.terms[k] !== undefined) $(k).value = cur.terms[k]; }); if (cur.terms.t_tt === undefined && cur.terms['t-tt'] === 'Fixed') $('t-tt').value = 'Range'; chips = (cur.terms.chips || []).slice(); }
-    var q = +new URLSearchParams(location.search).get('step'); if (q >= 1 && q <= Math.min(5, cur.done + 1)) step = q;
+    var q = +new URLSearchParams(location.search).get('step'); if (q >= 1 && q <= Math.min(6, cur.done + 1)) step = q;
   } else { $('cp-from').value = iso(d); var t = new Date(d); t.setFullYear(t.getFullYear() + 10); $('cp-till').value = iso(t); }
   paint();
   window.addEventListener('popstate', function (e) { if (e.state && e.state.s) { step = e.state.s; paint(); } });
@@ -197,14 +210,17 @@
     sel.addEventListener('change', show); sel.hidden = true; box.appendChild(b); box.appendChild(ul); show();
   });
   $('t-tt').addEventListener('change', function () { tenureMode(); $('t-te1').closest('.tm-r').querySelector('.fe').textContent = ''; $('t-chips').classList.remove('bad'); bad('t-te1', false); bad('t-te2', false); });
-  drawChips(); tenureMode();
+  drawChips(); tenureMode(); mandMode();
+  $('k-mand').addEventListener('change', function () { $('k-amt').value = ''; mandMode(); });
+  if (cur && cur.kyc) $('y-liv').checked = cur.kyc.liv;
+  $('cp-next').textContent = step === 6 ? 'Submit' : 'Next';
   // DISC-517: ← back to Products keeps what was typed in a saved draft (UAT: name changed to "TEST Product", back → the list shows TEST Product)
   $('cp-back').addEventListener('click', function () {
     if (!cur) return;   // nothing saved yet (Cannot Save Draft) – just go back
     var n = $('cp-n').value.trim(); if (n) cur.name = n;
     cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
     if (step === 2) cur.disb = document.querySelector('input[name="disb"]:checked').value;
-    if (step === 4) keep4(); if (step === 5) keep5();
+    if (step === 4) keep4(); if (step === 5) keep5(); if (step === 6) cur.kyc = { liv: $('y-liv').checked };
     if (step === 3) { cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); cur.terms.chips = chips.slice(); }
     save(all);
   });
@@ -271,10 +287,14 @@
       CHG.forEach(function (k) { var e = !$(k).value.trim(); $(k).classList.toggle('bad', e); $(k).closest('.tm-r').querySelector('.fe').textContent = e ? $(k).dataset.err : ''; if (e) miss = true; });
       if (miss) { unsaved(); return; }
       keep4();
-    } else { keep5(); }
+    } else if (step === 5) { keep5(); }
+    else {   // DISC-520: Submit → toast "Product creation successful", status In Review, back to Products
+      cur.kyc = { liv: $('y-liv').checked }; cur.status = 'In Review'; cur.done = 6; save(all);
+      $('cp-next').disabled = true; $('cp-toast').hidden = false;
+      setTimeout(function () { location.href = 'products.html'; }, 1600); return;
+    }
     cur.done = Math.max(cur.done || 0, step); save(all); saved();
-    if (step < 5) go(step + 1, true);
-    else { paint(); history.replaceState({ s: 5 }, '', 'create-product.html?code=' + cur.code + '&step=5'); location.href = 'wip.html?p=' + encodeURIComponent('Create a Product – KYC'); }
+    go(step + 1, true);
   });
 })();
 </script>
