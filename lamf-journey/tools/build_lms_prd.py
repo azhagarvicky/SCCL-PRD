@@ -402,6 +402,32 @@ MODULES = [
     },
   ],
  },
+ {
+  'title': 'Module 6 – Loans',
+  'screens': 'Loans menu · Active loans (LSP filter, All / Shortfall / In Default)',
+  'rows': [
+    {
+      'sl': '17', 'shot': img('l17-active'),
+      'func': 'Ops user viewing the active loans',
+      'desc': ('<p>Menu Loans → Active. “Loans” itself cannot be clicked – only its sub-items Active, Inactive, Draft, Submitted, Closed and Rejected; the open sub-item is navy.</p>'
+               + screen_content([('Title', '“Active Loans”'), ('Filter', '“Select a value” – All · Quicklend · Test · LARK · Liquify · SCCL LOS · Forward Wealth'),
+                   ('Chips', '“All” · “Shortfall” · “In Default”'),
+                   ('Columns', '“LAN” · “Product Id” · “Risk” · “Risk Level” · “Client Name” · “Status” · “PAN” · “Sanction Amount” · “Rate of Interest” · “Start Date” · “End Date” · “Generated” · “LSP”'),
+                   ('Empty', '“No shortfall application” (Shortfall) · In Default text ' + pend('LP-08')), ('Pager', '“Showing 1 - N items” · “10 rows/page”')])),
+      'data': 'LAN: SCCLMF20261100043<br>Product Id: LAMF20261102<br>Risk: No Risk<br>Client Name: (sample)<br>PAN: (sample)<br>Sanction Amount: ₹2,00,000<br>Rate of Interest: 10.5%<br>Start / End Date: DD/MM/YYYY<br>LSP: SCCL LOS',
+      'status': WIP,
+      'fields': [
+        (img('l17-menu'), spec(Field_Name='Loans menu', Field_Type='Menu group', Condition='“Loans” is a heading only (not clickable); the six sub-items open their lists.'), OK),
+        (states(('l17-lsp', 'Closed'), ('l17-lsp-open', 'Open')), spec(Field_Name='LSP', Field_Type='Drop-down', Prefilled_Value='“Select a value” (all loans)',
+            Action='All, Quicklend, Test, LARK, Liquify, SCCL LOS, Forward Wealth – lists only the loans of that LSP; All lists every loan.'), OK),
+        (states(('l17-chips', 'All'), ('l17-shortfall', 'Shortfall – no loans')), spec(Field_Name='All / Shortfall / In Default', Field_Type='Chips',
+            Prefilled_Value='All', Action='All – every active loan; Shortfall – loans in shortfall (URL ?tab=1); In Default – loans in default (?tab=2). Nothing to show → icon and “No shortfall application”.'), OK),
+        (img('l17-head'), spec(Field_Name='Loans table', Field_Type='Table', Action='Scrolls sideways. Risk “No Risk” in green bold; Status pill “Active”; a long Client Name ends with “…”.'), OK),
+        ('', spec(Field_Name='Loan row', Field_Type='Link (row)', Action='Opens the loan page ' + pend('LP-09')), OK),
+      ],
+    },
+  ],
+ },
 ]
 
 INT_COLUMNS = [('ID', 'Reference number'), ('Integration', 'Which system is affected'), ('Purpose', 'Why'), ('Trigger', 'When it happens'),
@@ -423,6 +449,8 @@ PENDING = [
  ('LP-05', 'Module 5', 'Sl. No 15 – Permitted Roles filter list; does an approved request stay in All Approvals (with a status)?'),
  ('LP-06', 'Module 5', 'Sl. No 16 – Reject: message after Yes and the product status after rejection.'),
  ('LP-07', 'LOS', 'INT-L01 / L02 – default tenure on the LOS Application summary (prototype: the maximum); Credit Limit and Processing Fee on the LMS product’s offer card.'),
+ ('LP-08', 'Module 6', 'Sl. No 17 – empty text of the In Default chip (prototype: “No in default application”); Risk Level values; what “Generated” shows.'),
+ ('LP-09', 'Module 6', 'Sl. No 17 – the loan page opened from a row (screenshot to be shared; prototype: Work in progress).'),
 ]
 COMPLETED = []
 TO_IMPLEMENT = []
