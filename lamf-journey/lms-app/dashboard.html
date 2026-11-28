@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LMS – Dashboard</title>
+<script src="../assets/lms-lock.js?v=2"></script>
+<!-- DISC-497: LMS prototype – Dashboard (first screen after login), copied from the owner's screenshots. SAMPLE numbers only. Source file. -->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lms.css?v=8">
+<link rel="stylesheet" href="app.css?v=1">
+</head>
+<body class="app">
+<aside class="sb" id="sb">
+  <div class="sb-top"><span class="sb-av" title="Profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span>
+    <button type="button" class="sb-x" id="sb-x" aria-label="Expand menu"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  <nav class="sb-nav">
+    <a class="sb-i on" href="dashboard.html"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M6 15l4-5 4 3 6-7"/></svg><span>Dashboard</span></a>
+    <a class="sb-i" href="#" data-todo="Products"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></svg><span>Products</span></a>
+    <div class="sb-grp">
+      <a class="sb-i" href="#" data-todo="Loans"><svg viewBox="0 0 24 24"><path d="M2 15h3l4 2h5a1.5 1.5 0 0 0 0-3h-3"/><path d="M5 13l3-2h4l1 1"/><path d="M14 17l5-2.5a1.5 1.5 0 0 1 1.5 2.5L15 20H8l-3-1.5"/><circle cx="16" cy="6" r="2.5"/><path d="M19.5 9.5a3.5 3.5 0 0 0-7 0"/></svg><span>Loans</span></a>
+      <a class="sb-s" href="#" data-todo="Loans – Active">Active</a><a class="sb-s" href="#" data-todo="Loans – Inactive">Inactive</a>
+      <a class="sb-s" href="#" data-todo="Loans – Draft">Draft</a><a class="sb-s" href="#" data-todo="Loans – Submitted">Submitted</a>
+      <a class="sb-s" href="#" data-todo="Loans – Closed">Closed</a><a class="sb-s" href="#" data-todo="Loans – Rejected">Rejected</a>
+    </div>
+    <a class="sb-i" href="#" data-todo="Collaterals"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Collaterals</span></a>
+    <a class="sb-i" href="#" data-todo="Clients"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.3-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="16.5" cy="8.5" r="3"/><path d="M17 14.5c2.6.3 4.3 2.2 4.8 5.5"/></svg><span>Clients</span></a>
+    <a class="sb-i" href="#" data-todo="Approvals"><svg viewBox="0 0 24 24"><path d="M2 13l4 4 8-9M11 16l1 1 9-10"/></svg><span>Approvals</span></a>
+    <a class="sb-i" href="#" data-todo="Disbursement Management"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.3 1.7 2.8-.2.9 2.7 2.4 1.5-.9 2.7.9 2.7-2.4 1.5-.9 2.7-2.8-.2L12 21.5l-2.3-1.7-2.8.2-.9-2.7-2.4-1.5.9-2.7-.9-2.7 2.4-1.5.9-2.7 2.8.2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Disbursem...</span></a>
+    <a class="sb-i" href="#" data-todo="Reports"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v6"/><path d="M14 3v4h4"/><text x="4.5" y="21" font-size="7" font-weight="700" stroke="none" fill="currentColor" font-family="Arial">DOC</text></svg><span>Reports</span></a>
+    <a class="sb-i" href="#" data-todo="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
+  </nav>
+</aside>
+
+<div class="mn">
+  <header class="upd">Last Updated: <span id="upd"></span></header>
+  <main class="db">
+    <h2 class="db-h">Top level KPIs</h2>
+    <div class="g3 kpis" id="kpis"></div>
+
+    <h2 class="db-h">Risk Snapshot <span class="lg-key" data-key="1"></span></h2>
+    <div class="g3">
+      <section class="cd"><div class="cd-h"><b>Sanctioned Amount/Exposure</b><b id="d1t"></b></div><div class="dn" id="d1"></div></section>
+      <section class="cd"><div class="cd-h"><b>No. of Loans</b><b id="d2t"></b></div><div class="dn" id="d2"></div></section>
+      <section class="cd"><div class="cd-h"><b>Trends over 30 days</b></div><div id="tr"></div>
+        <div class="sq-key"><i style="--c:var(--g)"></i>&lt;= 80% <i style="--c:var(--y)"></i>80% - 90% <i style="--c:var(--o)"></i>90% - 100% <i style="--c:var(--r)"></i>100%+</div></section>
+    </div>
+
+    <h2 class="db-h">Utilization <span class="lg-key"></span></h2>
+    <div class="g3">
+      <section class="cd"><div class="cd-h"><b>Sanctioned Amount</b><b>₹64.8L</b></div><div id="b1"></div></section>
+      <section class="cd"><div class="cd-h"><b>Principal Outstanding</b><b>₹6.9L</b></div><div id="b2"></div></section>
+      <section class="cd"><div class="cd-h"><b>Utilization %</b><b>0.68420%</b></div><div id="b3"></div></section>
+    </div>
+
+    <h2 class="db-h">Collections</h2>
+    <div class="col1">
+      <section class="cd kp" data-k="po"></section>
+      <section class="cd soon"><i class="soon-i"></i><b>Coming Soon</b><span>Interest Overdue</span></section>
+      <section class="cd kp" data-k="co"></section>
+    </div>
+    <div class="col2">
+      <section class="cd kp sm" data-k="pc"></section><section class="cd kp sm" data-k="pd"></section>
+      <section class="cd soon"><i class="soon-i"></i><b>Coming Soon</b><span>Interest Collected</span></section>
+      <section class="cd soon"><i class="soon-i"></i><b>Coming Soon</b><span>Interest Due</span></section>
+      <section class="cd kp sm" data-k="cc"></section><section class="cd kp sm" data-k="cdu"></section>
+    </div>
+
+    <div class="g2">
+      <div><h2 class="db-h">Top 10 Holdings</h2>
+        <section class="cd"><div class="cd-h"><b>AUM</b><span class="aum-k"><i></i>AUM</span></div><div id="aum"></div></section></div>
+      <div><h2 class="db-h">Top 10 LSPs</h2>
+        <section class="cd sk"><div class="sk-r"><i></i><i class="s"></i></div><div class="sk-b"></div></section></div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script src="dashboard.js?v=1"></script>
+</body>
+</html>
