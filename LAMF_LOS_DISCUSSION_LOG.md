@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 11:21 IST
+**Last Updated:** 28-11-2026 11:42 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -513,6 +513,7 @@
 | DISC-478 | 27-11-2026 | internal/IC-02.html, internal/IC-24*.html, internal-communications.html, brd-waive-off-scenarios.html, tools/internal_comms.py, tools/build_pages.py, tools/brds.py, exports | Alert 2 Version 2 – Loan Account Opening approved with the waive-off type | Owner: SUBMITTED → ACCOUNT OPENED already sends an internal mail (alert 2); with the waiver it can be approved with no, full or partial waive-off – the internal mail has to change. Keep the current mail as Version 1 marked “to be changed”, add Version 2, and link the new mail in the BRD | Alert 2 unchanged; its page shows a note “Version 1 – current mail. To be changed …” and its trigger says TO BE CHANGED – see Version 2 (alert 24). New alert 24 (Version 2): subject adds {{Waive-off Type}}, body adds the waive-off type and the charges table (amount / waived / payable), maker / checker / Treasury (Treasury only with a waive-off), charges shown in LMS and posted in UNO at the first withdrawal or repayment; same recipients as alert 2; samples IC-24-no / -full / partial. BRD: S 5.1 step 2 links alert 24 (no), S 5.2 and S 5.3 step 3 link alert 24 (full / partial) instead of alert 13; section 4 Communication has a new row. Word file and Excel regenerated. | Implemented |
 | DISC-479 | 27-11-2026 | assets/gate.js | Admin portal – setup steps until it is connected | Owner opened admin.html and saw only “The access service is not connected yet” | Until the Apps Script URL is added, admin.html shows “Not switched on yet” with the 5 setup steps (sheet, paste script, run setup, deploy as web app, send the URL). | Implemented |
 | DISC-480 | 28-11-2026 | brd.html, brd-waive-off-scenarios.html, tools/brds.py, tools/build_pages.py, assets/lamf.css, exports/BRD_Charges_Waiver_Scenario-wise.docx | Waiver BRD status: In Review | Owner: mark the Waiver BRD as In Review; work moves to another part | Status Draft → In Review (blue tag on the BRD list and the BRD page; Word file meta line). Open items stay in the Waiver open points (exports/Waiver_BRD_Open_Points.docx) and the access-gate setup (DISC-477). | Implemented |
+| DISC-481 | 28-11-2026 | assets/gate.js | Site access connected (brd.html, dev) | Owner set up the Apps Script (setup run, deployed as a web app, access Anyone) | Sheet “LAMF Site Access”: 1k124Ppz37jLXUwSR7s8sLH-4yWVnSmTdmO-32nkK-v0 (Users, Sessions, Log; owner as admin). Web app URL added to ENDPOINT in gate.js – the login on brd.html and admin.html are live on dev. Optional daily OTP cap (80 / day) offered, not added yet. | Implemented |
 
 ---
 
