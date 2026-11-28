@@ -40,14 +40,17 @@
 .sb.wide .sb-nav { border-top: 4px solid #f1f2f4; }
 
 /* profile pop-up (DISC-499) */
-.pf { position: fixed; left: 16px; top: 52px; z-index: 8; width: max-content; min-width: 236px; max-width: calc(100vw - 32px); background: #fff; border: 1px solid #e6e7eb; border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .12); padding: 8px 0 6px; }
+.pf { position: fixed; left: 16px; top: 52px; z-index: 8; width: max-content; min-width: 226px; max-width: calc(100vw - 32px); background: #fff;
+  border: 1px solid #e6e7eb; border-radius: 6px; box-shadow: 0 4px 16px rgba(0, 0, 0, .12); padding: 6px; }
 .app.wide .pf { left: 220px; top: 70px; }
-.pf-n, .pf-m { padding: 8px 14px; font-size: 14px; color: var(--ink); white-space: nowrap; }
-.pf-out { width: calc(100% - 12px); margin: 4px 6px 0; display: flex; justify-content: space-between; align-items: center; border: 0;
-  border-top: 1px solid #ececef; border-radius: 0 0 6px 6px; background: none; font: inherit; font-size: 14px; padding: 10px 8px; cursor: pointer; color: var(--ink); }
-.pf-out:hover, .pf-out:focus-visible { background: #fbeaea; outline: none; }   /* light red on hover, as the owner's screenshot */
-.pf-out svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+/* as the live LMS: pure black text; each row gets a light grey rounded background under the cursor (DISC-502) */
+.pf-n, .pf-m { padding: 8px 10px; font-size: 14.5px; color: #000; white-space: nowrap; border-radius: 5px; cursor: default; }
+.pf-n:hover, .pf-m:hover { background: #f1f1f2; }
+.pf-out { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 24px; border: 0; border-radius: 5px; background: none;
+  font: inherit; font-size: 14.5px; color: #000; padding: 9px 10px; margin-top: 4px; cursor: pointer; position: relative; }
+.pf-out::before { content: ""; position: absolute; left: -6px; right: -6px; top: -3px; border-top: 1px solid #ececef; }
+.pf-out:hover, .pf-out:focus-visible { background: #f1f1f2; outline: none; }
+.pf-out svg { width: 17px; height: 17px; color: #000; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .upd { position: sticky; top: 0; z-index: 4; height: 45px; display: flex; align-items: center; justify-content: center; gap: 5px; background: #f6f6f7;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .12); font-size: 15px; font-weight: 500; color: #3d4049; }
 .db { padding: 6px 24px 40px; }
