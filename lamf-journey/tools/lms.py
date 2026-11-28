@@ -15,6 +15,7 @@ LMS_SCREENS = [
     ("04) Dashboard", "lms-app/dashboard.html"),
     ("05) Products – list and Select security pop-up", "lms-app/products.html"),
     ("06) Create a Product – 1 Product Details", "lms-app/create-product.html"),
+    ("07) Product details – Active product (Product Details / Documents, Update Access Policy)", "lms-app/product-view.html"),
 ]
 
 
