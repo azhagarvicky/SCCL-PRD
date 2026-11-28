@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=24">
+<link rel="stylesheet" href="app.css?v=26">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -70,7 +70,7 @@
         <div class="tm-r"><div class="tm-l"><b>Rate of Interest</b><span>Set minimum and maximum rate of interest</span><p class="fe" role="alert"></p></div>
           <div class="tm-2"><div class="ig"><span class="ig-p">MIN</span><input id="t-ri1" inputmode="decimal" placeholder="Ex. 9.49"><span class=ig-x>%</span></div><div class="ig"><span class="ig-p">MAX</span><input id="t-ri2" inputmode="decimal" placeholder="Ex. 10.59"><span class=ig-x>%</span></div></div></div>
         <div class="tm-r"><div class="tm-l"><b>Tenure</b><span>Set minimum and maximum tenure (in months)</span><p class="fe" role="alert"></p></div>
-          <div class="tm-3"><div class="sel"><select id="t-tt" aria-label="Tenure type"><option>Range</option><option>Fixed</option></select></div><div class="ig"><span class="ig-p">MIN</span><input id="t-te1" inputmode="decimal" placeholder="Ex. 3 months"></div><div class="ig"><span class="ig-p">MAX</span><input id="t-te2" inputmode="decimal" placeholder="Ex. 36 months"></div></div></div>
+          <div class="tm-3"><div class="sel"><select id="t-tt" aria-label="Tenure type"><option>Discrete</option><option selected>Range</option></select></div><div class="ig t-rg"><span class="ig-p">MIN</span><input id="t-te1" inputmode="decimal" placeholder="Ex. 3 months"></div><div class="ig t-rg"><span class="ig-p">MAX</span><input id="t-te2" inputmode="decimal" placeholder="Ex. 36 months"></div><div class="chips" id="t-chips" hidden><span id="t-cl"></span><input id="t-tch" inputmode="numeric" maxlength="3" placeholder="Type months and press Enter" aria-label="Tenure in months"></div></div></div>
         <div class="tm-r"><div class="tm-l"><b>Processing Fee</b><span>Set the minimum and maximum PF</span><p class="fe" role="alert"></p></div>
           <div class="tm-2"><div><label class="tm-k">Min</label><div class="tm-pf"><div class="sel"><select id="t-pu1" aria-label="Min PF in"><option>₹</option><option>%</option></select></div><input class="cp-in" id="t-pf1" inputmode="decimal" placeholder="Type here"></div></div>
             <div><label class="tm-k">Max</label><div class="tm-pf"><div class="sel"><select id="t-pu2" aria-label="Max PF in"><option>₹</option><option>%</option></select></div><input class="cp-in" id="t-pf2" inputmode="decimal" placeholder="Type here"></div></div></div></div>
@@ -102,6 +102,7 @@
   var save = function (l) { try { localStorage.setItem(KEY, JSON.stringify(l)); } catch (e) {} };
   var code = new URLSearchParams(location.search).get('code'), all = load(), cur = null;
   all.forEach(function (x) { if (x.code === code) cur = x; });
+  var chips = [];   // DISC-518: Discrete tenure months
   var T = ['t-sa1', 't-sa2', 't-ri1', 't-ri2', 't-tt', 't-te1', 't-te2', 't-pu1', 't-pf1', 't-pu2', 't-pf2'];
   var step = 1;
   var saved = function () { $('cp-dt').textContent = 'Draft Saved'; $('cp-di').setAttribute('d', 'M9.5 13l2 2 3.5-3.5'); };
@@ -124,18 +125,66 @@
     $('cp-n').value = cur.name; $('cp-d').value = cur.desc; $('cp-from').value = cur.from; $('cp-till').value = cur.till; saved();
     if (cur.done === undefined) cur.done = 1;
     if (cur.disb) document.querySelector('input[name="disb"][value="' + cur.disb + '"]').checked = true;
-    if (cur.terms) T.forEach(function (k) { if (cur.terms[k] !== undefined) $(k).value = cur.terms[k]; });
+    if (cur.terms) { T.forEach(function (k) { if (cur.terms[k] !== undefined) $(k).value = cur.terms[k]; }); if (cur.terms.t_tt === undefined && cur.terms['t-tt'] === 'Fixed') $('t-tt').value = 'Range'; chips = (cur.terms.chips || []).slice(); }
     var q = +new URLSearchParams(location.search).get('step'); if (q >= 1 && q <= Math.min(3, cur.done + 1)) step = q;
   } else { $('cp-from').value = iso(d); var t = new Date(d); t.setFullYear(t.getFullYear() + 10); $('cp-till').value = iso(t); }
   paint();
   window.addEventListener('popstate', function (e) { if (e.state && e.state.s) { step = e.state.s; paint(); } });
+  // DISC-518: Tenure – Discrete: type a number of months + Enter → chip "12 ⊗" (⊗ removes it); Range: MIN / MAX boxes
+  var drawChips = function () {
+    $('t-cl').innerHTML = '';
+    chips.forEach(function (m, i) {
+      var c = document.createElement('span'); c.className = 'chip'; c.textContent = m;
+      var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + m);
+      x.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>';
+      x.addEventListener('click', function () { chips.splice(i, 1); drawChips(); $('t-tch').focus(); });
+      c.appendChild(x); $('t-cl').appendChild(c);
+    });
+    $('t-tch').placeholder = chips.length ? '' : 'Type months and press Enter';
+  };
+  var tenureMode = function () {
+    var disc = $('t-tt').value === 'Discrete';
+    [].forEach.call(document.querySelectorAll('.t-rg'), function (x) { x.hidden = disc; });
+    $('t-chips').hidden = !disc;
+  };
+  $('t-tch').addEventListener('input', function () { this.value = this.value.replace(/\D/g, ''); });
+  $('t-tch').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); var v = +this.value;
+      if (v > 0 && chips.indexOf(v) < 0) { chips.push(v); drawChips(); $('t-chips').classList.remove('bad'); $('t-te1').closest('.tm-r').querySelector('.fe').textContent = ''; }
+      this.value = ''; }
+    else if (e.key === 'Backspace' && !this.value && chips.length) { chips.pop(); drawChips(); }
+  });
+  $('t-chips').addEventListener('click', function (e) { if (e.target === this || e.target.id === 't-cl') $('t-tch').focus(); });
+  // DISC-518: drop-downs drawn as the UAT list (open list, selected item grey with a blue border) instead of the browser's own list
+  [].forEach.call(document.querySelectorAll('.sel select'), function (sel) {
+    var box = sel.parentNode, b = document.createElement('button'), ul = document.createElement('ul');
+    b.type = 'button'; b.className = 'sel-b'; b.setAttribute('aria-haspopup', 'listbox'); b.setAttribute('aria-label', sel.getAttribute('aria-label'));
+    ul.className = 'sel-l'; ul.setAttribute('role', 'listbox'); ul.hidden = true;
+    var show = function () { b.textContent = sel.value; };
+    [].forEach.call(sel.options, function (o) {
+      var li = document.createElement('li'); li.textContent = o.value; li.setAttribute('role', 'option'); li.tabIndex = -1;
+      li.addEventListener('click', function () { sel.value = o.value; sel.dispatchEvent(new Event('change')); close(); b.focus(); });
+      li.addEventListener('keydown', function (e) { if (e.key === 'Enter') li.click(); });
+      ul.appendChild(li);
+    });
+    var close = function () { ul.hidden = true; box.classList.remove('open'); };
+    b.addEventListener('click', function (e) {
+      e.stopPropagation(); var op = ul.hidden;
+      [].forEach.call(document.querySelectorAll('.sel-l'), function (u) { u.hidden = true; u.parentNode.classList.remove('open'); });
+      if (op) { ul.hidden = false; box.classList.add('open'); [].forEach.call(ul.children, function (li) { li.classList.toggle('cur', li.textContent === sel.value); }); }
+    });
+    document.addEventListener('click', close);
+    sel.addEventListener('change', show); sel.hidden = true; box.appendChild(b); box.appendChild(ul); show();
+  });
+  $('t-tt').addEventListener('change', function () { tenureMode(); $('t-te1').closest('.tm-r').querySelector('.fe').textContent = ''; $('t-chips').classList.remove('bad'); bad('t-te1', false); bad('t-te2', false); });
+  drawChips(); tenureMode();
   // DISC-517: ← back to Products keeps what was typed in a saved draft (UAT: name changed to "TEST Product", back → the list shows TEST Product)
   $('cp-back').addEventListener('click', function () {
     if (!cur) return;   // nothing saved yet (Cannot Save Draft) – just go back
     var n = $('cp-n').value.trim(); if (n) cur.name = n;
     cur.desc = $('cp-d').value.trim(); cur.from = $('cp-from').value; cur.till = $('cp-till').value;
     if (step === 2) cur.disb = document.querySelector('input[name="disb"]:checked').value;
-    if (step === 3) { cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); }
+    if (step === 3) { cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); cur.terms.chips = chips.slice(); }
     save(all);
   });
   $('cp-steps').addEventListener('click', function (e) { var li = e.target.closest('li.go'); if (li) go(+li.dataset.s, true); });
@@ -164,6 +213,11 @@
   var checkTerms = function () {
     var ok = true;
     ROWS.forEach(function (r) {
+      if (r[0] === 't-te1' && $('t-tt').value === 'Discrete') {   // DISC-518: Discrete – at least one month chip
+        var none = !chips.length; bad('t-te1', false); bad('t-te2', false); $('t-chips').classList.toggle('bad', none);
+        $('t-te1').closest('.tm-r').querySelector('.fe').textContent = none ? 'Tenure is missing' : '';
+        if (none) ok = false; return;
+      }
       var e1 = !$(r[0]).value.trim(), e2 = !$(r[1]).value.trim();
       bad(r[0], e1); bad(r[1], e2);
       $(r[0]).closest('.tm-r').querySelector('.fe').textContent = e1 ? 'Minimum ' + r[2] + ' is missing' : e2 ? 'Maximum ' + r[2] + ' is missing' : '';
@@ -188,7 +242,7 @@
       cur.disb = document.querySelector('input[name="disb"]:checked').value;   // Revolving Overdraft by default, as the UAT
     } else {
       if (!checkTerms()) return;
-      cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; });
+      cur.terms = {}; T.forEach(function (k) { cur.terms[k] = $(k).value; }); cur.terms.chips = chips.slice();
     }
     cur.done = Math.max(cur.done || 0, step); save(all); saved();
     if (step < 3) go(step + 1, true);

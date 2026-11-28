@@ -320,3 +320,24 @@ button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: point
 .inf-i { width: 38px; height: 38px; border-radius: 50%; background: #000; color: #fff; font-style: normal; font-family: Georgia, serif; font-weight: 700; font-size: 22px; display: inline-flex; align-items: center; justify-content: center; }
 .md.inf h2 { font-size: 22px; font-weight: 800; margin: 20px 0 10px; }
 .md.inf p { margin: 0; font-size: 15.5px; line-height: 23px; }
+
+/* DISC-518: Tenure Discrete (month chips) and the drop-down list as the UAT */
+.tm-3 .chips { grid-column: 2 / span 2; }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 46px; border: 1px solid #e4e6eb; border-radius: 8px; background: #fff; padding: 6px 14px; cursor: text; }
+.chips[hidden] { display: none; }
+.chips:focus-within { border-color: var(--blue); }
+.chips.bad { border-color: #e5484d; }
+#t-cl { display: contents; }
+.chip { display: inline-flex; align-items: center; gap: 8px; background: #f1f1f2; border-radius: 6px; padding: 4px 6px 4px 10px; font-size: 15px; font-weight: 500; }
+.chip button { display: inline-flex; border: 0; background: none; padding: 0; cursor: pointer; color: #1a1a1a; }
+.chip svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.chips input { flex: 1; min-width: 140px; border: 0; outline: none; font: inherit; font-size: 15.5px; color: var(--ink); background: none; height: 32px; }
+.chips input::placeholder { color: #9aa0ab; }
+.sel-b { width: 100%; height: 46px; border: 1px solid #e4e6eb; border-radius: 8px; background: #fff; font: inherit; font-size: 15.5px; color: var(--ink); padding: 0 40px 0 16px; text-align: left; cursor: pointer; }
+.sel.open .sel-b, .sel-b:focus-visible { outline: none; border-color: var(--blue); }
+.sel.open::after { transform: rotate(-135deg); top: 21px; }
+.sel-l { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 8; list-style: none; margin: 0; padding: 4px; background: #fff; border: 1px solid #ececef; border-radius: 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, .1); }
+.sel-l li { padding: 10px 14px; font-size: 15.5px; border: 1px solid transparent; border-radius: 6px; cursor: pointer; }
+.sel-l li:hover { background: #f6f6f7; }
+.sel-l li.cur { background: #f3f3f4; border-color: var(--blue); }
+.ig[hidden] { display: none; }
