@@ -1081,7 +1081,7 @@ with no, full or partial waive-off (S 6.1 – S 6.3), or Reject with no, full or
 
 
 BRDS = [
-    {"slug": "waive-off-scenarios", "title": "Charges Waiver & Post-Pledge Drop-off – Scenario-wise", "status": "Draft", "updated": "27-11-2026",
+    {"slug": "waive-off-scenarios", "title": "Charges Waiver & Post-Pledge Drop-off – Scenario-wise", "status": "In Review", "updated": "28-11-2026",
      "summary": "Waive charges (none, partial or full) with reject or approve, scenario by scenario (S 1 – S 7): approvals, mails, payment, de-pledge and UNO entries.",
      "body": _waiver_scen_body()},
     {"slug": "draft-lan-rejection", "title": "DRAFT LAN Rejection", "status": "Draft", "updated": "16-11-2026",
