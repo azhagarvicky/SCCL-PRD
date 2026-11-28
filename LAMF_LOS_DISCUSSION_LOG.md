@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 14:51 IST
+**Last Updated:** 28-11-2026 15:00 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -536,6 +536,7 @@
 | DISC-501 | 28-11-2026 | lms-app/dashboard.html, lms-app/app.css | LMS profile pop-up as the owner’s screenshot | Owner shared the expected pop-up: “Azhagarsamy S”, the mail ID, Logout row with a light red background and the exit icon | Name changed to Azhagarsamy S; pop-up sizes to its content (mail ID on one line), rounded 10 px with a soft shadow; Logout row light red (#fbeaea) on hover / focus with rounded corners; exit icon with the bracket on the left and the arrow out to the right. | Implemented |
 | DISC-502 | 28-11-2026 | lms-app/app.css, lms-app/dashboard.html | LMS profile pop-up – text colour and hover as the live LMS | Owner compared with the live LMS: the pop-up text is pure black (the prototype looked grey), and each row gets a highlight under the cursor | Name, mail ID and Logout now pure black, 14.5 px; every row (name, mail ID, Logout) shows a light grey rounded background (#f1f1f2) on hover, as the live LMS screenshots; divider above Logout; card radius 6 px. Replaces the light red Logout hover of DISC-501. | Implemented |
 | DISC-503 | 28-11-2026 | lms-app/wip.html (new), lms-app/shell.js (new), lms-app/dashboard.html, dashboard.js, app.css | LMS – common Work in progress page | Owner: one common blank page saying Work in progress and “Kindly reach” the owner’s name and mail ID; every clickable link / menu item not built yet opens it, instead of a message | New wip.html (same left menu, profile pop-up and expand arrow): clock icon, “Work in progress”, “<item> is not ready yet.”, “Kindly reach Azhagarsamy S – azhagarsamy.s@shriramcredit.in” (mailto link). Menu items not built (Products, Loans and its sub-items, Collaterals, Clients, Approvals, Disbursement Management, Reports, Settings) now open wip.html?p=<item> with that item highlighted; the message toast is removed. Shared menu logic moved to shell.js (used by every screen after login); dashboard.js keeps the charts. Rule for new screens: any link not built yet points to wip.html. | Implemented |
+| DISC-504 | 28-11-2026 | lms-app/dashboard.js, lms-app/app.css, lms-app/dashboard.html, lms-app/wip.html | LMS dashboard – chart hover pop-ups as the live LMS | Owner shared the hover pop-ups of the live dashboard charts | KPI sparklines: vertical line + dot, pop-up date (DD-MM-YYYY) and “value ₹48,60,000” (count for loans / margin calls). Donuts: pop-up with the colour square, band and value (e.g. 90% - 100% ₹32,85,400). Trends over 30 days: dots on the 4 lines, pop-up date + 4 rows (<= 80%, 80% - 90%, 90% - 100%, 100%+) with ₹ values. Utilization bars: grey column highlight, pop-up bucket (0-1L …) with 100%+, 90% - 100%, 80% - 90%, <= 80% counts. Top 10 Holdings: grey column, pop-up AMC + “AUM ₹13,13,468.4779”. White card, soft shadow, values in a monospace font as the LMS; sample values only. “Coming Soon” card no longer wraps. | Implemented |
 
 ---
 

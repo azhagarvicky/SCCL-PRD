@@ -22,8 +22,26 @@
     if (parent) parent.appendChild(e);
     return e;
   }
+  // ---- hover pop-up (tooltip) as in the live LMS (DISC-504)
+  var tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; document.body.appendChild(tip);
+  var BAND = { g: '&lt;= 80%', y: '80% - 90%', o: '90% - 100%', r: '100%+' };
+  function inr(n, dec) {   // Indian grouping: 51,76,400
+    var neg = n < 0, x = Math.abs(n), f = dec ? x.toFixed(dec) : String(Math.round(x)), p = f.split('.'), w = p[0];
+    var last = w.slice(-3), rest = w.slice(0, -3).replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+    return (neg ? '-' : '') + (rest ? rest + ',' + last : last) + (p[1] ? '.' + p[1] : '');
+  }
+  function day(back) { var d = new Date(); d.setDate(d.getDate() - back); return pad(d.getDate()) + '-' + pad(d.getMonth() + 1) + '-' + d.getFullYear(); }
+  function showTip(html, e) {
+    tip.innerHTML = html; tip.hidden = false;
+    var w = tip.offsetWidth, h = tip.offsetHeight, x = e.clientX + 14, y = e.clientY - h / 2;
+    if (x + w > innerWidth - 8) x = e.clientX - w - 14;
+    tip.style.left = Math.max(8, x) + 'px'; tip.style.top = Math.max(8, Math.min(y, innerHeight - h - 8)) + 'px';
+  }
+  function hideTip() { tip.hidden = true; }
+  function row(c, label, val) { return '<div class="tr"><span>' + (c ? '<i style="background:' + C[c] + '"></i>' : '') + label + '</span><b>' + val + '</b></div>'; }
+  function svgX(sv, e) { var r = sv.getBoundingClientRect(), vb = sv.viewBox.baseVal; return (e.clientX - r.left) * vb.width / r.width; }
   var gid = 0;
-  function spark(data, flat) {   // lavender area sparkline as in the KPI cards
+  function spark(data, flat, k) {   // lavender area sparkline as in the KPI cards
     var w = 132, h = 66, s = svg(w, h, 'sp'), mn = Math.min.apply(0, data), mx = Math.max.apply(0, data), r = mx - mn || 1;
     var pts = data.map(function (v, i) { return [i * w / (data.length - 1), flat ? h - 6 : 6 + (h - 12) * (1 - (v - mn) / r)]; });
     var d = 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L');
@@ -31,30 +49,42 @@
     el('stop', { offset: '0', 'stop-color': '#c9c0ff', 'stop-opacity': '.95' }, g); el('stop', { offset: '1', 'stop-color': '#ffffff', 'stop-opacity': '0' }, g);
     if (!flat) el('path', { d: d + ' L' + w + ' ' + h + ' L0 ' + h + ' Z', fill: 'url(#' + id + ')' }, s);
     el('path', { d: d, fill: 'none', stroke: C.line, 'stroke-width': 1.6 }, s);
+    // hover: vertical line + dot + date / value (sample values scaled so the last point = the card value)
+    var vl = el('line', { y1: 0, y2: h, stroke: '#c9ccd3', 'stroke-width': 1, visibility: 'hidden' }, s);
+    var dot = el('circle', { r: 3.2, fill: C.line, stroke: '#fff', 'stroke-width': 1.2, visibility: 'hidden' }, s);
+    var last = data[data.length - 1] || 1, mult = k && k.num ? k.num / last : 0, n = data.length;
+    var hit = el('rect', { x: 0, y: 0, width: w, height: h, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', function (e) {
+      var i = Math.max(0, Math.min(n - 1, Math.round(svgX(s, e) / w * (n - 1)))), v = flat ? 0 : data[i] * mult;
+      vl.setAttribute('x1', pts[i][0]); vl.setAttribute('x2', pts[i][0]); vl.setAttribute('visibility', 'visible');
+      dot.setAttribute('cx', pts[i][0]); dot.setAttribute('cy', pts[i][1]); dot.setAttribute('visibility', 'visible');
+      showTip('<div class="th">' + day((n - 1 - i) * 2) + '</div>' + row('', 'value', k && k.money ? '₹' + inr(v) : inr(v)), e);
+    });
+    hit.addEventListener('mouseleave', function () { vl.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); hideTip(); });
     return s;
   }
   function delta(v) { var neg = /^-/.test(v); return '<b class="' + (neg ? 'dn-c' : 'up') + '">' + (neg ? v : '+' + v.replace(/^\+/, '')) + '</b>'; }
   function kpi(card, k) {
     card.innerHTML = '<span class="t">' + k.t + '</span><div class="vr"><span class="v">' + k.v + '</span><span class="dl">MTD' + delta(k.mtd) +
       '<br>MoM' + delta(k.mom) + '</span></div>';
-    if (k.s) card.appendChild(spark(k.s, k.flat));
+    if (k.s) card.appendChild(spark(k.s, k.flat, k));
   }
 
   // ---- Top level KPIs (sample)
   var KPIS = [
-    { t: 'Sanctioned Amount', v: '64.8L', mtd: '+5.2L', mom: '-41.7L', s: [8, 9, 30, 31, 24, 26, 27, 28, 31, 33, 34, 36, 37, 37, 36] },
-    { t: 'Principal Outstanding', v: '6.9L', mtd: '-15.4L', mom: '-22.1L', s: [60, 60, 60, 8, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6, 2] },
-    { t: 'No of Active Loans', v: '58', mtd: '+29', mom: '+8', s: [4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 20, 23, 25, 27, 28] },
-    { t: 'Exposure at Risk', v: '47.3L', mtd: '+22.5L', mom: '+1.4L', s: [6, 7, 8, 9, 10, 11, 12, 14, 15, 15, 17, 20, 22, 27, 26] },
+    { t: 'Sanctioned Amount', v: '64.8L', num: 6480000, money: 1, mtd: '+5.2L', mom: '-41.7L', s: [8, 9, 30, 31, 24, 26, 27, 28, 31, 33, 34, 36, 37, 37, 36] },
+    { t: 'Principal Outstanding', v: '6.9L', num: 690000, money: 1, mtd: '-15.4L', mom: '-22.1L', s: [60, 60, 60, 8, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6, 2] },
+    { t: 'No of Active Loans', v: '58', num: 58, mtd: '+29', mom: '+8', s: [4, 5, 6, 8, 9, 11, 12, 14, 16, 18, 20, 23, 25, 27, 28] },
+    { t: 'Exposure at Risk', v: '47.3L', num: 4730000, money: 1, mtd: '+22.5L', mom: '+1.4L', s: [6, 7, 8, 9, 10, 11, 12, 14, 15, 15, 17, 20, 22, 27, 26] },
     { t: 'Defaulted Sanctioned Loans', v: '0', mtd: '+0', mom: '-15L', s: [1, 1, 1, 1, 1, 1, 1, 1], flat: true },
-    { t: 'Margin Calls Pending', v: '4', mtd: '-3', mom: '-7', s: [12, 9, 10, 6, 5, 2, 2, 2, 1, 1, 4, 5, 3, 6, 4] }];
+    { t: 'Margin Calls Pending', v: '4', num: 4, mtd: '-3', mom: '-7', s: [12, 9, 10, 6, 5, 2, 2, 2, 1, 1, 4, 5, 3, 6, 4] }];
   var kp = $('kpis');
   KPIS.forEach(function (k) { var c = document.createElement('section'); c.className = 'cd kp'; kpi(c, k); kp.appendChild(c); });
 
   // ---- Collections (sample)
   var COL = {
     po: { t: 'Principal Overdue', v: '0', mtd: '+0', mom: '+0', s: [1, 1, 1, 1, 1], flat: true },
-    co: { t: 'Charges Overdue', v: '104', mtd: '+0', mom: '+0', s: [9, 9, 9, 9, 9, 9] },
+    co: { t: 'Charges Overdue', v: '104', num: 104, mtd: '+0', mom: '+0', s: [9, 9, 9, 9, 9, 9] },
     pc: { t: 'Principal Collected', v: '15.6L', mtd: '+15.6L', mom: '+15.8L' },
     pd: { t: 'Principal due', v: '0', mtd: '+254.10', mom: '-31.25' },
     cc: { t: 'Charges Collected', v: '772.40', mtd: '+39814.20', mom: '-9520.75' },
@@ -68,8 +98,10 @@
     // order around the ring as in the live screen: orange (top), red, green, yellow
     [['o', 0], ['r', 3], ['g', 2], ['y', 1]].forEach(function (o) {
       var p = parts[o[1]], len = L * p.v / sum;
-      el('circle', { cx: 100, cy: 100, r: R, fill: 'none', stroke: C[o[0]], 'stroke-width': W, 'stroke-dasharray': len + ' ' + (L - len),
-        'stroke-dashoffset': -off, transform: 'rotate(-180 100 100)' }, s);
+      var seg = el('circle', { cx: 100, cy: 100, r: R, fill: 'none', stroke: C[o[0]], 'stroke-width': W, 'stroke-dasharray': len + ' ' + (L - len),
+        'stroke-dashoffset': -off, transform: 'rotate(-180 100 100)', class: 'seg' }, s);
+      seg.addEventListener('mousemove', function (e) { showTip(row(o[0], BAND[o[0]], p.tip || p.t), e); });
+      seg.addEventListener('mouseleave', hideTip);
       off += len;
     });
     box.appendChild(s);
@@ -77,7 +109,7 @@
     ul.innerHTML = parts.map(function (p) { return '<li><i style="--c:var(--' + p.c + ')"></i>' + p.t + '</li>'; }).join('');
     box.appendChild(ul);
   }
-  donut('d1', 'd1t', '₹65,42,310', [{ c: 'o', v: 3285400, t: '₹32,85,400' }, { c: 'y', v: 1102750, t: '₹11,02,750' },
+  donut('d1', 'd1t', '₹65,42,310', [{ c: 'o', v: 3285400, t: '₹32,85,400', tip: '₹32,85,400' }, { c: 'y', v: 1102750, t: '₹11,02,750' },
     { c: 'g', v: 1844160, t: '₹18,44,160' }, { c: 'r', v: 310000, t: '₹3,10,000' }]);
   donut('d2', 'd2t', '62', [{ c: 'o', v: 40, t: '40' }, { c: 'y', v: 8, t: '8' }, { c: 'g', v: 12, t: '12' }, { c: 'r', v: 2, t: '2' }]);
 
@@ -102,6 +134,18 @@
     ['g', 'o', 'y', 'r'].forEach(function (k) {
       el('path', { d: 'M' + S[k].map(function (v, i) { return X(i + 1).toFixed(1) + ' ' + Y(v).toFixed(1); }).join(' L'), fill: 'none', stroke: C[k], 'stroke-width': 1.5 }, s);
     });
+    var dots = {}; ['g', 'y', 'o', 'r'].forEach(function (k) { dots[k] = el('circle', { r: 3.4, fill: C[k], stroke: '#fff', 'stroke-width': 1.2, visibility: 'hidden' }, s); });
+    var hit = el('rect', { x: x0, y: y0, width: x1 - x0, height: y1 - y0, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', function (e) {
+      var d = Math.max(1, Math.min(30, Math.round((svgX(s, e) - x0) / (x1 - x0) * 29) + 1)), html = '<div class="th">' + day(30 - d) + '</div>';
+      ['g', 'y', 'o', 'r'].forEach(function (k) {
+        var v = S[k][d - 1];
+        dots[k].setAttribute('cx', X(d)); dots[k].setAttribute('cy', Y(v)); dots[k].setAttribute('visibility', 'visible');
+        html += row(k, BAND[k], '₹' + inr(v * 100000 + ((d * 7919 + k.charCodeAt(0) * 131) % 99000)));
+      });
+      showTip(html, e);
+    });
+    hit.addEventListener('mouseleave', function () { for (var k in dots) dots[k].setAttribute('visibility', 'hidden'); hideTip(); });
     $('tr').appendChild(s);
   })();
 
@@ -114,7 +158,16 @@
       el('line', { x1: x0, x2: x1, y1: Y(v), y2: Y(v), stroke: '#f0f0f3', 'stroke-dasharray': '3 4' }, s);
     });
     cats.forEach(function (c, i) {
-      var cx = x0 + (x1 - x0) * (i + .5) / n, acc = 0;
+      var cx = x0 + (x1 - x0) * (i + .5) / n, acc = 0, cw = (x1 - x0) / n;
+      var band = el('rect', { x: cx - cw / 2, y: y0, width: cw, height: y1 - y0, fill: '#f3f3f4', opacity: 0 }, s);
+      var hit = el('rect', { x: cx - cw / 2, y: y0, width: cw, height: y1 - y0, fill: 'transparent' }, null);
+      var cnt = { r: 0, o: 0, y: 0, g: 0 }; (data[i] || []).forEach(function (seg) { cnt[seg[0]] += seg[1]; });
+      hit.addEventListener('mousemove', function (e) {
+        band.setAttribute('opacity', 1);
+        showTip('<div class="th">' + c + '</div>' + ['r', 'o', 'y', 'g'].map(function (k) { return row(k, BAND[k], cnt[k]); }).join(''), e);
+      });
+      hit.addEventListener('mouseleave', function () { band.setAttribute('opacity', 0); hideTip(); });
+      setTimeout(function () { s.appendChild(hit); });
       (data[i] || []).forEach(function (seg) {
         var h = (y1 - y0) * seg[1] / max;
         el('rect', { x: cx - bw / 2, y: Y(acc) - h, width: bw, height: h, fill: C[seg[0]] }, s);
@@ -142,8 +195,16 @@
       el('line', { x1: x0, x2: x1, y1: Y(t), y2: Y(t), stroke: '#f0f0f3', 'stroke-dasharray': '3 4' }, s);
     });
     v.forEach(function (x, i) {
-      var cx = x0 + (x1 - x0) * (i + .5) / n;
+      var cx = x0 + (x1 - x0) * (i + .5) / n, cw = (x1 - x0) / n;
+      var band = el('rect', { x: cx - cw / 2, y: y0, width: cw, height: y1 - y0, fill: '#f3f3f4', opacity: 0 }, s);
       el('rect', { x: cx - 13, y: Y(x), width: 26, height: y1 - Y(x), fill: C.aum }, s);
+      var hit = el('rect', { x: cx - cw / 2, y: y0, width: cw, height: y1 - y0, fill: 'transparent' }, null);
+      hit.addEventListener('mousemove', function (e) {
+        band.setAttribute('opacity', 1);
+        showTip('<div class="th">' + amc[i] + '</div>' + row('', 'AUM', '₹' + inr(x * 100000 + 2555.1079 + i * 913.37, 4)), e);
+      });
+      hit.addEventListener('mouseleave', function () { band.setAttribute('opacity', 0); hideTip(); });
+      setTimeout(function () { s.appendChild(hit); });
       el('text', { x: cx + 6, y: y1 + 16, 'text-anchor': 'end', transform: 'rotate(-30 ' + (cx + 6) + ' ' + (y1 + 16) + ')' }, s, amc[i]);
     });
     $('aum').appendChild(s);

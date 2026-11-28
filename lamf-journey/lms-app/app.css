@@ -72,7 +72,7 @@
 .kp .dl { font-size: 12px; line-height: 20px; font-weight: 500; color: #3f4350; }
 .kp .dl b { font-weight: 500; margin-left: 6px; }
 .up { color: #0a8a3a; } .dn-c { color: #d7291f; }
-.kp .sp { position: absolute; right: 22px; top: 22px; width: 132px; height: 66px; }
+.kp .sp { position: absolute; right: 22px; top: 22px; width: 132px; height: 66px; z-index: 2; }
 .kp.sm .sp { display: none; }
 
 /* donuts and charts */
@@ -91,7 +91,7 @@ svg.ch text { font-family: var(--font); fill: #6b7080; font-size: 11px; }
 .col2 { display: grid; grid-template-columns: 291fr 290fr 174fr 302fr 324fr 305fr; gap: 16px; margin-top: 16px; }
 .col2 .kp { min-height: 100px; }
 .col2 .kp .v { font-size: 31px; }
-.soon { text-align: center; border-style: dashed; border-color: #ededf0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #6b7080; min-height: 100px; }
+.soon { text-align: center; padding-left: 8px; padding-right: 8px; white-space: nowrap; border-style: dashed; border-color: #ededf0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: #6b7080; min-height: 100px; }
 .soon b { font-size: 15.5px; font-weight: 500; color: #555a66; }
 .soon span { font-size: 11.5px; }
 .soon-i { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #9aa0ab; position: relative; margin-bottom: 4px; }
@@ -105,6 +105,17 @@ svg.ch text { font-family: var(--font); fill: #6b7080; font-size: 11px; }
 .sk-r i { height: 18px; width: 100px; border-radius: 9px; background: #eeeef0; display: block; }
 .sk-r i.s { width: 50px; }
 .sk-b { height: 300px; border-radius: 8px; background: #eeeef0; margin-top: 20px; }
+
+/* chart hover pop-up (DISC-504) – as the live LMS */
+.tip { position: fixed; z-index: 30; pointer-events: none; background: #fff; border-radius: 6px; box-shadow: 0 2px 12px rgba(0, 0, 0, .16);
+  padding: 10px 14px; font-size: 13px; color: #6b7080; min-width: 150px; }
+.tip .th { color: var(--ink); font-size: 13.5px; margin-bottom: 6px; }
+.tip .tr { display: flex; justify-content: space-between; align-items: center; gap: 28px; line-height: 22px; }
+.tip .tr span { display: inline-flex; align-items: center; gap: 8px; }
+.tip .tr i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.tip .tr b { font-family: "SFMono-Regular", Menlo, Consolas, "Courier New", monospace; font-weight: 500; color: var(--ink); font-size: 13px; }
+.dn svg .seg { cursor: pointer; }
+svg.ch rect, svg.sp rect { cursor: default; }
 
 /* Work in progress page (DISC-503) */
 .wip { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
