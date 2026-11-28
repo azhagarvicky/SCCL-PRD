@@ -123,7 +123,8 @@ svg.ch rect, svg.sp rect { cursor: default; }
 .pg { padding: 30px 24px 40px; }
 .pg-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
 .pg-h h1 { font-size: 20px; font-weight: 700; margin: 0; }
-.pg-new { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--blue); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; padding: 4px; }
+.pg-new { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; color: var(--blue); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; padding: 8px 12px; margin-right: -8px; border-radius: 8px; transition: background .15s; }
+.pg-new:hover, .pg-new:focus-visible { background: #f3f6fe; outline: none; }   /* DISC-509: light blue-grey on hover, as the UAT */
 .pg-new svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 .tb-wrap { overflow-x: auto; }
 .tb { width: 100%; border-collapse: collapse; font-size: 14px; }   /* DISC-508: sizes measured from the owner's zoomed UAT screenshot */
