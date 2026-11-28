@@ -271,3 +271,37 @@ svg.ch rect, svg.sp rect { cursor: default; }
 .pv-rej { background: #fff; border: 1px solid #c9ccd3; color: #a3a7b0; }
 .pv-apr { background: #f6f6f7; border: 0; color: #a3a7b0; }
 .pv-foot button:disabled { cursor: not-allowed; }
+
+/* Create a Product – step 2 Disbursement Type and step 3 Terms (DISC-515), from the owner's UAT screenshots */
+.cp-steps li.go { cursor: pointer; } .cp-steps li.go:hover { background: #fafafb; }
+.cp-steps li[data-s] { padding: 0 12px; }
+.cp-rds { display: grid; gap: 22px; justify-items: start; padding-top: 8px; }
+.cp-f label.cp-rd { display: inline-flex; margin: 0; color: var(--ink); align-items: center; gap: 10px; font-size: 16px; font-weight: 500; cursor: pointer; position: relative; }
+.cp-rd input { position: absolute; opacity: 0; }
+.cp-rd > i:not(.cp-i) { width: 22px; height: 22px; border-radius: 50%; border: 1.8px solid #1a1a1a; position: relative; flex: none; }
+.cp-rd input:checked + i { border-color: var(--blue); }
+.cp-rd input:checked + i::after { content: ""; position: absolute; inset: 3.5px; border-radius: 50%; background: var(--blue); }
+.cp-rd input:focus-visible + i { box-shadow: 0 0 0 3px rgba(31, 107, 255, .25); }
+.cp-rd .cp-i { width: 18px; height: 18px; border-radius: 50%; background: #b9bcc4; color: #fff; font-style: normal; font-size: 12px; font-weight: 700; font-family: Georgia, serif; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; }
+.tm-r { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 24px; }
+.tm-l b { display: block; font-size: 15.5px; font-weight: 500; margin-bottom: 4px; }
+.tm-l span { display: block; font-size: 13.5px; color: #6b7080; line-height: 21px; }
+.tm-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.tm-3 { display: grid; grid-template-columns: 142px 1fr 1fr; gap: 20px; }
+.ig { display: flex; align-items: center; height: 46px; border: 1px solid #e4e6eb; border-radius: 8px; background: #fff; overflow: hidden; }
+.ig:focus-within { border-color: var(--blue); }
+.ig-p { align-self: stretch; display: flex; align-items: center; padding: 0 16px; background: #f6f6f7; border-right: 1px solid #e4e6eb; font-size: 12px; font-weight: 600; }
+.ig-s { padding-left: 16px; font-size: 15px; }
+.ig input { flex: 1; min-width: 0; height: 100%; border: 0; outline: none; padding: 0 14px 0 10px; font: inherit; font-size: 15px; color: var(--ink); background: none; }
+.ig-p + input { padding-left: 16px; }
+.ig input::placeholder, .tm-pf input::placeholder { color: #9aa0ab; }
+.ig-x { padding-right: 16px; font-size: 16px; }
+.sel { position: relative; }
+.sel select { width: 100%; height: 46px; appearance: none; -webkit-appearance: none; border: 1px solid #e4e6eb; border-radius: 8px; background: #fff; font: inherit; font-size: 15.5px; color: var(--ink); padding: 0 40px 0 16px; cursor: pointer; }
+.sel select:focus { outline: none; border-color: var(--blue); }
+.sel::after { content: ""; position: absolute; right: 18px; top: 17px; width: 7px; height: 7px; border-right: 1.8px solid #1a1a1a; border-bottom: 1.8px solid #1a1a1a; transform: rotate(45deg); pointer-events: none; }
+.tm-k { display: block; font-size: 13.5px; color: #6b7080; margin: -4px 0 8px; }
+.tm-pf { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.tm-pf .cp-in { height: 46px; margin: 0; }
+@media (max-width: 1000px) { .tm-r { grid-template-columns: 1fr; } .tm-3 { grid-template-columns: 1fr; } .tm-2 { grid-template-columns: 1fr; } }
+button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; }
