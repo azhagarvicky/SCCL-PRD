@@ -1,12 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-<script src="assets/access.js?v=1" data-m="lms"></script>
+<script src="assets/access.js?v=2" data-m="lms"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF LMS – Screens</title>
-<link rel="stylesheet" href="assets/lamf.css?v=8a4a264">
-<script src="assets/lms-lock.js?v=2"></script>
+<link rel="stylesheet" href="assets/lamf.css?v=9a53fe6">
 </head>
 <body class="page-screens"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><h1>LAMF LMS – Screens</h1><p>10 screens, in order. The LMS prototype is rebuilt screen by screen from the live LMS (sample data only).</p><ol><li><a href="lms-app/login.html">01) Login</a></li>
 <li><a href="lms-app/otp.html?mail=abc%40shriramcredit.in">02) Login – OTP</a></li>
@@ -17,8 +16,8 @@
 <li><a href="lms-app/product-view.html?code=LAMF20261102">07) Product details – Active (Product Details / Documents, Update Access Policy)</a></li>
 <li><a href="lms-app/product-view.html?code=LAMF20261101">08) Product details – Inactive</a></li>
 <li><a href="lms-app/product-view.html?code=LAMF20261001">09) Product details – In Review (Reject / Approve)</a></li>
-<li><a href="lms-app/approvals.html">10) Approvals – My Pending Approvals / All Approvals</a></li></ol><p class="lms-old">Earlier LMS prototype (Loans lists, LAN page, Waiver flows): <a href="lms.html">open lms.html</a>.</p><p class="lms-lockbar"><button type="button" onclick="LMS_LOCK.lock();location.replace('lms-access.html')">🔒 Lock LMS</button> Locks the LMS on this browser – the mail ID and secret code are asked again.</p>
-<script src="assets/review.js?v=8a4a264"></script>
-<script src="assets/colresize.js?v=8a4a264"></script>
+<li><a href="lms-app/approvals.html">10) Approvals – My Pending Approvals / All Approvals</a></li></ol><p class="lms-old">Earlier LMS prototype (Loans lists, LAN page, Waiver flows): <a href="lms.html">open lms.html</a>.</p><p class="lms-lockbar"><button type="button" onclick="LAMF_ACCESS.logout();location.replace('index.html')">🔒 Sign out</button> Signs you out of the site in this tab – the mail ID and secret code are asked again (DISC-529).</p>
+<script src="assets/review.js?v=9a53fe6"></script>
+<script src="assets/colresize.js?v=9a53fe6"></script>
 </body>
 </html>
