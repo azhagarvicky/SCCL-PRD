@@ -68,8 +68,8 @@
       var v = boxes.map(function (b) { return b.value; }).join('');
       if (v.length < 6) return bad(OMSG.short);
       if (v !== OTP_OK) return bad(OMSG.wrong);
-      bad(''); onext.hidden = false;
-      onext.textContent = 'OTP submitted. The screen after login comes next – please share its UAT screenshot.';
+      bad('');
+      location.href = 'dashboard.html';   // DISC-497: after login the user lands on the Dashboard
     });
   }
 })();
