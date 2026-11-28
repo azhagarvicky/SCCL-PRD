@@ -1227,10 +1227,7 @@ SITE_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1 id="ac-h">
               '})();</script>')
 with open(os.path.join(ROOT, "access.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – Access", cls="page-screens page-lk", body=SITE_ACCESS))
-# DISC-535: LMS PRD (content in tools/lms_prd.py)
-import lms_prd as _lp
-with open(os.path.join(ROOT, "LMS_PRD.html"), "w") as f:
-    f.write(PAGE.format(title="LAMF – LMS PRD", cls="page-screens page-lmsprd", body=_lp.body(LOGO.format(home="index.html"), "28-11-2026")))
+import build_lms_prd   # DISC-536: LMS PRD in the LOS PRD format (module → screen → field); writes LMS_PRD.html
 with open(os.path.join(ROOT, "lms.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")).replace("</head>", LMS_LOCK, 1))
 # LOS charges payment after a DRAFT rejection and the payment receipt (DISC-351); data in tools/charges_payment.py
