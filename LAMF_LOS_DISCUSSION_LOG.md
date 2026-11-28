@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 12:09 IST
+**Last Updated:** 28-11-2026 12:20 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -519,6 +519,7 @@
 | DISC-484 | 28-11-2026 | lms-app/login.html, lms-app/lms.css, lms-app/lms.js, lms-app/img/login-preview.png, CLAUDE.md | New LMS prototype – screen 1: Login | Owner shared the live LMS login (uatlms.shriramcredit.in/user/login): Email ID + Send OTP; only an @shriramcredit.in mail ID may be accepted | New folder lms-app/ (hand-written source). Login page as in the screenshot: left panel (heading, 4 features, LMS preview cropped from the owner’s screenshot), right card Login – Email ID (placeholder abc@gmail.com) – Send OTP. Validation on Send OTP: empty → “Please enter your email ID.”; not @shriramcredit.in → “Please enter a valid Shriram Credit email ID (@shriramcredit.in).” (wording to be confirmed – PEND). A valid ID shows “OTP sent to …” until the OTP screen is shared. Works at phone width (form first). | WIP |
 | DISC-485 | 28-11-2026 | index.html, lms-screens.html (new), tools/lms.py (LMS_SCREENS), tools/build_pages.py, lms-app/login.html, lms-app/lms.css | LMS CTA opens the list of LMS screens | Owner: like the LOS screens page (screens.html), the LMS CTA on the first page should open a page listing all the LMS screens, the first being the Login | New generated page lms-screens.html (from LMS_SCREENS in tools/lms.py – each new LMS screen is added there): “LAMF LMS – Screens”, 01) Login. Home LMS CTA now opens it; a link at the bottom keeps the earlier lms.html. The login page’s top-right tag links back to the list (☰ LMS screens). | Implemented |
 | DISC-486 | 28-11-2026 | lms-app/login.html, lms-app/lms.css | LMS Login – exact copy of the UAT screen; placeholder abc@shriramcredit.in | Owner compared the UAT login with the prototype: copy the UAT exactly (font, sizes, spacing), no “Prototype” tag; the Email ID placeholder should be abc@shriramcredit.in | Font Satoshi (Fontshare; Inter fallback) as on the UAT; sizes measured from the UAT screenshot (1440 px window): heading 32/46 medium in two lines, features 16 px with 24 px icons, card 514 px, title 23 px bold, label 14 px, input 45 px, button 44 px, gradient as UAT. Prototype tag removed. Placeholder abc@gmail.com → abc@shriramcredit.in (only difference from the UAT, on the owner’s request). Font to be confirmed from the UAT (DevTools) if it still differs. | Implemented |
+| DISC-487 | 28-11-2026 | lms-app/lms.css, lms-app/login.html | LMS Login – fine-tuned against the UAT at 100% zoom | Owner shared the UAT and the prototype side by side at 100% zoom | Measured both: heading 33/48 and a little lower, features 16.5 px with 26 px icons and a 20 px gap, card 540 px wide (padding 40), title 24 px, label lighter grey, input 47 px high with 16.5 px text, button 45 px and a little lower. Also noted: no further requests to the UAT host (SCCL firewall blocked the one attempt). | Implemented |
 
 ---
 
