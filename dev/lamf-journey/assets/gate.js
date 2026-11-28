@@ -2,7 +2,7 @@
    Load it in <head> of a protected page: <script src="assets/gate.js"></script>. The page stays hidden until the login key is checked.
    admin.html loads it with data-admin="1" and gets window.LAMF_GATE.onAdmin(token) after an admin login. */
 (function () {
-  var ENDPOINT = '';   // Google Apps Script web app URL (…/exec). Empty = not connected yet: the page is not blocked.
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxrag9tuAwoD111KNMX07yNhgxjkJriKNlGw_2TeBkGLzdIxQ3K_z_2X9QxwBQKBIYG/exec';   // Google Apps Script web app URL (…/exec). Empty = not connected yet: the page is not blocked.
   var me = document.currentScript, isAdmin = me && me.getAttribute('data-admin') === '1';
   var KEY = isAdmin ? 'lamf-gate-admin' : 'lamf-gate-token', OK = 'lamf-gate-ok', RECHECK = 10 * 60 * 1000;   // admin login kept apart; re-check every 10 minutes
   var api = window.LAMF_GATE = { endpoint: ENDPOINT, call: call, token: get, logout: logout };
