@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF LMS – Access</title>
-<link rel="stylesheet" href="assets/lamf.css?v=d98cb24">
+<link rel="stylesheet" href="assets/lamf.css?v=b3bc989">
 </head>
 <body class="page-screens page-lk"><a class="logo" href="index.html" title="Home"><img src="assets/img/shriram-logo.png" alt="Shriram Credit"></a><main class="lk"><h1>LMS – Access</h1><p class="lk-sub">Enter your mail ID and secret code to open the LMS.</p><form class="lk-card" id="lk-form" novalidate autocomplete="off"><label for="lk-mail">Mail ID</label><input id="lk-mail" type="email" maxlength="120" autocomplete="username"><label for="lk-code">Secret code</label><div class="lk-pw"><input id="lk-code" type="password" maxlength="40" autocomplete="off"><button type="button" class="lk-eye" aria-label="Show the code" onclick="var i=document.getElementById('lk-code');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈';">👁</button></div><p class="lk-err" id="lk-err" role="alert"></p><button type="submit" id="lk-go" disabled>Continue</button></form></main><script src="assets/lms-lock.js?v=2" data-gate="off"></script><script>(function(){var q=new URLSearchParams(location.search).get("next")||"",nx="lms-screens.html";try{var u=q&&new URL(q,location.href);if(u&&u.origin===location.origin&&/\/lamf-journey\//.test(u.pathname)&&!/lms-access/.test(u.pathname))nx=u.href;}catch(e){}if(LMS_LOCK.isOpen())return location.replace(nx);var f=document.getElementById("lk-form"),m=document.getElementById("lk-mail"),c=document.getElementById("lk-code"),e=document.getElementById("lk-err"),b=document.getElementById("lk-go");function v(){b.disabled=!(m.value.trim()&&c.value.trim());e.textContent="";}m.addEventListener("input",v);c.addEventListener("input",v);f.addEventListener("submit",function(x){x.preventDefault();if(b.disabled)return;b.disabled=true;b.textContent="Checking…";LMS_LOCK.check(m.value,c.value).then(function(r){if(r.ok)return location.replace(nx);b.textContent="Continue";c.value="";v();e.textContent=r.blocked?"Too many wrong attempts. Please try again after "+Math.ceil(r.blocked/60000)+" minute(s).":"Mail ID or secret code is incorrect. "+r.left+" attempt(s) left.";});});})();</script>
-<script src="assets/review.js?v=d98cb24"></script>
-<script src="assets/colresize.js?v=d98cb24"></script>
+<script src="assets/review.js?v=b3bc989"></script>
+<script src="assets/colresize.js?v=b3bc989"></script>
 </body>
 </html>

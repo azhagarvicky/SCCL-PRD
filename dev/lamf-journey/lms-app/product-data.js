@@ -8,11 +8,14 @@ window.LMS_PROD = (function () {
   var dash = function (s) { return s && s !== '₹0' && s !== '0%' ? s : '-'; };
   // DISC-521: who is logged in (mail from the OTP step) and the display name; the maker of a product is the user who submitted it
   function me() { try { return sessionStorage.getItem('lms-user') || 'azhagarsamy.s@shriramcredit.in'; } catch (e) { return 'azhagarsamy.s@shriramcredit.in'; } }
-  function nameOf(m) { if (!m) return '-'; if (m === 'azhagarsamy.s@shriramcredit.in') return 'Azhagarsamy S';
+  // DISC-526 LMS user roles (owner): opsmaker@ = Maker, opschecker@ = Checker, azhagarsamy.s@ = Admin; any other login is treated as a maker
+  var USERS = { 'opsmaker@shriramcredit.in': ['Ops Maker', 'Maker'], 'opschecker@shriramcredit.in': ['Ops Checker', 'Checker'], 'azhagarsamy.s@shriramcredit.in': ['Azhagarsamy S', 'Admin'] };
+  function role(m) { return (USERS[m || me()] || [0, 'Maker'])[1]; }
+  function nameOf(m) { if (!m) return '-'; if (USERS[m]) return USERS[m][0];
     return m.split('@')[0].split(/[._-]+/).map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join(' '); }
   function rid() { var c = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz', r = ''; for (var i = 0; i < 10; i++) r += c.charAt(Math.floor(Math.random() * c.length)); return r; }
-  function save(l) { try { localStorage.setItem('lms-products-v3', JSON.stringify(l)); } catch (e) {} }
-  function load() { try { return JSON.parse(localStorage.getItem('lms-products-v3')) || []; } catch (e) { return []; } }
+  function save(l) { try { localStorage.setItem('lms-products-v4', JSON.stringify(l)); } catch (e) {} }
+  function load() { try { return JSON.parse(localStorage.getItem('lms-products-v4')) || []; } catch (e) { return []; } }
   function list(x) {   // Products list columns
     var t = x.terms;
     return { validity: dmy(x.from) + ' - ' + dmy(x.till),
@@ -33,5 +36,5 @@ window.LMS_PROD = (function () {
         'Renewal Charges': dash(inr(c['c-ren'])), 'Bounce Charges': dash(inr(c['c-bou'])), 'Bank Mandate Swap Charges': dash(inr(c['c-bms'])),
         'Penal Charges': dash(pct(c['c-pen'])), 'Liquidation Charges': dash(pct(c['c-liq'])), 'Prepayment Charges': dash(pct(c['c-pre'])) } };
   }
-  return { load: load, save: save, list: list, page: page, me: me, nameOf: nameOf, rid: rid };
+  return { load: load, save: save, list: list, page: page, me: me, nameOf: nameOf, role: role, rid: rid };
 })();

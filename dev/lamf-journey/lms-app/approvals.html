@@ -50,8 +50,8 @@
       <div class="ap-pager"><a class="pp-b dis" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></a><a class="pp-b dis" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a></div></div>
   </main>
 </div>
-<script src="shell.js?v=1"></script>
-<script src="product-data.js?v=5"></script>
+<script src="shell.js?v=2"></script>
+<script src="product-data.js?v=6"></script>
 <script>
 (function () {   // Approvals (DISC-521): every product sent for approval (In Review) is a change request here.
   // My Pending Approvals – requests made by someone else (the maker cannot check own request); All Approvals – every request.
@@ -61,7 +61,7 @@
   var show = function (t) {
     [].forEach.call(document.querySelectorAll('.ap-tabs button'), function (b) { b.classList.toggle('on', b.dataset.t === t); b.setAttribute('aria-selected', b.dataset.t === t); });
     $('ap-h').textContent = t === 'my' ? 'My Pending Approvals' : 'All Approvals';
-    var l = t === 'my' ? reqs.filter(function (x) { return x.maker !== me; }) : reqs;
+    var l = t === 'my' ? reqs.filter(function (x) { return x.maker !== me && LMS_PROD.role() !== 'Maker'; }) : reqs;   // DISC-526: only Checker / Admin have pending approvals
     $('ap-empty').hidden = !!l.length; $('ap-wrap').hidden = !l.length;
     $('ap-rows').innerHTML = l.map(function (x) {
       return '<tr><td>' + esc(x.on) + '</td><td><a class="ap-lk" href="product-view.html?code=' + encodeURIComponent(x.code) + '">Product creation</a></td>' +
