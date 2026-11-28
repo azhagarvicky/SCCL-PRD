@@ -467,3 +467,29 @@ button.cp-next { font: inherit; font-weight: 700; font-size: 16px; cursor: point
 .rk-no { color: #0a8a3a; font-weight: 700; }
 .ln-empty { padding: 80px 0; }
 .ln-empty[hidden], .ln-wrap[hidden], .ln-pg[hidden] { display: none; }
+/* DISC-539: loan page (LAN Number …) – sticky header and tabs, 4-column detail cards, fee / GST tooltip */
+.lv-top { position: sticky; top: 0; z-index: 7; background: #fff; margin: -28px -4px 24px; padding: 20px 4px 0; }
+.lv-h { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lv-h h1 { font-size: 20px; font-weight: 600; margin: 0 0 0 10px; }
+.lv-back { display: flex; color: #111; }
+.lv-back svg, .lv-i svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.lv-rk { background: #f1f1f2; border-radius: 10px; padding: 2px 8px; font-size: 12px; font-weight: 500; line-height: 16px; }
+.lv-lk { color: var(--blue); font-weight: 600; font-size: 15px; text-decoration: none; }
+.lv-lk:hover { text-decoration: underline; }
+.lv-sp { flex: 1; }
+.lv-tabs { margin: 22px 0 0; overflow-x: auto; }
+.lv-tabs button { white-space: nowrap; font-size: 13.5px; padding: 12px 12px 14px; }
+.lv-dd { top: 36px; }
+.lv-dd button:disabled { color: #b4b8c0; cursor: default; background: none; }
+.lv-g { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px 16px; }
+.lv-g span { display: block; font-size: 13.5px; color: #6b7080; margin-bottom: 6px; }
+.lv-g b { display: flex; align-items: center; gap: 6px; font-size: 14.5px; font-weight: 500; color: #111; }
+.lv-g b.g { color: #0a8a3a; }
+.lv-g b.lv-ln { margin-bottom: 5px; }
+.lv-a { color: var(--blue); text-decoration: underline; }
+.lv-warn { width: 15px; height: 15px; fill: #0a7a32; }
+.lv-i { display: inline-flex; border: 0; background: none; padding: 0; cursor: pointer; color: #111; }
+.lv-i svg { width: 15px; height: 15px; stroke-width: 1.8; }
+.lv-tip { position: absolute; z-index: 9; background: #fff; border: 1px solid #ececef; border-radius: 6px; box-shadow: 0 4px 14px rgba(0, 0, 0, .12); padding: 10px 14px; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.lv-tip[hidden] { display: none; }
+@media (max-width: 900px) { .lv-g { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

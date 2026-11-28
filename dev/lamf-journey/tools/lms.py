@@ -20,6 +20,7 @@ LMS_SCREENS = [
     ("09) Product details – In Review (Reject / Approve)", "lms-app/product-view.html?code=LAMF20261001"),
     ("10) Approvals – My Pending Approvals / All Approvals", "lms-app/approvals.html"),
     ("11) Loans – Active (LSP filter, All / Shortfall / In Default)", "lms-app/loans-active.html"),
+    ("12) Loan page – Overview (≡ loan actions, fee tooltips)", "lms-app/loan-view.html?lan=SCCLMF20261100043"),
 ]
 
 

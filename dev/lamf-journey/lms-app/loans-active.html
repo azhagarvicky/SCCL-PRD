@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=39">
+<link rel="stylesheet" href="app.css?v=40">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -57,20 +57,12 @@
   </main>
 </div>
 <script src="shell.js?v=2"></script>
+<script src="loan-data.js?v=1"></script>
 <script>
-(function () {   // DISC-538: Active loans – sample loans only (no real customer names or PANs); a loan row opens the Work in progress page until the loan page is built
+(function () {   // DISC-538: Active loans – sample loans only (no real customer names or PANs); DISC-539 a loan row opens the loan page
   var $ = function (id) { return document.getElementById(id); };
   var LSPS = ['All', 'Quicklend', 'Test', 'LARK', 'Liquify', 'SCCL LOS', 'Forward Wealth'];
-  var L = [   // LAN, product, client, PAN, sanction, ROI, start, end, generated, LSP
-    ['SCCLMF20261100043', 'LAMF20261102', 'Ravi Kumar Sample', 'ABCPK1234A', '₹2,00,000', '10.5%', '27/11/2026', '27/11/2027', '27/11/2026', 'SCCL LOS'],
-    ['SCCLMF20261100042', 'LAMF20261102', 'Priya Test Narayanan', 'BCDPN2345B', '₹5,00,000', '10.5%', '26/11/2026', '26/11/2027', '26/11/2026', 'SCCL LOS'],
-    ['SCCLMF20261100041', 'LAMF20261102', 'Arun Demo', 'CDEPA3456C', '₹1,50,000', '10.5%', '25/11/2026', '25/11/2027', '25/11/2026', 'Quicklend'],
-    ['SCCLMF20261100040', 'LAMF20261101', 'Meena Sample Raj', 'DEFPM4567D', '₹3,00,000', '10.5%', '21/11/2026', '21/11/2027', '21/11/2026', 'LARK'],
-    ['SCCLMF20261100039', 'LAMF20261101', 'Karthik Test', 'EFGPK5678E', '₹10,00,000', '10.5%', '18/11/2026', '18/11/2027', '18/11/2026', 'Liquify'],
-    ['SCCLMF20261100038', 'LAMF20261102', 'Divya Demo Iyer', 'FGHPD6789F', '₹75,000', '10.5%', '14/11/2026', '14/11/2027', '14/11/2026', 'SCCL LOS'],
-    ['SCCLMF20261100037', 'LAMF20261101', 'Suresh Sample', 'GHIPS7890G', '₹4,00,000', '10.5%', '10/11/2026', '10/11/2027', '10/11/2026', 'Forward Wealth'],
-    ['SCCLMF20261100036', 'LAMF20261101', 'Lakshmi Test Devi', 'HIJPL8901H', '₹2,50,000', '10.5%', '05/11/2026', '05/11/2027', '05/11/2026', 'Test']
-  ];
+  var L = LMS_LOAN.all(), inr = LMS_LOAN.inr;   // DISC-539: sample loans shared with the loan page (loan-data.js)
   var EMPTY = ['', 'No shortfall application', 'No in default application'];   // the In Default text is assumed (LP-08)
   var q = new URLSearchParams(location.search), tab = /^[012]$/.test(q.get('tab')) ? +q.get('tab') : 0, lsp = '';
   var sel = $('ln-lsp'), sb = $('ln-lsp-b'), ul = sel.querySelector('.sel-l');
@@ -88,15 +80,15 @@
   }); });
   function draw() {
     [].forEach.call(document.querySelectorAll('.ln-chips button'), function (b) { var on = +b.dataset.t === tab; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
-    var rows = tab ? [] : L.filter(function (r) { return !lsp || r[9] === lsp; });   // the sample loans have no shortfall and none is in default
+    var rows = tab ? [] : L.filter(function (r) { return !lsp || r.lsp === lsp; });   // the sample loans have no shortfall and none is in default
     $('ln-rows').innerHTML = rows.map(function (r) {
-      return '<tr data-lan="' + r[0] + '"><td>' + r[0] + '</td><td>' + r[1] + '</td><td><span class="rk-no">No Risk</span></td><td>-</td><td class="nm" title="' + r[2] + '">' + r[2] +
-        '</td><td><span class="pill p-active">Active</span></td><td>' + r[3] + '</td><td class="r">' + r[4] + '</td><td class="r">' + r[5] + '</td><td>' + r[6] + '</td><td>' + r[7] + '</td><td>' + r[8] + '</td><td>' + r[9] + '</td></tr>';
+      return '<tr data-lan="' + r.lan + '"><td>' + r.lan + '</td><td>' + r.product + '</td><td><span class="rk-no">No Risk</span></td><td>-</td><td class="nm" title="' + r.client + '">' + r.client +
+        '</td><td><span class="pill p-active">Active</span></td><td>' + r.pan + '</td><td class="r">' + inr(r.sanction) + '</td><td class="r">' + r.roi + '</td><td>' + r.start + '</td><td>' + r.end + '</td><td>' + r.start + '</td><td>' + r.lsp + '</td></tr>';
     }).join('');
     $('ln-wrap').hidden = $('ln-pg').hidden = !rows.length; $('ln-empty').hidden = !!rows.length;
     $('ln-empty-t').textContent = tab ? EMPTY[tab] : 'No active loans';
     $('ln-show').textContent = 'Showing 1 - ' + rows.length + ' items';
-    [].forEach.call($('ln-rows').rows, function (tr) { tr.addEventListener('click', function () { location.href = 'wip.html?p=' + encodeURIComponent('Loans – Active – ' + tr.dataset.lan); }); });
+    [].forEach.call($('ln-rows').rows, function (tr) { tr.addEventListener('click', function () { location.href = 'loan-view.html?lan=' + encodeURIComponent(tr.dataset.lan); }); });
   }
   draw();
 })();
