@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 14:43 IST
+**Last Updated:** 28-11-2026 14:45 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -533,6 +533,7 @@
 | DISC-498 | 28-11-2026 | lms-app/dashboard.html, lms-app/app.css | LMS dashboard – number style as the live LMS | Owner compared the prototype and the live dashboard: the KPI numbers are bolder in the LMS – match the number style and weight | Big KPI values now Satoshi Black (900, loaded from Fontshare), 33 px, tighter letter-spacing; MTD / MoM values medium (500) instead of bold, 12 px; collection values 31 px. | Implemented |
 | DISC-499 | 28-11-2026 | lms-app/dashboard.html, dashboard.js, app.css, lms-app/lms.js, lms-app/otp.html, lms-app/login.html | LMS – profile pop-up and expandable left menu | Owner: clicking the profile icon opens a small pop-up with the name, the mail ID and Logout (whole row clickable, logs out); clicking the arrow next to it expands the menu as in the live LMS (logo, full labels, scroll for the rest) | Profile pop-up: name “Azhagar” (the live LMS shows “Azhagar null” – a data issue, not copied), the mail ID used to log in (kept from the OTP step), divider, Logout with icon – the whole Logout row is a button and opens the LMS login page; closes on outside click / Esc. Arrow: menu widens to 316 px – Shriram Credit logo, profile icon, “<” collapse button in a box; items in a row with icon + label (Dashboard, Products, Loans with Active … Rejected indented, Collaterals, Clients, Approvals, Disbursement Management, Reports, Settings); the content moves right; the choice is kept while browsing. Tested. | Implemented |
 | DISC-500 | 28-11-2026 | lms-app/dashboard.html | LMS menu icons as the live LMS (Loans and others) | Owner: the Loans icon looks different from the screenshot – match it exactly | Icons redrawn from a zoomed crop of the owner’s screenshot: Loans = open hand with cuff and two coins above; Collaterals = page with a filled folded corner and two lines; Clients = two people (second behind on the right); Reports = page top with filled corner and DOC below. | Implemented |
+| DISC-501 | 28-11-2026 | lms-app/dashboard.html, lms-app/app.css | LMS profile pop-up as the owner’s screenshot | Owner shared the expected pop-up: “Azhagarsamy S”, the mail ID, Logout row with a light red background and the exit icon | Name changed to Azhagarsamy S; pop-up sizes to its content (mail ID on one line), rounded 10 px with a soft shadow; Logout row light red (#fbeaea) on hover / focus with rounded corners; exit icon with the bracket on the left and the arrow out to the right. | Implemented |
 
 ---
 
