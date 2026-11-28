@@ -5,13 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LMS – Login</title>
 <!-- DISC-484: LMS prototype from scratch – Login (live: uatlms.shriramcredit.in/user/login). Source file. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="lms.css?v=2">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lms.css?v=3">
 </head>
 <body>
-<a class="proto-tag" href="../lms-screens.html" title="All LMS screens">☰ LMS screens · Prototype – sample data</a>
 <main class="lg">
   <section class="lg-hero" aria-label="About the LMS">
     <h1>Experience the simplicity of managing secured lending</h1>
@@ -32,13 +31,13 @@
     <form class="lg-card" id="lg-form" novalidate>
       <h2>Login</h2>
       <label for="lg-mail">Email ID</label>
-      <input class="lg-in" id="lg-mail" type="email" placeholder="abc@gmail.com" autocomplete="email" maxlength="120">
+      <input class="lg-in" id="lg-mail" type="email" placeholder="abc@shriramcredit.in" autocomplete="email" maxlength="120">
       <p class="lg-err" id="lg-err" role="alert"></p>
       <button class="lg-btn" id="lg-send" type="submit">Send OTP</button>
       <p class="lg-next" id="lg-next" hidden></p>
     </form>
   </section>
 </main>
-<script src="lms.js?v=1"></script>
+<script src="lms.js?v=2"></script>
 </body>
 </html>
