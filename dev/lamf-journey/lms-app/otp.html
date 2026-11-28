@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LMS – Login</title>
+<script src="../assets/lms-lock.js?v=2"></script>
+<!-- DISC-494: LMS prototype – Login, OTP step (after Send OTP). Source file. -->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lms.css?v=6">
+</head>
+<body>
+<main class="lg">
+  <section class="lg-hero" aria-label="About the LMS">
+    <h1>Experience the simplicity of managing secured lending</h1>
+    <ul class="lg-feat">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Custom loan products with 30+ configurable parameters</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Real-time collateral tracking with automated risk alerts and thresholds</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 15h3l4 2h5a1.5 1.5 0 0 0 0-3h-3"/><path d="M5 13l3-2h4l1 1"/><path d="M14 17l5-2.5a1.5 1.5 0 0 1 1.5 2.5L15 20H8l-3-1.5"/><circle cx="16" cy="6" r="2.5"/><path d="M19.5 9.5a3.5 3.5 0 0 0-7 0"/></svg>
+        Flexible digital, manual, and partner-assisted loan application workflows</li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        Role-based access with audit-ready security and governance controls</li>
+    </ul>
+    <div class="lg-shot"><img src="img/login-preview.png" alt="Preview of the LMS loan account page"></div>
+  </section>
+
+  <section class="lg-side">
+    <form class="lg-card ot-card" id="ot-form" novalidate>
+      <a class="ot-back" href="login.html" aria-label="Back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4M10 6l-6 6 6 6"/></svg></a>
+      <h2>Login</h2>
+      <p class="ot-sent">6-digit OTP has been sent to your Email Id<br><b>"<span id="ot-mail"></span>"</b></p>
+      <div class="ot-boxes" id="ot-boxes">
+        <input inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="OTP digit 1"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 2"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 3"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 4"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 5"><input inputmode="numeric" maxlength="1" aria-label="OTP digit 6">
+      </div>
+      <p class="lg-err ot-err" id="ot-err" role="alert"></p>
+      <p class="ot-resend">Didn't receive OTP? <span id="ot-timer">0:30</span><button type="button" id="ot-again" hidden>Resend OTP</button></p>
+      <button class="lg-btn ot-btn" id="ot-go" type="submit">Submit</button>
+      <p class="lg-next" id="ot-next" hidden></p>
+    </form>
+  </section>
+</main>
+<script src="lms.js?v=3"></script>
+</body>
+</html>

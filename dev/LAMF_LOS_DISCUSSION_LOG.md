@@ -6,7 +6,7 @@
 **System:** LOS – Customer Online Journey
 **Document Type:** Discussion & Decision Log
 **Status:** Living Document
-**Last Updated:** 28-11-2026 13:29 IST
+**Last Updated:** 28-11-2026 13:31 IST
 
 **Prototype location:** `LOCAL/lamf-journey/` (37 HTML screens + shared `assets/lamf.css`, `assets/lamf.js`)
 **Screenshot source:** `SCCL/LAMF/LOS/LOS/` (38 screenshots, UAT: `uatlamf.shriramcredit.in`)
@@ -526,6 +526,7 @@
 | DISC-491 | 28-11-2026 | assets/lms-lock.js, tools/lms.py, tools/build_pages.py, assets/lamf.css, lms-screens.html, lms.html, lms-access.html, lms-app/login.html | LMS lock – ask again in every new tab; Lock LMS button | Owner: after unlocking once, the LMS CTA went straight in without asking (the unlock was kept for 12 hours on that browser); it should ask again | The unlock is now kept only in the current browser tab (sessionStorage): a new tab, or closing the tab / browser, asks for the mail ID and code again; the older 12-hour unlock is cleared. New “🔒 Lock LMS” button on the LMS screen list locks it at once. Tested: same tab stays open, new tab asks, after Lock it asks. | Implemented |
 | DISC-492 | 28-11-2026 | lms-app/lms.css, lms-app/login.html | LMS Login – left panel gradient as the UAT | Owner: in the UAT the dark navy covers more than half of the left panel; in the prototype the blue started below the middle | Colours sampled down the left panel of the owner’s UAT screenshot: dark navy #000a32 → #041c4d until about 63 %, then #05255e (72 %), #06358e (82 %), bright blue #074ed3 / #0752df at the bottom. Gradient replaced with these stops. | Implemented |
 | DISC-493 | 28-11-2026 | lms-access.html, tools/build_pages.py, assets/lamf.css | LMS lock – show / hide the code | Owner got “Mail ID or secret code is incorrect” | Checked: the stored hash matches the owner’s mail ID + code (verified again, also with capitals and spaces). Likely browser autofill or a typo. Added a 👁 show / hide button in the Secret code box and switched off password autofill for it. | Implemented |
+| DISC-494 | 28-11-2026 | lms-app/otp.html (new), lms-app/login.html, lms-app/lms.js, lms-app/lms.css, tools/lms.py, lms-screens.html | New LMS – screen 2: Login OTP | Owner shared the UAT OTP step (after Send OTP): back arrow, Login, “6-digit OTP has been sent to your Email Id "…"”, 6 OTP boxes, “Didn't receive OTP? 0:28” timer, Submit | Send OTP on the login page now opens otp.html with the entered mail ID. OTP page as the UAT (same left panel; card sizes measured from the screenshot): back arrow → login, the mail ID in bold quotes, 6 boxes (digits only, auto-move, Backspace back, paste of 6 digits), 30-second timer then “Resend OTP” (assumed – to confirm), Submit. Submit with fewer than 6 digits → “Please enter the 6-digit OTP.” (wording to confirm); with 6 digits a note asks for the next screen. Added to the LMS screen list as 02) Login – OTP. | WIP |
 
 ---
 

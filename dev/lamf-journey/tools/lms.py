@@ -10,6 +10,7 @@ import html as _h
 # lms-screens.html (the LMS CTA on the home page), in order. Add each new screen here: (name, page under lms-app/).
 LMS_SCREENS = [
     ("01) Login", "lms-app/login.html"),
+    ("02) Login – OTP", "lms-app/otp.html?mail=abc%40shriramcredit.in"),
 ]
 
 
