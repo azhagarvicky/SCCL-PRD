@@ -1557,3 +1557,4 @@ BODY = f"""<header class="prd-head">
 with open(os.path.join(ROOT, 'assets', 'prd-body.js'), 'w') as f:
     f.write('window.PRD_HTML = ' + _json.dumps(BODY) + ';\n')
 print('SCCL_LAMF_LOS_PRD.html + assets/prd-body.js written')
+import apply_access; apply_access.apply()   # DISC-528 module-wise access check on every module page

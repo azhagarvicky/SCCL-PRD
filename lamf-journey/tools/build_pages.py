@@ -1190,6 +1190,38 @@ LMS_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1>LMS – Acc
               '})();</script>')
 with open(os.path.join(ROOT, "lms-access.html"), "w") as f:
     f.write(PAGE.format(title="LAMF LMS – Access", cls="page-screens page-lk", body=LMS_ACCESS))
+# DISC-528: common access page for every module – mail ID + secret code, checked live against the Google Sheet
+# "LAMF Site Access" → tab "Module Access" through the Apps Script web app (assets/access.js).
+SITE_ACCESS = (LOGO.format(home="index.html") + '<main class="lk"><h1 id="ac-h">Access</h1>'
+              '<p class="lk-sub" id="ac-sub">Enter your mail ID and secret code to continue.</p>'
+              '<form class="lk-card" id="lk-form" novalidate autocomplete="off">'
+              '<label for="lk-mail">Mail ID</label><input id="lk-mail" type="email" maxlength="120" autocomplete="username">'
+              '<label for="lk-code">Secret code</label><div class="lk-pw"><input id="lk-code" type="password" maxlength="40" autocomplete="off">'
+              '<button type="button" class="lk-eye" aria-label="Show the code" onclick="var i=document.getElementById(\'lk-code\');'
+              'i.type=i.type===\'password\'?\'text\':\'password\';this.textContent=i.type===\'password\'?\'👁\':\'🙈\';">👁</button></div>'
+              '<p class="lk-err" id="lk-err" role="alert"></p><button type="submit" id="lk-go" disabled>Continue</button></form>'
+              '<p class="lk-no" id="ac-no" hidden></p></main>'
+              '<script src="assets/access.js?v=1"></script><script>(function(){'
+              'var A=window.LAMF_ACCESS,P=new URLSearchParams(location.search),md=P.get("m")||"",q=P.get("next")||"",nx="index.html";'
+              'try{var u=q&&new URL(q,location.href);if(u&&u.origin===location.origin&&/\/lamf-journey\//.test(u.pathname)&&!/\/access\.html/.test(u.pathname))nx=u.href;}catch(e){}'
+              'var nm=A.names[md]||"";if(nm){document.getElementById("ac-h").textContent=nm+" – Access";document.title="LAMF – "+nm+" – Access";}'
+              'var no=document.getElementById("ac-no");'
+              'function deny(s){document.getElementById("lk-form").hidden=true;document.getElementById("ac-sub").hidden=true;no.hidden=false;no.innerHTML="<b>"+(s.name||s.mail)+"</b>, you do not have access to the "+nm+". Kindly reach Azhagarsamy S – '
+              '<a href=mailto:azhagarsamy.s@shriramcredit.in>azhagarsamy.s@shriramcredit.in</a>. <a href=# id=ac-out>Use another mail ID</a>";'
+              'document.getElementById("ac-out").onclick=function(e){e.preventDefault();A.logout();location.reload();};}'
+              'var s=A.get();if(s||!A.on){if(A.allowed(md,s))return location.replace(nx);deny(s);}'
+              'var f=document.getElementById("lk-form"),m=document.getElementById("lk-mail"),c=document.getElementById("lk-code"),'
+              'e=document.getElementById("lk-err"),b=document.getElementById("lk-go");'
+              'function v(){b.disabled=!(m.value.trim()&&c.value.trim());e.textContent="";}'
+              'm.addEventListener("input",v);c.addEventListener("input",v);'
+              'f.addEventListener("submit",function(x){x.preventDefault();if(b.disabled)return;b.disabled=true;b.textContent="Checking…";'
+              'A.login(m.value.trim().toLowerCase(),c.value).then(function(r){b.textContent="Continue";c.value="";v();'
+              'if(!r.ok){e.textContent=r.error||"Mail ID or secret code is incorrect.";return;}'
+              'if(A.allowed(md,A.get()))return location.replace(nx);deny(A.get());})'
+              '.catch(function(){b.textContent="Continue";v();e.textContent="Could not reach the access service. Please try again.";});});'
+              '})();</script>')
+with open(os.path.join(ROOT, "access.html"), "w") as f:
+    f.write(PAGE.format(title="LAMF – Access", cls="page-screens page-lk", body=SITE_ACCESS))
 with open(os.path.join(ROOT, "lms.html"), "w") as f:
     f.write(PAGE.format(title="LAMF – LMS", cls="page-lms", body=lms_body(LOGO.format(home="index.html"), "index.html")).replace("</head>", LMS_LOCK, 1))
 # LOS charges payment after a DRAFT rejection and the payment receipt (DISC-351); data in tools/charges_payment.py
@@ -1252,6 +1284,7 @@ CLOUD = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LAMF Online Journey</title>
+<script src="assets/access.js?v=1"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -1276,6 +1309,9 @@ CLOUD = """<!doctype html>
 <script>
   function route() {
     var name = decodeURIComponent(location.hash.replace(/^#/, ''));
+    var A = window.LAMF_ACCESS, need = function (m) { return !A || A.guard(m); };   // DISC-528 module-wise access per part
+    var top = name.split('/')[0], mm = top === 'PRD' ? 'prd' : top === 'BRD' ? 'brd' : (top === 'INTERNAL' || top === 'COMMS') ? 'comms' : top === 'CALC' ? 'calc' : (top === 'SCREENS' || window.SCREEN_RENDER[name]) ? 'journey' : '';
+    if (mm && !need(mm)) return;
     if (name.split('/')[0] === 'PRD' && window.PRD_HTML) {
       LAMF.renderPRD(window.PRD_HTML);
       var row = name.split('/')[1], t = row && document.getElementById(row);   // #PRD/sl-5 opens that row (DISC-153)
@@ -1302,3 +1338,4 @@ CLOUD = """<!doctype html>
 with open(os.path.join(ROOT, "cloud.html"), "w") as f:
     f.write(CLOUD)
 print("cloud.html + assets/screens.js written")
+import apply_access; apply_access.apply()   # DISC-528 module-wise access check on every module page

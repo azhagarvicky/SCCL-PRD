@@ -11,6 +11,10 @@
  *   5. Copy the Web app URL (ends in /exec) and give it to Claude.
  * After changing this script: Deploy → Manage deployments → edit → Version: New version (the URL stays the same).
  *
+ * DISC-528 module-wise access: tab "Module Access" – one row per user: Mail ID, Name, Secret code, then Y / N for each module
+ * (PRD, BRD, LOS Journey, Communications, Calculator, LMS), Active (Y / N), Last access. Used by assets/access.js and access.html.
+ * The owner types each user's secret code in the sheet (the sheet stays private); the site only sends the code to check it.
+ *
  * The OTP is never stored – only a SHA-256 hash with a secret salt, in the script cache for 10 minutes.
  * A login key (token) is given after the OTP is verified; only its hash is stored in Sessions, valid for 30 days.
  */
@@ -24,6 +28,11 @@ const SITE = 'https://azhagarvicky.github.io/SCCL-PRD/dev/lamf-journey/';
 const USERS = ['Mail ID', 'Name', 'Requested on', 'Status', 'Approved by', 'Approved on', 'Last login'];
 const SESS = ['Token hash', 'Mail ID', 'Created on', 'Expires on'];
 const LOG = ['Date & time', 'Mail ID', 'Event', 'Detail'];
+const MODS = ['Mail ID', 'Name', 'Secret code', 'PRD', 'BRD', 'LOS Journey', 'Communications', 'Calculator', 'LMS', 'Active', 'Last access'];
+const MOD_KEYS = ['prd', 'brd', 'journey', 'comms', 'calc', 'lms'];   // same order as the module columns D–I
+const MOD_HOURS = 12;            // a module sign-in is valid for 12 hours (the site also asks again in every new tab)
+const MOD_TRIES = 5;             // wrong secret codes per mail ID …
+const MOD_LOCK_MIN = 15;         // … then a 15-minute wait
 
 function setup() {
   tab_('Users', USERS); tab_('Sessions', SESS); tab_('Log', LOG); salt_();
@@ -110,6 +119,8 @@ function doPost(e) {
     if (a === 'logout') return out_(logout_(q));
     if (a === 'list') return out_(list_(q));
     if (a === 'set') return out_(set_(q));
+    if (a === 'mlogin') return out_(mlogin_(q));   // DISC-528
+    if (a === 'mcheck') return out_(mcheck_(q));
     return out_({ ok: false, error: 'Unknown action' });
   } catch (err) {
     return out_({ ok: false, error: 'Something went wrong. Please try again.' });
@@ -228,4 +239,44 @@ function set_(q) {
   }
   log_(m, 'Status ' + st, 'by ' + ADMIN);
   return { ok: true };
+}
+
+// ---- DISC-528 module-wise access ------------------------------------------------------------------------------------------
+function modrow_(m) {   // the user's row in "Module Access" → {name, code, mods[], active, row} or null
+  const sh = tab_('Module Access', MODS), r = find_(sh, m);
+  if (!r) return null;
+  const v = sh.getRange(r, 1, 1, MODS.length).getDisplayValues()[0];
+  const mods = [];
+  MOD_KEYS.forEach(function (k, i) { if (String(v[3 + i]).trim().toUpperCase() === 'Y') mods.push(k); });
+  return { row: r, name: v[1], code: String(v[2]), mods: mods, active: String(v[9]).trim().toUpperCase() !== 'N' };
+}
+function same_(a, b) {   // compare without stopping at the first different character
+  a = String(a); b = String(b); let d = a.length ^ b.length;
+  for (let i = 0; i < Math.max(a.length, b.length); i++) d |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  return d === 0;
+}
+function mlogin_(q) {
+  const m = mail_(q.mail), code = String(q.code || '').trim();
+  const c = CacheService.getScriptCache(), k = 'mtry:' + m, n = Number(c.get(k) || 0);
+  if (n >= MOD_TRIES) return { ok: false, error: 'Too many wrong attempts. Please try again after ' + MOD_LOCK_MIN + ' minutes.' };
+  const u = valid_(m) ? modrow_(m) : null;
+  if (!u || !u.active || !u.code || !same_(u.code.trim(), code)) {
+    c.put(k, String(n + 1), MOD_LOCK_MIN * 60);
+    log_(m, 'Module sign-in failed', 'attempt ' + (n + 1));
+    const left = MOD_TRIES - n - 1;
+    return { ok: false, error: left > 0 ? 'Mail ID or secret code is incorrect. ' + left + ' attempt(s) left.' : 'Too many wrong attempts. Please try again after ' + MOD_LOCK_MIN + ' minutes.' };
+  }
+  c.remove(k);
+  const token = Utilities.getUuid() + Utilities.getUuid(), exp = Date.now() + MOD_HOURS * 3600e3;
+  tab_('Sessions', SESS).appendRow([hash_('t:' + token), m, now_(), exp]);
+  tab_('Module Access', MODS).getRange(u.row, 11).setValue(now_());
+  log_(m, 'Module sign-in', u.mods.join(', '));
+  return { ok: true, token: token, expires: exp, mail: m, name: u.name, mods: u.mods };
+}
+function mcheck_(q) {   // live re-check: modules removed or Active = N in the sheet take effect at once
+  const m = session_(q.token);
+  if (!m) return { ok: false };
+  const u = modrow_(m);
+  if (!u || !u.active) return { ok: false };
+  return { ok: true, mail: m, name: u.name, mods: u.mods };
 }
