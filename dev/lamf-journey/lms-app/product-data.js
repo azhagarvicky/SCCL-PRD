@@ -28,7 +28,7 @@ window.LMS_PROD = (function () {
     return { n: x.name, st: x.status || 'Draft', req: x.req, maker: x.maker, on: x.on, v: l.validity, s: x.desc || '-', kyc: x.kyc && x.kyc.liv ? ['Liveness'] : [],
       f: { 'Disbursement Type': ({ 'Revolving Overdraft': 'Revolving', 'Single Disbursement': 'Single', 'Multiple Disbursement': 'Multiple' })[x.disb] || '-',
         'Sanction Amount': l.sa, 'Rate of Interest': t['t-ri1'] === t['t-ri2'] ? pct(t['t-ri1']) : l.ri, 'Tenure': ten, 'Processing Fee': l.pf,
-        'Maximum Mandate Amount': mand, 'Repayment Type': rt || '-', 'Repayment Frequency': k.mo ? k.day + ', Monthly' : '-',
+        'Maximum Mandate Amount': mand, 'Repayment Type': rt || '-', 'Repayment Frequency': k.mo && k.day ? k.day + ', Monthly' : '-',
         'Collection of PF': k.pf === '1st Collection' ? 'First Collection' : 'First Disbursement', 'Access Policy': 'Access granted to all clients',
         'Renewal Charges': dash(inr(c['c-ren'])), 'Bounce Charges': dash(inr(c['c-bou'])), 'Bank Mandate Swap Charges': dash(inr(c['c-bms'])),
         'Penal Charges': dash(pct(c['c-pen'])), 'Liquidation Charges': dash(pct(c['c-liq'])), 'Prepayment Charges': dash(pct(c['c-pre'])) } };

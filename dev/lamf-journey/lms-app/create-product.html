@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="lms.css?v=9">
-<link rel="stylesheet" href="app.css?v=32">
+<link rel="stylesheet" href="app.css?v=34">
 </head>
 <body class="app">
 <aside class="sb" id="sb">
@@ -68,13 +68,13 @@
       <div class="cp-f co" id="p5" hidden>
         <h3>Maximum amount for mandate</h3>
         <div class="sel"><select id="k-mand" aria-label="Maximum amount for mandate"><option>Sanction Amount</option><option>Multiple of Loan Amount</option><option>Absolute Value</option></select></div>
-        <div id="k-amw" hidden><label class="co-k" for="k-amt">Enter the Amount</label><div class="ig k-ig"><span class="ig-s" id="k-rs">₹</span><input id="k-amt" inputmode="decimal" placeholder="Ex. 2X"></div></div>
+        <div id="k-amw" hidden><label class="co-k" for="k-amt">Enter the Amount <span class="fe" id="k-e1" role="alert"></span></label><div class="ig k-ig"><span class="ig-s" id="k-rs">₹</span><input id="k-amt" inputmode="decimal" placeholder="Ex. 2X"></div></div>
         <h3>Repayment</h3>
-        <span class="co-k">Type</span>
+        <span class="co-k">Type <span class="fe" id="k-e2" role="alert"></span></span>
         <label class="cb"><input type="checkbox" id="k-fa"><i></i>Fully Amortized</label>
         <label class="cb"><input type="checkbox" id="k-bt"><i></i>Balloon Type</label>
-        <span class="co-k">Frequency</span>
-        <div class="co-fr"><label class="cb"><input type="checkbox" id="k-mo"><i></i>Monthly</label><div class="sel cal"><select id="k-day" aria-label="Repayment day of the month"><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option><option>6th</option><option>7th</option><option>8th</option><option>9th</option><option>10th</option><option>11th</option><option>12th</option><option>13th</option><option>14th</option><option>15th</option><option>16th</option><option>17th</option><option>18th</option><option>19th</option><option>20th</option><option>21st</option><option>22nd</option><option>23rd</option><option>24th</option><option>25th</option><option>26th</option><option>27th</option><option>28th</option></select></div></div>
+        <span class="co-k">Frequency <span class="fe" id="k-e3" role="alert"></span></span>
+        <div class="co-fr"><label class="cb"><input type="checkbox" id="k-mo"><i></i>Monthly</label><div class="sel cal"><select id="k-day" aria-label="Repayment day of the month"><option value="" selected>Date</option><option>1st</option><option>2nd</option><option>3rd</option><option>4th</option><option>5th</option><option>6th</option><option>7th</option><option>8th</option><option>9th</option><option>10th</option><option>11th</option><option>12th</option><option>13th</option><option>14th</option><option>15th</option><option>16th</option><option>17th</option><option>18th</option><option>19th</option><option>20th</option><option>21st</option><option>22nd</option><option>23rd</option><option>24th</option><option>25th</option><option>26th</option><option>27th</option><option>28th</option></select></div></div>
         <h3>Processing Fee</h3>
         <label class="cp-rd"><input type="radio" name="pfc" value="1st Disbursement" checked><i></i>1st Disbursement</label>
         <label class="cp-rd"><input type="radio" name="pfc" value="1st Collection"><i></i>1st Collection</label>
@@ -113,7 +113,7 @@
   </div>
 </div>
 <script src="shell.js?v=1"></script>
-<script src="product-data.js?v=2"></script>
+<script src="product-data.js?v=3"></script>
 <script>
 (function () {   // Create a Product – steps 1–3 (DISC-506, 507, 515): default validity today → today + 10 years, as the UAT
   // DISC-507: Next saves the product as a Draft (next LAMF code), the header turns to "Draft Saved", step 1 gets a tick
@@ -194,8 +194,9 @@
     var box = sel.parentNode, b = document.createElement('button'), ul = document.createElement('ul');
     b.type = 'button'; b.className = 'sel-b'; b.setAttribute('aria-haspopup', 'listbox'); b.setAttribute('aria-label', sel.getAttribute('aria-label'));
     ul.className = 'sel-l'; ul.setAttribute('role', 'listbox'); ul.hidden = true;
-    var show = function () { b.textContent = sel.value; };
+    var show = function () { b.textContent = sel.value || sel.options[0].text; b.classList.toggle('ph', !sel.value); };   // DISC-522: empty → grey placeholder (Date)
     [].forEach.call(sel.options, function (o) {
+      if (!o.value) return;   // the placeholder is not a choice
       var li = document.createElement('li'); li.textContent = o.value; li.setAttribute('role', 'option'); li.tabIndex = -1;
       li.addEventListener('click', function () { sel.value = o.value; sel.dispatchEvent(new Event('change')); close(); b.focus(); });
       li.addEventListener('keydown', function (e) { if (e.key === 'Enter') li.click(); });
@@ -212,7 +213,11 @@
   });
   $('t-tt').addEventListener('change', function () { tenureMode(); $('t-te1').closest('.tm-r').querySelector('.fe').textContent = ''; $('t-chips').classList.remove('bad'); bad('t-te1', false); bad('t-te2', false); });
   drawChips(); tenureMode(); mandMode();
-  $('k-mand').addEventListener('change', function () { $('k-amt').value = ''; mandMode(); });
+  $('k-mand').addEventListener('change', function () { $('k-amt').value = ''; mandMode(); $('k-e1').textContent = ''; $('k-amt').closest('.ig').classList.remove('bad'); });
+  $('k-amt').addEventListener('input', function () { if (this.value.trim()) { $('k-e1').textContent = ''; this.closest('.ig').classList.remove('bad'); } });
+  ['k-fa', 'k-bt'].forEach(function (id) { $(id).addEventListener('change', function () { if ($('k-fa').checked || $('k-bt').checked) $('k-e2').textContent = ''; }); });
+  var frq = function () { if ($('k-mo').checked && $('k-day').value) $('k-e3').textContent = ''; };
+  $('k-mo').addEventListener('change', frq); $('k-day').addEventListener('change', frq);
   if (cur && cur.kyc) $('y-liv').checked = cur.kyc.liv;
   $('cp-next').textContent = step === 6 ? 'Submit' : 'Next';
   // DISC-517: ← back to Products keeps what was typed in a saved draft (UAT: name changed to "TEST Product", back → the list shows TEST Product)
@@ -288,7 +293,13 @@
       CHG.forEach(function (k) { var e = !$(k).value.trim(); $(k).classList.toggle('bad', e); $(k).closest('.tm-r').querySelector('.fe').textContent = e ? $(k).dataset.err : ''; if (e) miss = true; });
       if (miss) { unsaved(); return; }
       keep4();
-    } else if (step === 5) { keep5(); }
+    } else if (step === 5) {   // DISC-522: Collections checks as the UAT
+      var amtMiss = !$('k-amw').hidden && !$('k-amt').value.trim(), typeMiss = !$('k-fa').checked && !$('k-bt').checked, frqMiss = !$('k-mo').checked || !$('k-day').value;
+      $('k-e1').textContent = amtMiss ? 'Maximum Mandate Amount is missing' : ''; $('k-amt').closest('.ig').classList.toggle('bad', amtMiss);
+      $('k-e2').textContent = typeMiss ? 'Required Field' : ''; $('k-e3').textContent = frqMiss ? 'Required field' : '';
+      if (amtMiss || typeMiss || frqMiss) return;
+      keep5();
+    }
     else {   // DISC-520: Submit → toast "Product creation successful", status In Review, back to Products
       cur.kyc = { liv: $('y-liv').checked }; cur.status = 'In Review'; cur.done = 6;
       cur.req = LMS_PROD.rid(); cur.maker = LMS_PROD.me(); var dd = new Date(); cur.on = ('0' + dd.getDate()).slice(-2) + '/' + ('0' + (dd.getMonth() + 1)).slice(-2) + '/' + dd.getFullYear(); save(all);   // DISC-521 change request for the checker
